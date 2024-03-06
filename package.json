@@ -1,0 +1,34 @@
+{
+  "name": "viapago",
+  "version": "1.0.0",
+  "description": "El sistema de pagos para los alumnos del Instituto ViaDiseño.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikebarrsan/Infinishk.git"
+  },
+  "keywords": [
+    "Infinishk",
+    "ViaPago",
+    "ViaDiseño",
+    "IVD"
+  ],
+  "author": "Jesus Cedillo, Pau Almada, Alex Muñoz, Samir Baidon y Miguel Barron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mikebarrsan/Infinishk/issues"
+  },
+  "homepage": "https://github.com/Mikebarrsan/Infinishk#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "nodemon": "^3.1.0"
+  }
+}
