@@ -2,4 +2,4 @@
 
 Link a video de avance 2: https://youtu.be/l1sGthUPLJk
 
-Link del documento del avance 2: [avance2.pdf](https://github.com/Mikebarrsan/Infinishk/files/14515093/avance2.pdf)
+Link del documento del avance 2: [Avance 2](https://docs.google.com/document/d/11DUBlEpoYj2D8A6Vpnz0OY4WPe8SBzSoFzbCAKV4DEc/edit?usp=sharing)
