@@ -33,11 +33,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-//Middleware
-app.use((request, response, next) => {
-    console.log('Middleware!');
-    next(); //Le permite a la petición avanzar hacia el siguiente middleware
-});
+const rutasTest = require('./routes/test.routes');
+app.use('/', rutasTest);
 
 // Para que el servidor este activo
 app.listen(4000);
