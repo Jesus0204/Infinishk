@@ -1,0 +1,86 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column is-one-quarter sidebar">
+                <aside class="menu">
+                    <p class="menu-label">
+                        General
+                    </p>
+                    <ul class="menu-list">
+                        <li><a><i class="fas fa-clock"></i> Horario</a></li>
+                        <li><a><i class="fas fa-money-bill-wave"></i> Realizar Pago</a></li>
+                        <li><a><i class="fas fa-file-invoice-dollar"></i> Estado Cuenta</a></li>
+                    </ul>
+                </aside>
+            </div>
+            <div class="column">
+                <div class="box">
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <span class="is-size-4 has-text-weight-bold">Juan Perez</span>
+                                <br>
+                                <span>A01234</span>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=210,h=201,fit=crop/AGB3G2L02jH1NXlm/logo-via-disea--o-mjEQ24aqB8H59gN7.png" alt="Via diseño logo" class="logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <form>
+                        <div class="field">
+                            <label class="label" for="reason">Motivo:</label>
+                            <div class="control has-icons-right">
+                                <div class="select is-fullwidth">
+                                    <select id="reason">
+                                        <option>Seleccione un motivo</option>
+                                    </select>
+                                </div>
+                                <div class="icon is-small is-right">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="concept">Concepto:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="concept">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="amount">Monto a pagar:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="amount">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="note">Nota:</label>
+                            <div class="control">
+                                <textarea class="textarea" id="note"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-danger" type="button">
+                                    <i class="fas fa-wallet"></i> Pagar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
