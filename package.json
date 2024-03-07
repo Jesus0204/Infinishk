@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
+    "test": "echo \"Error: no test specified\" && exit 1", 
+    "css-build": "node-sass --omit-source-map-url public/sass/mystyles.scss public/css/mystyles.css",
     "css-watch": "npm run css-build -- --watch"
   },
   "repository": {
