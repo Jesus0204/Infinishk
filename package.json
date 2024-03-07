@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
+    "css-watch": "npm run css-build -- --watch"
   },
   "repository": {
     "type": "git",
@@ -35,10 +37,5 @@
   "devDependencies": {
     "bulma": "^0.9.4",
     "node-sass": "^9.0.0"
-  },
-  "scripts": {
-    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
-    "css-watch": "npm run css-build -- --watch",
-    "start": "npm run css-watch"
   }
 }
