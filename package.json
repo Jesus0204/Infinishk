@@ -31,5 +31,9 @@
     "express-session": "^1.18.0",
     "mysql2": "^3.9.2",
     "nodemon": "^3.1.0"
+  },
+  "devDependencies": {
+    "bulma": "^0.9.4",
+    "node-sass": "^9.0.0"
   }
 }
