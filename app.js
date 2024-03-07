@@ -25,6 +25,11 @@ app.use(session({
 // La aplicacion va a tener acceso a todo lo que esta en public
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Regresa index 
+app.get('/', (req, res) => {
+    res.render('views\index.ejs');
+});
+
 // Manipular facil los datos de las peticiones
 const bodyParser = require('body-parser');
 
