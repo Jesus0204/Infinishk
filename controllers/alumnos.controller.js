@@ -7,3 +7,6 @@ exports.get_A2 = (request, response, next) => {
 exports.get_A3 = (request, response, next) => {
     response.render('A3');
 };
+exports.get_A4 = (request, response, next) => {
+    response.render('A4');
+};
