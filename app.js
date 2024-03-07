@@ -33,8 +33,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-const rutasTest = require('./routes/test.routes');
-app.use('/', rutasTest);
+const rutasAlumnos = require('./routes/alumnos.routes');
+app.use('/alumnos', rutasAlumnos);
 
 // Para que el servidor este activo
 app.listen(4000);
