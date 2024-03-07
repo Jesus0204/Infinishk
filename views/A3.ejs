@@ -2,39 +2,12 @@
 <body>
     <div class="container is-fluid">
         <div class="columns">
-            <!-- Menu de la izquierda -->
             <div class="column is-one-quarter sidebar">
-                <aside class="menu">
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a><i class="fas fa-clock"></i> Horario</a></li>
-                        <li><a class="is-active"><i class="fas fa-money-bill-wave"></i> Realizar Pago</a></li>
-                        <li><a><i class="fas fa-file-invoice-dollar"></i> Estado Cuenta</a></li>
-                    </ul>
-                </aside>
+                <%- include('includes/sidebar.ejs') %>
             </div>
-            <div class="column">
-                <!-- Top bar -->
-                <div class="box" style="margin-bottom: 20px;">
-                    <div class="level">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <span class="is-size-4 has-text-weight-bold">Juan Perez</span>
-                                <br>
-                                <span>A01234</span>
-                            </div>
-                        </div>
-                        <div class="level-right">
-                            <div class="level-item">
-                                <img src="\images\logo.png" alt="Via diseño logo" class="logo" style="width: 75px; height: auto;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 
                 <!-- Area de pago -->
+                <main class="main-content">
                 <div class="box">
                     <form>
                         <div class="field">
@@ -84,6 +57,7 @@
             </div>
         </div>
     </div>
+</main>
 </body>
 
 </html>

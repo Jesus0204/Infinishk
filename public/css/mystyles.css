@@ -2092,7 +2092,7 @@ table th {
 
 .navbar {
   background-color: white;
-  min-height: 3.25rem;
+  min-height: 50px;
   position: relative;
   z-index: 30; }
   .navbar.is-white {
@@ -2628,7 +2628,10 @@ body.has-navbar-fixed-bottom {
     transform: translateY(-5px) rotate(-45deg); }
 
 .navbar-menu {
-  display: none; }
+  display: none;
+  height: 75px; 
+  font-size: 20px;
+}
 
 .navbar-item,
 .navbar-link {
@@ -3413,3 +3416,40 @@ a.navbar-item,
         padding: 9rem 4.5rem; }
       .section.is-large {
         padding: 18rem 6rem; } }
+
+.navbar_left {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  overflow-y: auto;
+  margin:10px;
+  padding: 10px;
+}
+
+.navbar_margin {
+  margin-top: 75px; /* Ajusta este valor a tus necesidades */
+}
+
+.navbar-item {
+  margin: 10px; /* Ajusta este valor a tus necesidades */
+}
+
+.logotipo {
+  width: auto; /* Ajusta este valor a tus necesidades */
+  height: auto;
+}
+
+.main-content {
+  margin-left: 220px; /* Ajusta este valor a tus necesidades */
+}
+
+.navbar_left, .navbar_margin, .logotipo, .main-content {
+  font-size: 25px; /* Ajusta este valor a tus necesidades */
+}
+
+
+
+
+
