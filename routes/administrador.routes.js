@@ -11,6 +11,8 @@ router.get('/S2', adminController.get_S2);
 router.get('/S21', adminController.get_S21);
 router.get('/S22', adminController.get_S22);
 router.get('/S3', adminController.get_S3);
+router.get('/S3_1', adminController.get_S3_1);
+router.get('/S3_2', adminController.get_S3_2);
 router.get('/S4', adminController.get_S4);
 router.get('/S5', adminController.get_S5);
 router.get('/S6', adminController.get_S6);
