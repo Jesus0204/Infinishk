@@ -31,6 +31,12 @@ exports.get_S6 = (request, response, next) => {
 exports.get_S7 = (request, response, next) => {
     response.render('S7');
 };
+exports.get_S72 = (request, response, next) => {
+    response.render('S7_2');
+};
+exports.get_S73 = (request, response, next) => {
+    response.render('S7_3');
+};
 exports.get_S8 = (request, response, next) => {
     response.render('S8');
 };
