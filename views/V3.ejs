@@ -1,0 +1,32 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column is-one-quarter sidebar">
+                <!-- To do: cambiar el sidebar a vista de visualizador -->
+                <%- include('includes/sidebar_visualizador.ejs') %>
+            </div>
+            <!-- Info credito -->
+            <div class="column is-half">
+                <div class="box">
+                    <form>
+                        <div class="field">
+                            <label class="label" for="price">Precio actual:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="price">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="date">Fecha de registro:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="date">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
