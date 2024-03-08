@@ -52,18 +52,22 @@
     width: 75%; /* Esto hace que el elemento ocupe todo el ancho de su contenedor */
     float: left;
 }
+
+.current-page {
+    background-color: black; /* Cambia el color de fondo a negro */
+    color: white !important; /* Cambia el color del texto a blanco */
+  }
+  
+
 .sidebar-list a {
     border-radius: 2px;
     color: #000000;
     display: block;
     padding: 0.5em 0.75em; }
     .sidebar-list a:hover {
-      background-color: #7c7f80;;
-      color: #000000; }
-    .sidebar-list a.is-active {
-      background-color: #910106;
-      color: #fff; }
+      background-color:  #910106;
+      color: #ffffff; }
   .sidebar-list li ul {
-    border-left: 1px solid #dbdbdb;
+    border-left: 0px solid #dbdbdb;
     margin: 0;
     padding-left: 0; }
