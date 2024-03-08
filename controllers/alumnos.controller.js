@@ -1,14 +1,14 @@
 exports.get_A1 = (request, response, next) => {
-    response.render('inicioalumno');
+    response.render('A1');
 };
 exports.get_A2 = (request, response, next) => {
-    response.render('horario');
+    response.render('A2');
 };
 exports.get_A3 = (request, response, next) => {
-    response.render('realizar_pago');
+    response.render('A3');
 };
 exports.get_A4 = (request, response, next) => {
-    response.render('estado_de_cuenta');
+    response.render('A4');
 };
 exports.get_test = (request, response, next) => {
     response.render('test');
