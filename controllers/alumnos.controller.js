@@ -1,13 +1,13 @@
-exports.get_inicioalumno = (request, response, next) => {
+exports.get_A1 = (request, response, next) => {
     response.render('inicioalumno');
 };
-exports.get_horario = (request, response, next) => {
+exports.get_A2 = (request, response, next) => {
     response.render('horario');
 };
-exports.get_realizar_pago = (request, response, next) => {
+exports.get_A3 = (request, response, next) => {
     response.render('realizar_pago');
 };
-exports.get_estado_de_cuenta = (request, response, next) => {
+exports.get_A4 = (request, response, next) => {
     response.render('estado_de_cuenta');
 };
 exports.get_test = (request, response, next) => {
