@@ -12,6 +12,8 @@ $gris-oscuro: #7c7f80;
 $gris-claro: #cdcccf;
 $rojo: #910106;
 $gris-lighter: #eaeaea;
+$negro: #000000;
+$blanco: #ffffff;
 
 // Update Bulma's global variables
 $family-sans-serif: "Poppins", sans-serif;
@@ -28,6 +30,16 @@ $body-background-color: $gris-lighter;
 $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
+
+$navbar-background-color: $blanco;
+$navbar-item-hover-background-color: $rojo;
+$navbar-item-hover-color: $blanco;
+$navbar-item-color: $negro;
+
+.current-page {
+    background-color: black; /* Cambia el color de fondo a negro */
+    color: white !important; /* Cambia el color del texto a blanco */
+  }
 
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
