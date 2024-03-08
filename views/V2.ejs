@@ -1,0 +1,46 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column is-one-quarter sidebar">
+                <!-- To do: cambiar el sidebar a vista de visualizador -->
+                <%- include('includes/sidebar.ejs') %>
+            </div>
+            <!-- Info diplomado -->
+            <div class="column is-half"> <!-- Changed to is-half for a larger central column -->
+                <div class="box">
+                    <form>
+                        <div class="field">
+                            <label class="label" for="reason">Nombre:</label>
+                            <div class="control has-icons-right">
+                                <div class="select is-fullwidth">
+                                    <select id="reason">
+                                        <option>Seleccione un diplomado</option>
+                                    </select>
+                                </div>
+                                <div class="icon is-small is-right">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="price">Precio diplomado:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="price">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="dur">Duración restante:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="dur">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
