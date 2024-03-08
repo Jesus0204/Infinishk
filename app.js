@@ -40,5 +40,10 @@ app.use('/administrador', rutasAdmin);
 const rutasVisualizador = require('./routes/visualizador.routes');
 app.use('/visualizador', rutasVisualizador);
 
+//Para error 404
+app.use((request, response) => {
+    response.status(404).sendFile(path.join(__dirname, "views", "404.html"));
+});
+
 // Para que el servidor este activo
 app.listen(4000);
