@@ -4,10 +4,10 @@ exports.get_S1 = (request, response, next) => {
 exports.get_S2 = (request, response, next) => {
     response.render('S2');
 };
-exports.get_S2_1 = (request, response, next) => {
+exports.get_S21 = (request, response, next) => {
     response.render('S2_1');
 };
-exports.get_S2_2 = (request, response, next) => {
+exports.get_S22 = (request, response, next) => {
     response.render('S2_2');
 };
 exports.get_S3 = (request, response, next) => {

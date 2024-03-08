@@ -95,10 +95,11 @@
 /* Estilos para los botones */
 .button {
     display: block; /* Hace que el botón sea un bloque y ocupe todo el ancho del contenedor */
-    width: 100%; /* Hace que el botón ocupe todo el ancho del contenedor */
-    height: 100px; /* Ajusta este valor al tamaño que prefieras */
+    width: 100%; /* Ajusta este valor al ancho que prefieras */
+    height: 80%; /* Ajusta este valor al tamaño que prefieras */
     margin: 20px auto; /* Centra el botón horizontalmente y añade un margen vertical */
     text-align: center; /* Centra el texto dentro del botón */
-    font-size: 24px; /* Ajusta este valor al tamaño de fuente que prefieras */
+    font-size: 10px; /* Ajusta este valor al tamaño de fuente que prefieras */
   }
+  
   

@@ -1,0 +1,41 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column is-one-quarter sidebar">
+                <%- include('includes/sidebar_admin.ejs') %>
+            </div>
+
+            <main class="main-content">
+                <div class="box">
+                    <form>
+
+                        <div class="field">
+                            <label class="label" for="concept">Nombre:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="concept">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="concept">Duracion</label>
+                            <div class="control">
+                                <input class="input" type="text" id="concept">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="amount">Monto a pagar:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="amount">
+                            </div>
+                        </div>
+
+                        </div>
+                    
+                        <div class="block">
+                            <!-- Botón exportar datos -->
+                            <main class="main-content">
+                                <a class="button is-large is-fullwidth" href="/administrador/S2">Regresar</a>
+                        </div>
+
