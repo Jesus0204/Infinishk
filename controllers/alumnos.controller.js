@@ -1,8 +1,8 @@
 exports.get_inicio = (request, response, next) => {
     response.render('inicio');
 };
-exports.get_A2 = (request, response, next) => {
-    response.render('A2');
+exports.get_horario = (request, response, next) => {
+    response.render('horario');
 };
 exports.get_A3 = (request, response, next) => {
     response.render('A3');

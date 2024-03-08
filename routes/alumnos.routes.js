@@ -7,7 +7,7 @@ const alumnosController = require('../controllers/alumnos.controller');
 
 
 router.get('/inicio', alumnosController.get_inicio);
-router.get('/A2', alumnosController.get_A2);
+router.get('/horario', alumnosController.get_horario);
 router.get('/A3', alumnosController.get_A3);
 router.get('/A4', alumnosController.get_A4);
 router.get('/test', alumnosController.get_test);
