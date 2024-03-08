@@ -13,6 +13,12 @@ exports.get_S2_2 = (request, response, next) => {
 exports.get_S3 = (request, response, next) => {
     response.render('S3');
 };
+exports.get_S3_1 = (request, response, next) => {
+    response.render('S3_1');
+};
+exports.get_S3_2 = (request, response, next) => {
+    response.render('S3_2');
+};
 exports.get_S4 = (request, response, next) => {
     response.render('S4');
 };
