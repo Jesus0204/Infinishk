@@ -35,6 +35,10 @@ app.use(bodyParser.urlencoded({
 
 const rutasAlumnos = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumnos);
+const rutasAdmin = require('./routes/administrador.routes');
+app.use('/alumnos', rutasAdmin);
+const rutasVisualizador = require('./routes/visualizador.routes');
+app.use('/alumnos', rutasVisualizador);
 
 // Para que el servidor este activo
 app.listen(4000);
