@@ -2200,9 +2200,11 @@ table th {
 
 .navbar {
   background-color: white;
-  min-height: 3.25rem;
+  height: 125px;
   position: relative;
-  z-index: 30; }
+  z-index: 30;
+  background-color: #7c7f80;;
+ }
   .navbar.is-white {
     background-color: white;
     color: #0a0a0a; }
@@ -6818,7 +6820,8 @@ button.dropdown-item {
     overflow-x: auto; } }
 
 .menu {
-  font-size: 1rem; }
+  font-size: 1rem; 
+  }
   .menu.is-small {
     font-size: 0.75rem; }
   .menu.is-medium {
@@ -6827,14 +6830,15 @@ button.dropdown-item {
     font-size: 1.5rem; }
 
 .menu-list {
-  line-height: 1.25; }
+  line-height: 1.25; 
+  }
   .menu-list a {
     border-radius: 2px;
     color: #7c7f80;
     display: block;
     padding: 0.5em 0.75em; }
     .menu-list a:hover {
-      background-color: whitesmoke;
+      background-color: #7c7f80;;
       color: #363636; }
     .menu-list a.is-active {
       background-color: #910106;
@@ -8250,7 +8254,8 @@ label.panel-block {
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 1;
-  padding: 0.75rem; }
+  padding: 0.75rem; 
+  background-color: #eaeaea;}
   .columns.is-mobile > .column.is-narrow {
     flex: none;
     width: unset; }

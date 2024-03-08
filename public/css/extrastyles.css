@@ -1,0 +1,69 @@
+.navbar-menu{
+    font-size: 25px; /* Ajusta este valor a tus necesidades */
+}
+
+.sidebar-item{
+    margin-top: 30px; /* Ajusta este valor para aumentar o disminuir el espacio entre los elementos */
+}
+
+
+.headbar{
+    background-color: white;
+    height: 125px;
+    position: relative;
+    z-index: 30;
+}
+
+
+.headbar-start, .headbar-item{
+    color: #000000;
+    margin:20px;
+    padding:20px;
+    text-align: center;
+}
+
+.headbar-img{
+    width: 135px;
+    height:135px;
+}
+
+.headbar-item {
+    color: #000000; /* Ajusta este valor al color que prefieras */
+    margin:20px;
+    padding:20px;
+    text-align: center;
+  }
+  
+
+.sidebar-menu {
+    font-size: 25px;
+    margin-top: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    font-size: 25px;
+    color:#000000;
+    }
+
+.sidebar-list{
+    line-height: 2.25; 
+    background-color: #ffffff;
+    height: 100vh;
+    width: 75%; /* Esto hace que el elemento ocupe todo el ancho de su contenedor */
+    float: left;
+}
+.sidebar-list a {
+    border-radius: 2px;
+    color: #000000;
+    display: block;
+    padding: 0.5em 0.75em; }
+    .sidebar-list a:hover {
+      background-color: #7c7f80;;
+      color: #000000; }
+    .sidebar-list a.is-active {
+      background-color: #910106;
+      color: #fff; }
+  .sidebar-list li ul {
+    border-left: 1px solid #dbdbdb;
+    margin: 0;
+    padding-left: 0; }
