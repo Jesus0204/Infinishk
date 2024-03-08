@@ -10,6 +10,9 @@ exports.get_realizar_pago = (request, response, next) => {
 exports.get_estado_de_cuenta = (request, response, next) => {
     response.render('estado_de_cuenta');
 };
+exports.get_V1 = (request, response, next) => {
+    response.render('V1');
+};
 exports.get_test = (request, response, next) => {
     response.render('test');
 };
