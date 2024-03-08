@@ -1,5 +1,5 @@
-exports.get_inicio = (request, response, next) => {
-    response.render('inicio');
+exports.get_inicioalumno = (request, response, next) => {
+    response.render('inicioalumno');
 };
 exports.get_horario = (request, response, next) => {
     response.render('horario');
