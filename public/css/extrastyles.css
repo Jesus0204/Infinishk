@@ -32,8 +32,7 @@
     margin:20px;
     padding:20px;
     text-align: center;
-  }
-  
+  } 
 
 .sidebar-menu {
     font-size: 25px;
@@ -44,6 +43,27 @@
     font-size: 25px;
     color:#000000;
     }
+    /* Estilos para pantallas de tamaño grande */
+@media (min-width: 1200px) {
+    .sidebar-menu {
+      width: 300px; /* Ajusta este valor al ancho que prefieras para pantallas grandes */
+    }
+  }
+  
+  /* Estilos para pantallas de tamaño mediano */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .sidebar-menu {
+      width: 200px; /* Ajusta este valor al ancho que prefieras para pantallas medianas */
+    }
+  }
+  
+  /* Estilos para pantallas de tamaño pequeño */
+  @media (max-width: 767px) {
+    .sidebar-menu {
+      width: 100px; /* Ajusta este valor al ancho que prefieras para pantallas pequeñas */
+    }
+  }
+  
 
 .sidebar-list{
     line-height: 2.25; 
