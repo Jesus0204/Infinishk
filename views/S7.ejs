@@ -2,6 +2,47 @@
 <body>
     <div class="container is-fluid">
         <div class="columns">
-            <div class="column is-one-quarter sidebar">
+            <div class="column is-two-fifths sidebar">
                 <%- include('includes/sidebar_admin.ejs') %>
             </div>
+                <!-- Area de pago -->
+                <main class="main-content">
+                <div class="box">
+                    <div class="control">
+                        <button class="button is-large is-fullwidth is-danger" type="button">
+                            Registrar pago manual
+                        </button>
+                    </div>
+                    <div class="file is-primary">
+                        <label class="file-label">
+                          <input class="file-input" type="file" name="resume">
+                          <span class="file-cta">
+                            <span class="file-icon">
+                              <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                Registrar pago con transferencia
+                            </span>
+                          </span>
+                        </label>
+                      </div>
+                      
+                    </div>
+                    <div class="control">
+                        <button class="button is-large is-fullwidth is-danger" type="button">
+                            Reporte ingresos
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-large is-fullwidth is-danger" type="button">
+                            Reporte tipo de pago
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>
