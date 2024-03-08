@@ -1,5 +1,5 @@
-exports.get_A1 = (request, response, next) => {
-    response.render('A1');
+exports.get_inicio = (request, response, next) => {
+    response.render('inicio');
 };
 exports.get_A2 = (request, response, next) => {
     response.render('A2');
