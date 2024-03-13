@@ -2,10 +2,6 @@
     font-size: 25px; /* Ajusta este valor a tus necesidades */
 }
 
-.sidebar-item{
-    margin-top: 30px; /* Ajusta este valor para aumentar o disminuir el espacio entre los elementos */
-}
-
 
 .headbar{
     background-color: white;
@@ -79,19 +75,6 @@
   }
   
 
-.sidebar-list a {
-    border-radius: 2px;
-    color: #000000;
-    display: block;
-    padding: 0.5em 0.75em; }
-    .sidebar-list a:hover {
-      background-color:  #910106;
-      color: #ffffff; }
-  .sidebar-list li ul {
-    border-left: 0px solid #dbdbdb;
-    margin: 0;
-    padding-left: 0; }
-
 /* Estilos para los botones */
 .button {
     display: block; /* Hace que el botón sea un bloque y ocupe todo el ancho del contenedor */
@@ -102,5 +85,64 @@
     font-size: 10px; /* Ajusta este valor al tamaño de fuente que prefieras */
   }
  
+  .main-content{
+    font-size:50px;
+    text-align: center;
+  }
+
+
+  /* Estilos específicos para pantallas pequeñas */
+  @media (max-width: 600px),(orientation: landscape) {
+    .sidebar-item{
+      font-size: 25px; /* Ajusta este valor para aumentar o disminuir el espacio entre los elementos */
+    }
+    .sidebar-list {
+      height: auto;
+      width: 150%;
+      box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el ancho */
+    }
+    .sidebar-list a {
+      color: #000000;
+      display: flex; 
+    }
+    .sidebar-list a:hover {
+      background-color:  #910106;
+      color: #ffffff; 
+    }
+    .navbar-item {
+      font-size: 25px; /* Reduce el tamaño de la fuente */
+    }
+    .navbar-start {
+      background-color: white;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+      width: 100%;
+      height: auto; /* Permite que el elemento se ajuste a su contenido */
+      justify-content: flex-start;
+    }
+    .navbar-dropdown {
+      display:none; /* Asegura que el menú desplegable se expanda horizontalmente */
+    }
+    .navbar-dropdown.open{
+      display:block;
+      align-items: end;
+    }
+
+    .headbar-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .headbar-img img {
+      height: 100%; /* Mantiene la proporción de la imagen */
+      width: 100%; /* Mantiene la proporción de la imagen */
+      max-width: 100%; /* Asegura que la imagen no sea más ancha que su contenedor */
+      max-height: 100%; /* Ajusta este valor al tamaño deseado */
+    }
+}
+
+
+
+
+
  
  
