@@ -92,25 +92,9 @@
 
 
   /* Estilos específicos para pantallas pequeñas */
-  @media (max-width: 600px),(orientation: landscape) {
-    .sidebar-item{
-      font-size: 25px; /* Ajusta este valor para aumentar o disminuir el espacio entre los elementos */
-    }
-    .sidebar-list {
-      height: auto;
-      width: 150%;
-      box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el ancho */
-    }
-    .sidebar-list a {
-      color: #000000;
-      display: flex; 
-    }
-    .sidebar-list a:hover {
-      background-color:  #910106;
-      color: #ffffff; 
-    }
+  @media (min-width: 100px) and (max-width: 1200px),(orientation: landscape) {
     .navbar-item {
-      font-size: 25px; /* Reduce el tamaño de la fuente */
+      font-size: 20px; /* Reduce el tamaño de la fuente */
     }
     .navbar-start {
       background-color: white;
@@ -126,23 +110,4 @@
       display:block;
       align-items: end;
     }
-
-    .headbar-end {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .headbar-img img {
-      height: 100%; /* Mantiene la proporción de la imagen */
-      width: 100%; /* Mantiene la proporción de la imagen */
-      max-width: 100%; /* Asegura que la imagen no sea más ancha que su contenedor */
-      max-height: 100%; /* Ajusta este valor al tamaño deseado */
-    }
 }
-
-
-
-
-
- 
- 
