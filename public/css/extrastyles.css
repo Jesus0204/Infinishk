@@ -111,22 +111,9 @@
       align-items: end;
     }
 
-    .headbar-end {
+    .navbar-end {
       display: flex;
       justify-content: flex-end;
     }
-
-    .headbar-img img {
-      height: 100%; /* Mantiene la proporción de la imagen */
-      width: 100%; /* Mantiene la proporción de la imagen */
-      max-width: 100%; /* Asegura que la imagen no sea más ancha que su contenedor */
-      max-height: 100%; /* Ajusta este valor al tamaño deseado */
-    }
 }
-
-
-
-
-
- 
  
