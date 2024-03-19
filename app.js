@@ -40,8 +40,7 @@ const rutasAdmin = require('./routes/administrador.routes');
 app.use('/administrador', rutasAdmin);
 const rutasVisualizador = require('./routes/visualizador.routes');
 app.use('/visualizador', rutasVisualizador);
-const rutasSesion = require('./routes/sesion.routes');
-app.use('/', rutasSesion);
+
 
 //Para error 404
 app.use((request, response) => {
