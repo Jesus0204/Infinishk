@@ -1,5 +1,6 @@
 // Para usar express en vez de http
 const express = require('express');
+
 // Inicia la app usuando a express
 const app = express();
 
