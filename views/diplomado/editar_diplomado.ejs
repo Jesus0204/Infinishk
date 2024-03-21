@@ -1,0 +1,30 @@
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Diplomado</title>
+</head>
+<body>
+    <% if (fetch) { %>
+        <form action="/editar_diplomado" method="POST">
+            <label for="nombre">Nombre del Diplomado:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <button type="submit">Buscar</button>
+        </form>
+    <% } %>
+
+    <% if (editar) { %>
+        <form action="/editar_diplomado" method="POST">
+            <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
+            <label for="Duracion">Duración:</label>
+            <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>">
+            <label for="precioDiplomado">Precio:</label>
+            <input type="text" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>">
+            <label for="nombreDiplomado">Nombre:</label>
+            <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>">
+            <button type="submit">Registrar Cambios</button>
+        </form>
+    <% } %>
+</body>
+</html>

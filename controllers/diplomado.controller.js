@@ -4,6 +4,10 @@ exports.get_diplomado = (request,response,next) => {
     response.render('diplomado');
 };
 
+exports.get_resultado_diplomado = (request,response,next) => {
+    response.render('resultado_diplomado');
+};
+
 exports.get_modificar_diplomado = (request,response,next) => {
     response.render('editar_diplomado',{
         editar:false,
@@ -28,7 +32,10 @@ exports.post_fetch_diplomado = (request,response,next) => {
 exports.post_modificar_diplomado = (request,response,next) => {
     Diplomado.update(request.body.id,request.body,request.body.duracion,request.body.nombre)
     .then(([rows,fieldData]) => {
-        response.redirect('/resultado_diplomado');
+        Diplomado.fetchOne(request.params.nombre)
+        response.redirect('/resultado_diplomado',{
+            diplomado:diplomados[0],
+        });
     })
     .catch((error) => {console.log(error)});
 }
