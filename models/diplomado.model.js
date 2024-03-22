@@ -15,13 +15,25 @@ module.exports = class Diplomado{
                 [this.IDDiplomado, this.Duracion, this.precioDiplomado, this.nombreDiplomado]);
     }
 
+    static fetchAll() {
+        return db.execute('Select * from diplomado')
+    }
+
     static fetchOne(nombre){
         return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
     static update(id,duracion,precio,nombre){
-        return db.execute('UPDATE diplomado SET IdDiplomado=?, Duracion=?, precioDiplomado=?, nombreDiplomado=? WHERE nombreDiplomado=?',
-        [id,duracion,precio,nombre,nombre]);
+        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=? WHERE IDDiplomado=?',
+        [duracion,precio,nombre,id]);
     }
 
-}
+    static buscar(consulta) {
+        return db.execute(
+            'SELECT * FROM diplomado WHERE nombreDiplomado LIKE ?',
+            [`%${consulta}%`]
+        );
+    }
+
+};
+
