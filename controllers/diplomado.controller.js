@@ -12,6 +12,11 @@ exports.get_modificar_diplomado = (request,response,next) => {
     });
 };
 
+exports.get_registrar_diplomado = (request,response,next) => {
+    response.render('diplomado/registrar_diplomado',{
+    });
+};
+
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
     Diplomado.buscar(consulta)
@@ -22,6 +27,22 @@ exports.get_autocomplete = (request, response, next) => {
             console.log(error);
         });
 };
+
+exports.get_check_diplomado = (request, response, next) => {
+    const nombre = request.query.nombre;
+    Diplomado.fetchOne(nombre)
+        .then(([diplomados]) => {
+            if (diplomados.length > 0) {
+                response.json({ exists: true });
+            } else {
+                response.json({ exists: false });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
 
 
 exports.post_fetch_diplomado = (request,response,next) => {
@@ -63,6 +84,30 @@ exports.post_modificar_diplomado = (request,response,next) => {
     })
     .then(([diplomados,fieldData]) => {
         response.render('diplomado/resultado_diplomado',{
+            modificar:true,
+            registrar:false,
+            diplomado:diplomados[0],
+        });
+    })
+    .catch((error) => {
+        console.log(error)});
+}
+
+exports.post_registrar_diplomado = (request,response,next) => {
+    const precio = request.body.precioDiplomado;
+    const duracion = request.body.Duracion;
+    const nombre = request.body.nombreDiplomado;
+    console.log(precio);
+    console.log(duracion);
+    console.log(nombre);
+    Diplomado.save(duracion,precio,nombre)
+    .then(() => {
+        return Diplomado.fetchOne(nombre)
+    })
+    .then(([diplomados,fieldData]) => {
+        response.render('diplomado/resultado_diplomado',{
+            modificar:false,
+            registrar:true,
             diplomado:diplomados[0],
         });
     })
