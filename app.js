@@ -34,13 +34,15 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-
 const rutasAlumnos = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumnos);
 const rutasAdmin = require('./routes/administrador.routes');
 app.use('/administrador', rutasAdmin);
 const rutasVisualizador = require('./routes/visualizador.routes');
 app.use('/visualizador', rutasVisualizador);
+
+const rutasUsuarios = require('./routes/usuarios.routes');
+app.use('/usuarios', rutasUsuarios);
 
 
 //Para error 404

@@ -1,0 +1,15 @@
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<section class="section">
+    <div class="container">
+        <% for (let alumno of alumnos) { %>
+        <p> Nombre: <%= alumno.Nombre %> </p>
+        <p> Apellidos: <%= alumno.Apellidos %> </p>
+        <p> Matricula: <%= alumno.Matricula %> </p>
+        <p> Monto A Pagar: <%= alumno.montoAPagar %> </p>
+        <p> Monto Pagado: <%= alumno.montoPagado %> </p>
+        <p> Fecha Limite Pago: <%= alumno.fechaLimitePago %> </p>
+        <br>
+        <% } %>
+    </div>
+</section>
