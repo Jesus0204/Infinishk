@@ -2,10 +2,6 @@
     font-size: 25px; /* Ajusta este valor a tus necesidades */
 }
 
-.sidebar-item{
-    margin-top: 30px; /* Ajusta este valor para aumentar o disminuir el espacio entre los elementos */
-}
-
 
 .headbar{
     background-color: white;
@@ -79,19 +75,6 @@
   }
   
 
-.sidebar-list a {
-    border-radius: 2px;
-    color: #000000;
-    display: block;
-    padding: 0.5em 0.75em; }
-    .sidebar-list a:hover {
-      background-color:  #910106;
-      color: #ffffff; }
-  .sidebar-list li ul {
-    border-left: 0px solid #dbdbdb;
-    margin: 0;
-    padding-left: 0; }
-
 /* Estilos para los botones */
 .button {
     display: block; /* Hace que el botón sea un bloque y ocupe todo el ancho del contenedor */
@@ -102,5 +85,35 @@
     font-size: 10px; /* Ajusta este valor al tamaño de fuente que prefieras */
   }
  
- 
+  .main-content{
+    font-size:50px;
+    text-align: center;
+  }
+
+
+  /* Estilos específicos para pantallas pequeñas */
+  @media (min-width: 100px) and (max-width: 1200px),(orientation: landscape) {
+    .navbar-item {
+      font-size: 20px; /* Reduce el tamaño de la fuente */
+    }
+    .navbar-start {
+      background-color: white;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+      width: 100%;
+      height: auto; /* Permite que el elemento se ajuste a su contenido */
+      justify-content: flex-start;
+    }
+    .navbar-dropdown {
+      display:none; /* Asegura que el menú desplegable se expanda horizontalmente */
+    }
+    .navbar-dropdown.open{
+      display:block;
+      align-items: end;
+    }
+
+    .navbar-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+}
  

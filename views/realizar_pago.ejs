@@ -1,5 +1,11 @@
-<%- include('includes/dropdown_alumno.ejs') %>
+<%- include('includes/head.ejs') %>
 <body>
+    <div class="container is-fluid">
+        <div class="columns">
+            <div class="column is-one-quarter sidebar">
+                <%- include('includes/sidebar.ejs') %>
+            </div>
+                
                 <!-- Area de pago -->
                 <main class="main-content">
                 <div class="box">
@@ -9,7 +15,7 @@
                             <div class="control has-icons-right">
                                 <div class="select is-fullwidth">
                                     <select id="reason">
-                                        <option>Pago extra</option>
+                                        <option>Seleccione un motivo</option>
                                     </select>
                                 </div>
                                 <div class="icon is-small is-right">
@@ -21,21 +27,21 @@
                         <div class="field">
                             <label class="label" for="concept">Concepto:</label>
                             <div class="control">
-                                <input class="input" type="text" id="concept" value="Tornillo M5">
+                                <input class="input" type="text" id="concept" placeholder="Ingrese el concepto">
                             </div>
                         </div>
 
                         <div class="field">
                             <label class="label" for="amount">Monto a pagar:</label>
                             <div class="control">
-                                <input class="input" type="text" id="amount" value="20">
+                                <input class="input" type="text" id="amount" placeholder="Ingrese el monto">
                             </div>
                         </div>
 
                         <div class="field">
                             <label class="label" for="note">Nota:</label>
                             <div class="control">
-                                <textarea class="textarea" id="note"></textarea>
+                                <textarea class="textarea" id="note" placeholder="Agregue una nota"></textarea>
                             </div>
                         </div>
 
