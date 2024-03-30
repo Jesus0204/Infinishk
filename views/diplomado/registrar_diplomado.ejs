@@ -1,35 +1,42 @@
 <%- include('../includes/dropdown_admin.ejs') %>
+<link href="/css/mystyles.css" rel="stylesheet" type="text/css">
+<link href="/css/extrastyles.css" rel="stylesheet" type="text/css">
+
 <body>
+    <div class="container" style="display: flex; justify-content: center;">
+        <form action="/diplomado/registrar_diplomado" method="POST" onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
+            <label for="Duracion" class="label is-large">Duración:</label>
+            <input type="text" id="Duracion" name="Duracion" required class="input is-large">
+            <label for="precioDiplomado" class="label is-large">Precio:</label>
+            <input type="number" id="precioDiplomado" name="precioDiplomado" required class="input is-large">
+            <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+            <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large">
+            <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Registrar Diplomado</button>
+        </form>
+    </div>
 
-<form action="/diplomado/registrar_diplomado" method="POST" onsubmit="return validateForm()">
-    <label for="Duracion">Duración:</label>
-    <input type="text" id="Duracion" name="Duracion" required>
-    <label for="precioDiplomado">Precio:</label>
-    <input type="number" id="precioDiplomado" name="precioDiplomado" required>
-    <label for="nombreDiplomado">Nombre:</label>
-    <input type="text" id="nombreDiplomado" name="nombreDiplomado" required>
-    <button type="submit">Registrar Diplomado</button>
-</form>
-
-<script>
-    function validateForm() {
-        var precio = document.getElementById("precioDiplomado").value;
-        var nombre = document.getElementById("nombreDiplomado").value;
-        if (precio <= 0) {
-            alert("El precio debe ser mayor a 0");
-            return false;
+    <script>
+        function validateForm() {
+            var precio = document.getElementById("precioDiplomado").value;
+            var nombre = document.getElementById("nombreDiplomado").value;
+            if (precio <= 0) {
+                alert("El precio debe ser mayor a 0");
+                return false;
+            }
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + nombre, false);
+            xmlhttp.send();
+            var exists = JSON.parse(xmlhttp.responseText).exists;
+            if (exists) {
+                alert("Ese diplomado ya existe");
+                return false;
+            }
         }
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + nombre, false);
-        xmlhttp.send();
-        var exists = JSON.parse(xmlhttp.responseText).exists;
-        if (exists) {
-            alert("Ese diplomado ya existe");
-            return false;
-        }
-    }
-</script>
-
-
+    </script>
 </body>
 </html>
+
+
+
+
+
