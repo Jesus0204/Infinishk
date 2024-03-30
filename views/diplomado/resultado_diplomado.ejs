@@ -11,20 +11,23 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-3 has-text-black">ID:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-3 has-text-black">Duración:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.Duracion %></p>
-                                <p class="title is-3 has-text-black">Precio:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.precioDiplomado %></p>
-                                <p class="title is-3 has-text-black">Nombre:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.nombreDiplomado %></p>
+                                <p class="title is-4 has-text-black">ID:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
+                                <p class="title is-4 has-text-black">Duración:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
+                                <p class="title is-4 has-text-black">Precio:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
+                                <p class="title is-4 has-text-black">Nombre:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <form action="/diplomado/editar_diplomado" method="GET">
                     <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Modificar otro Diplomado</button>
+                </form>
+                <form action="/diplomado/" method="GET">
+                    <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Regresar a Diplomado</button>
                 </form>
             <% } %>
 
@@ -33,20 +36,23 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-3 has-text-black">ID:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-3 has-text-black">Duración:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.Duracion %></p>
-                                <p class="title is-3 has-text-black">Precio:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.precioDiplomado %></p>
-                                <p class="title is-3 has-text-black">Nombre:</p>
-                                <p class="subtitle is-5 has-text-grey"><%= diplomado.nombreDiplomado %></p>
+                                <p class="title is-4 has-text-black">ID:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
+                                <p class="title is-4 has-text-black">Duración:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
+                                <p class="title is-4 has-text-black">Precio:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
+                                <p class="title is-4 has-text-black">Nombre:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <form action="/diplomado/registrar_diplomado" method="GET">
                     <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Registrar otro Diplomado</button>
+                </form>
+                <form action="/diplomado/" method="GET">
+                    <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Regresar a Diplomado</button>
                 </form>
             <% } %>
         </div>
