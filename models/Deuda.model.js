@@ -13,5 +13,4 @@ module.exports = class Deuda {
         WHERE D.Matricula = A.Matricula AND 
         Pagado = 0 AND Now() > D.fechaLimitePago`);
     }
-    
 }
