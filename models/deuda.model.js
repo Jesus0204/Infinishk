@@ -12,12 +12,13 @@ module.exports = class Deuda {
         this.Pagado = mi_Pagado;
     }
 
-    static fetchActivos(){
-        return db.execute('SELECT IDDeuda,montoAPagar FROM deuda WHERE Pagado=0 AND Now()>fechaLimitePago')
+    static fetchDeuda(matricula){
+        return db.execute('SELECT montoAPagar FROM deuda WHERE Pagado=0 AND Now()>fechaLimitePago AND Matricula = ?',
+        [matricula]);
     }
 
     static update_transferencia(monto,id_deuda){
-        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? \n WHERE IDDeuda = ?',
+        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);
     }
     
