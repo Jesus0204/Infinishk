@@ -2,13 +2,14 @@
 
 <section class="section">
     <div class="container">
-        <% for (let alumno of alumnos) { %>
-        <p> Nombre: <%= alumno.Nombre %> </p>
-        <p> Apellidos: <%= alumno.Apellidos %> </p>
-        <p> Matricula: <%= alumno.Matricula %> </p>
-        <p> Monto A Pagar: <%= alumno.montoAPagar %> </p>
-        <p> Monto Pagado: <%= alumno.montoPagado %> </p>
-        <p> Fecha Limite Pago: <%= alumno.fechaLimitePago %> </p>
+        <p>Hola</p>
+        <% for (let deudas of deudas_atrasadas) { %>
+        <p> Nombre: <%= deudas.Nombre %> </p>
+        <p> Apellidos: <%= deudas.Apellidos %> </p>
+        <p> Matricula: <%= deudas.Matricula %> </p>
+        <p> Monto A Pagar: <%= deudas.montoAPagar %> </p>
+        <p> Monto Pagado: <%= deudas.montoPagado %> </p>
+        <p> Fecha Limite Pago: <%= deudas.fechaLimitePago %> </p>
         <br>
         <% } %>
     </div>

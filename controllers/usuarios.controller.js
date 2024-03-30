@@ -5,13 +5,29 @@ exports.get_usuarios = (request, response, next) => {
 const Deuda = require('../models/Deuda.model');
 
 exports.get_alumnos_atrasados = (request, response, next) => {
-
+    // Primero sacas las matriculas de alumnos que estan atrasados
     Deuda.fetchNoPagados()
-    .then(([alumnos_atrasados, fieldData]) => {
-        response.render('usuarios/alumnos_atrasados', {alumnos: alumnos_atrasados});
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then(([alumnos_atrasados, fieldData]) => {
+            
+            let deuda = [];
+            // Para cada alumno atrasado sacas todos los datos
+            for (let alumno of alumnos_atrasados) {
+                Deuda.fetchDeuda(alumno.matricula)
+                    .then(([deuda_alumno, fieldData]) => {
+                        deuda.push(deuda_alumno);
+                        console.log(deuda);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
+            // Pasas a plantilla deudas de alumnos que tienen pago atrasado
+            response.render('usuarios/alumnos_atrasados', {
+                deudas_atrasadas: deuda
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 
 };
