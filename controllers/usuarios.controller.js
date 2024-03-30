@@ -9,16 +9,16 @@ exports.get_alumnos_atrasados = (request, response, next) => {
     Deuda.fetchNoPagados()
         .then(([alumnos_atrasados, fieldData]) => {
 
-            Deuda.fetchDeuda(alumnos_atrasados[0].matricula)
-            .then(([deuda_alumno, fieldData]) => {
-                 // Pasas a plantilla deudas de alumnos que tienen pago atrasado
-                 response.render('usuarios/alumnos_atrasados', {
-                     deudas_atrasadas: deuda_alumno
-                 });
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            Deuda.fetchDeuda('1001')
+                .then(([deuda_alumno, fieldData]) => {
+                    // Pasas a plantilla deudas de alumnos que tienen pago atrasado
+                    response.render('usuarios/alumnos_atrasados', {
+                        deudas_atrasadas: deuda_alumno
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
             // let deuda = [];
             // // Para cada alumno atrasado sacas todos los datos
             // for (let alumno of alumnos_atrasados) {

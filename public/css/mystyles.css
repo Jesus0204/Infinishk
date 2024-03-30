@@ -436,14 +436,14 @@ table th {
   .button.is-text {
     background-color: transparent;
     border-color: transparent;
-    color: #7c7f80;
+    color: #ffffff;
     text-decoration: underline; }
     .button.is-text:hover, .button.is-text.is-hovered, .button.is-text:focus, .button.is-text.is-focused {
-      background-color: whitesmoke;
-      color: #363636; }
+      background-color: #910106;
+      color: #ffffff; }
     .button.is-text:active, .button.is-text.is-active {
-      background-color: #e8e8e8;
-      color: #363636; }
+      background-color: #780105;
+      color: #ffffff; }
     .button.is-text[disabled],
     fieldset[disabled] .button.is-text {
       background-color: transparent;
@@ -3975,14 +3975,14 @@ a.box:active {
   .button.is-text {
     background-color: transparent;
     border-color: transparent;
-    color: #7c7f80;
+    color: #ffffff;
     text-decoration: underline; }
     .button.is-text:hover, .button.is-text.is-hovered, .button.is-text:focus, .button.is-text.is-focused {
-      background-color: whitesmoke;
-      color: #363636; }
+      background-color: #910106;
+      color: #ffffff; }
     .button.is-text:active, .button.is-text.is-active {
-      background-color: #e8e8e8;
-      color: #363636; }
+      background-color: #780105;
+      color: #ffffff; }
     .button.is-text[disabled],
     fieldset[disabled] .button.is-text {
       background-color: transparent;
@@ -5408,7 +5408,7 @@ div.icon-text {
   .table th {
     color: #363636; }
     .table th:not([align]) {
-      text-align: left; }
+      text-align: center; }
   .table tr.is-selected {
     background-color: #95404c;
     color: #fff; }
