@@ -2,15 +2,19 @@
 
 <section class="section">
     <div class="container">
-        <p>Hola</p>
-        <% for (let deudas of deudas_atrasadas) { %>
-        <p> Nombre: <%= deudas.Nombre %> </p>
-        <p> Apellidos: <%= deudas.Apellidos %> </p>
-        <p> Matricula: <%= deudas.Matricula %> </p>
-        <p> Monto A Pagar: <%= deudas.montoAPagar %> </p>
-        <p> Monto Pagado: <%= deudas.montoPagado %> </p>
-        <p> Fecha Limite Pago: <%= deudas.fechaLimitePago %> </p>
-        <br>
-        <% } %>
+        <div class="box">
+            <% for (let deudas of deudas_atrasadas) { %>
+            <div class="columns">
+                <div class="column is-full">
+                    Nombre: <%= deudas.Nombre %>
+                    Apellidos: <%= deudas.Apellidos %>
+                    Matricula: <%= deudas.Matricula %>
+                    Monto A Pagar: <%= deudas.montoAPagar %>
+                    Monto Pagado: <%= deudas.montoPagado %>
+                    Fecha Limite Pago: <%= deudas.fechaLimitePago %>
+                </div>
+            </div>
+            <% } %>
+        </div>
     </div>
 </section>
