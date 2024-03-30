@@ -40,6 +40,9 @@ app.use('/diplomado', rutasDiplomado);
 const rutasConfiguracion = require('./routes/configuracion.routes');
 app.use('/configuracion', rutasConfiguracion);
 
+const rutasPago = require('./routes/pagos.routes');
+app.use('/pagos', rutasPago);
+
 const rutasAlumnos = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumnos);
 const rutasAdmin = require('./routes/administrador.routes');
