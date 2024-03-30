@@ -4,31 +4,32 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 
 <body>
-    <% if (fetch) { %>
-        <form action="/diplomado/editar_diplomado" method="POST">
-            <label for="nombre">Nombre del Diplomado:</label>
-            <input type="text" id="nombre" name="nombre" required>
-            <button type="submit">Buscar</button>
-        </form>
-        <% if (error) { %>
-            <p><%= error %></p>
+    <div class="container" style="display: flex; justify-content: center;">
+        <% if (fetch) { %>
+            <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
+                <input type="text" id="nombre" name="nombre" required class="input is-large">
+                <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Buscar</button>
+            </form>
+            <% if (error) { %>
+                <p class="has-text-centered is-size-4"><%= error %></p>
+            <% } %>
         <% } %>
-    <% } %>
-    
-    
-    <% if (editar) { %>
-        <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()">
-            <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-            <label for="Duracion">Duración:</label>
-            <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required>
-            <label for="precioDiplomado">Precio:</label>
-            <input type="float" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" required>
-            <label for="nombreDiplomado">Nombre:</label>
-            <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>" required>
-            <button type="submit">Registrar Cambios</button>
-        </form>
-    <% } %>
-    
+        
+        
+        <% if (editar) { %>
+            <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
+                <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
+                <label for="Duracion" class="label is-large">Duración:</label>
+                <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required class="input is-large">
+                <label for="precioDiplomado" class="label is-large">Precio:</label>
+                <input type="float" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" required class="input is-large">
+                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
+                <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Registrar Cambios</button>
+            </form>
+        <% } %>
+    </div>
 
     <script>
         function validateForm() {
