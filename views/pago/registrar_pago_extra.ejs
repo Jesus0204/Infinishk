@@ -2,19 +2,41 @@
 
 <section class="section">
     <div class="container">
-        <h3 class="title is-3">Registrar Nuevo Pago Extra</h3>
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Registrar Nuevo Pago Extra</h3>
+            </div>
+        </div>
         <form action="/pagos/registrar_pago_extra" method="POST">
-            <label class="label" for="motivo">Motivo: </label>
-            <input name="motivo" class="input" type="text" id="motivo"><br>
-            <label class="label" for="monto">Monto:</label>
-            <input name="monto" class="input" type="text" id="monto"><br><br>
-            <button class="button button is-rounded is-medium is-responsive" type="submit"
-                style="font-size: medium; margin: 8px 2px;">
-                <span>Registrar Pago Extra</span>
-                <span class="icon is-large">
-                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                </span>
-            </button>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label" for="motivo">Motivo: </label>
+                    <input name="motivo" class="input" type="text" id="motivo"
+                        placeholder="Concepto del nuevo Pago Extra">
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label" for="monto">Monto:</label>
+                    <input name="monto" class="input" type="text" id="monto" placeholder="Monto del nuevo Pago Extra">
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: medium; margin: 8px 2px;">
+                        <span>Registrar Pago Extra</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-3"></div>
+            </div>
         </form>
     </div>
 </section>
