@@ -7,8 +7,8 @@
             <thead>
                 <tr>
                     <th colspan="2">
-                        <div class="columns is-vcentered is-mobile">
-                            <div class="column is-1">
+                        <div class="columns is-vcentered">
+                            <div class="column is-narrow">
                                 <label class="checkbox">
                                     <input type="checkbox" />
                                     <span class="checkmark"></span>
@@ -18,7 +18,7 @@
                                 2
                             </div>
                             <div class="column is-4">
-                                Alumno: <%= deudas_atrasadas[0].Nombre %>
+                                Nombre: <%= deudas_atrasadas[0].Nombre %>
                                 <%= deudas_atrasadas[0].Apellidos %>
                             </div>
                             <div class="column is-3">
@@ -26,7 +26,8 @@
                             </div>
                             <div class="column">
                                 <form action="/plantilla_correo" method="POST">
-                                    <button type="submit" class="button is-rounded">
+                                    <button type="submit" class="button is-rounded is-medium is-responsive"
+                                        style="font-size: medium;">
                                         <span>Enviar Correo</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -47,19 +48,19 @@
                     <td colspan="2">
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count].pagado == 1) { %>
-                            <div class="column">
+                            <div class="column is-narrow">
                                 <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count].fechaLimitePago) { %>
-                            <div class="column">
+                            <div class="column is-narrow">
                                 <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column">
+                            <div class="column is-narrow">
                                 <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
-                            <div class="column is-5">
+                            <div class="column">
                                 <strong>Pendiente:</strong>
                                 $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
                                 <br>
@@ -69,7 +70,7 @@
                                 <strong>Pagado:</strong>
                                 $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
                             </div>
-                            <div class="column is-6">
+                            <div class="column">
                                 <strong>Fecha Limite Pago:</strong>
                                 <br>
                                 <%= deudas_atrasadas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
@@ -87,19 +88,19 @@
                         </div>
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count].pagado == 1) { %>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count].fechaLimitePago) { %>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
-                            <div class="column is-5">
+                            <div class="column" style="text-align: center;">
                                 <strong>Pendiente:</strong>
                                 $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
                                 <br>
@@ -109,7 +110,7 @@
                                 <strong>Pagado:</strong>
                                 $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
                             </div>
-                            <div class="column is-6">
+                            <div class="column" style="text-align: center;">
                                 <strong>Fecha Limite Pago:</strong>
                                 <br>
                                 <%= deudas_atrasadas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
@@ -117,26 +118,26 @@
                         </div>
                     </td>
                     <td>
-                        <div class="columns is-vcentered is-centered">
+                        <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
                                 <strong>Mes #<%= count + 2 %></strong>
                             </div>
                         </div>
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count + 1].pagado == 1) { %>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count + 1].fechaLimitePago) { %>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column">
+                            <div class="column is-narrow" style="text-align: center;">
                                 <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
-                            <div class="column is-5">
+                            <div class="column" style="text-align: center;">
                                 <strong>Pendiente:</strong>
                                 $<%= deudas_atrasadas[count + 1].saldoPendiente.toLocaleString('mx') %>
                                 <br>
@@ -146,7 +147,7 @@
                                 <strong>Pagado:</strong>
                                 $<%= deudas_atrasadas[count + 1].montoPagado.toLocaleString('mx') %>
                             </div>
-                            <div class="column is-6">
+                            <div class="column" style="text-align: center;">
                                 <strong>Fecha Limite Pago:</strong>
                                 <br>
                                 <%= deudas_atrasadas[count + 1].fechaLimitePago.toLocaleDateString("es-MX", options) %>
@@ -158,18 +159,23 @@
                 <% } %>
             </tbody>
         </table>
-        <button class="button is-rounded">
-            <span>Regresar a Usuarios</span>
-            <span class="icon is-large">
-                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-            </span>
-        </button>
-        <button class="button is-rounded">
-            <span>Enviar correo electronico a alumnos seleccionados</span>
-            <span class="icon is-large">
-                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-            </span>
-        </button>
-    </div>
+        <div class="columns">
+            <div class="column is-5 isoffset-1">
+                <button class="button is-rounded is-medium is-responsive" style="font-size: medium; margin: 8px 2px;">
+                    <span>Regresar a Usuarios</span>
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="column is-7 isoffset-1">
+                <button class="button is-rounded is-medium is-responsive" style="font-size: medium; margin: 8px 2px;">
+                    <span>Enviar correo a alumnos seleccionados</span>
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
     </div>
 </section>
