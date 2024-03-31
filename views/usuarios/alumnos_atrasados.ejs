@@ -29,6 +29,7 @@
             </thead>
             <tbody>
                 <% let currentDate = new Date(); %>
+                <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
                 <% for (let count = 0; count < deudas_atrasadas.length; count = count + 2) { %>
                 <% if (count + 1 == deudas_atrasadas.length) { %>
                 <tr>
@@ -54,7 +55,8 @@
                                 Monto Pagado:<%= deudas_atrasadas[count].montoPagado %>
                             </div>
                             <div class="column is-5">
-                                Fecha Limite Pago: <%= deudas_atrasadas[count].fechaLimitePago %>
+                                Fecha Limite Pago:
+                                <%= deudas_atrasadas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
                             </div>
                         </div>
                     </td>
@@ -83,7 +85,8 @@
                                 Monto Pagado:<%= deudas_atrasadas[count].montoPagado %>
                             </div>
                             <div class="column is-5">
-                                Fecha Limite Pago: <%= deudas_atrasadas[count].fechaLimitePago %>
+                                Fecha Limite Pago:
+                                <%= deudas_atrasadas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
                             </div>
                         </div>
                     </td>
@@ -109,7 +112,8 @@
                                 Monto Pagado:<%= deudas_atrasadas[count + 1].montoPagado %>
                             </div>
                             <div class="column is-5">
-                                Fecha Limite Pago: <%= deudas_atrasadas[count + 1].fechaLimitePago %>
+                                Fecha Limite Pago:
+                                <%= deudas_atrasadas[count + 1].fechaLimitePago.toLocaleDateString("es-MX", options) %>
                             </div>
                         </div>
                     </td>
