@@ -9,7 +9,7 @@
             <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
                 <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
                 <input type="text" id="nombre" name="nombre" required class="input is-large">
-                <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Buscar</button>
+                <button type="submit" class="button is-large is-responsive">Buscar</button>
             </form>
             <% if (error) { %>
                 <p class="has-text-centered is-size-4"><%= error %></p>
@@ -26,7 +26,7 @@
                 <input type="float" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" required class="input is-large">
                 <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                 <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
-                <button type="submit" class="button is-large" style="padding: 10px 10px; height: auto; background-color: #000000; color: white">Registrar Cambios</button>
+                <button type="submit" class="button is-large is-responsive">Registrar Cambios</button>
             </form>
         <% } %>
     </div>
