@@ -43,7 +43,7 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
                 }
                 resultados.push({ ...fila, TipoPago: tipoPago });
             }
-            response.render('registro_transferencia', { subir: false,revisar:true,datos: resultados });
+            response.render('pago/registro_transferencia', { subir: false,revisar:true,datos: resultados });
         });
 };
 
