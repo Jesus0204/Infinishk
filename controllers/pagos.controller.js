@@ -1,37 +1,59 @@
 const Deuda = require('../models/deuda.model');
+const PagoExtra = require('../models/pago_extra.model');
 const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({
+    dest: 'uploads/'
+});
 
-exports.get_pago = (request,response,next) => {
+exports.get_pago = (request, response, next) => {
     response.render('pago/pago');
 };
 
 exports.get__registrar_pago_extra = (request, response, next) => {
-
+    response.render('pago/registrar_pago_extra');
 };
 
 exports.post_registrar_pago_extra = (request, response, next) => {
+    const pago_extra = new PagoExtra(request.body.motivo, request.body.monto);
 
-};
-
-exports.get_registro_transferencias = (request,response,next) => {
-    response.render('pago/registro_transferencia',{
-        subir:true,
-        revisar:false,
+    pago_extra.save()
+    .then(([rows, fieldData]) => {
+        response.redirect('/pagos');
+    })
+    .catch((error) => {
+        console.log(error);
     });
 };
 
-exports.post_subir_archivo = upload.single('archivo'), async (request, response,next) => {
+exports.get_registro_transferencias = (request, response, next) => {
+    response.render('pago/registro_transferencia', {
+        subir: true,
+        revisar: false,
+    });
+};
+
+exports.post_subir_archivo = upload.single('archivo'), async (request, response, next) => {
     const filas = [];
     fs.createReadStream(request.file.path)
         .pipe(csvParser())
         .on('data', (data) => {
-            const { Fecha, Hora, Importe, Concepto } = data;
-            const Referencia = Concepto.substring(0, 7); 
-            const Matricula = Concepto.substring(0,6);
-            filas.push({ Fecha, Hora, Importe, Concepto:Matricula,Concepto: Referencia });
+            const {
+                Fecha,
+                Hora,
+                Importe,
+                Concepto
+            } = data;
+            const Referencia = Concepto.substring(0, 7);
+            const Matricula = Concepto.substring(0, 6);
+            filas.push({
+                Fecha,
+                Hora,
+                Importe,
+                Concepto: Matricula,
+                Concepto: Referencia
+            });
         })
         .on('end', async () => {
             const resultados = [];
@@ -39,20 +61,23 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
                 const deuda = await Deuda.fetchDeuda(fila.Matricula);
                 let tipoPago = '';
                 if (fila.Referencia.startsWith('1')) {
-                    if(fila.Importe == deuda){
+                    if (fila.Importe == deuda) {
                         tipoPago = 'pagocolegiatura';
-                    }
-                    else
-                    {
+                    } else {
                         tipoPago = 'pagoextra';
                     }
                 } else if (fila.Referencia.startsWith('8')) {
                     tipoPago = 'pagodiplomado';
                 }
-                resultados.push({ ...fila, TipoPago: tipoPago });
+                resultados.push({
+                    ...fila,
+                    TipoPago: tipoPago
+                });
             }
-            response.render('pago/registro_transferencia', { subir: false,revisar:true,datos: resultados });
+            response.render('pago/registro_transferencia', {
+                subir: false,
+                revisar: true,
+                datos: resultados
+            });
         });
 };
-
-
