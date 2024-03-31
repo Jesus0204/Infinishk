@@ -1,0 +1,30 @@
+
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<% if (subir) { %>
+    <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data">
+        <input type="file" name="archivo" accept=".csv">
+        <button type="submit">Subir archivo</button>
+    </form>
+
+<% } else if (revisar) { %>
+    <table>
+        <tr>
+            <th>Matricula</th>
+            <th>Referencia</th>
+            <th>Fecha y Hora</th>
+            <th>Importe</th>
+
+            <th>Tipo de Pago</th>
+        </tr>
+        <% datos.forEach((fila) => { %>
+            <tr>
+                <td><%= fila.Concepto %></td>
+                <td><%= fila.Referencia %></td>
+                <td><%= fila.Fecha %> <%= fila.Hora %></td>
+                <td><%= fila.Importe %></td>
+                <td><%=fila.tipoPago %></td>
+            </tr>
+        <% }); %>
+    </table>
+<% } %>
