@@ -8,6 +8,14 @@ exports.get_pago = (request,response,next) => {
     response.render('pago/pago');
 };
 
+exports.get__registrar_pago_extra = (request, response, next) => {
+
+};
+
+exports.post_registrar_pago_extra = (request, response, next) => {
+
+};
+
 exports.get_registro_transferencias = (request,response,next) => {
     response.render('pago/registro_transferencia',{
         subir:true,
