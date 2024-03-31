@@ -116,4 +116,8 @@
       justify-content: flex-end;
     }
 }
+
+th {
+  vertical-align: middle;
+}
  
