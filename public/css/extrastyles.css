@@ -117,7 +117,65 @@
     }
 }
 
-th {
-  vertical-align: middle;
+.button {
+  background-color: #910106;
+  color: #ffffff;
+  border: solid #95404c;
 }
- 
+
+.button:hover {
+  background-color: #000000;
+  color: #ffffff;
+  border: solid #95404c;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 4px #95404c;
+  background-color: #910106;
+  color: #ffffff;
+}
+
+.checkbox input {
+  height: 0;
+  width: 0;
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  user-select: none;
+}
+
+.checkmark {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #95404c;
+  background-color: #dedbdb;
+  border-radius: 50%;
+} 
+
+.checkbox:hover input ~ .checkmark {
+  background-color: #910106;
+}
+.checkbox input:checked ~ .checkmark {
+  background-color: #910106;
+}
+
+.checkbox .checkmark:after {
+  top: -1px;
+  width: 5px;
+  height: 10px;
+  left: 2px;
+  color: white;
+}
+
+.checkbox input:checked ~ .checkmark:after {
+ display: block;
+} 
+
+.checkmark:after {
+ content:'✓';
+ position: absolute;
+ display: none;
+} 

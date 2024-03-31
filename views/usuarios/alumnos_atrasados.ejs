@@ -7,15 +7,21 @@
             <thead>
                 <tr>
                     <th colspan="2">
-                        <div class="columns is-vcentered">
+                        <div class="columns is-vcentered is-mobile">
+                            <div class="column is-1">
+                                <label class="checkbox">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                             <div class="column is-1">
                                 2
                             </div>
-                            <div class="column is-5">
+                            <div class="column is-4">
                                 Alumno: <%= deudas_atrasadas[0].Nombre %>
                                 <%= deudas_atrasadas[0].Apellidos %>
                             </div>
-                            <div class="column is-4">
+                            <div class="column is-3">
                                 Matricula: <%= deudas_atrasadas[0].matricula %>
                             </div>
                             <div class="column">
@@ -36,16 +42,16 @@
                     <td colspan="2">
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count].pagado == 1) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-check" style="color: #17b585;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count].fechaLimitePago) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-clock" style="color: #ffc800;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-xmark" style="color: #910106;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
                             <div class="column is-5">
@@ -76,16 +82,16 @@
                         </div>
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count].pagado == 1) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-check" style="color: #17b585;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count].fechaLimitePago) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-clock" style="color: #ffc800;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-xmark" style="color: #910106;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
                             <div class="column is-5">
@@ -113,16 +119,16 @@
                         </div>
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count + 1].pagado == 1) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-check" style="color: #17b585;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                             </div>
                             <% } else if (currentDate < deudas_atrasadas[count + 1].fechaLimitePago) { %>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-clock" style="color: #ffc800;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                             </div>
                             <% } else {%>
-                            <div class="column is-1">
-                                <i class="fa-solid fa-circle-xmark" style="color: #910106;"></i>
+                            <div class="column">
+                                <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                             </div>
                             <% } %>
                             <div class="column is-5">
@@ -147,5 +153,8 @@
                 <% } %>
             </tbody>
         </table>
+        <button class="button is-rounded">Regresar a Usuarios</button>
+        <button class="button is-rounded">Enviar correo electronico a alumnos seleccionados</button>
+    </div>
     </div>
 </section>

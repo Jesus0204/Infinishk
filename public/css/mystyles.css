@@ -436,14 +436,14 @@ table th {
   .button.is-text {
     background-color: transparent;
     border-color: transparent;
-    color: #ffffff;
+    color: #7c7f80;
     text-decoration: underline; }
     .button.is-text:hover, .button.is-text.is-hovered, .button.is-text:focus, .button.is-text.is-focused {
-      background-color: #910106;
-      color: #ffffff; }
+      background-color: whitesmoke;
+      color: #363636; }
     .button.is-text:active, .button.is-text.is-active {
-      background-color: #780105;
-      color: #ffffff; }
+      background-color: #e8e8e8;
+      color: #363636; }
     .button.is-text[disabled],
     fieldset[disabled] .button.is-text {
       background-color: transparent;
@@ -3924,7 +3924,7 @@ table th {
   background-color: white;
   border-radius: 6px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
-  color: #0a0a0a;
+  color: #7c7f80;
   display: block;
   padding: 1.25rem; }
 
@@ -3975,14 +3975,14 @@ a.box:active {
   .button.is-text {
     background-color: transparent;
     border-color: transparent;
-    color: #ffffff;
+    color: #7c7f80;
     text-decoration: underline; }
     .button.is-text:hover, .button.is-text.is-hovered, .button.is-text:focus, .button.is-text.is-focused {
-      background-color: #910106;
-      color: #ffffff; }
+      background-color: whitesmoke;
+      color: #363636; }
     .button.is-text:active, .button.is-text.is-active {
-      background-color: #780105;
-      color: #ffffff; }
+      background-color: #e8e8e8;
+      color: #363636; }
     .button.is-text[disabled],
     fieldset[disabled] .button.is-text {
       background-color: transparent;
