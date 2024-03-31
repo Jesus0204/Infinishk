@@ -75,16 +75,6 @@
 }
 
 
-/* Estilos para los botones */
-.button {
-  display: block; /* Hace que el botón sea un bloque y ocupe todo el ancho del contenedor */
-  width: 100%; /* Ajusta este valor al ancho que prefieras */
-  height: 80%; /* Ajusta este valor al tamaño que prefieras */
-  margin: 20px auto; /* Centra el botón horizontalmente y añade un margen vertical */
-  text-align: center; /* Centra el texto dentro del botón */
-  font-size: 10px; /* Ajusta este valor al tamaño de fuente que prefieras */
-}
-
 .main-content{
   font-size:50px;
   text-align: center;
@@ -118,6 +108,8 @@
 }
 
 .button {
+width: 100%;
+margin: 6px auto;
 background-color: #910106;
 color: #ffffff;
 border: solid #95404c;
