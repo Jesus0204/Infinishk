@@ -2,7 +2,7 @@
 
 <section class="section">
     <div class="container">
-        <h2 class="title is-2">Alumnos atrasados en pagos</h2>
+        <h3 class="title is-3">Alumnos atrasados en pagos</h3>
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr>
@@ -15,7 +15,11 @@
                                 </label>
                             </div>
                             <div class="column is-1">
-                                2
+                                <% let calculo_pagos = 0 %>
+                                <% for (let deuda of deudas_atrasadas) { %>
+                                <% calculo_pagos += deuda.montoPagado / deuda.montoAPagar; %>
+                                <% } %>
+                                <%= calculo_pagos.toFixed(2) %>
                             </div>
                             <div class="column is-4">
                                 Nombre: <%= deudas_atrasadas[0].Nombre %>
@@ -46,6 +50,11 @@
                 <% if (count + 1 == deudas_atrasadas.length) { %>
                 <tr>
                     <td colspan="2">
+                        <div class="columns is-vcentered">
+                            <div class="column is-full" style="text-align: center;">
+                                <strong>Pago #<%= count + 1 %></strong>
+                            </div>
+                        </div>
                         <div class="columns is-vcentered">
                             <% if (deudas_atrasadas[count].pagado == 1) { %>
                             <div class="column is-narrow">
@@ -83,7 +92,7 @@
                     <td>
                         <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
-                                <strong>Mes #<%= count + 1 %></strong>
+                                <strong>Pago #<%= count + 1 %></strong>
                             </div>
                         </div>
                         <div class="columns is-vcentered">
@@ -120,7 +129,7 @@
                     <td>
                         <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
-                                <strong>Mes #<%= count + 2 %></strong>
+                                <strong>Pago #<%= count + 2 %></strong>
                             </div>
                         </div>
                         <div class="columns is-vcentered">
@@ -161,20 +170,26 @@
         </table>
         <div class="columns">
             <div class="column is-5 isoffset-1">
-                <button class="button is-rounded is-medium is-responsive" style="font-size: medium; margin: 8px 2px;">
-                    <span>Regresar a Usuarios</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
+                <form action="/usuarios" method="GET">
+                    <button class="button is-rounded is-medium is-responsive"
+                        style="font-size: medium; margin: 8px 2px;">
+                        <span>Regresar a Usuarios</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </form>
             </div>
             <div class="column is-7 isoffset-1">
-                <button class="button is-rounded is-medium is-responsive" style="font-size: medium; margin: 8px 2px;">
-                    <span>Enviar correo a alumnos seleccionados</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
+                <form action="/plantilla_correo" method="POST">
+                    <button type="submit" class="button is-rounded is-medium is-responsive"
+                        style="font-size: medium; margin: 8px 2px;">
+                        <span>Enviar correo a alumnos seleccionados</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
