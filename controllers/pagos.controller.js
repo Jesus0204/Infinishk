@@ -1,5 +1,3 @@
-const Deuda = require('../models/deuda.model');
-const PagoExtra = require('../models/pago_extra.model');
 const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -10,6 +8,8 @@ const upload = multer({
 exports.get_pago = (request, response, next) => {
     response.render('pago/pago');
 };
+
+const PagoExtra = require('../models/pago_extra.model');
 
 exports.get__registrar_pago_extra = (request, response, next) => {
     response.render('pago/registrar_pago_extra');
@@ -26,6 +26,8 @@ exports.post_registrar_pago_extra = (request, response, next) => {
         console.log(error);
     });
 };
+
+const Deuda = require('../models/deuda.model');
 
 exports.get_registro_transferencias = (request, response, next) => {
     response.render('pago/registro_transferencia', {
