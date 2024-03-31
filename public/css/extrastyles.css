@@ -73,17 +73,6 @@
     background-color: black; /* Cambia el color de fondo a negro */
     color: white !important; /* Cambia el color del texto a blanco */
   }
-  
-
-/* Estilos para los botones */
-.button {
-    display: block; /* Hace que el botón sea un bloque y ocupe todo el ancho del contenedor */
-    width: 100%; /* Ajusta este valor al ancho que prefieras */
-    height: 80%; /* Ajusta este valor al tamaño que prefieras */
-    margin: 20px auto; /* Centra el botón horizontalmente y añade un margen vertical */
-    text-align: center; /* Centra el texto dentro del botón */
-    font-size: 10px; /* Ajusta este valor al tamaño de fuente que prefieras */
-  }
  
   .main-content{
     font-size:50px;
@@ -118,6 +107,9 @@
 }
 
 .button {
+  width: 100%; 
+  height: 80%; 
+  margin: 6px auto; 
   background-color: #910106;
   color: #ffffff;
   border: solid #95404c;
@@ -127,6 +119,8 @@
   background-color: #000000;
   color: #ffffff;
   border: solid #95404c;
+  padding: 10px 10px;
+  height: auto;
 }
 
 .button:focus {
