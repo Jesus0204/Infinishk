@@ -9,14 +9,14 @@ exports.get_pago = (request, response, next) => {
     response.render('pago/pago');
 };
 
-const PagoExtra = require('../models/pago_extra.model');
+const PagoExtras = require('../models/pago_extra.model');
 
 exports.get__registrar_pago_extra = (request, response, next) => {
     response.render('pago/registrar_pago_extra');
 };
 
 exports.post_registrar_pago_extra = (request, response, next) => {
-    const pago_extra = new PagoExtra(request.body.motivo, request.body.monto);
+    const pago_extra = new PagoExtras(request.body.motivo, request.body.monto);
 
     pago_extra.save()
     .then(([rows, fieldData]) => {
