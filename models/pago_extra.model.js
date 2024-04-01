@@ -9,7 +9,7 @@ module.exports = class PagoExtras {
 
     save() {
         return db.execute(`INSERT INTO pagosExtras (motivoPago, montoPagar) 
-        VALUES( ? , ? )
+        VALUES(? , ? )
         `, [this.motivoPago, this.montoPagar]);
     }
 

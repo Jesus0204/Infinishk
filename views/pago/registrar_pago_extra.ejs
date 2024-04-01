@@ -8,105 +8,61 @@
                 <h3 class="title is-3">Registrar Nuevo Pago Extra</h3>
             </div>
         </div>
-        <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
-                <label class="label is-medium" for="motivo">Motivo: </label>
-                <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
-                    style="padding: 0.5em; margin-top: -1em;">Por favor
-                    escribe un concepto de Pago Extra.</p>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input name="motivo" class="input is-medium" type="text" id="motivo"
-                            placeholder="Concepto del nuevo Pago Extra">
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
-                <label class="label is-medium" for="monto">Monto:</label>
-                <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
-                    style="padding: 0.5em; margin-top: -1em;">
-                    Por favor
-                    escribe un monto válido del Pago Extra.</p>
-                <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                    style="padding: 0.5em; margin-top: -1em;">Por
-                    favor escribe un número mayor a 0. Un monto no puede ser un número negativo.</p>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input name="monto" class="input is-medium" type="number" id="monto"
-                            placeholder="Monto del nuevo Pago Extra">
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
-                <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                    data-target="modal-confirmar-registro" id="Boton_registrar" disabled>
-                    <span>Registrar Pago Extra</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
-            </div>
-            <div class="column is-3"></div>
-        </div>
-
-        <div id="modal-confirmar-registro" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title" style="text-align: center;">Registrar Pago Extra</p>
-                </header>
-                <section class="modal-card-body">
-                    <p class="is-size-5" style="text-align: center;"> Los datos del pago extra a registrar son los
-                        siguientes: </p>
-                    <br>
-                    <div class="columns">
-                        <div class="column is-6" style="text-align: center;">
-                            <p class="is-size-4"> <strong>Motivo: </strong></p>
-                        </div>
-                        <div class="column is-6" style="text-align: center;">
-                            <p class="is-size-4"> <strong>Monto: </strong></p>
-                        </div>
-                    </div>
-                </section>
-                <footer class="modal-card-foot" style="justify-content: center;">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                                style="font-size: large; margin: 8px 2px;">
-                                <span>Regresar</span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                        </p>
-                        <p class="control">
-                            <form action="/pagos/registrar_pago_extra" method="POST">
-                                <button class="button is-rounded is-medium is-responsive" type="submit"
-                                    style="font-size: large; margin: 8px 2px;">
-                                    <span>Registrar Pago Extra</span>
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                    </span>
-                                </button>
-                            </form>
+        <form action="/pagos/registrar_pago_extra" method="POST">
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="motivo">Motivo: </label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
+                        style="padding: 0.5em; margin-top: -1em;">Por favor
+                        escribe un concepto de Pago Extra.</p>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                placeholder="Concepto del nuevo Pago Extra">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                            </span>
                         </p>
                     </div>
-                </footer>
+                </div>
             </div>
-        </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="monto">Monto:</label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                        style="padding: 0.5em; margin-top: -1em;">
+                        Por favor
+                        escribe un monto válido del Pago Extra.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                        style="padding: 0.5em; margin-top: -1em;">Por
+                        favor escribe un número mayor a 0. Un monto no puede ser un número negativo.</p>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input name="monto" class="input is-medium" type="number" id="monto"
+                                placeholder="Monto del nuevo Pago Extra">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                        <span>Registrar Pago Extra</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-3"></div>
+            </div>
+        </form>
     </div>
     <script>
         // Crear constantes para acceder a HTML
@@ -119,7 +75,7 @@
 
         // Checar si hay contenido dentro del input, pata desactivar el boton
         function checar_contenido() {
-            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0;
+            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0;
         }
 
         // Activar mensaje si el motivo no tiene input
@@ -150,5 +106,4 @@
         motivo.addEventListener('input', mensaje_motivo);
         monto.addEventListener('input', mensaje_monto);
     </script>
-    <script type="text/javascript" src="/js/modal_popup.js"></script>
 </section>
