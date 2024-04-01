@@ -12,10 +12,12 @@
             <div class="column is-3"></div>
             <div class="column is-6">
                 <label class="label is-medium" for="motivo">Motivo: </label>
+                <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo" style="padding: 0.5em;">Por favor
+                    escribe un concepto de Pago Extra.</p>
                 <div class="field">
                     <p class="control has-icons-left">
                         <input name="motivo" class="input is-medium" type="text" id="motivo"
-                            placeholder="Concepto del nuevo Pago Extra" onkeyup="contenido_correcto()">
+                            placeholder="Concepto del nuevo Pago Extra">
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </span>
@@ -27,10 +29,11 @@
             <div class="column is-3"></div>
             <div class="column is-6">
                 <label class="label is-medium" for="monto">Monto:</label>
+
                 <div class="field">
                     <p class="control has-icons-left">
                         <input name="monto" class="input is-medium" type="number" id="monto"
-                            placeholder="Monto del nuevo Pago Extra" onkeyup="contenido_correcto()">
+                            placeholder="Monto del nuevo Pago Extra">
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                         </span>
@@ -93,15 +96,28 @@
         </div>
     </div>
     <script>
-        function contenido_correcto() {
-            if (document.getElementById('motivo').value === '' || document.getElementById('monto').value === '') {
-                document.getElementById('Boton_registrar').disabled = true;
-            } else if (document.getElementById('monto').value <= 0) {
-                document.getElementById('Boton_registrar').disabled = true;
+        // Crear constantes para acceder a HTML
+        const bt_Registrar = document.querySelector('#Boton_registrar');
+        const motivo = document.querySelector('#motivo');
+        const monto = document.querySelector('#monto');
+        const ayuda_motivo = document.querySelector('#ayuda_motivo');
+        // Checar si hay contenido dentro del input, pata desactivar el boton
+        function checar_contenido() {
+            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0;
+        }
+
+        // Activar mensaje si el motivo no tiene input
+        function mensaje_motivo() {
+            if (motivo.value.length === 0) {
+                ayuda_motivo.classList.remove('is-hidden');
             } else {
-                document.getElementById('Boton_registrar').disabled = false;
+                ayuda_motivo.classList.add('is-hidden');
             }
         }
+        // Detectar si el usuario maneja input y llamar las funciones anteriores
+        motivo.addEventListener('input', checar_contenido);
+        monto.addEventListener('input', checar_contenido);
+        motivo.addEventListener('input', mensaje_motivo);
     </script>
     <script type="text/javascript" src="/js/modal_popup.js"></script>
 </section>
