@@ -12,11 +12,13 @@ module.exports = class Deuda {
     }
 
     static fetchDeuda(matricula) {
-        return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula,
+        return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar - D.Descuento) AS 'montoAPagar',
-        ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente',
-        D.montoPagado, D.fechaLimitePago, D.pagado
-        FROM Deuda AS D, Alumno AS A WHERE D.Matricula = A.Matricula AND
-        D.Matricula = ?`, [matricula]);
+        ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.Pagado
+        FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
+        WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
+        C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = '1005';`, 
+        [matricula]);
     }
 }
