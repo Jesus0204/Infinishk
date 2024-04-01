@@ -15,7 +15,7 @@
                 <div class="field">
                     <p class="control has-icons-left">
                         <input name="motivo" class="input is-medium" type="text" id="motivo"
-                            placeholder="Concepto del nuevo Pago Extra">
+                            placeholder="Concepto del nuevo Pago Extra" onkeyup="motivo_contenido()">
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </span>
@@ -42,7 +42,7 @@
             <div class="column is-3"></div>
             <div class="column is-6">
                 <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                    data-target="modal-confirmar-registro">
+                    data-target="modal-confirmar-registro" id="Boton_registrar" disabled>
                     <span>Registrar Pago Extra</span>
                     <span class="icon is-large">
                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -61,6 +61,7 @@
                 <section class="modal-card-body">
                     <p class="title is-6" style="text-align: center;"> Los datos del pago extra a registrar son los
                         siguientes: </p>
+                    <p></p>
                 </section>
                 <footer class="modal-card-foot">
                     <div class="columns is-vcentered">
@@ -91,5 +92,14 @@
             </div>
         </div>
     </div>
+    <script>
+        function motivo_contenido() {
+            if (document.getElementById("motivo").value === "") {
+                document.getElementById('Boton_registrar').disabled = true;
+            } else {
+                document.getElementById('Boton_registrar').disabled = false;
+            }
+        }
+    </script>
     <script type="text/javascript" src="/js/modal_popup.js"></script>
 </section>
