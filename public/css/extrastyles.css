@@ -1,13 +1,13 @@
 .navbar-item {
-      font-size: 20px; /* Reduce el tamaño de la fuente */
-  }
+  font-size: 20px; /* Reduce el tamaño de la fuente */
+}
+
+.navbar {
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+}
   
 .navbar-start {
-    background-color: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
-    width: 100%;
-    height: auto; /* Permite que el elemento se ajuste a su contenido */
-    justify-content: flex-start;
+  width: 100%;
 }
 
 .button {
