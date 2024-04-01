@@ -1,27 +1,12 @@
-/* Estilos específicos para pantallas pequeñas */
-@media (min-width: 100px) and (max-width: 1200px),(orientation: landscape) {
-  .navbar-item {
-    font-size: 20px; /* Reduce el tamaño de la fuente */
-  }
-  .navbar-start {
-    background-color: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
-    width: 100%;
-    height: auto; /* Permite que el elemento se ajuste a su contenido */
-    justify-content: flex-start;
-  }
-  .navbar-dropdown {
-    display:none; /* Asegura que el menú desplegable se expanda horizontalmente */
-  }
-  .navbar-dropdown.open{
-    display:block;
-    align-items: end;
-  }
-
-  .navbar-end {
-    display: flex;
-    justify-content: flex-end;
-  }
+.navbar-item {
+  font-size: 20px; /* Reduce el tamaño de la fuente */
+}
+.navbar-start {
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+  width: 100%;
+  height: auto; /* Permite que el elemento se ajuste a su contenido */
+  justify-content: flex-start;
 }
 
 .button {
