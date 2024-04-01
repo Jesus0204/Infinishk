@@ -31,6 +31,7 @@
                             </div>
                             <div class="column">
                                 <form action="/plantilla_correo" method="POST">
+                                    <input type="hidden" name="matricula" id="matricula" value="<% deudas_atrasadas[0].matricula %>">
                                     <button type="submit" class="button is-rounded is-medium is-responsive"
                                         style="font-size: medium;">
                                         <span>Enviar Correo</span>
