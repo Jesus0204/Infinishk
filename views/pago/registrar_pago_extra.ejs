@@ -15,7 +15,7 @@
                 <div class="field">
                     <p class="control has-icons-left">
                         <input name="motivo" class="input is-medium" type="text" id="motivo"
-                            placeholder="Concepto del nuevo Pago Extra" onkeyup="motivo_contenido()">
+                            placeholder="Concepto del nuevo Pago Extra" onkeyup="contenido_correcto()">
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </span>
@@ -29,8 +29,8 @@
                 <label class="label is-medium" for="monto">Monto:</label>
                 <div class="field">
                     <p class="control has-icons-left">
-                        <input name="monto" class="input is-medium" type="text" id="monto"
-                            placeholder="Monto del nuevo Pago Extra">
+                        <input name="monto" class="input is-medium" type="number" id="monto"
+                            placeholder="Monto del nuevo Pago Extra" onkeyup="contenido_correcto()">
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                         </span>
@@ -93,8 +93,10 @@
         </div>
     </div>
     <script>
-        function motivo_contenido() {
-            if (document.getElementById("motivo").value === "") {
+        function contenido_correcto() {
+            if (document.getElementById('motivo').value === '' || document.getElementById('monto').value === '') {
+                document.getElementById('Boton_registrar').disabled = true;
+            } else if (document.getElementById('monto').value <= 0) {
                 document.getElementById('Boton_registrar').disabled = true;
             } else {
                 document.getElementById('Boton_registrar').disabled = false;
