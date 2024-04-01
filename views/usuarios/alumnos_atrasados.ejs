@@ -3,6 +3,7 @@
 <section class="section">
     <div class="container">
         <h3 class="title is-3">Alumnos atrasados en pagos</h3>
+        <% for (let deudas_atrasadas of pagos_atrasados) { %> 
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr>
@@ -168,6 +169,7 @@
                 <% } %>
             </tbody>
         </table>
+        <% } %>
         <div class="columns">
             <div class="column is-5 isoffset-1">
                 <form action="/usuarios" method="GET">

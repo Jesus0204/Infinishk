@@ -145,7 +145,6 @@
   width: 20px;
   border: 2px solid #95404c;
   background-color: #dedbdb;
-  border-radius: 50%;
 } 
 
 .checkbox:hover input ~ .checkmark {
