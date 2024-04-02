@@ -47,4 +47,18 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
         });
 };
 
+exports.get_registrar_solicitud = (request, response, next) => {
+    response.render('fetch_alumno', {
+        pago_manual: false,
+        solicitud_pago: true
+    });
+};
+
+exports.post_fetch_registrar_solicitud = (request, response, next) => {
+
+};
+
+exports.post_registrar_solicitud = (request, response, next) => {
+
+};
 

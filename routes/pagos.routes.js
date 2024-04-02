@@ -5,7 +5,10 @@ const router = express.Router();
 
 const pagosController = require('../controllers/pagos.controller');
 
-router.get('/',pagosController.get_pago)
+router.get('/', pagosController.get_pago)
+router.get('/registrar_solicitud', pagosController.get_registrar_solicitud);
+router.post('/fetch_registrar_solicitud', pagosController.post_fetch_registrar_solicitud);
+router.post('/registrar_solicitud', pagosController.post_registrar_solicitud);
 router.get('/registroTransferencia', pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', pagosController.post_subir_archivo);
 
