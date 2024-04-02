@@ -2,28 +2,41 @@ const Deuda = require('../models/deuda.model');
 const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({
+    dest: 'uploads/'
+});
 
-exports.get_pago = (request,response,next) => {
+exports.get_pago = (request, response, next) => {
     response.render('pago/pago');
 };
 
-exports.get_registro_transferencias = (request,response,next) => {
-    response.render('pago/registro_transferencia',{
-        subir:true,
-        revisar:false,
+exports.get_registro_transferencias = (request, response, next) => {
+    response.render('pago/registro_transferencia', {
+        subir: true,
+        revisar: false,
     });
 };
 
-exports.post_subir_archivo = upload.single('archivo'), async (request, response,next) => {
+exports.post_subir_archivo = upload.single('archivo'), async (request, response, next) => {
     const filas = [];
     fs.createReadStream(request.file.path)
         .pipe(csvParser())
         .on('data', (data) => {
-            const { Fecha, Hora, Importe, Concepto } = data;
-            const Referencia = Concepto.substring(0, 7); 
-            const Matricula = Concepto.substring(0,6);
-            filas.push({ Fecha, Hora, Importe, Concepto:Matricula,Concepto: Referencia });
+            const {
+                Fecha,
+                Hora,
+                Importe,
+                Concepto
+            } = data;
+            const Referencia = Concepto.substring(0, 7);
+            const Matricula = Concepto.substring(0, 6);
+            filas.push({
+                Fecha,
+                Hora,
+                Importe,
+                Concepto: Matricula,
+                Concepto: Referencia
+            });
         })
         .on('end', async () => {
             const resultados = [];
@@ -31,21 +44,28 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
                 const deuda = await Deuda.fetchDeuda(fila.Matricula);
                 let tipoPago = '';
                 if (fila.Referencia.startsWith('1')) {
-                    if(fila.Importe == deuda){
+                    if (fila.Importe == deuda) {
                         tipoPago = 'pagocolegiatura';
-                    }
-                    else
-                    {
+                    } else {
                         tipoPago = 'pagoextra';
                     }
                 } else if (fila.Referencia.startsWith('8')) {
                     tipoPago = 'pagodiplomado';
                 }
-                resultados.push({ ...fila, TipoPago: tipoPago });
+                resultados.push({
+                    ...fila,
+                    TipoPago: tipoPago
+                });
             }
-            response.render('pago/registro_transferencia', { subir: false,revisar:true,datos: resultados });
+            response.render('pago/registro_transferencia', {
+                subir: false,
+                revisar: true,
+                datos: resultados
+            });
         });
 };
+
+const Liquida = require('../models/liquida.model');
 
 exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
@@ -59,6 +79,13 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
 };
 
 exports.post_registrar_solicitud = (request, response, next) => {
+    const solicitud_pago = new Liquida(request.body.matricula, request.body.pago);
 
+    solicitud_pago.save()
+        .then(([rows, fieldData]) => {
+            response.redirect('/solicitudes');
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 };
-
