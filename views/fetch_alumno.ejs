@@ -16,10 +16,10 @@
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6">
-                    <label class="label is-medium" for="busca">Busca a un alumno:</label>
+                    <label class="label is-medium" for="buscar">Busca a un alumno:</label>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input name="busca" class="input is-medium" type="text" id="busca"
+                            <input name="busca" class="input is-medium" type="text" id="buscar"
                                 placeholder="Nombre o Matrícula del Alumno" />
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
@@ -44,3 +44,28 @@
         </form>
     </div>
 </section>
+<script>
+    const buscar_alumno = () => {
+        console.log('Buscando...');
+        const valor_busqueda = document.getElementById('buscar').value;
+
+        //función que manda la petición asíncrona
+        fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((result) => {
+            return result.json(); //Regresa otra promesa
+        }).then((data) => {
+            console.log(data);
+            let html = '';
+            //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
+        }).catch(err => {
+            console.log(err);
+        });
+    };
+
+    const buscar = document.querySelector('#buscar');
+    buscar.addEventListener('input', buscar_alumno);
+</script>

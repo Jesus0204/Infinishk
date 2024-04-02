@@ -66,6 +66,7 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
 };
 
 const Liquida = require('../models/liquida.model');
+const Alumno = require('../models/alumno.model');
 
 exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
@@ -88,4 +89,14 @@ exports.post_registrar_solicitud = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         });
+};
+
+exports.get_autocomplete = (request, response, next) => {
+    Alumno.fetch(request.params.valor_busqueda || '')
+    .then(([alumnos, fieldData]) => {
+        return response.status(200).json({
+            alumnos: alumnos
+        });
+    })
+    .catch((error) => {console.log(error)});
 };
