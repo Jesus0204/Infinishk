@@ -1,4 +1,6 @@
 <%- include('includes/dropdown_admin.ejs') %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
 <section class="section">
     <div class="container">
@@ -49,21 +51,23 @@
         console.log('Buscando...');
         const valor_busqueda = document.getElementById('buscar').value;
 
-        //función que manda la petición asíncrona
-        fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((result) => {
-            return result.json(); //Regresa otra promesa
-        }).then((data) => {
-            console.log(data);
-            let html = '';
-            //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
-        }).catch(err => {
-            console.log(err);
-        });
+        if (valor_busqueda.length > 2) {
+            //función que manda la petición asíncrona
+            fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((result) => {
+                return result.json(); //Regresa otra promesa
+            }).then((data) => {
+                console.log(data);
+                let html = '';
+                //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     };
 
     const buscar = document.querySelector('#buscar');
