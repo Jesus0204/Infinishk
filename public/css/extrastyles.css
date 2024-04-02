@@ -20,6 +20,18 @@
   height: auto;
 }
 
+.button:disabled,
+button[disabled]{
+  border: 1px solid #910106;
+  background-color: #95404c;
+  color: #ffffff;
+}
+
+.button:hover:disabled,
+button[disabled]{
+  background-color: #7c7f80;
+}
+
 .button:hover {
 background-color: #000000;
 color: #ffffff;
