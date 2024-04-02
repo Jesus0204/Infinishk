@@ -43,6 +43,13 @@ $navbar-dropdown-item-hover-background-color: $rojo;
     color: white !important; /* Cambia el color del texto a blanco */
   }
 
+.card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 5px solid #910106;
+}
+
+
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";

@@ -5,6 +5,11 @@
   color: white !important;
   /* Cambia el color del texto a blanco */ }
 
+.card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 5px solid #910106; }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,

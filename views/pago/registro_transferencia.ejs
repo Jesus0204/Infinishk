@@ -1,30 +1,62 @@
-
 <%- include('../includes/dropdown_admin.ejs') %>
 
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20%; 
+        max-width: 50%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+
 <% if (subir) { %>
-    <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data">
-        <input type="file" name="archivo" accept=".csv">
-        <button type="submit">Subir archivo</button>
+    <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;" onchange="updateLabel()">
+        <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i class="fas fa-upload"></i>&nbsp;Elegir archivo</label>
+        <button type="submit" class="button is-large is-rounded is-responsive">Subir archivo</button>
+        <div id="error"></div>
     </form>
 
 <% } else if (revisar) { %>
-    <table>
-        <tr>
-            <th>Matricula</th>
-            <th>Referencia</th>
-            <th>Fecha y Hora</th>
-            <th>Importe</th>
-
-            <th>Tipo de Pago</th>
-        </tr>
-        <% datos.forEach((fila) => { %>
-            <tr>
-                <td><%= fila.Concepto %></td>
-                <td><%= fila.Referencia %></td>
-                <td><%= fila.Fecha %> <%= fila.Hora %></td>
-                <td><%= fila.Importe %></td>
-                <td><%=fila.tipoPago %></td>
-            </tr>
-        <% }); %>
-    </table>
+    <% datos.forEach((fila) => { %>
+        <div class="card <%= fila.tipoPago === 'Pago de Colegiatura' ? 'pago-colegiatura' : fila.tipoPago === 'Pago a Registrar' ? 'pago-registrar' : fila.tipoPago === 'Pago de Diplomado' ? 'pago-diplomado' : fila.tipoPago === 'Pago a Ignorar' ? 'pago-ignorar': ''  %>">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <h3><span style="color: black;">Matricula:</span> <span style="color: gray;"><%= fila.Matricula %></span></h3>
+                        <h3><span style="color: black;">Referencia:</span> <span style="color: gray;"><%= fila.Referencia %></span></h3>
+                        <h3><span style="color: black;">Fecha y Hora:</span> <span style="color: gray;"><%= fila.fechaFormato %> <%= fila.Hora %></span></h3>
+                        <h3><span style="color: black;">Importe:</span> <span style="color: gray;"><%= fila.Importe %></span></h3>
+                        <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar') { %>
+                            <h3><span style="color: black;">Deuda:</span> <span style="color: gray;"><%= fila.deudaEstudiante %></span></h3>
+                        <% } %>
+                        <h3><span style="color: black;">Tipo de Pago:</span> <span style="color: gray;"><%= fila.tipoPago %></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }); %>
 <% } %>
+
+<script>
+    function updateLabel() {
+        var archivo = document.getElementById('archivo');
+        var label = document.getElementById('labelArchivo');
+        label.innerHTML = '<i class="fas fa-upload"></i>&nbsp;' + archivo.files[0].name;
+    }
+    function validateForm() {
+        var archivo = document.getElementById('archivo');
+        var error = document.getElementById('error');
+        if (archivo.files.length === 0) {
+            error.textContent = 'Por favor ingresa un archivo';
+            return false;
+        }
+        error.textContent = '';
+        return true;
+    }
+</script>

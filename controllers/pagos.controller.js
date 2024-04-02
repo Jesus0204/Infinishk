@@ -1,8 +1,6 @@
 const Deuda = require('../models/deuda.model');
-const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs');
-const upload = multer({ dest: 'uploads/' });
 
 exports.get_pago = (request,response,next) => {
     response.render('pago/pago');
@@ -15,7 +13,7 @@ exports.get_registro_transferencias = (request,response,next) => {
     });
 };
 
-exports.post_subir_archivo = upload.single('archivo'), async (request, response,next) => {
+exports.post_subir_archivo = (request, response,next) => {
     const filas = [];
     fs.createReadStream(request.file.path)
         .pipe(csvParser())
@@ -23,25 +21,40 @@ exports.post_subir_archivo = upload.single('archivo'), async (request, response,
             const { Fecha, Hora, Importe, Concepto } = data;
             const Referencia = Concepto.substring(0, 7); 
             const Matricula = Concepto.substring(0,6);
-            filas.push({ Fecha, Hora, Importe, Concepto:Matricula,Concepto: Referencia });
+            const inicioRef = Concepto.substring(0,1);
+            const dia = Fecha.substring(1,3);
+            const mes = Fecha.substring(3,5);
+            const anio = Fecha.substring(5,9);
+            fechaFormato = anio+'-'+mes+'-'+dia;
+            filas.push({ fechaFormato, Hora, Importe,Referencia,Matricula,inicioRef});
         })
         .on('end', async () => {
             const resultados = [];
             for (const fila of filas) {
-                const deuda = await Deuda.fetchDeuda(fila.Matricula);
-                let tipoPago = '';
-                if (fila.Referencia.startsWith('1')) {
-                    if(fila.Importe == deuda){
-                        tipoPago = 'pagocolegiatura';
+                let tipoPago = ''; 
+                if (fila.inicioRef =='1') 
+                {
+                    const deuda = await Deuda.fetchDeuda(fila.Matricula);
+                    const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+                    if(fila.Importe == montoAPagar){
+                        tipoPago = 'Pago de Colegiatura';
+                        deudaEstudiante = montoAPagar;
                     }
                     else
                     {
-                        tipoPago = 'pagoextra';
+                        tipoPago = 'Pago a Registrar';
+                        deudaEstudiante = montoAPagar;
                     }
-                } else if (fila.Referencia.startsWith('8')) {
-                    tipoPago = 'pagodiplomado';
+                } 
+                else if (fila.inicioRef=='8') 
+                {
+                    tipoPago = 'Pago de Diplomado';
                 }
-                resultados.push({ ...fila, TipoPago: tipoPago });
+                else if (fila.inicioRef='A')
+                {
+                    tipoPago = 'Pago a Ignorar';
+                }
+                resultados.push({ ...fila, tipoPago,deudaEstudiante });
             }
             response.render('pago/registro_transferencia', { subir: false,revisar:true,datos: resultados });
         });
