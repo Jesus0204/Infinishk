@@ -1,0 +1,50 @@
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Registrar Solicitud de Pago Extra</h3>
+            </div>
+        </div>
+        <form action="/pagos/registrar_solicitud" method="POST">
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select>
+                                <% for (let pago of pagos_extra) { %>
+                                <option> <%= pago.motivoPago %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="icon is-small is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                        <span>Registrar Soliitud</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-3"></div>
+            </div>
+        </form>
+    </div>
+</section>

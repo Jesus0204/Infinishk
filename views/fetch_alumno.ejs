@@ -1,0 +1,33 @@
+<%- include('includes/dropdown_admin.ejs') %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Registrar Solicitud de Pago Extra</h3>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <p>Por favor busca al alumno que se va a registrar la solicitud de Pago</p>
+            </div>
+        </div>
+        <form action="/pagos/fetch_registrar_solicitud" method="POST">
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Busca a un alumno" />
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
