@@ -1,4 +1,8 @@
 const Deuda = require('../models/deuda.model');
+const Pago = require('../models/pago.model');
+const pagoDiplomado = require('../models/pagadiplomado.model');
+const Cursa = require('../models/cursa.model');
+
 const csvParser = require('csv-parser');
 const fs = require('fs');
 
@@ -10,6 +14,7 @@ exports.get_registro_transferencias = (request,response,next) => {
     response.render('pago/registro_transferencia',{
         subir:true,
         revisar:false,
+        resultado:false,
     });
 };
 
@@ -56,8 +61,44 @@ exports.post_subir_archivo = (request, response,next) => {
                 }
                 resultados.push({ ...fila, tipoPago,deudaEstudiante });
             }
-            response.render('pago/registro_transferencia', { subir: false,revisar:true,datos: resultados });
+            response.render('pago/registro_transferencia', { 
+                subir: false,
+                revisar:true,
+                resultado:false,
+                datos: resultados,
+            });
         });
 };
+
+exports.post_registrar_transferencia = async (request, response, next) => {
+    const pagosRegistrar = [];
+    for (const pago of request.body) {
+        const matricula = pago.matricula;
+        const referencia = pago.referencia;
+        const importe = pago.importe;
+        const deuda = pago.deuda;
+        const tipoPago = pago.tipoPago;
+        const fecha = pago.fecha;
+        if(tipoPago === 'Pago de Colegiatura'){
+             const idDeuda = await Deuda.fetchIDDeuda(matricula);
+             console.log(idDeuda[0][0].IDDeuda);
+             Pago.save_transferencia(idDeuda[0][0].IDDeuda,importe,fecha);
+        }
+        else if(tipoPago === 'Pago de Diplomado'){
+             const idDiplomado = await Cursa.fetchDiplomado(matricula);
+             console.log(idDiplomado[0][0].IDDiplomado);
+             pagoDiplomado.save_transferencia(matricula,idDiplomado[0][0].IDDiplomado,fecha,importe);
+        }
+        else if(tipoPago === 'Pago a Registrar'){
+            console.log('Estoy aqui')
+            pagosRegistrar.push({matricula,referencia,importe,deuda,tipoPago,fecha})
+            console.log(pagosRegistrar)
+        }
+    }
+    response.render('pago/resultado_transferencia',{
+        pagos:pagosRegistrar
+    });
+      
+}
 
 

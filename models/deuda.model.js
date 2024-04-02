@@ -21,5 +21,15 @@ module.exports = class Deuda {
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);
     }
+
+    static fetchIDDeuda(matricula){
+        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ?',
+        [matricula]);
+    }
+    
+    static fetchIDColegiatura(matricula){
+        return db.execute('SELECT IDColegiatura FROM deuda WHERE Matricula = ?',
+        [matricula]);
+    }
     
 }

@@ -15,7 +15,7 @@
 
 
 <% if (subir) { %>
-    <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data" onsubmit="return validateFile()">
         <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;" onchange="updateLabel()">
         <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i class="fas fa-upload"></i>&nbsp;Elegir archivo</label>
         <button type="submit" class="button is-large is-rounded is-responsive">Subir archivo</button>
@@ -23,24 +23,36 @@
     </form>
 
 <% } else if (revisar) { %>
-    <% datos.forEach((fila) => { %>
-        <div class="card <%= fila.tipoPago === 'Pago de Colegiatura' ? 'pago-colegiatura' : fila.tipoPago === 'Pago a Registrar' ? 'pago-registrar' : fila.tipoPago === 'Pago de Diplomado' ? 'pago-diplomado' : fila.tipoPago === 'Pago a Ignorar' ? 'pago-ignorar': ''  %>">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <h3><span style="color: black;">Matricula:</span> <span style="color: gray;"><%= fila.Matricula %></span></h3>
-                        <h3><span style="color: black;">Referencia:</span> <span style="color: gray;"><%= fila.Referencia %></span></h3>
-                        <h3><span style="color: black;">Fecha y Hora:</span> <span style="color: gray;"><%= fila.fechaFormato %> <%= fila.Hora %></span></h3>
-                        <h3><span style="color: black;">Importe:</span> <span style="color: gray;"><%= fila.Importe %></span></h3>
-                        <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar') { %>
-                            <h3><span style="color: black;">Deuda:</span> <span style="color: gray;"><%= fila.deudaEstudiante %></span></h3>
-                        <% } %>
-                        <h3><span style="color: black;">Tipo de Pago:</span> <span style="color: gray;"><%= fila.tipoPago %></span></h3>
+    <% datos.forEach((fila,index) => { %>
+        <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar' || fila.tipoPago === 'Pago de Diplomado') { %>
+            <form action="/pago/resultadoTransferencia" method="POST" id="form<%= index %>" 
+            class="card <%= fila.tipoPago === 'Pago de Colegiatura' ? 'pago-colegiatura' : fila.tipoPago === 'Pago a Registrar' ? 'pago-registrar' : fila.tipoPago === 'Pago de Diplomado' ? 'pago-diplomado': ''  %>">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <h3><span style="color: black;">Matricula:</span> 
+                                <span style="color: gray;"> <input name='matricula' id="matricula" value='<%= fila.Matricula %>' readonly></span></h3>
+                            <h3><span style="color: black;">Referencia:</span> 
+                                <span style="color: gray;"> <input name='referencia' id="referencia" value='<%= fila.Referencia %>' readonly></span></h3>
+                            <h3><span style="color: black;">Fecha y Hora:</span> 
+                                <span style="color: gray;"> <input name='fecha' id='fecha' value='<%= fila.fechaFormato %> <%= fila.Hora %>' readonly></span></h3>
+                            <h3><span style="color: black;">Importe:</span> 
+                                <span style="color: gray;"> <input type='number' name='importe' id='importe' value='<%= fila.Importe %>' readonly></span></h3>
+                            <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar') { %>
+                                <h3><span style="color: black;">Deuda:</span> 
+                                    <span style="color: gray;">  <input name='deuda' id='deuda' value='<%= fila.deudaEstudiante %>' readonly></span></h3>
+                            <% } %>
+                            <h3><span style="color: black;">Tipo de Pago:</span> 
+                                <span style="color: gray;"> <input name='tipoPago' id='tipoPago' value='<%= fila.tipoPago %>' readonly></span></h3>
+        <% } %>
                     </div>
                 </div>
             </div>
         </div>
+    </form>
     <% }); %>
+    <button id="submit-all" class="button is-large is-rounded is-responsive">Enviar datos</button>
+    <div id="error"></div>
 <% } %>
 
 <script>
@@ -49,7 +61,7 @@
         var label = document.getElementById('labelArchivo');
         label.innerHTML = '<i class="fas fa-upload"></i>&nbsp;' + archivo.files[0].name;
     }
-    function validateForm() {
+    function validateFile() {
         var archivo = document.getElementById('archivo');
         var error = document.getElementById('error');
         if (archivo.files.length === 0) {
@@ -59,4 +71,22 @@
         error.textContent = '';
         return true;
     }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('submit-all').addEventListener('click', function(e) {
+        e.preventDefault();
+        var forms = document.getElementsByTagName('form');
+        var allFormData = Array.from(forms).map(form => Object.fromEntries(new FormData(form)));
+        fetch('/pago/resultadoTransferencia', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(allFormData),
+        })
+        .catch((error) => console.error('Error:', error));
+         });
+    });
+
+
 </script>

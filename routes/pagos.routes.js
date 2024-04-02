@@ -23,5 +23,6 @@ const pagosController = require('../controllers/pagos.controller');
 router.get('/',pagosController.get_pago)
 router.get('/registroTransferencia', pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', pagosController.post_subir_archivo);
+router.post('/resultadoTransferencia', pagosController.post_registrar_transferencia);
 
 module.exports = router;
