@@ -1,6 +1,8 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const pagoDiplomado = require('../models/pagadiplomado.model');
+const pagoExtra = require('../models/pago_extra.model');
+const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
 
@@ -37,9 +39,11 @@ exports.post_subir_archivo = (request, response,next) => {
         .on('end', async () => {
             const resultados = [];
             for (const fila of filas) {
+
                 let nombre = ''
                 let apellidos = ''
                 let deudaEstudiante = 0;
+
                 if(fila.inicioRef === '1' || fila.inicioRef === "8"){
                     const nombreCompleto = await Alumno.fetchNombre(fila.Matricula);
                     nombre = String(nombreCompleto[0][0].Nombre);
@@ -49,15 +53,22 @@ exports.post_subir_archivo = (request, response,next) => {
                     nombre = ''
                     apellidos = ''
                 }
-                let tipoPago = ''; 
+                let tipoPago = '';
+
                 if (fila.inicioRef =='1') 
                 {
+                    const idLiquida = await Liquida.fetchID(fila.Matricula);
+                    const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
                     const estado = await Deuda.fetchEstado(fila.Matricula);
                     const pagado = (estado[0][0].Pagado);
-                    console.log(pagado)
-                    if(fila.Importe == montoAPagar){
+    
+                    if(idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1){
+                        tipoPago = 'Pago Completo';
+                    }
+
+                    else if(fila.Importe == montoAPagar){
                         if(pagado === 0){
                             tipoPago = 'Pago de Colegiatura';
                             deudaEstudiante = montoAPagar;
@@ -66,6 +77,7 @@ exports.post_subir_archivo = (request, response,next) => {
                             tipoPago = 'Pago Completo'
                         }
                     }
+
                     else
                     {
                         tipoPago = 'Pago a Registrar';
@@ -74,7 +86,17 @@ exports.post_subir_archivo = (request, response,next) => {
                 } 
                 else if (fila.inicioRef=='8') 
                 {
-                    tipoPago = 'Pago de Diplomado';
+                    const idLiquida = await Liquida.fetchID(fila.Matricula);
+                    const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
+    
+                    if(idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1){
+                        tipoPago = 'Pago Completo';
+                    }
+
+                    else{
+
+                        tipoPago = 'Pago de Diplomado';
+                    }
                 }
                 else if (fila.inicioRef='A')
                 {
@@ -100,29 +122,27 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         const tipoPago = request.body.tipoPago;
         const fecha = request.body.fecha;
         const nota = request.body.nota;
-        console.log(nombre);
-        console.log(matricula);
-        console.log(referencia);
-        console.log(importe);
-        console.log(deuda);
-        console.log(tipoPago);
-        console.log(fecha);
-        console.log(nota);
         if(tipoPago === 'Pago de Colegiatura'){
              const idDeuda = await Deuda.fetchIDDeuda(matricula);
-             console.log(idDeuda[0][0].IDDeuda);
              Pago.save_transferencia(idDeuda[0][0].IDDeuda,importe,nota,fecha);
         }
         else if(tipoPago === 'Pago de Diplomado'){
              const idDiplomado = await Cursa.fetchDiplomado(matricula);
-             console.log(idDiplomado[0][0].IDDiplomado);
              pagoDiplomado.save_transferencia(matricula,idDiplomado[0][0].IDDiplomado,fecha,importe,nota);
         }
         else if(tipoPago === 'Pago a Registrar'){
-            console.log('Estoy aqui')
-            pagosRegistrar.push({matricula,referencia,importe,deuda,tipoPago,fecha})
-            console.log(pagosRegistrar)
-        }  
+            pagosRegistrar.push({nombre,matricula,referencia,importe,deuda,tipoPago,fecha});
+        }
+        else if(tipoPago === 'Pago Extra'){
+            const idLiquida = await Liquida.fetchID(matricula);
+            if(idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined'){
+                Liquida.update_transferencia(nota,fecha,idLiquida[0][0].IDLiquida)
+            }
+            else{
+                const idPagoExtra = await pagoExtra.fetchID(importe);
+                Liquida.save_transferencia(matricula,idPagoExtra[0][0].IDPagosExtras,fecha,nota);
+            }
+        }
         
         response.json({sucess: true});
 }
