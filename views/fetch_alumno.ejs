@@ -42,7 +42,11 @@
                 <div class="column is-6">
                     <button class="button is-rounded is-medium is-responsive" type="submit"
                         style="font-size: large; margin: 8px 2px;" id="Boton_buscar" disabled>
-                        <span>Buscar Alumno</span>
+                        <% if (solicitud_pago == true) { %>
+                        <span>Registrar Solicitud al Alumno</span>
+                        <% } else if (pago_manual == true) { %>
+                        </span>Registrar Pago Manual al Alumno</span>
+                        <% } %>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                         </span>
@@ -88,9 +92,9 @@
         });
     };
 
-    $( "#buscar" ).on( "autocompleteselect", function( event, ui ) {
+    $("#buscar").on("autocompleteselect", function (event, ui) {
         ayuda_alumno.classList.add('is-hidden');
-    } );
+    });
 
     const buscar = document.querySelector('#buscar');
     const ayuda_buscar = document.querySelector('#ayuda_buscar');
