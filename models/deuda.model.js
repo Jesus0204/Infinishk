@@ -17,6 +17,11 @@ module.exports = class Deuda {
         [matricula]);
     }
 
+    static fetchEstado(matricula){
+        return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
+        [matricula]);
+    }
+
     static update_transferencia(monto,id_deuda){
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);

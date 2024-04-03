@@ -173,20 +173,18 @@ position: absolute;
 display: none;
 } 
  
-.pago-colegiatura {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 5px solid #910106;
+.Pago-de-Colegiatura {
+  background-color:  #910106;
 }
 
-.pago-diplomado {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 5px solid #5a6581
+.Pago-de-Diplomado {
+  background-color:  #5a6581;
 }
 
-.pago-registrar {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 5px solid #ffc800;
+.Pago-a-Registrar {
+  background-color: #ffc800;
+}
+
+.Pago-Extra{
+  background-color: #16ac37;
 }

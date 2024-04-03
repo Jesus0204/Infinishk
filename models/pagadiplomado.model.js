@@ -12,10 +12,10 @@ module.exports = class pagoDiplomado {
         this.tipoPago = mi_tipoPago;
     }
 
-    static save_transferencia(matricula,id,fecha,monto) {
+    static save_transferencia(matricula,id,fecha,monto,nota) {
         return db.execute(
-            `CALL insertarPagoDiplomado (?,?,?,?, '', '', 'Transferencia');`, 
-                [matricula,id,fecha,monto]);
+            `CALL insertarPagoDiplomado (?,?,?,?, '', ?, 'Transferencia');`, 
+                [matricula,id,fecha,monto,nota]);
     }
         
 }
