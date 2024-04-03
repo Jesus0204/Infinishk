@@ -9,7 +9,7 @@ module.exports = class PagoExtra {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * From pagosExtras');
+        return db.execute('SELECT * FROM pagosExtras');
     }
 
 };
