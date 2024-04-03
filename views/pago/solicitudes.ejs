@@ -1,4 +1,5 @@
 <%- include('../includes/dropdown_admin.ejs') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <section class="section">
     <div class="container">
@@ -7,57 +8,56 @@
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <th colspan="2">
-                        <div class="columns is-vcentered">
-                            <div class="column is-1">
-                            </div>
-                            <div class="column is-4">
-                                Nombre: <%= solicitud.Nombre %>
-                                <%= solicitud.Apellidos %>
-                            </div>
-                            <div class="column is-3">
-                                Matricula: <%= solicitud.Matricula %>
-                            </div>
-                            <div class="column">
-                                <form action="/plantilla_correo" method="POST">
-                                    <input type="hidden" name="matricula" id="matricula" value="">
+                    <form action="/solicitudes/modify" method="POST">
+                        <th>
+                            <div class="columns is-vcentered">
+                                <div class="column is-4">
+                                    Nombre: <%= solicitud.Nombre %>
+                                    <%= solicitud.Apellidos %>
+                                </div>
+                                <div class="column is-3">
+                                    Matricula: <%= solicitud.Matricula %>
+                                </div>
+                                <div class="column">
+                                    <input type="hidden" name="id" id="id" value="<% solicitud.IDLiquida %>">
                                     <button type="submit" class="button is-rounded is-medium is-responsive"
                                         style="font-size: medium;">
-                                        <span>Enviar Correo</span>
+                                        <span>Modificar</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                         </span>
                                     </button>
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                    </th>
+                        </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
                         <div class="columns is-vcentered">
-                            <div class="column is-full" style="text-align: center;">
-                                <strong>Pago #</strong>
+                            <div class="column">
+                                <label class="label is-size-5" for="pago" style="display: inline-block;
+                                width: 150px; text-align: right;">Motivo Pago:</label>
+                                <div class="select is-medium">
+                                    <select name="pago" id="pago" style="border: 2px solid #910106;">
+                                        <% for (let pago of pagos) { %>
+                                        <option value="<%= pago.IDPagosExtras %>"
+                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                            <%= pago.motivoPago %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="column is-vcentered" style="text-align: center;">
+                                <p class="is-size-5" id="monto">
+                                    <strong>Monto: </strong>
+                                    $<%= pagos[0].montoPagar.toFixed(2) %>
+                                </p>
+                                <br>
                             </div>
                         </div>
-                        <div class="columns is-vcentered">
-                            <div class="column is-narrow" style="text-align: center;">
-                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                            </div>
-                            <div class="column" style="text-align: center;">
-                                <strong>Pendiente:</strong>
-                                <br>
-                                <strong>Total:</strong>
-                                <br>
-                                <strong>Pagado:</strong>
-                            </div>
-                            <div class="column" style="text-align: center;">
-                                <strong>Fecha Limite Pago:</strong>
-                                <br>
-                            </div>
-                        </div>
+                        </form>
                     </td>
                 </tr>
             </tbody>
@@ -78,3 +78,12 @@
         </div>
     </div>
 </section>
+<script>
+    $('#pago').change(function () {
+        // Sacas el monto de la opcion con data-monto
+        var num_monto = $(this).find(':selected').data('monto');
+        // Cambias el DOM para mostrar el precio correcto
+        const monto = document.querySelector('#monto');
+        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+    });
+</script>
