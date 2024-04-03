@@ -21,9 +21,12 @@
                 <div class="column is-3"></div>
                 <div class="column is-6">
                     <label class="label is-medium" for="buscar">Busca a un alumno:</label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_buscar"
+                        style="padding: 0.5em; margin-top: -1em;">Por favor
+                        ingresa a un alumno.</p>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input name="busca" class="input is-medium" type="text" id="buscar"
+                            <input name="buscar" class="input is-medium" type="text" id="buscar"
                                 placeholder="Nombre o Matrícula del Alumno" />
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
@@ -49,8 +52,8 @@
     </div>
 </section>
 <script>
+    const valor_busqueda = document.getElementById('buscar').value;
     const buscar_alumno = () => {
-        const valor_busqueda = document.getElementById('buscar').value;
 
         //función que manda la petición asíncrona
         fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
@@ -66,6 +69,11 @@
                     return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
                         alumnos.Matricula);
                 }),
+                change: function (event, ui) {
+                    if (!ui.item) {
+                        $("#buscar").val("");
+                    }
+                },
                 minLength: 3
             })
         }).catch(err => {
@@ -73,6 +81,24 @@
         });
     };
 
+    const bt_buscar = document.querySelector('#Boton_buscar');
     const buscar = document.querySelector('#buscar');
+    const ayuda_buscar = document.querySelector('#ayuda_buscar');
+
+    // Checar si hay contenido dentro del input, pata desactivar el boton
+    function checar_contenido() {
+        bt_buscar.disabled = buscar.value.length === 0
+    }
+
+    function mensaje_buscar() {
+        if (buscar.value.length === 0) {
+            ayuda_buscar.classList.remove('is-hidden');
+        } else {
+            ayuda_buscar.classList.add('is-hidden');
+        }
+    }
+
     buscar.addEventListener('input', buscar_alumno);
+    buscar.addEventListener('input', checar_contenido);
+    buscar.addEventListener('input', mensaje_buscar);
 </script>

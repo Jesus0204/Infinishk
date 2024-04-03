@@ -8,4 +8,8 @@ module.exports = class PagoExtra {
         this.montoPagar = mi_montoPagar;
     }
 
+    static fetchAll() {
+        return db.execute('SELECT * From pagosExtras');
+    }
+
 };

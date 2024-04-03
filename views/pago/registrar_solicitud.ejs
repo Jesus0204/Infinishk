@@ -5,19 +5,23 @@
         <div class="columns">
             <div class="column is-3"></div>
             <div class="column is-6">
-                <h3 class="title is-3">Registrar Solicitud de Pago Extra</h3>
+                <h3 class="title is-3" style="text-align: center;">Registrar Solicitud de Pago</h3>
             </div>
         </div>
         <form action="/pagos/registrar_solicitud" method="POST">
             <div class="columns">
                 <div class="column is-3"></div>
-                <div class="column is-6">
-
+                <div class="column is-narrow" style="text-align: center;">
+                    <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                    <%= alumno[0].Apellidos %>
+                </div>
+                <div class="column is-narrow" style="text-align: center;">
+                    <strong>Matricula: </strong> <%= alumno[0].Matricula %>
                 </div>
             </div>
             <div class="columns">
                 <div class="column is-3"></div>
-                <div class="column is-6">
+                <div class="column is-narrow">
                     <div class="control has-icons-left">
                         <div class="select">
                             <select>
@@ -30,6 +34,9 @@
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </div>
                     </div>
+                </div>
+                <div class="column is-narrow" style="text-align: center;">
+                    <strong>Monto: </strong>
                 </div>
             </div>
             <div class="columns">
