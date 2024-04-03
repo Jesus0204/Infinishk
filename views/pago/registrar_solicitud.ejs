@@ -9,34 +9,44 @@
             </div>
         </div>
         <form action="/pagos/registrar_solicitud" method="POST">
-            <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-narrow" style="text-align: center;">
-                    <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                    <%= alumno[0].Apellidos %>
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5" style=" text-align: center;">
+                    <p class="is-size-5">
+                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                        <%= alumno[0].Apellidos %>
+                    </p>
                 </div>
-                <div class="column is-narrow" style="text-align: center;">
-                    <strong>Matricula: </strong> <%= alumno[0].Matricula %>
+                <div class="column is-3" style=" text-align: center;">
+                    <p class="is-size-5">
+                        <strong>Matricula: </strong> <%= alumno[0].Matricula %>
+                    </p>
                 </div>
             </div>
-            <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-narrow">
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5">
+                    <label class="label is-medium" for="pagos_extra">Pagos Extra:</label>
                     <div class="control has-icons-left">
-                        <div class="select">
-                            <select>
+                        <div class="select is-medium">
+                            <select name="pagos_extra" id="pagos_extra" onchange="opcion()">
                                 <% for (let pago of pagos_extra) { %>
-                                <option> <%= pago.motivoPago %></option>
+                                <option value="<%= pago.montoPagar %>"> <%= pago.motivoPago %></option>
                                 <% } %>
                             </select>
                         </div>
-                        <div class="icon is-small is-left">
+                        <div class="icon is-medium is-left">
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </div>
                     </div>
                 </div>
                 <div class="column is-narrow" style="text-align: center;">
-                    <strong>Monto: </strong>
+                    <p class="is-size-5">
+                        <strong>Monto: </strong>
+                        <p id="monto">
+                            <%= pagos_extra[0].montoPagar %>
+                        </p>
+                    </p>
                 </div>
             </div>
             <div class="columns">
@@ -44,14 +54,20 @@
                 <div class="column is-6">
                     <button class="button is-rounded is-medium is-responsive" type="submit"
                         style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
-                        <span>Registrar Soliitud</span>
+                        <span>Registrar Solicitud</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                         </span>
                     </button>
                 </div>
-                <div class="column is-3"></div>
             </div>
         </form>
     </div>
 </section>
+<script>
+    function opcion() {
+        const pagos = document.getElementById("pagos_extra").value;
+        const monto = document.getElementById("monto");
+        monto.innerHTML = pagos;
+    }
+</script>
