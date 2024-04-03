@@ -77,25 +77,20 @@ exports.get_registrar_solicitud = (request, response, next) => {
 };
 
 exports.post_fetch_registrar_solicitud = (request, response, next) => {
-    if (request.body.buscar.length == 0){
-        console.log('estoy vacio')
-    }
-    else {
-        // Del input del usuario sacas solo la matricula con el regular expression
-        let matches = request.body.buscar.match(/(\d+)/);
-        Alumno.fetchOne(matches[0])
-        .then(([alumno, fieldData]) => {
-            Pago_Extra.fetchAll()
-                .then(([pagos_extra, fieldData]) => {
-                    response.render('pago/registrar_solicitud', {
-                        alumno: alumno,
-                        pagos_extra: pagos_extra
-                    })
-                })
-                .catch((error) => {console.log(error)});
+    // Del input del usuario sacas solo la matricula con el regular expression
+    let matches = request.body.buscar.match(/(\d+)/);
+    Alumno.fetchOne(matches[0])
+    .then(([alumno, fieldData]) => {
+        Pago_Extra.fetchAll()
+        .then(([pagos_extra, fieldData]) => {
+            response.render('pago/registrar_solicitud', {
+                alumno: alumno,
+                pagos_extra: pagos_extra
+            })
         })
         .catch((error) => {console.log(error)});
-    }
+    })
+    .catch((error) => {console.log(error)});
 };
 
 exports.post_registrar_solicitud = (request, response, next) => {
