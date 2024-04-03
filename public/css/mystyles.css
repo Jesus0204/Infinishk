@@ -5,6 +5,14 @@
   color: white !important;
   /* Cambia el color del texto a blanco */ }
 
+.ui-menu-item {
+  font-family: "Poppins", sans-serif; }
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #95404c; }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
