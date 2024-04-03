@@ -1,6 +1,8 @@
 <%- include('includes/dropdown_admin.ejs') %>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
 
 <section class="section">
     <div class="container">
@@ -48,26 +50,27 @@
 </section>
 <script>
     const buscar_alumno = () => {
-        console.log('Buscando...');
         const valor_busqueda = document.getElementById('buscar').value;
 
-        if (valor_busqueda.length > 2) {
-            //función que manda la petición asíncrona
-            fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then((result) => {
-                return result.json(); //Regresa otra promesa
-            }).then((data) => {
-                console.log(data);
-                let html = '';
-                //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
-            }).catch(err => {
-                console.log(err);
-            });
-        }
+        //función que manda la petición asíncrona
+        fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((result) => {
+            return result.json(); //Regresa otra promesa
+        }).then(async (data) => {
+            $("#buscar").autocomplete({
+                source: data.alumnos.map(function (alumnos) {
+                    return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
+                        alumnos.Matricula);
+                }),
+                minLength: 3
+            })
+        }).catch(err => {
+            console.log(err);
+        });
     };
 
     const buscar = document.querySelector('#buscar');
