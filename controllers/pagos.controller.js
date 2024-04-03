@@ -1,6 +1,5 @@
 const Deuda = require('../models/deuda.model');
-const Pago = require('../models/pago.model');
-const pagoDiplomado = require('../models/pagadiplomado.model');
+const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
 
 const csvParser = require('csv-parser');
@@ -36,6 +35,17 @@ exports.post_subir_archivo = (request, response,next) => {
         .on('end', async () => {
             const resultados = [];
             for (const fila of filas) {
+                let nombre = ''
+                let apellidos = ''
+                if(fila.inicioRef === '1' || fila.inicioRef === "8"){
+                    const nombreCompleto = await Alumno.fetchNombre(fila.Matricula);
+                    nombre = String(nombreCompleto[0][0].Nombre);
+                    apellidos = String(nombreCompleto[0][0].Apellidos);
+                }
+                else{
+                    nombre = ''
+                    apellidos = ''
+                }
                 let tipoPago = ''; 
                 if (fila.inicioRef =='1') 
                 {
@@ -59,7 +69,7 @@ exports.post_subir_archivo = (request, response,next) => {
                 {
                     tipoPago = 'Pago a Ignorar';
                 }
-                resultados.push({ ...fila, tipoPago,deudaEstudiante });
+                resultados.push({ ...fila, tipoPago,deudaEstudiante,nombre,apellidos});
             }
             response.render('pago/registro_transferencia', { 
                 subir: false,
@@ -71,34 +81,40 @@ exports.post_subir_archivo = (request, response,next) => {
 };
 
 exports.post_registrar_transferencia = async (request, response, next) => {
-    const pagosRegistrar = [];
-    for (const pago of request.body) {
-        const matricula = pago.matricula;
-        const referencia = pago.referencia;
-        const importe = pago.importe;
-        const deuda = pago.deuda;
-        const tipoPago = pago.tipoPago;
-        const fecha = pago.fecha;
+        const pagosRegistrar = [];
+        const nombre = request.body.nombre;
+        const matricula = request.body.matricula;
+        const referencia = request.body.referencia;
+        const importe = request.body.importe;
+        const deuda = request.body.deuda;
+        const tipoPago = request.body.tipoPago;
+        const fecha = request.body.fecha;
+        const nota = request.body.nota;
+        console.log(nombre);
+        console.log(matricula);
+        console.log(referencia);
+        console.log(importe);
+        console.log(deuda);
+        console.log(tipoPago);
+        console.log(fecha);
+        console.log(nota);
         if(tipoPago === 'Pago de Colegiatura'){
              const idDeuda = await Deuda.fetchIDDeuda(matricula);
              console.log(idDeuda[0][0].IDDeuda);
-             Pago.save_transferencia(idDeuda[0][0].IDDeuda,importe,fecha);
+            //  Pago.save_transferencia(idDeuda[0][0].IDDeuda,importe,fecha);
         }
         else if(tipoPago === 'Pago de Diplomado'){
              const idDiplomado = await Cursa.fetchDiplomado(matricula);
              console.log(idDiplomado[0][0].IDDiplomado);
-             pagoDiplomado.save_transferencia(matricula,idDiplomado[0][0].IDDiplomado,fecha,importe);
+            //  pagoDiplomado.save_transferencia(matricula,idDiplomado[0][0].IDDiplomado,fecha,importe);
         }
         else if(tipoPago === 'Pago a Registrar'){
             console.log('Estoy aqui')
             pagosRegistrar.push({matricula,referencia,importe,deuda,tipoPago,fecha})
             console.log(pagosRegistrar)
-        }
-    }
-    response.render('pago/resultado_transferencia',{
-        pagos:pagosRegistrar
-    });
-      
+        }  
+        
+        response.json({sucess: true});
 }
 
 

@@ -1,7 +1,7 @@
 <%- include('../includes/dropdown_admin.ejs') %>
 
 <style>
-    form {
+     form {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -11,55 +11,111 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    table {
+        width: 100%;
+    }
+    th, td {
+        border: 2px solid black; /* Líneas más oscuras para la tabla */
+        padding: 10px;
+        font-size: 19px;
+        background-color: rgb(255, 255, 255);
+    }
+    thead {
+        background-color: black;
+        font-style: italic;
+        color:white;
+    }
+
+    .form-enviar-datos select {
+        margin-left: 50%;
+        margin-right: 50%;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
 </style>
 
-
+<body>
 <% if (subir) { %>
     <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data" onsubmit="return validateFile()">
         <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;" onchange="updateLabel()">
-        <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i class="fas fa-upload"></i>&nbsp;Elegir archivo</label>
+        <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i class="fas fa-upload"></i> Elegir archivo</label>
         <button type="submit" class="button is-large is-rounded is-responsive">Subir archivo</button>
         <div id="error"></div>
     </form>
 
 <% } else if (revisar) { %>
-    <% datos.forEach((fila,index) => { %>
-        <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar' || fila.tipoPago === 'Pago de Diplomado') { %>
-            <form action="/pago/resultadoTransferencia" method="POST" id="form<%= index %>" 
-            class="card <%= fila.tipoPago === 'Pago de Colegiatura' ? 'pago-colegiatura' : fila.tipoPago === 'Pago a Registrar' ? 'pago-registrar' : fila.tipoPago === 'Pago de Diplomado' ? 'pago-diplomado': ''  %>">
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-content">
-                            <h3><span style="color: black;">Matricula:</span> 
-                                <span style="color: gray;"> <input name='matricula' id="matricula" value='<%= fila.Matricula %>' readonly></span></h3>
-                            <h3><span style="color: black;">Referencia:</span> 
-                                <span style="color: gray;"> <input name='referencia' id="referencia" value='<%= fila.Referencia %>' readonly></span></h3>
-                            <h3><span style="color: black;">Fecha y Hora:</span> 
-                                <span style="color: gray;"> <input name='fecha' id='fecha' value='<%= fila.fechaFormato %> <%= fila.Hora %>' readonly></span></h3>
-                            <h3><span style="color: black;">Importe:</span> 
-                                <span style="color: gray;"> <input type='number' name='importe' id='importe' value='<%= fila.Importe %>' readonly></span></h3>
+    <div class="table-container">
+        <table class="ta">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Matricula</th>
+                    <th>Referencia</th>
+                    <th>Fecha y Hora</th>
+                    <th>Importe</th>
+                    <th>Deuda</th>
+                    <th>Tipo de Pago</th>
+                    <th>Nota</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% datos.forEach((fila,index) => { %>
+                    <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar' || fila.tipoPago === 'Pago de Diplomado') { %>
+                        <tr id="fila<%= index %>">
+                            <td><%= fila.nombre %> <%= fila.apellidos %></td>
+                            <td><%= fila.Matricula %></td>
+                            <td><%= fila.Referencia %></td>
+                            <td><%= fila.fechaFormato %> <%= fila.Hora %></td>
+                            <td><%= fila.Importe %></td>
                             <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar') { %>
-                                <h3><span style="color: black;">Deuda:</span> 
-                                    <span style="color: gray;">  <input name='deuda' id='deuda' value='<%= fila.deudaEstudiante %>' readonly></span></h3>
+                                <td><%= fila.deudaEstudiante %></td>
+                            <% } else { %>
+                                <td>N/A</td>
                             <% } %>
-                            <h3><span style="color: black;">Tipo de Pago:</span> 
-                                <span style="color: gray;"> <input name='tipoPago' id='tipoPago' value='<%= fila.tipoPago %>' readonly></span></h3>
-        <% } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <% }); %>
-    <button id="submit-all" class="button is-large is-rounded is-responsive">Enviar datos</button>
-    <div id="error"></div>
+                            <td>
+                                <form action="/pago/resultadoTransferencia" method="POST" id="form<%= index %>" class="form-enviar-datos">
+                                <select name="tipoPago">
+                                    <% if (fila.Matricula.charAt(0) === '1'){ %>
+                                        <option value="Pago de Colegiatura" <%= fila.tipoPago === 'Pago de Colegiatura' ? 'selected' : '' %>>Pago de Colegiatura</option>
+                                        <option value="Pago a Registrar" <%= fila.tipoPago === 'Pago a Registrar' ? 'selected' : '' %>>Pago a Registrar</option>
+                                        <option value="Pago Extra" <%= fila.tipoPago === 'Pago Extra' ? 'selected' : '' %>>Pago Extra</option>
+                                    <% } %>
+
+                                    <%  if (fila.Matricula.charAt(0) === '8'){ %>
+                                        <option value="Pago a Registrar" <%= fila.tipoPago === 'Pago a Registrar' ? 'selected' : '' %>>Pago a Registrar</option>
+                                        <option value="Pago de Diplomado" <%= fila.tipoPago === 'Pago de Diplomado' ? 'selected' : '' %>>Pago de Diplomado</option>
+                                        <option value="Pago Extra" <%= fila.tipoPago === 'Pago Extra' ? 'selected' : '' %>>Pago Extra</option>
+                                    <% } %>
+                                </select>
+                            </td>
+                            <td>
+                                <textarea name="nota"placeholder="Escribe tu nota aquí"></textarea>
+                            </td>
+                            <td>
+                                    <input type="hidden" name="nombre" value="<%= fila.nombre %> <%= fila.apellidos %>">
+                                    <input type="hidden" name="matricula" value="<%= fila.Matricula %>">
+                                    <input type="hidden" name="referencia" value="<%= fila.Referencia %>">
+                                    <input type="hidden" name="fecha" value="<%= fila.fechaFormato %> <%= fila.Hora %>">
+                                    <input type="hidden" name="importe" value="<%= fila.Importe %>">
+                                    <input type="hidden" name="deuda" value="<%= fila.deudaEstudiante %>">
+                                    <button type="submit" class="button is-large is-rounded is-responsive">Enviar datos</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 <% } %>
 
 <script>
     function updateLabel() {
         var archivo = document.getElementById('archivo');
         var label = document.getElementById('labelArchivo');
-        label.innerHTML = '<i class="fas fa-upload"></i>&nbsp;' + archivo.files[0].name;
+        label.innerHTML = '<i class="fas fa-upload"></i> ' + archivo.files[0].name;
     }
     function validateFile() {
         var archivo = document.getElementById('archivo');
@@ -72,21 +128,38 @@
         return true;
     }
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.getElementById('submit-all').addEventListener('click', function(e) {
-        e.preventDefault();
-        var forms = document.getElementsByTagName('form');
-        var allFormData = Array.from(forms).map(form => Object.fromEntries(new FormData(form)));
-        fetch('/pago/resultadoTransferencia', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(allFormData),
-        })
-        .catch((error) => console.error('Error:', error));
-         });
+    document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Crear un objeto FormData con los datos del formulario
+            const formData = new FormData(form);
+            // Enviar los datos al servidor
+            fetch('/pago/resultadoTransferencia', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Formulario enviado');
+                console.log('Respuesta del servidor:', response);
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                // Si la respuesta fue exitosa, eliminar la fila de la tabla
+                const filaId = form.parentElement.parentElement.id;
+                const fila = document.getElementById(filaId);
+                if (fila) {
+                    fila.remove();
+                    console.log(`Fila ${filaId} eliminada.`);
+                } else {
+                    console.error(`No se encontró la fila ${filaId}.`);
+                }
+            })
+            .catch(error => {
+                console.log('Entrando al bloque catch');
+                console.error('Error en la petición fetch:', error);
+            });
+        });
     });
-
-
 </script>
+</body>
+
