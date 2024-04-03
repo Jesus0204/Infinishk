@@ -7,4 +7,20 @@ module.exports = class Liquida {
         this.IDPagoExtra = mi_IDPagoExtra;
     }
 
+    static fetchNoPagados() {
+        return db.execute(`SELECT L.IDLiquida, A.Nombre, A.Apellidos, 
+        L.Matricula, P.IDPagosExtras, P.motivoPago, P.montoPagar
+        FROM Liquida AS L, pagosExtras AS P, Alumno AS A
+        WHERE L.IDPagosExtras = P.IDPagosExtras 
+        AND L.Matricula = A.Matricula 
+        AND Pagado = 0`);
+    }
+
+    update(id, pago) {
+        return db.execute(`UPDATE Liquida 
+        SET IDPagosExtra = ? 
+        WHERE IDLiquida = ?`,
+        [pago, id]);
+    }
+
 };
