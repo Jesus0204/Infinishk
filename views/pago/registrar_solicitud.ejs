@@ -1,4 +1,5 @@
 <%- include('../includes/dropdown_admin.ejs') %>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <section class="section">
     <div class="container">
@@ -9,6 +10,7 @@
             </div>
         </div>
         <form action="/pagos/registrar_solicitud" method="POST">
+            <input type="hidden" value="<%= alumno[0].Matricula %>" id="matricula" name="matricula">
             <div class="columns is-vcentered">
                 <div class="column is-2"></div>
                 <div class="column is-5" style=" text-align: center;">
@@ -26,12 +28,12 @@
             <div class="columns is-vcentered">
                 <div class="column is-2"></div>
                 <div class="column is-5">
-                    <label class="label is-medium" for="pagos_extra">Pagos Extra:</label>
+                    <label class="label is-medium" for="pago">Pagos Extra:</label>
                     <div class="control has-icons-left">
                         <div class="select is-medium">
-                            <select name="pagos_extra" id="pagos_extra" onchange="opcion()">
+                            <select name="pago" id="pago" onchange="opcion()">
                                 <% for (let pago of pagos_extra) { %>
-                                <option value="<%= pago.montoPagar.toFixed(2) %>"> <%= pago.motivoPago %></option>
+                                <option value="<%= pago.IDPagosExtras %>"> <%= pago.motivoPago %></option>
                                 <% } %>
                             </select>
                         </div>
@@ -53,7 +55,7 @@
                 <div class="column is-3"></div>
                 <div class="column is-6">
                     <button class="button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
                         <span>Registrar Solicitud</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -65,8 +67,12 @@
     </div>
 </section>
 <script>
+    $('select').change(function () {
+        alert($(this).val());
+    });
+
     function opcion() {
-        const pagos = document.getElementById("pagos_extra").value;
+        const pagos = document.getElementById("pago").value;
         const monto = document.getElementById("monto");
         monto.innerHTML = pagos;
     }
