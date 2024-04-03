@@ -31,7 +31,7 @@
                         <div class="select is-medium">
                             <select name="pagos_extra" id="pagos_extra" onchange="opcion()">
                                 <% for (let pago of pagos_extra) { %>
-                                <option value="<%= pago.montoPagar %>"> <%= pago.motivoPago %></option>
+                                <option value="<%= pago.montoPagar.toFixed(2) %>"> <%= pago.motivoPago %></option>
                                 <% } %>
                             </select>
                         </div>
@@ -43,8 +43,8 @@
                 <div class="column is-narrow" style="text-align: center;">
                     <p class="is-size-5">
                         <strong>Monto: </strong>
-                        <p id="monto">
-                            <%= pagos_extra[0].montoPagar %>
+                        <p class="is-size-5" id="monto">
+                            <%= pagos_extra[0].montoPagar.toFixed(2) %>
                         </p>
                     </p>
                 </div>
