@@ -1,25 +1,25 @@
 <%- include('../includes/dropdown_admin.ejs') %>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <section class="section">
     <div class="container">
         <div class="columns">
             <div class="column is-3"></div>
-            <div class="column is-6">
-                <h3 class="title is-3" style="text-align: center;">Registrar Solicitud de Pago</h3>
+            <div class="column is-8">
+                <h3 class="title is-3">Registrar Solicitud de Pago</h3>
             </div>
         </div>
         <form action="/pagos/registrar_solicitud" method="POST">
             <input type="hidden" value="<%= alumno[0].Matricula %>" id="matricula" name="matricula">
             <div class="columns is-vcentered">
                 <div class="column is-2"></div>
-                <div class="column is-5" style=" text-align: center;">
+                <div class="column is-5">
                     <p class="is-size-5">
                         <strong>Nombre: </strong><%= alumno[0].Nombre %>
                         <%= alumno[0].Apellidos %>
                     </p>
                 </div>
-                <div class="column is-3" style=" text-align: center;">
+                <div class="column is-3">
                     <p class="is-size-5">
                         <strong>Matricula: </strong> <%= alumno[0].Matricula %>
                     </p>
@@ -31,9 +31,11 @@
                     <label class="label is-medium" for="pago">Pagos Extra:</label>
                     <div class="control has-icons-left">
                         <div class="select is-medium">
-                            <select name="pago" id="pago" onchange="opcion()">
+                            <select name="pago" id="pago">
                                 <% for (let pago of pagos_extra) { %>
-                                <option value="<%= pago.IDPagosExtras %>"> <%= pago.motivoPago %></option>
+                                <option value="<%= pago.IDPagosExtras %>"
+                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                    <%= pago.motivoPago %></option>
                                 <% } %>
                             </select>
                         </div>
@@ -42,12 +44,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="column is-narrow" style="text-align: center;">
-                    <p class="is-size-5">
+                <div class="column is-narrow">
+                    <p class="is-size-5" id="monto">
                         <strong>Monto: </strong>
-                        <p class="is-size-5" id="monto">
-                            <%= pagos_extra[0].montoPagar.toFixed(2) %>
-                        </p>
+                        $<%= pagos_extra[0].montoPagar.toFixed(2) %>
                     </p>
                 </div>
             </div>
@@ -67,13 +67,11 @@
     </div>
 </section>
 <script>
-    $('select').change(function () {
-        alert($(this).val());
+    $('#pago').change(function () {
+        // Sacas el monto de la opcion con data-monto
+        var num_monto = $(this).find(':selected').data('monto');
+        // Cambias el DOM para mostrar el precio correcto
+        const monto = document.querySelector('#monto');
+        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
     });
-
-    function opcion() {
-        const pagos = document.getElementById("pago").value;
-        const monto = document.getElementById("monto");
-        monto.innerHTML = pagos;
-    }
 </script>
