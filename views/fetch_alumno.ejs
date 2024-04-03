@@ -26,6 +26,9 @@
                         ingresa a un alumno.</p>
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_alumno"
                         style="padding: 0.5em; margin-top: -1em;">Por favor selecciona a un alumno de la lista.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_vacio"
+                        style="padding: 0.5em; margin-top: -1em;">No existe un alumno con ese nombre o matrícula. Favor
+                        de intentar de nuevo.</p>
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="buscar" class="input is-medium" type="text" id="buscar"
@@ -58,13 +61,13 @@
     </div>
 </section>
 <script>
-    const valor_busqueda = document.getElementById('buscar').value;
     let alumno = "";
     const bt_buscar = document.querySelector('#Boton_buscar');
     const ayuda_alumno = document.querySelector('#ayuda_alumno');
+    const buscar = document.querySelector('#buscar');
 
     const buscar_alumno = () => {
-
+        const valor_busqueda = document.getElementById('buscar').value;
         //función que manda la petición asíncrona
         fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
             method: 'GET',
@@ -73,7 +76,16 @@
             }
         }).then((result) => {
             return result.json(); //Regresa otra promesa
-        }).then(async (data) => {
+        }).then((data) => {
+
+            const ayuda_vacio = document.querySelector('#ayuda_vacio');
+            if (data.alumnos.length == 0) {
+                ayuda_alumno.classList.add('is-hidden');
+                ayuda_vacio.classList.remove('is-hidden');
+            } else {
+                ayuda_vacio.classList.add('is-hidden');
+            }
+
             $("#buscar").autocomplete({
                 source: data.alumnos.map(function (alumnos) {
                     return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
@@ -86,7 +98,6 @@
                 minLength: 3
             });
 
-
         }).catch(err => {
             console.log(err);
         });
@@ -96,7 +107,6 @@
         ayuda_alumno.classList.add('is-hidden');
     });
 
-    const buscar = document.querySelector('#buscar');
     const ayuda_buscar = document.querySelector('#ayuda_buscar');
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
