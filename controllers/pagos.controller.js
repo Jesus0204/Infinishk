@@ -9,22 +9,44 @@ exports.get_pago = (request, response, next) => {
     response.render('pago/pago');
 };
 
-const PagoExtras = require('../models/pago_extra.model');
+const Pago_Extra = require('../models/pago_extra.model');
 
 exports.get__registrar_pago_extra = (request, response, next) => {
     response.render('pago/registrar_pago_extra');
 };
 
 exports.post_registrar_pago_extra = (request, response, next) => {
-    const pago_extra = new PagoExtras(request.body.motivo, request.body.monto);
+    const pago_extra = new Pago_Extra(request.body.motivo, request.body.monto);
 
     pago_extra.save()
-    .then(([rows, fieldData]) => {
-        response.redirect('/pagos');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then(([rows, fieldData]) => {
+            response.redirect('/pagos_extra');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+exports.get_pago_extra = (request, response, next) => {
+    Pago_Extra.fetchAll()
+        .then(([pagos_extra, fieldData]) => {
+            response.render('pago/pagos_extra', {
+                pagos: pagos_extra
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+};
+
+exports.post_pago_extra_modify = (request, response, next) => {
+    Pago_Extra.update(request.body.id, request.body.motivo, request.body.monto)
+        .then(([rows, fieldData]) => {
+            response.redirect('/pagos/pagos_extra');
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 };
 
 const Deuda = require('../models/deuda.model');
