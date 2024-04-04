@@ -1,99 +1,125 @@
 <%- include('../includes/dropdown_admin.ejs') %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
+<style>
+    .button:hover {
+        background-color: #5a6581 !important;
+        border-color: #910106 !important;
+    }
+
+    .select_pago:focus {
+        border: 2px solid #910106 !important;
+    }
+</style>
+
 <section class="section">
     <div class="container">
         <h3 class="title is-3">Solicitudes de pago sin liquidar</h3>
         <% let count = 0 %>
         <% for (let solicitud of solicitudes) { %>
-        <table class="table is-bordered is-hoverable is-fullwidth">
-            <thead>
-                <tr>
-                    <form action="/pagos/solicitudes/modify" method="POST">
-                        <th>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4">
-                                    Nombre: <%= solicitud.Nombre %>
-                                    <%= solicitud.Apellidos %>
-                                </div>
-                                <div class="column is-3">
-                                    Matricula: <%= solicitud.Matricula %>
-                                </div>
-                                <div class="column">
-                                    <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
-                                    <button type="submit" class="button is-rounded is-medium is-responsive"
-                                        style="font-size: medium;">
-                                        <span>Modificar</span>
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </th>
-                </tr>
-            </thead>
+        <table class="table is-hoverable is-fullwidth">
             <tbody>
-                <tr>
-                    <td>
+                <tr style="display: table-cell;">
+                    <td style="display: block; border: none">
                         <div class="columns is-vcentered">
-                            <div class="column">
-                                <label class="label is-size-5" for="pago" style="display: inline-block;
-                                width: 150px; text-align: right;">Motivo Pago:</label>
+                            <div class="column is-6">
+                                <strong>Nombre: </strong><%= solicitud.Nombre %>
+                                <%= solicitud.Apellidos %>
+                            </div>
+                            <div class="column is-6">
+                                <strong>Matricula: </strong><%= solicitud.Matricula %>
+                            </div>
+                        </div>
+                        <div class=" columns is-vcentered">
+                            <div class="column is-8">
+                                <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
+                                width: 150px; text-align: right; padding-right:3px; padding-top: 0.5em;">Motivo
+                                    Pago:</label>
                                 <div class="select is-medium">
-                                    <select name="pago" id="pago<%= count %>" style="border: 2px solid #910106;">
+                                    <select class="select_pago" name="pago" id="pago<%= count %>"
+                                        style="border: 2px solid #7c7f80;">
                                         <% for (let pago of pagos) { %>
-                                            <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
-                                                <option value="<%= pago.IDPagosExtras %>"
-                                                    data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
-                                                    <%= pago.motivoPago %></option>
-                                            <% } else { %>
-                                                <option value="<%= pago.IDPagosExtras %>"
-                                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                                    <%= pago.motivoPago %></option>
-                                            <% } %>
+                                        <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                        <option value="<%= pago.IDPagosExtras %>"
+                                            data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
+                                            <%= pago.motivoPago %></option>
+                                        <% } else { %>
+                                        <option value="<%= pago.IDPagosExtras %>"
+                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                            <%= pago.motivoPago %></option>
+                                        <% } %>
                                         <% } %>
                                     </select>
                                 </div>
                             </div>
                             <div class="column is-vcentered" style="text-align: center;">
-                                <p class="is-size-5" id="monto<%= count %>">
+                                <p class="is-size-5" id="monto<%= count %>" style="margin-bottom: -1.3em;">
                                     <strong>Monto: </strong>
                                     $<%= solicitud.montoPagar.toFixed(2) %>
                                 </p>
                                 <br>
                             </div>
                         </div>
-                        </form>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <% count++ %>
-        <% } %>
-        <div class="columns">
-            <div class="column is-6 is-offset-3">
-                <form action="/pagos" method="GET">
-                    <button class="button is-rounded is-medium is-responsive"
-                        style="font-size: medium; margin: 8px 2px;">
-                        <span>Regresar a Pagos</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                </form>
-            </div>
+                <tr style="display: table-cell;">
+                    <td style="display: block;">
+                        <div class="columns is-vcentered">
+                            <div class="column is-full" style="text-align: center;">
+                                <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
+                                <button type="submit" class="button is-rounded is-medium is-responsive"
+                                    style="font-size: medium;">
+                                    <span>Modificar</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                                </button>
+                            </div>
+                            </form>
+                    <td style="display: block;">
+                        <div class="columns is-vcentered">
+                            <div class="column is-full" style="text-align: center;">
+                                <form action="/pagos/solicitudes/delete" method="POST">
+                                    <button type="submit" class="button is-rounded is-medium is-responsive"
+                                        style="font-size: medium; background-color: #000000;"
+                                        id="Boton_eliminar<%= count %>">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                        </span>
+                                        <span>Eliminar</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+    </div>
+    </tr>
+    </tbody>
+    </table>
+    <% count++ %>
+    <% } %>
+    <div class="columns">
+        <div class="column is-6 is-offset-3">
+            <form action="/pagos" method="GET">
+                <button class="button is-rounded is-medium is-responsive" style="font-size: medium; margin: 8px 2px;">
+                    <span>Regresar a Pagos</span>
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>
+                </button>
+            </form>
         </div>
+    </div>
     </div>
 </section>
 <script>
     for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
         $('#pago' + count).change(function () {
-        // Sacas el monto de la opcion con data-monto
-        var num_monto = $(this).find(':selected').data('monto');
-        // Cambias el DOM para mostrar el precio correcto
-        const monto = document.querySelector('#monto' + count);
-        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+            // Sacas el monto de la opcion con data-monto
+            var num_monto = $(this).find(':selected').data('monto');
+            // Cambias el DOM para mostrar el precio correcto
+            const monto = document.querySelector('#monto' + count);
+            monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
         });
     }
 </script>
