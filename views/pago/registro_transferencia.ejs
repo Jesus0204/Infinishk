@@ -24,12 +24,12 @@
 
         .Pago-a-Registrar {
             color: white;
-            background-color: #ffc800;
+            background-color: #1C0221;
         }
 
         .Pago-Extra {
             color: white;
-            background-color: #16ac37;
+            background-color: #04724D;
         }
 
         table {
@@ -79,7 +79,7 @@
 
     <body>
         <% if (subir) { %>
-            <form action="/pago/registroTransferencia" method="POST" enctype="multipart/form-data"
+            <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
                 onsubmit="return validateFile()">
                 <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;"
                     onchange="updateLabel()">
@@ -192,7 +192,7 @@
                                                     <td>N/A</td>
                                                     <% } %>
                                                         <td>
-                                                            <form action="/pago/resultadoTransferencia" method="POST"
+                                                            <form action="/pagos/resultadoTransferencia" method="POST"
                                                                 id="form<%= index %>" class="form-enviar-datos">
                                                                 <select name="tipoPago">
                                                                     <% if (fila.Matricula.charAt(0)==='1' ){ %>
@@ -310,7 +310,7 @@
                                 // Crear un objeto FormData con los datos del formulario
                                 const formData = new FormData(form);
                                 // Enviar los datos al servidor
-                                fetch('/pago/resultadoTransferencia', {
+                                fetch('/pagos/resultadoTransferencia', {
                                     method: 'POST',
                                     body: formData
                                 })
