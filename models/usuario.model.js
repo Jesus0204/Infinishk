@@ -15,10 +15,10 @@ module.exports = class Usuario{
     static getPermisos(IDUsuario) {
         return db.execute(
             `SELECT nombreCasoUso
-            FROM Usuario U, Contiene C, Rol R, Posee P, CasoUso Ca
-            WHERE U.IDUsuario = ? AND U.IDUsuario = C.IDUsuario
-            AND C.idRol = R.id AND R.id = P.idRol 
-            AND P.idPermiso = Ca.id`,
+            FROM Usuario U, Posee P, Rol R, Contiene C, CasoUso Ca
+            WHERE U.IDUsuario = ? AND U.IDUsuario = P.IDUsuario
+            AND P.IDRol = R.IDRol AND R.id = C.IDRol 
+            AND C.idPermiso = Ca.id`,
             [IDUsuario]);
     }
 }
