@@ -16,9 +16,9 @@ module.exports = class Liquida {
         AND Pagado = 0`);
     }
 
-    update(id, pago) {
+   static update(id, pago) {
         return db.execute(`UPDATE Liquida 
-        SET IDPagosExtra = ? 
+        SET IDPagosExtras = ? 
         WHERE IDLiquida = ?`,
         [pago, id]);
     }

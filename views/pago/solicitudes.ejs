@@ -4,11 +4,12 @@
 <section class="section">
     <div class="container">
         <h3 class="title is-3">Solicitudes de pago sin liquidar</h3>
+        <% let count = 0 %>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <form action="/solicitudes/modify" method="POST">
+                    <form action="/pagos/solicitudes/modify" method="POST">
                         <th>
                             <div class="columns is-vcentered">
                                 <div class="column is-4">
@@ -19,7 +20,7 @@
                                     Matricula: <%= solicitud.Matricula %>
                                 </div>
                                 <div class="column">
-                                    <input type="hidden" name="id" id="id" value="<% solicitud.IDLiquida %>">
+                                    <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
                                     <button type="submit" class="button is-rounded is-medium is-responsive"
                                         style="font-size: medium;">
                                         <span>Modificar</span>
@@ -40,19 +41,25 @@
                                 <label class="label is-size-5" for="pago" style="display: inline-block;
                                 width: 150px; text-align: right;">Motivo Pago:</label>
                                 <div class="select is-medium">
-                                    <select name="pago" id="pago" style="border: 2px solid #910106;">
+                                    <select name="pago" id="pago<%= count %>" style="border: 2px solid #910106;">
                                         <% for (let pago of pagos) { %>
-                                        <option value="<%= pago.IDPagosExtras %>"
-                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                            <%= pago.motivoPago %></option>
+                                            <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                                <option value="<%= pago.IDPagosExtras %>"
+                                                    data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
+                                                    <%= pago.motivoPago %></option>
+                                            <% } else { %>
+                                                <option value="<%= pago.IDPagosExtras %>"
+                                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                                    <%= pago.motivoPago %></option>
+                                            <% } %>
                                         <% } %>
                                     </select>
                                 </div>
                             </div>
                             <div class="column is-vcentered" style="text-align: center;">
-                                <p class="is-size-5" id="monto">
+                                <p class="is-size-5" id="monto<%= count %>">
                                     <strong>Monto: </strong>
-                                    $<%= pagos[0].montoPagar.toFixed(2) %>
+                                    $<%= solicitud.montoPagar.toFixed(2) %>
                                 </p>
                                 <br>
                             </div>
@@ -62,6 +69,7 @@
                 </tr>
             </tbody>
         </table>
+        <% count++ %>
         <% } %>
         <div class="columns">
             <div class="column is-6 is-offset-3">
@@ -79,11 +87,13 @@
     </div>
 </section>
 <script>
-    $('#pago').change(function () {
+    for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
+        $('#pago' + count).change(function () {
         // Sacas el monto de la opcion con data-monto
         var num_monto = $(this).find(':selected').data('monto');
         // Cambias el DOM para mostrar el precio correcto
-        const monto = document.querySelector('#monto');
+        const monto = document.querySelector('#monto' + count);
         monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
-    });
+        });
+    }
 </script>

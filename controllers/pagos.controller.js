@@ -90,7 +90,7 @@ exports.get_solicitudes = (request, response, next) => {
 exports.post_solicitudes_modify = (request, response, next) => {
     Liquida.update(request.body.id, request.body.pago)
     .then(([rows, fieldData]) => {
-        response.redirect('/solicitudes');
+        response.redirect('/pagos/solicitudes');
     })
     .catch((error) => {console.log(error)})
 };
