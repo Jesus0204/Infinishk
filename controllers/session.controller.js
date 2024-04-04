@@ -1,4 +1,7 @@
-const { request, response } = require('express');
+const {
+    request,
+    response
+} = require('express');
 const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
@@ -21,18 +24,18 @@ exports.post_login = (request, response, next) => {
                 // users[0] contiene el objeto de la respuesta de la consulta
                 const user = users[0];
                 // Ya que verificamos que el usuario existe en la base de datos
-                bcrypt.compare(request.body.password, user.password)
+                bcrypt.compare(request.body.password, user.Contraseña)
                     .then(doMatch => {
                         // Si la promesa es verdadero, entonces inicias sesion en la pagina
                         if (doMatch) {
-                            Usuario.getPermisos(user.username)
+                            Usuario.getPermisos(user.IDUsuario)
                                 .then(([permisos, fieldData]) => {
                                     request.session.isLoggedIn = true;
                                     request.session.permisos = permisos;
                                     console.log(request.session.permisos);
                                     request.session.username = user.username;
                                     return request.session.save(err => {
-                                        response.redirect('/');
+                                        response.redirect('/S1');
                                     })
                                 })
                                 .catch((error) => {
@@ -56,7 +59,7 @@ exports.post_login = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         })
-    
+
 };
 
 exports.get_logout = (request, response, next) => {

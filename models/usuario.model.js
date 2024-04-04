@@ -1,5 +1,6 @@
 const { AsyncLocalStorage } = require('async_hooks');
 const db = require('../util/database');
+const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario{
     // Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
@@ -16,7 +17,7 @@ module.exports = class Usuario{
         return bcrypt.hash(this.password, 12)
             .then((password_cifrado) => {
                 return db.execute(
-                    'INSERT INTO Usuario (IDUsuario, Contraseña) VALUES (?, ?, 1)',
+                    'INSERT INTO Usuario (IDUsuario, Contraseña, usuarioActivo) VALUES (?, ?, 1)',
                     [this.IDUsuario, password_cifrado]
                 );
             })
