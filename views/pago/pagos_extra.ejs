@@ -41,10 +41,10 @@
                 <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
                     <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
                     <tr style="display: table-cell;">
-                        <td style="display: block;">
+                        <td style="display: block; border: none">
                             <div class="columns is-vcentered">
                                 <div class="column" style="text-align: center;">
-                                    <label class="label is-medium" for="motivo">Motivo: </label>
+                                    <label class="label is-medium" for="motivo<%= count %>">Motivo: </label>
                                     <div class="field">
                                         <p class="control has-icons-left">
                                             <input name="motivo" class="input is-medium" type="text"
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <label class="label is-medium" for="monto">Monto:</label>
+                                    <label class="label is-medium" for="monto<%= count %>">Monto:</label>
                                     <div class="field">
                                         <p class="control has-icons-left">
                                             <input name="monto" class="input is-medium" type="number" step="any"
