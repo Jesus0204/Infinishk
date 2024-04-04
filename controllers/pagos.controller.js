@@ -20,7 +20,7 @@ exports.post_registrar_pago_extra = (request, response, next) => {
 
     pago_extra.save()
         .then(([rows, fieldData]) => {
-            response.redirect('/pagos_extra');
+            response.redirect('/pagos/pagos_extra');
         })
         .catch((error) => {
             console.log(error);

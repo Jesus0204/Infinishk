@@ -11,6 +11,10 @@ module.exports = class PagoExtra {
         return db.execute('SELECT * FROM pagosExtras');
     }
 
+    static fetchOne(id){
+        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras = ?', [id]);
+    }
+
     save() {
         return db.execute(`INSERT INTO pagosExtras (motivoPago, montoPagar) 
         VALUES(? , ? )
