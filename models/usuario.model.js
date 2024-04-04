@@ -17,8 +17,8 @@ module.exports = class Usuario{
             `SELECT nombreCasoUso
             FROM Usuario U, Posee P, Rol R, Contiene C, CasoUso Ca
             WHERE U.IDUsuario = ? AND U.IDUsuario = P.IDUsuario
-            AND P.IDRol = R.IDRol AND R.id = C.IDRol 
-            AND C.idPermiso = Ca.id`,
+            AND P.IDRol = R.IDRol AND R.IDRol = C.IDRol 
+            AND C.IDCasoUso = Ca.IDCasoUso`,
             [IDUsuario]);
     }
 }
