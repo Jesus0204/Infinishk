@@ -1,42 +1,74 @@
+
 <%- include('../includes/dropdown_admin.ejs') %>
 <link href="/css/mystyles.css" rel="stylesheet" type="text/css">
 <link href="/css/extrastyles.css" rel="stylesheet" type="text/css">
-
 <body>
-    <div class="container" style="display: flex; justify-content: center;">
-        <form action="/diplomado/registrar_diplomado" method="POST" onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
-            <label for="Duracion" class="label is-large">Duración:</label>
-            <input type="text" id="Duracion" name="Duracion" required class="input is-large">
-            <label for="precioDiplomado" class="label is-large">Precio:</label>
-            <input type="number" id="precioDiplomado" name="precioDiplomado" step="any" required class="input is-large">
-            <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-            <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large">
-            <button type="submit" class="button is-large is-rounded is-responsive">Registrar Diplomado</button>
-        </form>
-    </div>
+    <section class="section">
+        <div class="container" style="display: flex; justify-content: center;">
+            <p class="title" style="text-align: center;">Registrar Diplomado</p>
+            <form id="formDiplomado" action="/diplomado/registrar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                <label for="Duracion" class="label is-large">Duración:</label>
+                <input type="text" id="Duracion" name="Duracion" required class="input is-large">
+                <label for="precioDiplomado" class="label is-large">Precio:</label>
+                <input type="number" id="precioDiplomado" name="precioDiplomado" step="any" required class="input is-large">
+                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large">
+                <button type="submit" id="btnSubmit" class="button is-large is-rounded is-responsive">Registrar Diplomado</button>
+                <p id="errorMessage" style="color: red;"></p>
+            </form>
+        </div>
+    </section>
 
     <script>
+        document.getElementById('formDiplomado').addEventListener('input', validateForm);
+        document.getElementById('nombreDiplomado').addEventListener('blur', checkDiplomadoExists);
+
         function validateForm() {
+            var duracion = document.getElementById("Duracion").value;
             var precio = document.getElementById("precioDiplomado").value;
             var nombre = document.getElementById("nombreDiplomado").value;
-            if (precio <= 0) {
-                alert("El precio debe ser mayor a 0");
-                return false;
+            var formValid = true;
+
+            if (!duracion || !precio || !nombre) {
+                displayError("Por favor rellena todos los datos.");
+                formValid = false;
+            } else if (precio <= 0) {
+                displayError("El precio debe ser mayor a 0.");
+                formValid = false;
+            } else {
+                clearError();
             }
+
+            document.getElementById('btnSubmit').disabled = !formValid;
+        }
+
+        function checkDiplomadoExists() {
+            var nombre = document.getElementById("nombreDiplomado").value;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + nombre, false);
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var exists = JSON.parse(this.responseText).exists;
+                    if (exists) {
+                        displayError("Ese diplomado ya existe.");
+                        document.getElementById('btnSubmit').disabled = true;
+                    }
+                }
+            };
+            xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + encodeURIComponent(nombre), true);
             xmlhttp.send();
-            var exists = JSON.parse(xmlhttp.responseText).exists;
-            if (exists) {
-                alert("Ese diplomado ya existe");
-                return false;
-            }
+        }
+
+        function displayError(message) {
+            var errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function clearError() {
+            var errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+            errorMessage.style.display = 'none';
         }
     </script>
 </body>
 </html>
-
-
-
-
-
