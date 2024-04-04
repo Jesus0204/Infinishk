@@ -23,7 +23,7 @@
                 <label for="Duracion" class="label is-large">Duración:</label>
                 <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required class="input is-large">
                 <label for="precioDiplomado" class="label is-large">Precio:</label>
-                <input type="float" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" required class="input is-large">
+                <input type="number" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" step="any" required class="input is-large">
                 <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                 <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
                 <button type="submit" class="button is-rounded is-large is-responsive">Registrar Cambios</button>
