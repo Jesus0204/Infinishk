@@ -31,7 +31,7 @@ exports.post_login = (request, response, next) => {
                                     console.log(request.session.permisos);
                                     request.session.username = user.username;
                                     return request.session.save(err => {
-                                        response.redirect('/mensajes');
+                                        response.redirect('/');
                                     })
                                 })
                                 .catch((error) => {
@@ -40,16 +40,16 @@ exports.post_login = (request, response, next) => {
                             // Por si los passwords no hacen match
                         } else {
                             request.session.error = 'El usuario y/o contraseña con incorrectos.';
-                            return response.redirect('/users/login');
+                            return response.redirect('/auth/login');
                         }
                         // Por si hay un error en la libreria o algo
                     }).catch(err => {
-                        response.redirect('/users/login');
+                        response.redirect('/auth/login');
                     });
                 // Por si el usuario no existe en la base de datos
             } else {
                 request.session.error = 'El usuario y/o contraseña con incorrectos.';
-                response.redirect('/users/login');
+                response.redirect('/auth/login');
             }
         })
         .catch((error) => {
