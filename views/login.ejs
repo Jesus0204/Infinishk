@@ -1,19 +1,23 @@
 <%- include('includes/dropdown_admin.ejs') %>
 
 <body>
-  <form action="/auth/login" method="post" class="lg-form">
-    <div>
-      <label for="IDUsuario">ID Usuario</label>
-      <input type="text" name="IDUsuario" id="IDUsuario" />
+  <section class="section">
+    <div class="container">
+      <form action="/auth/login" method="post" class="lg-form">
+        <div>
+          <label for="IDUsuario">ID Usuario</label>
+          <input type="text" name="IDUsuario" id="IDUsuario" />
+        </div>
+        <div>
+          <label for="Contrasena">Contraseña</label>
+          <input type="password" name="Contrasena" id="Contrasena" />
+        </div>
+        <div>
+          <input type="submit" value="Login" />
+        </div>
+      </form>
     </div>
-    <div>
-      <label for="Contrasena">Contraseña</label>
-      <input type="password" name="Contrasena" id="Contrasena" />
-    </div>
-    <div>
-      <input type="submit" value="Login" />
-    </div>
-  </form>
+  </section>
 </body>
 
 </html>
