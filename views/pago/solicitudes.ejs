@@ -7,6 +7,10 @@
         border-color: #910106 !important;
     }
 
+    .select_pago:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
     .select_pago:focus {
         border: 2px solid #910106 !important;
     }
@@ -16,51 +20,60 @@
     <div class="container">
         <h3 class="title is-3">Solicitudes de pago sin liquidar</h3>
         <% let count = 0 %>
+        <div id="modificacion" class="notification is-hidden">
+            <button class="delete"></button>
+            ¡Solicitud de pago modificada!
+        </div>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-hoverable is-fullwidth">
             <tbody>
                 <tr style="display: table-cell;">
-                    <td style="display: block; border: none">
-                        <div class="columns is-vcentered">
-                            <div class="column is-6">
-                                <strong>Nombre: </strong><%= solicitud.Nombre %>
-                                <%= solicitud.Apellidos %>
-                            </div>
-                            <div class="column is-6">
-                                <strong>Matricula: </strong><%= solicitud.Matricula %>
-                            </div>
-                        </div>
-                        <div class=" columns is-vcentered">
-                            <div class="column is-8">
-                                <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
-                                width: 150px; text-align: right; padding-right:3px; padding-top: 0.5em;">Motivo
-                                    Pago:</label>
-                                <div class="select is-medium">
-                                    <select class="select_pago" name="pago" id="pago<%= count %>"
-                                        style="border: 2px solid #7c7f80;">
-                                        <% for (let pago of pagos) { %>
-                                        <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
-                                        <option value="<%= pago.IDPagosExtras %>"
-                                            data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
-                                            <%= pago.motivoPago %></option>
-                                        <% } else { %>
-                                        <option value="<%= pago.IDPagosExtras %>"
-                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                            <%= pago.motivoPago %></option>
-                                        <% } %>
-                                        <% } %>
-                                    </select>
+                    <form action="/pagos/solicitudes/modify" method="POST">
+                        <td style="display: block; border: none">
+                            <div class="columns is-vcentered">
+                                <div class="column is-7">
+                                    <p class="is-size-5" style="padding-left: 0.7em;">
+                                        <strong>Nombre: </strong><%= solicitud.Nombre %>
+                                        <%= solicitud.Apellidos %>
+                                    </p>
+                                </div>
+                                <div class="column is-5">
+                                    <p class="is-size-5">
+                                        <strong>Matricula: </strong><%= solicitud.Matricula %>
+                                    </p>
                                 </div>
                             </div>
-                            <div class="column is-vcentered" style="text-align: center;">
-                                <p class="is-size-5" id="monto<%= count %>" style="margin-bottom: -1.3em;">
-                                    <strong>Monto: </strong>
-                                    $<%= solicitud.montoPagar.toFixed(2) %>
-                                </p>
-                                <br>
+                            <div class=" columns is-vcentered">
+                                <div class="column is-8">
+                                    <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
+                                width: 150px; text-align: right; padding-right:3px; padding-top: 0.5em;">Motivo
+                                        Pago:</label>
+                                    <div class="select is-medium">
+                                        <select class="select_pago" name="pago" id="pago<%= count %>"
+                                            style="border: 2px solid #7c7f80;">
+                                            <% for (let pago of pagos) { %>
+                                            <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                            <option value="<%= pago.IDPagosExtras %>"
+                                                data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
+                                                <%= pago.motivoPago %></option>
+                                            <% } else { %>
+                                            <option value="<%= pago.IDPagosExtras %>"
+                                                data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                                <%= pago.motivoPago %></option>
+                                            <% } %>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="column is-vcentered" style="text-align: center;">
+                                    <p class="is-size-5" id="monto<%= count %>" style="margin-bottom: -1.3em;">
+                                        <strong>Monto: </strong>
+                                        $<%= solicitud.montoPagar.toFixed(2) %>
+                                    </p>
+                                    <br>
+                                </div>
                             </div>
-                        </div>
-                    </td>
+                        </td>
                 </tr>
                 <tr style="display: table-cell;">
                     <td style="display: block;">
@@ -79,16 +92,14 @@
                     <td style="display: block;">
                         <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
-                                <form action="/pagos/solicitudes/delete" method="POST">
-                                    <button type="submit" class="button is-rounded is-medium is-responsive"
-                                        style="font-size: medium; background-color: #000000;"
-                                        id="Boton_eliminar<%= count %>">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Eliminar</span>
-                                    </button>
-                                </form>
+                                <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                    style="font-size: medium; background-color: #000000;"
+                                    id="Boton_eliminar<%= count %>" data-target="modal-confirmar-eliminar<%= count %>">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </span>
+                                    <span>Eliminar</span>
+                                </button>
                             </div>
                         </div>
                     </td>
@@ -96,6 +107,61 @@
     </tr>
     </tbody>
     </table>
+    <div id="modal-confirmar-eliminar<%= count %>" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" style="text-align: center;">
+                    <strong> Eliminar Solicitud<%= count %></strong>
+                </p>
+            </header>
+            <section class="modal-card-body">
+                <p class="is-size-5" style="text-align: center;">
+                    <strong>¡Esta acción no se puede deshacer!</strong>
+                </p>
+                <br>
+                <p class="is-size-5" style="text-align: center;">
+                    Los datos de la solicitud de pago a eliminar son los siguientes:
+                </p>
+                <br>
+                <div class="columns is-vcentered">
+                    <div class="column is-7">
+                        <p class="is-size-5" style="text-align: center;"">
+                            <strong>Nombre: </strong><%= solicitud.Nombre %>
+                            <%= solicitud.Apellidos %>
+                        </p>
+                    </div>
+                    <div class="column is-5">
+                        <p class="is-size-5" style="text-align: center;">
+                            <strong>Matricula: </strong><%= solicitud.Matricula %>
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot" style="justify-content: center;">
+                <div class="field is-grouped">
+                    <p class="control">
+                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                            style="font-size: large; margin: 8px 2px;">
+                            <span>Regresar</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </p>
+                    <p class="control">
+                        <form action="/pagos/solicitudes/delete" method="POST">
+                            <button class="button is-rounded is-medium is-responsive" type="submit"
+                                style="font-size: large; margin: 8px 2px;">
+                                <span>Eliminar</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
+            </footer>
+        </div>
+    </div>
     <% count++ %>
     <% } %>
     <div class="columns">
@@ -112,6 +178,7 @@
     </div>
     </div>
 </section>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
     for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
         $('#pago' + count).change(function () {
@@ -122,4 +189,13 @@
             monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
         });
     }
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            const $notification = $delete.parentNode;
+
+            $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
+            });
+        });
+    });
 </script>
