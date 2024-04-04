@@ -160,16 +160,14 @@
                         </button>
                     </p>
                     <p class="control">
-                        <form action="/pagos/solicitudes/delete" method="POST" class="form-borrar">
-                            <input name="id_buscar" id="id_buscar" value="<%= solicitud.IDLiquida %>">
-                            <button class="button is-rounded is-medium is-responsive" type="submit"
+                            <button class="button is-rounded is-medium is-responsive"
+                                onclick="eliminar('<%= solicitud.IDLiquida %>')"
                                 style="font-size: large; margin: 8px 2px; background-color: #000000;">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                 </span>
                                 <span>Eliminar</span>
                             </button>
-                        </form>
             </footer>
         </div>
     </div>
@@ -210,9 +208,9 @@
             const monto = event.options[event.selectedIndex].getAttribute("data-monto");
             const modal = document.querySelector('#modal-confirmar-eliminar' + count);
             document.querySelector('#monto_modal' + count).innerHTML = '<strong>Monto: </strong> $' + monto;
-            const motivo = $( `#pago${+ count} option:selected` ).text();
+            const motivo = $(`#pago${+ count} option:selected`).text();
             document.querySelector('#motivo_modal' + count).innerHTML = '<strong>Motivo Pago: </strong>' +
-            motivo;
+                motivo;
         }
 
         const pago = document.querySelector('#pago' + count)
@@ -222,29 +220,27 @@
 
     }
 
-    document.querySelectorAll('.form-borrar').forEach((form, index) => {
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            // Crear un objeto FormData con los datos del formulario
-            const formData = new FormData(form);
-            // Enviar los datos al servidor
-            fetch('/pagos/solicitudes/delete', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: formData
+    const eliminar = (id) => {
+        console.log(id);
+        // Enviar los datos al servidor
+        fetch('/pagos/solicitudes/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id
                 })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta del servidor');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en la petición fetch:', error);
-                });
-        });
-    });
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la petición fetch:', error);
+            });
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {

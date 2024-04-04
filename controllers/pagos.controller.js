@@ -89,21 +89,23 @@ exports.get_solicitudes = (request, response, next) => {
 
 exports.post_solicitudes_modify = (request, response, next) => {
     Liquida.update(request.body.id, request.body.pago)
-    .then(([rows, fieldData]) => {
-        response.redirect('/pagos/solicitudes');
-    })
-    .catch((error) => {console.log(error)})
+        .then(([rows, fieldData]) => {
+            response.redirect('/pagos/solicitudes');
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 };
 
 exports.post_solicitudes_delete = (request, response, next) => {
-    console.log(request.body);
-    Liquida.delete(request.body.id_buscar)
-    .then(([rows, fieldData]) => {
-        response.status(200).json({
-            success: true
-        });
-    })
-    .catch((error) => {
-        console.log(error);
-    })
+    console.log(request.body.id);
+    Liquida.delete(request.body.id)
+        .then(([rows, fieldData]) => {
+            response.status(200).json({
+                success: true
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 };
