@@ -43,6 +43,16 @@ $navbar-dropdown-item-hover-background-color: $rojo;
     color: white !important; /* Cambia el color del texto a blanco */
   }
 
+.ui-menu-item{
+  font-family: "Poppins", sans-serif;
+}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active{
+  background-color: $negro;
+  color: $blanco;
+  border-color: $vino;
+}
+
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";

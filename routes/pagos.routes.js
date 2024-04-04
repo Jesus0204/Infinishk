@@ -4,3 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const pagosController = require('../controllers/pagos.controller');
+
+router.get('/',pagosController.get_pago)
+router.get('/registroTransferencia', pagosController.get_registro_transferencias);
+router.post('/registroTransferencia', pagosController.post_subir_archivo);
+
+module.exports = router;

@@ -4,3 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const configuracionController = require('../controllers/configuracion.controller');
+
+router.get('/',configuracionController.get_configuracion);
+
+router.get('/administrar_planpago',configuracionController.get_administrar_planpago);
+
+module.exports = router;

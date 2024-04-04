@@ -34,6 +34,14 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+const rutasDiplomado = require('./routes/diplomado.routes');
+app.use('/diplomado', rutasDiplomado);
+
+const rutasConfiguracion = require('./routes/configuracion.routes');
+app.use('/configuracion', rutasConfiguracion);
+
+const rutasPago = require('./routes/pagos.routes');
+app.use('/pagos', rutasPago);
 
 const rutasAlumnos = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumnos);
