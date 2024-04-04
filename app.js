@@ -10,8 +10,6 @@ app.set('views', 'views');
 
 const path = require('path');
 
-const bcrypt = require('bcryptjs');
-
 // Para que se puede usar cookie parser de forma mas facil
 const cookieParser = require('cookie-parser')
 app.use(cookieParser('Un secreto'))
@@ -36,15 +34,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-// Para proteger del Cross-Site Request Forgery
-const csrf = require('csurf');
-const csrfProtection = csrf();
-
-//...Y después del código para inicializar la sesión... 
-app.use(csrfProtection);
-
-const rutasSession = require('./routes/session.routes');
-app.use('/auth', rutasSession);
+app.use(bodyParser.json());
 
 const rutasDiplomado = require('./routes/diplomado.routes');
 app.use('/diplomado', rutasDiplomado);
