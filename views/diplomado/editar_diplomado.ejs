@@ -4,8 +4,10 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 
     <body>
+        <section class="section">
         <div class="container" style="display: flex; justify-content: center;">
             <% if (fetch) { %>
+                <p class="title" style="text-align: center;">Buscar Diplomado</p>
                 <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
                     <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
                     <input type="text" id="nombre" name="nombre" required class="input is-large">
@@ -22,6 +24,7 @@
 
 
                             <% if (editar) { %>
+                                <p class="title" style="text-align: center;">Modificar Diplomado</p>
                                 <form action="/diplomado/resultado_diplomado" method="POST"
                                     onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
                                     <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
@@ -42,29 +45,38 @@
                                 <% } %>
 
         </div>
-
+    </section>
         <script>
-            function validateForm() {
-                var duracion = document.getElementById("Duracion").value;
-                var precio = document.getElementById("precioDiplomado").value;
-                var nombre = document.getElementById("nombreDiplomado").value;
-                var alerta = document.getElementById("alerta");
+            $(document).ready(function () {
+                // Inicializar el botón desactivado
+                actualizarBotonYMensaje();
 
-                if (duracion.trim() === '' || precio.trim() === '' || nombre.trim() === '') {
-                    alerta.textContent = 'Todos los campos deben estar llenos.';
-                    alerta.style.display = 'block';
-                    return false;
+                // Evento para cada vez que se modifica un campo
+                $('input').on('input', function () {
+                    actualizarBotonYMensaje();
+                });
+
+                function actualizarBotonYMensaje() {
+                    var duracion = $('#Duracion').val().trim();
+                    var precio = $('#precioDiplomado').val().trim();
+                    var nombre = $('#nombreDiplomado').val().trim();
+                    var mensaje = '';
+                    var camposCompletos = duracion && precio && nombre;
+
+                    if (!camposCompletos) {
+                        mensaje = 'Por favor completa todos los campos.';
+                        $('#alerta').text(mensaje).show();
+                        $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+                    } else if (parseFloat(precio) <= 0) {
+                        mensaje = 'El precio debe ser mayor a 0.';
+                        $('#alerta').text(mensaje).show();
+                        $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+                    } else {
+                        $('#alerta').hide();
+                        $('button[type="submit"]').prop('disabled', false).removeClass('is-light');
+                    }
                 }
-
-                if (precio <= 0) {
-                    alerta.textContent = 'El precio debe ser mayor a 0';
-                    alerta.style.display = 'block';
-                    return false;
-                }
-
-                alerta.style.display = 'none';
-                return true; // Si todo está correcto, permite que el formulario se envíe
-            }
+            });
 
             $(function () {
                 var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
