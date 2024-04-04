@@ -8,7 +8,7 @@ module.exports = class Usuario{
         this.UsuarioActivo = mi_UsuarioActivo;
     }
     static fetchOne(IDUsuario, Contrasena) {
-        return db.execute('SELECT * FROM IDUsuario WHERE IDUsuario = ?',
+        return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
 }
