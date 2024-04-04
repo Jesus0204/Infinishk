@@ -36,6 +36,9 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+const rutasSession = require('./routes/session.routes');
+app.use('/auth', rutasSession);
+
 const rutasDiplomado = require('./routes/diplomado.routes');
 app.use('/diplomado', rutasDiplomado);
 
