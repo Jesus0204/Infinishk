@@ -14,7 +14,7 @@ exports.get_login = (request, response, next) => {
 };
 
 exports.post_login = (request, response, next) => {
-    Usuario.fetchOne(request.body.username)
+    Usuario.fetchOne(request.body.IDUsuario)
         .then(([users, fieldData]) => {
             if (users.length == 1) {
                 // users[0] contiene el objeto de la respuesta de la consulta
@@ -55,4 +55,5 @@ exports.post_login = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         })
+    
 };

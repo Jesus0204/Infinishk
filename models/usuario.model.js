@@ -1,3 +1,4 @@
+const { AsyncLocalStorage } = require('async_hooks');
 const db = require('../util/database');
 
 module.exports = class Usuario{
@@ -13,7 +14,7 @@ module.exports = class Usuario{
     }
     static getPermisos(IDUsuario) {
         return db.execute(
-            `SELECT funcion
+            `SELECT nombreCasoUso
             FROM Usuario U, Contiene C, Rol R, Posee P, CasoUso Ca
             WHERE U.IDUsuario = ? AND U.IDUsuario = C.IDUsuario
             AND C.idRol = R.id AND R.id = P.idRol 
