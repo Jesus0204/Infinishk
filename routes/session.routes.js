@@ -6,5 +6,6 @@ const router = express.Router();
 const sessionController = require('../controllers/session.controller');
 
 router.get('/login', sessionController.get_login);
+router.post('/login', sessionController.post_login);
 
 module.exports = router;

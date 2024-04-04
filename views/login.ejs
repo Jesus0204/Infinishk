@@ -4,6 +4,7 @@
   <section class="section">
     <div class="container">
       <form action="/auth/login" method="post" class="lg-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div>
           <label for="IDUsuario">ID Usuario</label>
           <input type="text" name="IDUsuario" id="IDUsuario" />
