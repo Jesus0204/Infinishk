@@ -3,11 +3,29 @@ const db = require('../util/database');
 
 module.exports = class Usuario{
     // Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-    constructor(mi_IDUsuario,mi_Contrasena,mi_UsuarioActivo){
+    constructor(mi_IDUsuario, mi_password) {
         this.IDUsuario = mi_IDUsuario;
-        this.Contrasena = mi_Contrasena;
-        this.UsuarioActivo = mi_UsuarioActivo;
+        this.password = mi_password;
     }
+
+    //Este método servirá para guardar de manera persistente el nuevo objeto. 
+    save() {
+        //Dentro del método del modelo que crea el usuario
+        //El segundo argumento es el número de veces que se aplica el algoritmo, actualmente 12 se considera un valor seguro
+        //El código es asíncrono, por lo que hay que regresar la promesa
+        return bcrypt.hash(this.password, 12)
+            .then((password_cifrado) => {
+                return db.execute(
+                    'INSERT INTO Usuario (IDUsuario, Contraseña) VALUES (?, ?, 1)',
+                    [this.IDUsuario, password_cifrado]
+                );
+            })
+            .catch((error) => {
+                console.log(error)
+                throw Error('Nombre de usuario duplicado. Ya existe un usuario con ese nombre.')
+            });
+    }
+
     static fetchOne(IDUsuario, Contrasena) {
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);

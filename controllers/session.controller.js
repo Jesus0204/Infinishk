@@ -7,6 +7,7 @@ exports.get_login = (request, response, next) => {
     request.session.error = '';
     response.render('login', {
         IDUsuario: request.session.username || '',
+        registrar: false,
         error: error,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
@@ -57,3 +58,34 @@ exports.post_login = (request, response, next) => {
         })
     
 };
+
+exports.get_logout = (request, response, next) => {
+    request.session.destroy(() => {
+        response.redirect('/auth/login'); //Este código se ejecuta cuando la sesión se elimina.
+    });
+};
+
+exports.get_signup = (request, response, next) => {
+    const error = request.session.error || '';
+    request.session.error = '';
+    response.render('login', {
+        username: request.session.username || '',
+        registrar: true,
+        error: error,
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+    });
+};
+
+exports.post_signup = (request, response, next) => {
+    const new_user = new Usuario(request.body.username, request.body.password);
+    new_user.save()
+        .then(([rows, fieldData]) => {
+            response.redirect('/auth/login');
+        })
+        .catch((error) => {
+            request.session.error = 'Nombre de usuario invalido.';
+            console.log(error)
+            response.redirect('/auth/signup');
+        })
+}

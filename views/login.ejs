@@ -3,7 +3,15 @@
 <body>
   <section class="section">
     <div class="container">
-      <form action="/auth/login" method="post" class="lg-form">
+
+      <% if (error) { %>
+      <div class="notification is-danger">
+        <strong> <%= error %></strong>
+      </div>
+      <% } %>
+
+
+      <form action="/auth/<% if (registrar) { %>signup <% } else { %>login <% } %>" method="post" class="lg-form">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div>
           <label for="IDUsuario">ID Usuario</label>
@@ -14,7 +22,7 @@
           <input type="password" name="password" id="password" />
         </div>
         <div>
-          <input type="submit" value="Login" />
+          <input type="submit" value="<% if (registrar) { %>Registrarse <% } else { %>Log in <% } %>"/>
         </div>
       </form>
     </div>
