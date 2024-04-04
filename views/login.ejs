@@ -1,7 +1,5 @@
-<%- include('includes/head.ejs', {
-    IDUsuario: IDUsuario,
-    permisos: permisos 
-  }) %>
+<%- include('includes/dropdown_admin.ejs') %>
+
 <body>
   <form action="/auth/login" method="post" class="lg-form">
     <div>
@@ -17,4 +15,5 @@
     </div>
   </form>
 </body>
+
 </html>
