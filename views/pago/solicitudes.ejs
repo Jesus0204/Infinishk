@@ -20,9 +20,9 @@
     <div class="container">
         <h3 class="title is-3">Solicitudes de pago sin liquidar</h3>
         <% let count = 0 %>
-        <div id="modificacion" class="notification is-hidden">
+        <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button class="delete"></button>
-            ¡Solicitud de pago modificada!
+            ¡Solicitud de pago eliminada!
         </div>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
@@ -244,6 +244,8 @@
                 } else {
                     console.error(`No se encontró la fila ${id}.`);
                 }
+
+                document.getElementById('modificacion').classList.remove('is-hidden');
             })
             .catch(error => {
                 console.error('Error en la petición fetch:', error);
