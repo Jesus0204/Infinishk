@@ -25,7 +25,7 @@
             ¡Solicitud de pago modificada!
         </div>
         <% for (let solicitud of solicitudes) { %>
-        <table class="table is-hoverable is-fullwidth">
+        <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
             <tbody>
                 <tr style="display: table-cell;">
                     <form action="/pagos/solicitudes/modify" method="POST">
@@ -160,14 +160,14 @@
                         </button>
                     </p>
                     <p class="control">
-                            <button class="button is-rounded is-medium is-responsive"
-                                onclick="eliminar('<%= solicitud.IDLiquida %>')"
-                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
-                                </span>
-                                <span>Eliminar</span>
-                            </button>
+                        <button class="button is-rounded is-medium is-responsive"
+                            onclick="eliminar('<%= solicitud.IDLiquida %>')"
+                            style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                            </span>
+                            <span>Eliminar</span>
+                        </button>
             </footer>
         </div>
     </div>
@@ -235,6 +235,14 @@
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error en la respuesta del servidor');
+                }
+
+                const table = document.getElementById(id);
+
+                if (table) {
+                    table.remove();
+                } else {
+                    console.error(`No se encontró la fila ${id}.`);
                 }
             })
             .catch(error => {

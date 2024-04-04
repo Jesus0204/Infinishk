@@ -98,7 +98,6 @@ exports.post_solicitudes_modify = (request, response, next) => {
 };
 
 exports.post_solicitudes_delete = (request, response, next) => {
-    console.log(request.body.id);
     Liquida.delete(request.body.id)
         .then(([rows, fieldData]) => {
             response.status(200).json({
