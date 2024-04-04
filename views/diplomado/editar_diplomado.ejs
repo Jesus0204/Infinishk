@@ -1,65 +1,123 @@
 <%- include('../includes/dropdown_admin.ejs') %>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 
-<body>
-    <div class="container" style="display: flex; justify-content: center;">
-        <% if (fetch) { %>
-            <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
-                <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
-                <input type="text" id="nombre" name="nombre" required class="input is-large">
-                <button type="submit" class="button is-rounded is-large is-responsive">Buscar</button>
-            </form>
-            <% if (error) { %>
-                <p class="is-size-4"><%= error %></p>
-            <% } %>
-        <% } %>
-        
-        
-        <% if (editar) { %>
-            <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
-                <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-                <label for="Duracion" class="label is-large">Duración:</label>
-                <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required class="input is-large">
-                <label for="precioDiplomado" class="label is-large">Precio:</label>
-                <input type="number" id="precioDiplomado" name="precioDiplomado" value="<%= diplomado.precioDiplomado %>" step="any" required class="input is-large">
-                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-                <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
-                <button type="submit" class="button is-rounded is-large is-responsive">Registrar Cambios</button>
-            </form>
-        <% } %>
-    </div>
+    <body>
+        <div class="container" style="display: flex; justify-content: center;">
+            <% if (fetch) { %>
+                <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                    <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
+                    <input type="text" id="nombre" name="nombre" required class="input is-large">
+                    <p id="mensajeValidacion" class="help is-danger"></p>
+                    <button type="submit" id="buscarBtn"
+                        class="button is-rounded is-large is-responsive">Buscar</button>
+                </form>
+                <% if (error) { %>
+                    <p class="is-size-4">
+                        <%= error %>
+                    </p>
+                    <% } %>
+                        <% } %>
 
-    <script>
-        function validateForm() {
-            var precio = document.getElementById("precioDiplomado").value;
-            if (precio <= 0) {
-                alert("El precio debe ser mayor a 0");
-                return false;
+
+                            <% if (editar) { %>
+                                <form action="/diplomado/resultado_diplomado" method="POST"
+                                    onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
+                                    <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
+                                    <label for="Duracion" class="label is-large">Duración:</label>
+                                    <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>"
+                                        required class="input is-large">
+                                    <label for="precioDiplomado" class="label is-large">Precio:</label>
+                                    <input type="number" id="precioDiplomado" name="precioDiplomado"
+                                        value="<%= diplomado.precioDiplomado %>" step="any" required
+                                        class="input is-large">
+                                    <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                                    <input type="text" id="nombreDiplomado" name="nombreDiplomado"
+                                        value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
+                                    <button type="submit" class="button is-rounded is-large is-responsive">Registrar
+                                        Cambios</button>
+                                    <p id="alerta" class="help is-danger" style="display: none;"></p>
+                                </form>
+                                <% } %>
+
+        </div>
+
+        <script>
+            function validateForm() {
+                var duracion = document.getElementById("Duracion").value;
+                var precio = document.getElementById("precioDiplomado").value;
+                var nombre = document.getElementById("nombreDiplomado").value;
+                var alerta = document.getElementById("alerta");
+
+                if (duracion.trim() === '' || precio.trim() === '' || nombre.trim() === '') {
+                    alerta.textContent = 'Todos los campos deben estar llenos.';
+                    alerta.style.display = 'block';
+                    return false;
+                }
+
+                if (precio <= 0) {
+                    alerta.textContent = 'El precio debe ser mayor a 0';
+                    alerta.style.display = 'block';
+                    return false;
+                }
+
+                alerta.style.display = 'none';
+                return true; // Si todo está correcto, permite que el formulario se envíe
             }
-        }
 
-        $( function() {
-            $( "#nombre" ).autocomplete({
-                source: function( request, response ) {
-                    $.ajax({
-                        url: "/diplomado/autocomplete",
-                        dataType: "json",
-                        data: {
-                            q: request.term
-                        },
-                        success: function( data ) {
-                            response( data.map(function(diplomado) {
-                                return diplomado.nombreDiplomado;
-                            }));
-                        }
-                    });
-                },
-                minLength: 2
+            $(function () {
+                var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
+
+                $("#nombre").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/diplomado/autocomplete",
+                            dataType: "json",
+                            data: {
+                                q: request.term
+                            },
+                            success: function (data) {
+                                nombresValidos = data.map(function (diplomado) {
+                                    return diplomado.nombreDiplomado;
+                                });
+                                response(nombresValidos);
+                            }
+                        });
+                    },
+                    minLength: 2,
+                    select: function (event, ui) {
+                        // Restablecer el mensaje de validación
+                        $("#mensajeValidacion").text('');
+                        // Cambiar el estilo del botón si el nombre es válido
+                        var esValido = nombresValidos.includes(ui.item.value);
+                        $("#buscarBtn").prop('disabled', !esValido)
+                            .css('background-color', esValido ? '#910106' : '#ffcccc') // Color normal: azul, Color cuando es inválido: rojo ligero
+                            .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+                    }
+                });
+
+                // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
+                $("#buscarBtn").prop('disabled', true)
+                    .css('background-color', '#ffcccc')
+                    .addClass('is-light');
+
+                // Verificar si el nombre ingresado es válido al salir del campo de texto
+                $("#nombre").on("blur", function () {
+                    var mensaje = '';
+                    if (this.value === '') {
+                        mensaje = 'Por favor ingresa un nombre';
+                    } else if (!nombresValidos.includes(this.value)) {
+                        mensaje = 'Por favor ingresa un nombre válido';
+                    }
+                    $("#mensajeValidacion").text(mensaje);
+                    var esValido = nombresValidos.includes(this.value);
+                    $("#buscarBtn").prop('disabled', !esValido)
+                        .css('background-color', esValido ? '#910106' : '#ffcccc')
+                        .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+                });
             });
-        } );
+        </script>
+    </body>
 
-    </script>
-</body>
-</html>
+    </html>
