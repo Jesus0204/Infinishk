@@ -11,5 +11,14 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
+    static getPermisos(IDUsuario) {
+        return db.execute(
+            `SELECT funcion
+            FROM Usuario U, Contiene C, Rol R, Posee P, CasoUso Ca
+            WHERE U.IDUsuario = ? AND U.IDUsuario = C.IDUsuario
+            AND C.idRol = R.id AND R.id = P.idRol 
+            AND P.idPermiso = Ca.id`,
+            [IDUsuario]);
+    }
 }
 
