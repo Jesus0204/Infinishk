@@ -94,3 +94,16 @@ exports.post_solicitudes_modify = (request, response, next) => {
     })
     .catch((error) => {console.log(error)})
 };
+
+exports.post_solicitudes_delete = (request, response, next) => {
+    console.log(request.body);
+    Liquida.delete(request.body.id_buscar)
+    .then(([rows, fieldData]) => {
+        response.status(200).json({
+            success: true
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+};

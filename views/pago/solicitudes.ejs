@@ -112,7 +112,7 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title" style="text-align: center;">
-                    <strong> Eliminar Solicitud<%= count %></strong>
+                    <strong> Eliminar Solicitud</strong>
                 </p>
             </header>
             <section class="modal-card-body">
@@ -126,14 +126,26 @@
                 <br>
                 <div class="columns is-vcentered">
                     <div class="column is-7">
-                        <p class="is-size-5" style="text-align: center;"">
+                        <p class="is-size-5" style="text-align: center;">
                             <strong>Nombre: </strong><%= solicitud.Nombre %>
                             <%= solicitud.Apellidos %>
                         </p>
                     </div>
-                    <div class="column is-5">
+                    <div class=" column is-5">
                         <p class="is-size-5" style="text-align: center;">
                             <strong>Matricula: </strong><%= solicitud.Matricula %>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns is-vcentered">
+                    <div class="column is-half">
+                        <p class="is-size-5" style="text-align: center;" id="motivo_modal<%= count %>">
+                            <strong>Motivo Pago: </strong>
+                        </p>
+                    </div>
+                    <div class="column is-half">
+                        <p class="is-size-5" style="text-align: center;" id="monto_modal<%= count %>">
+                            <strong>Monto: </strong>
                         </p>
                     </div>
                 </div>
@@ -150,13 +162,14 @@
                         </button>
                     </p>
                     <p class="control">
-                        <form action="/pagos/solicitudes/delete" method="POST">
+                        <form action="/pagos/solicitudes/delete" method="POST" class="form-borrar">
+                            <input name="id_buscar" id="id_buscar" value="<%= solicitud.IDLiquida %>">
                             <button class="button is-rounded is-medium is-responsive" type="submit"
-                                style="font-size: large; margin: 8px 2px;">
-                                <span>Eliminar</span>
+                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
                                 <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                 </span>
+                                <span>Eliminar</span>
                             </button>
                         </form>
             </footer>
@@ -183,12 +196,58 @@
     for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
         $('#pago' + count).change(function () {
             // Sacas el monto de la opcion con data-monto
-            var num_monto = $(this).find(':selected').data('monto');
+            let num_monto = $(this).find(':selected').data('monto');
+            // Sacas el motivo de la opcion con data-monto
+            let motivo = $(this).find(':selected').text();
             // Cambias el DOM para mostrar el precio correcto
             const monto = document.querySelector('#monto' + count);
             monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+            // Cambias el DOM dentro del modal
+            document.querySelector('#monto_modal' + count).innerHTML = '<strong>Monto: </strong> $' + num_monto;
+            document.querySelector('#motivo_modal' + count).innerHTML = '<strong>Motivo Pago: </strong>' +
+                motivo;
         });
+
+        function enviar_modal(event) {
+            const monto = event.options[event.selectedIndex].getAttribute("data-monto");
+            const modal = document.querySelector('#modal-confirmar-eliminar' + count);
+            document.querySelector('#monto_modal' + count).innerHTML = '<strong>Monto: </strong> $' + monto;
+            const motivo = $( `#pago${+ count} option:selected` ).text();
+            document.querySelector('#motivo_modal' + count).innerHTML = '<strong>Motivo Pago: </strong>' +
+            motivo;
+        }
+
+        const pago = document.querySelector('#pago' + count)
+
+        const boton_eliminar = document.querySelector('#Boton_eliminar' + count);
+        boton_eliminar.addEventListener('click', enviar_modal(pago));
+
     }
+
+    document.querySelectorAll('.form-borrar').forEach((form, index) => {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Crear un objeto FormData con los datos del formulario
+            const formData = new FormData(form);
+            // Enviar los datos al servidor
+            fetch('/pagos/solicitudes/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: formData
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la petición fetch:', error);
+                });
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
             const $notification = $delete.parentNode;

@@ -7,6 +7,7 @@ const pagosController = require('../controllers/pagos.controller');
 
 router.get('/solicitudes', pagosController.get_solicitudes);
 router.post('/solicitudes/modify', pagosController.post_solicitudes_modify);
+router.post('/solicitudes/delete', pagosController.post_solicitudes_delete);
 
 router.get('/registroTransferencia', pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', pagosController.post_subir_archivo);

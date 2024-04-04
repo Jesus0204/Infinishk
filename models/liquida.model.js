@@ -23,4 +23,8 @@ module.exports = class Liquida {
         [pago, id]);
     }
 
+    static delete(id) {
+        return db.execute('DELETE FROM Liquida WHERE IDLiquida = ?', [id]);
+    }
+
 };
