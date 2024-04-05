@@ -37,7 +37,7 @@
                         escribe un monto válido del Pago Extra.</p>
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                         style="padding: 0.5em; margin-top: -1em;">Por
-                        favor escribe un número mayor a 0. Un monto no puede ser un número negativo.</p>
+                        favor escribe un número mayor a 0.</p>
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="monto" class="input is-medium" type="number" step="any" id="monto"
@@ -75,7 +75,8 @@
 
         // Checar si hay contenido dentro del input, pata desactivar el boton
         function checar_contenido() {
-            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0;
+            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
+                monto.value==='0' ;
         }
 
         // Activar mensaje si el motivo no tiene input
@@ -96,6 +97,9 @@
 
             if (monto.value < 0) {
                 ayuda_monto_negativo.classList.remove('is-hidden');
+            } else if (monto.value === '0') {
+
+                ayuda_monto_negativo.classList.remove('is-hidden'); 
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
             }
