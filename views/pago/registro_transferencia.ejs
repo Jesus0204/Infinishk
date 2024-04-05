@@ -14,23 +14,28 @@
 
         .Pago-de-Colegiatura {
             color: white;
-            background-color: #910106;
+            background-color: rgba(145, 1, 6, 0.7);
+            /* Menos intenso con opacidad del 70% */
         }
 
         .Pago-de-Diplomado {
             color: white;
-            background-color: #5a6581;
+            background-color: rgba(76, 117, 161, 0.7);
+            /* Menos intenso con opacidad del 70% */
         }
 
         .Pago-a-Registrar {
             color: white;
-            background-color: #1C0221;
+            background-color: rgba(75, 74, 75, 0.7);
+            /* Menos intenso con opacidad del 70% */
         }
 
         .Pago-Extra {
             color: white;
-            background-color: #04724D;
+            background-color: rgba(4, 114, 77, 0.7);
+            /* Menos intenso con opacidad del 70% */
         }
+
 
         table {
             width: 100%;
@@ -65,8 +70,10 @@
         }
 
         .my-button {
-            background-color: #000000; /* El color del fondo */
-            color: white; /* El color del texto */
+            background-color: #000000;
+            /* El color del fondo */
+            color: white;
+            /* El color del texto */
         }
 
         .my-button:hover {
@@ -74,7 +81,6 @@
             color: #ffffff;
             border: solid #000000;
         }
-
     </style>
 
     <body>
@@ -93,20 +99,20 @@
                 <div class="table-container">
                     <div id="tablaCompleta">
                         <p class="title is-4">Pagos ya Realizados</p>
-                    <table class="ta">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Matricula</th>
-                                <th>Referencia</th>
-                                <th>Fecha y Hora</th>
-                                <th>Importe</th>
-                                <th>Deuda</th>
-                                <th>Tipo de Pago</th>
-                            </tr>
-                        </thead>
+                        <table class="ta">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Matricula</th>
+                                    <th>Referencia</th>
+                                    <th>Fecha y Hora</th>
+                                    <th>Importe</th>
+                                    <th>Deuda</th>
+                                    <th>Tipo de Pago</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
+                            <tbody>
                                 <% datos.forEach((fila,index)=> { %>
                                     <% if (fila.tipoPago==='Pago Completo' ) { %>
                                         <tr id="fila<%= index %>" class="<%= fila.tipoPago.replace(/\s/g, '-') %>"></tr>
@@ -135,33 +141,34 @@
                                         </td>
                                         </tr>
                                         <% } %>
-                                <% }); %>
-                            </div>
-                        </tbody>
-                    </table>
-                    <button id="toggleButton"  class="button is-large is-rounded is-responsive">Revisar No Completos</button>
+                                            <% }); %>
                     </div>
+                    </tbody>
+                    </table>
+                    <button id="toggleButton" class="button is-large is-rounded is-responsive">Revisar No
+                        Completos</button>
+                </div>
                 </div>
 
                 <div class="table-container">
                     <div id="tablaNoCompleta">
                         <p class="title is-4">Pagos Faltantes</p>
-                    <table class="ta">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Matricula</th>
-                                <th>Referencia</th>
-                                <th>Fecha y Hora</th>
-                                <th>Importe</th>
-                                <th>Deuda</th>
-                                <th>Tipo de Pago</th>
-                                <th>Nota</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
+                        <table class="ta">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Matricula</th>
+                                    <th>Referencia</th>
+                                    <th>Fecha y Hora</th>
+                                    <th>Importe</th>
+                                    <th>Deuda</th>
+                                    <th>Tipo de Pago</th>
+                                    <th>Nota</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
+                            <tbody>
                                 <% datos.forEach((fila,index)=> { %>
                                     <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar'
                                         || fila.tipoPago==='Pago de Diplomado' ) { %>
@@ -250,9 +257,9 @@
                                         </tr>
                                         <% } %>
                                             <% }); %>
-                        </tbody>
-                    </table>
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <% } %>
 
