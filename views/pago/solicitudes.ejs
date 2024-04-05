@@ -7,6 +7,10 @@
         border-color: #910106 !important;
     }
 
+    #notificacion:hover {
+        background-color: #000000 !important;
+    }
+
     .select_pago:hover {
         border: 2px solid #5a6581 !important;
     }
@@ -24,6 +28,27 @@
             <button class="delete"></button>
             ¡Solicitud de pago eliminada!
         </div>
+        <% if (solicitudes.length == 0) { %>
+        <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+            <div class="message-body" style="color:#ffffff;">
+                Ahorita no existen solicitudes de pago que se puedan modificar. 
+                <br>
+                Si quieres registrar una solicitud, da click al siguiente botón:
+                <div class="columns is-vcentered">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <a href="/pagos/registrar_solicitud" class="button is-rounded is-medium is-responsive"
+                            style="font-size: large; margin: 8px 2px;" id="notificacion">
+                            <span>Registrar solicitud de Pago</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <% } %>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
             <tbody>
