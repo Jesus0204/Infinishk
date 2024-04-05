@@ -38,6 +38,8 @@
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                         style="padding: 0.5em; margin-top: -1em;">Por
                         favor escribe un número mayor a 0.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                        style="padding: 0.5em; margin-top: -1em;">Por favor escribe un motivo sin exponente.</p>
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="monto" class="input is-medium" type="number" step="any" id="monto"
@@ -72,6 +74,7 @@
         const ayuda_motivo = document.querySelector('#ayuda_motivo');
         const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
         const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+        const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
 
         // Checar si hay contenido dentro del input, pata desactivar el boton
         function checar_contenido() {
@@ -102,6 +105,13 @@
                 ayuda_monto_negativo.classList.remove('is-hidden'); 
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
+            }
+
+            if (monto.value.includes('e') || monto.value.includes('E')) {
+                bt_Registrar.disabled = true;
+                ayuda_monto_exponente.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_exponente.classList.add('is-hidden');
             }
         }
         // Detectar si el usuario maneja input y llamar las funciones anteriores
