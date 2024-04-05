@@ -1,3 +1,4 @@
+const Deuda = require('../models/deuda.model');
 const multer = require('multer');
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -49,7 +50,17 @@ exports.post_pago_extra_modify = (request, response, next) => {
         })
 };
 
-const Deuda = require('../models/deuda.model');
+exports.post_pago_extra_delete = (request, response, next) => {
+    Pago_Extra.delete(request.body.id)
+        .then(([rows, fieldData]) => {
+            response.status(200).json({
+                success: true
+            });
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+};
 
 exports.get_registro_transferencias = (request, response, next) => {
     response.render('pago/registro_transferencia', {
