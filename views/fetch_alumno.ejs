@@ -78,8 +78,10 @@
             return result.json(); //Regresa otra promesa
         }).then((data) => {
 
+            console.log(data.alumnos_matricula);
+
             const ayuda_vacio = document.querySelector('#ayuda_vacio');
-            if (data.alumnos.length == 0) {
+            if (data.alumnos_matricula.length == 0 && bt_buscar.disabled == true) {
                 ayuda_alumno.classList.add('is-hidden');
                 ayuda_vacio.classList.remove('is-hidden');
             } else {
@@ -87,7 +89,7 @@
             }
 
             $("#buscar").autocomplete({
-                source: data.alumnos.map(function (alumnos) {
+                source: data.alumnos_matricula.map(function (alumnos) {
                     return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
                         alumnos.Matricula);
                 }),
@@ -135,6 +137,18 @@
             ayuda_alumno.classList.add('is-hidden');
         }
     }
+
+    // function mensaje_alumno_no_existente(){
+    //     const ayuda_vacio = document.querySelector('#ayuda_vacio');
+
+    //     if (bt_buscar.disabled == false){
+    //         ayuda_vacio.classList.add('is-hidden');
+    //     }
+    //     else {
+    //         ayuda_vacio.classList.remove('is-hidden');
+    //     }
+    // }
+
 
     buscar.addEventListener('input', buscar_alumno);
     buscar.addEventListener('input', checar_contenido);
