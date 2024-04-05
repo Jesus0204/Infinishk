@@ -1,4 +1,5 @@
 <%- include('../includes/dropdown_admin.ejs') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <style>
     input:focus {
@@ -13,14 +14,54 @@
         background-color: #5a6581 !important;
         border-color: #910106 !important;
     }
+
+    #notificacion:hover {
+        background-color: #910106 !important;
+        border-color: #000000 !important
+    }
+
+    #notificacion {
+        background-color:#000000;
+    }
 </style>
 
 <section class="section">
     <div class="container">
         <h3 class="title is-3">Pagos Extra</h3>
         <% let count = 0 %>
+        <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+            <button class="delete"></button>
+            ¡Pago extra eliminado!
+        </div>
+
+        <% if (pagos.length == 0) { %>
+        <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+            <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                <p>No existen pagos extras modificables / eliminables </p>
+                <button class="delete" aria-label="delete"></button>
+            </div>
+        <div class="message-body" style="color:#ffffff;">
+            Actualmente no existen pagos extra que se puedan modificar o eliminar.
+            <br>
+            Si quieres registrar un pago extra, da click al siguiente botón:
+            <div class="columns is-vcentered">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <a href="/pagos/registrar_pago_extra" class="button is-rounded is-medium is-responsive"
+                        style="font-size: large; margin: 8px 2px;" id="notificacion">
+                        <span>Registrar Pago Extra</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+    <% } %>
+
         <% for (let pago of pagos) { %>
-        <table class="table is-hoverable is-fullwidth">
+        <table class="table is-hoverable is-fullwidth" id="<%= pago.IDPagosExtras %>">
             <tbody>
                 <div class="columns is-vcentered">
                     <div class="column is-5">
@@ -91,22 +132,74 @@
                 <td style="display: block;">
                     <div class="columns is-vcentered">
                         <div class="column" style="text-align: center;">
-                            <form action="/pagos/pagos_extra/delete" method="POST">
-                                <button type="submit" class="button is-rounded is-medium is-responsive"
+                            <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
                                     style="font-size: medium; background-color: #000000;"
-                                    id="Boton_eliminar<%= count %>">
+                                    id="Boton_eliminar<%= count %>" data-target="modal-confirmar-eliminar<%= count %>">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                     </span>
                                     <span>Eliminar</span>
                                 </button>
-                            </form>
                         </div>
                     </div>
                 </td>
-                </tr>
-            </tbody>
+            </div>
+        </tr>
+        </tbody>
         </table>
+        <div id="modal-confirmar-eliminar<%= count %>" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title" style="text-align: center;">
+                        <strong> Eliminar Pago Extra</strong>
+                    </p>
+                </header>
+                <section class="modal-card-body">
+                    <p class="is-size-5" style="text-align: center;">
+                        <strong>¡Esta acción no se puede deshacer!</strong>
+                    </p>
+                    <br>
+                    <p class="is-size-5" style="text-align: center;">
+                        Los datos del pago extra a eliminar son los siguientes:
+                    </p>
+                    <br>
+                    <div class="columns is-vcentered">
+                        <div class="column is-half">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Motivo: </strong><%= pago.motivoPago %>
+                            </p>
+                        </div>
+                        <div class=" column is-half">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Monto a Pagar: </strong><%= pago.montoPagar.toFixed(2)%>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot" style="justify-content: center;">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                style="font-size: large; margin: 8px 2px;">
+                                <span>Regresar</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-rounded is-medium is-responsive"
+                                onclick="eliminar('<%= pago.IDPagosExtras %>')"
+                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                </span>
+                                <span>Eliminar</span>
+                            </button>
+                </footer>
+            </div>
+        </div>
         <% count++ %>
         <% } %>
         <div class="columns">
@@ -124,6 +217,7 @@
         </div>
     </div>
 </section>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
     for (count = 0; count < '<%= pagos.length %>'; count++) {
         // Crear constantes para acceder a HTML
@@ -162,10 +256,71 @@
             }
         }
 
+        const pago = document.querySelector('#pago' + count)
+
+        const boton_eliminar = document.querySelector('#Boton_eliminar' + count);
+
         // Detectar si el usuario maneja input y llamar las funciones anteriores
         motivo.addEventListener('input', checar_contenido);
         monto.addEventListener('input', checar_contenido);
         motivo.addEventListener('input', mensaje_motivo);
         monto.addEventListener('input', mensaje_monto);
+    
     }
+
+        const eliminar = (id) => {
+        console.log(id);
+        // Enviar los datos al servidor
+        fetch('/pagos/pagos_extra/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+
+                const table = document.getElementById(id);
+
+                if (table) {
+                    table.remove();
+                } else {
+                    console.error(`No se encontró la fila ${id}.`);
+                }
+
+                document.getElementById('modificacion').classList.remove('is-hidden');
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+            })
+            .catch(error => {
+                console.error('Error en la petición fetch:', error);
+            });
+        }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            const $notification = $delete.parentNode;
+
+            $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.message .delete') || []).forEach(($delete) => {
+            const $message = $delete.parentNode.parentNode;
+
+            $delete.addEventListener('click', () => {
+                $message.parentNode.removeChild($message);
+            });
+        });
+    });
+
 </script>

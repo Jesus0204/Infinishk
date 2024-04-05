@@ -29,7 +29,7 @@ exports.post_registrar_pago_extra = (request, response, next) => {
 };
 
 exports.get_pago_extra = (request, response, next) => {
-    Pago_Extra.fetchAll()
+    Pago_Extra.fetchNoAsignados()
         .then(([pagos_extra, fieldData]) => {
             response.render('pago/pagos_extra', {
                 pagos: pagos_extra
