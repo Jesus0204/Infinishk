@@ -78,10 +78,10 @@
             return result.json(); //Regresa otra promesa
         }).then((data) => {
 
-            console.log(data.alumnos_matricula);
+            console.log(data.alumnos)
 
             const ayuda_vacio = document.querySelector('#ayuda_vacio');
-            if (data.alumnos_matricula.length == 0 && bt_buscar.disabled == true) {
+            if (data.alumnos.length == 0 && bt_buscar.disabled == true) {
                 ayuda_alumno.classList.add('is-hidden');
                 ayuda_vacio.classList.remove('is-hidden');
             } else {
@@ -89,7 +89,7 @@
             }
 
             $("#buscar").autocomplete({
-                source: data.alumnos_matricula.map(function (alumnos) {
+                source: data.alumnos.map(function (alumnos) {
                     return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
                         alumnos.Matricula);
                 }),
@@ -148,7 +148,6 @@
     //         ayuda_vacio.classList.remove('is-hidden');
     //     }
     // }
-
 
     buscar.addEventListener('input', buscar_alumno);
     buscar.addEventListener('input', checar_contenido);

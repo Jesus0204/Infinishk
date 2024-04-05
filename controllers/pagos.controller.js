@@ -80,17 +80,21 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
-    .then(([alumno, fieldData]) => {
-        Pago_Extra.fetchAll()
-        .then(([pagos_extra, fieldData]) => {
-            response.render('pago/registrar_solicitud', {
-                alumno: alumno,
-                pagos_extra: pagos_extra
-            })
+        .then(([alumno, fieldData]) => {
+            Pago_Extra.fetchAll()
+                .then(([pagos_extra, fieldData]) => {
+                    response.render('pago/registrar_solicitud', {
+                        alumno: alumno,
+                        pagos_extra: pagos_extra
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
         })
-        .catch((error) => {console.log(error)});
-    })
-    .catch((error) => {console.log(error)});
+        .catch((error) => {
+            console.log(error)
+        });
 };
 
 exports.post_registrar_solicitud = (request, response, next) => {
@@ -107,30 +111,55 @@ exports.post_registrar_solicitud = (request, response, next) => {
 
 exports.get_autocomplete = (request, response, next) => {
     // Con la regular expression sacas toda la matricula
-    let matricula = '';
-    let nombre = '';
-    if (!request.params){
-        matricula = '';
-        nombre = '';
+    let matricula = '   ';
+    let nombre = '   ';
+    if (!request.params) {
+        matricula = ' ';
+        nombre = ' ';
     } else if (!request.params.valor_busqueda) {
-        matricula = '';
-        nombre = '';
+        matricula = ' ';
+        nombre = ' ';
     } else {
         let matches_matricula = request.params.valor_busqueda.match(/(\d+)/);
-        let matches_nombre = request.params.valor_busqueda.match(/^[a-zA-Z]+$/);
+        let matches_nombre = request.params.valor_busqueda.replace(/[0-9]/g, '');
 
-        if (matches_matricula){
+        if (matches_matricula && matches_nombre != '') {
             matricula = matches_matricula[0];
-        } else if (matches_nombre){
+            nombre = matches_nombre;
+
+            Alumno.fetch_both(matricula, nombre)
+                .then(([alumnos, fieldData]) => {
+                    return response.status(200).json({
+                        alumnos: alumnos
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        } else if (matches_matricula) {
+            matricula = matches_matricula[0];
+
+            Alumno.fetch(matricula)
+                .then(([alumnos, fieldData]) => {
+                    return response.status(200).json({
+                        alumnos: alumnos,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        } else if (matches_nombre) {
             nombre = matches_nombre[0];
+
+            Alumno.fetch(nombre)
+                .then(([alumnos, fieldData]) => {
+                    return response.status(200).json({
+                        alumnos: alumnos
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         }
     }
-
-    Alumno.fetch(matricula)
-    .then(([alumnos_matricula, fieldData]) => {
-        return response.status(200).json({
-            alumnos_matricula: alumnos_matricula
-        });
-    })
-    .catch((error) => {console.log(error)});
 };
