@@ -26,4 +26,8 @@ module.exports = class PagoExtra {
         WHERE IDPagosExtras = ?`, [motivo, monto, id]);
     }
 
+    static delete(id) {
+        return db.execute(`DELETE FROM pagosExtras WHERE IDPagosExtras = ?`, [id]);
+    }
+
 };
