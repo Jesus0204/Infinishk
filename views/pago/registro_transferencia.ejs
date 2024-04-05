@@ -309,35 +309,38 @@
                             });
                         });
 
-
-
                         document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
                             form.addEventListener('submit', (event) => {
                                 event.preventDefault();
-                                // Crear un objeto FormData con los datos del formulario
                                 const formData = new FormData(form);
-                                // Enviar los datos al servidor
                                 fetch('/pagos/resultadoTransferencia', {
                                     method: 'POST',
                                     body: formData
                                 })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Error en la respuesta del servidor');
-                                        }
-                                        // Si la respuesta fue exitosa, eliminar la fila de la tabla
-                                        const filaId = form.parentElement.parentElement.id;
-                                        const fila = document.getElementById(filaId);
-                                        if (fila) {
-                                            fila.remove();
+                                    .then(response => response.json()) // Convertir la respuesta a JSON
+                                    .then(data => {
+                                        if (!data.success) {
+                                            // Manejar el caso en que success no es true
+                                            console.error('La operación no fue exitosa:', data);
+                                            // Aquí puedes agregar código para mostrar un mensaje de error al usuario
+                                            alert('Por favor verifica tu tipo de pago');
                                         } else {
-                                            console.error(`No se encontró la fila ${filaId}.`);
+                                            // Si la respuesta fue exitosa, eliminar la fila de la tabla
+                                            const filaId = form.parentElement.parentElement.id;
+                                            const fila = document.getElementById(filaId);
+                                            if (fila) {
+                                                fila.remove();
+                                            } else {
+                                                console.error(`No se encontró la fila ${filaId}.`);
+                                            }
                                         }
                                     })
                                     .catch(error => {
                                         console.error('Error en la petición fetch:', error);
+                                        alert('Por favor verifica tu tipo de pago.');
                                     });
                             });
                         });
+
                     </script>
     </body>

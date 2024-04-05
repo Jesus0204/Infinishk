@@ -13,7 +13,7 @@ module.exports = class PagoExtra {
     }
 
     static fetchID(importe){
-        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
+        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ? AND pagoExtraActivo = 1',[importe]);
     }
 
 };

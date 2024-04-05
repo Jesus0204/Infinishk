@@ -113,6 +113,7 @@ exports.post_subir_archivo = (request, response,next) => {
 };
 
 exports.post_registrar_transferencia = async (request, response, next) => {
+        let success = true;
         const pagosRegistrar = [];
         const nombre = request.body.nombre;
         const matricula = request.body.matricula;
@@ -136,15 +137,20 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         else if(tipoPago === 'Pago Extra'){
             const idLiquida = await Liquida.fetchID(matricula);
             if(idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined'){
-                Liquida.update_transferencia(nota,fecha,idLiquida[0][0].IDLiquida)
+                Liquida.update_transferencia(nota,fecha,idLiquida[0][0].IDLiquida,importe)
             }
             else{
                 const idPagoExtra = await pagoExtra.fetchID(importe);
-                Liquida.save_transferencia(matricula,idPagoExtra[0][0].IDPagosExtras,fecha,nota);
+                if(idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined'){
+                    Liquida.save_transferencia(matricula,idPagoExtra[0][0].IDPagosExtras,fecha,nota,importe);
+                }
+                else{
+                    success = false;
+                }
             }
         }
         
-        response.json({sucess: true});
+        response.json({success: success});
 }
 
 
