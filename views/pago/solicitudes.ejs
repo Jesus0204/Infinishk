@@ -246,6 +246,7 @@
                 }
 
                 document.getElementById('modificacion').classList.remove('is-hidden');
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
             })
             .catch(error => {
                 console.error('Error en la petición fetch:', error);
