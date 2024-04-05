@@ -8,7 +8,11 @@ module.exports = class PagoExtra {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM pagosExtras');
+        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras IN (SELECT IDPagosExtras FROM Liquida)');
+    }
+
+    static fetchNoAsignados() {
+        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras NOT IN (SELECT IDPagosExtras FROM Liquida)');
     }
 
     static fetchOne(id){
