@@ -110,22 +110,18 @@ exports.post_registrar_solicitud = (request, response, next) => {
 };
 
 exports.get_autocomplete = (request, response, next) => {
-    // Con la regular expression sacas toda la matricula
-    let matricula = '   ';
-    let nombre = '   ';
-    if (!request.params) {
-        matricula = ' ';
-        nombre = ' ';
-    } else if (!request.params.valor_busqueda) {
-        matricula = ' ';
-        nombre = ' ';
-    } else {
+    
+    if (request.params && request.params.valor_busqueda) {
+        let matricula = ' ';
+        let nombre = ' ';
+        // Con la regular expression sacas toda la matricula
         let matches_matricula = request.params.valor_busqueda.match(/(\d+)/);
+        // Y con esta sacas el texto para manejar todo tipo de busqueda
         let matches_nombre = request.params.valor_busqueda.replace(/[0-9]/g, '');
 
         if (matches_matricula && matches_nombre != '') {
             matricula = matches_matricula[0];
-            nombre = matches_nombre;
+            nombre = matches_nombre.trim();
 
             Alumno.fetch_both(matricula, nombre)
                 .then(([alumnos, fieldData]) => {
@@ -148,8 +144,8 @@ exports.get_autocomplete = (request, response, next) => {
                 .catch((error) => {
                     console.log(error)
                 });
-        } else if (matches_nombre) {
-            nombre = matches_nombre[0];
+        } else if (matches_nombre != '') {
+            nombre = matches_nombre;
 
             Alumno.fetch(nombre)
                 .then(([alumnos, fieldData]) => {

@@ -88,6 +88,11 @@
                 ayuda_vacio.classList.add('is-hidden');
             }
 
+            if (data.alumnos.length === 1) {
+                alumno = data.alumnos[0].Nombre + ' ' + data.alumnos[0].Apellidos + ' ' +
+                data.alumnos[0].Matricula;
+            }
+
             $("#buscar").autocomplete({
                 source: data.alumnos.map(function (alumnos) {
                     return (alumnos.Nombre + ' ' + alumnos.Apellidos + ' ' +
@@ -110,15 +115,14 @@
     });
 
     const ayuda_buscar = document.querySelector('#ayuda_buscar');
+    const ayuda_vacio = document.querySelector('#ayuda_vacio');
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
-        bt_buscar.disabled = buscar.value.length === 0
-    }
-
-    function mensaje_buscar() {
+        bt_buscar.disabled = buscar.value.length === 0;
         if (buscar.value.length === 0) {
             ayuda_buscar.classList.remove('is-hidden');
+            ayuda_vacio.classList.add('is-hidden');
         } else {
             ayuda_buscar.classList.add('is-hidden');
         }
@@ -151,6 +155,5 @@
 
     buscar.addEventListener('input', buscar_alumno);
     buscar.addEventListener('input', checar_contenido);
-    buscar.addEventListener('input', mensaje_buscar);
     buscar.addEventListener('input', checar_alumno);
 </script>
