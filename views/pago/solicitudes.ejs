@@ -228,15 +228,9 @@
         $('#pago' + count).change(function () {
             // Sacas el monto de la opcion con data-monto
             let num_monto = $(this).find(':selected').data('monto');
-            // Sacas el motivo de la opcion con data-monto
-            let motivo = $(this).find(':selected').text();
             // Cambias el DOM para mostrar el precio correcto
             const monto = document.querySelector('#monto' + count);
             monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
-            // Cambias el DOM dentro del modal
-            document.querySelector('#monto_modal' + count).innerHTML = '<strong>Monto: </strong> $' + num_monto;
-            document.querySelector('#motivo_modal' + count).innerHTML = '<strong>Motivo Pago: </strong>' +
-                motivo;
         });
 
         function enviar_modal(event) {
@@ -292,10 +286,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-            const $notification = $delete.parentNode;
 
             $delete.addEventListener('click', () => {
-                $notification.parentNode.removeChild($notification);
+                document.getElementById('modificacion').classList.add('is-hidden');
             });
         });
     });
