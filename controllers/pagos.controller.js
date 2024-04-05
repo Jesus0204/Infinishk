@@ -102,7 +102,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
 
     solicitud_pago.save()
         .then(([rows, fieldData]) => {
-            response.redirect('/solicitudes');
+            response.redirect('/pagos/solicitudes');
         })
         .catch((error) => {
             console.log(error)
