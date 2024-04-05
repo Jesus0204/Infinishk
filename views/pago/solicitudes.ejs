@@ -35,8 +35,12 @@
         </div>
         <% if (solicitudes.length == 0) { %>
         <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+            <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                <p>No existen solicitudes</p>
+                <button class="delete" aria-label="delete"></button>
+            </div>
             <div class="message-body" style="color:#ffffff;">
-                Ahorita no existen solicitudes de pago que se puedan modificar. 
+                Actualmente no existen solicitudes de pago que se puedan modificar.
                 <br>
                 Si quieres registrar una solicitud, da click al siguiente botón:
                 <div class="columns is-vcentered">
@@ -276,7 +280,9 @@
                 }
 
                 document.getElementById('modificacion').classList.remove('is-hidden');
-                $('html, body').animate({ scrollTop: 0 }, 'slow');
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
             })
             .catch(error => {
                 console.error('Error en la petición fetch:', error);
@@ -289,6 +295,16 @@
 
             $delete.addEventListener('click', () => {
                 $notification.parentNode.removeChild($notification);
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.message .delete') || []).forEach(($delete) => {
+            const $message = $delete.parentNode.parentNode;
+
+            $delete.addEventListener('click', () => {
+                $message.parentNode.removeChild($message);
             });
         });
     });
