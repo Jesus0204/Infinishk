@@ -35,7 +35,7 @@ button[disabled]{
 .button:hover {
 background-color: #000000;
 color: #ffffff;
-border: solid #95404c;
+border-color: #95404c;
 }
 
 .button:focus {
@@ -88,4 +88,5 @@ content:'✓';
 position: absolute;
 display: none;
 } 
+
  

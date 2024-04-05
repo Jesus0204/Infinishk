@@ -1,0 +1,109 @@
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Registrar Nuevo Pago Extra</h3>
+            </div>
+        </div>
+        <form action="/pagos/registrar_pago_extra" method="POST">
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="motivo">Motivo: </label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
+                        style="padding: 0.5em; margin-top: -1em;">Por favor
+                        escribe un concepto de Pago Extra.</p>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                placeholder="Concepto del nuevo Pago Extra">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="monto">Monto:</label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                        style="padding: 0.5em; margin-top: -1em;">
+                        Por favor
+                        escribe un monto válido del Pago Extra.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                        style="padding: 0.5em; margin-top: -1em;">Por
+                        favor escribe un número mayor a 0. Un monto no puede ser un número negativo.</p>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                placeholder="Monto del nuevo Pago Extra">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                        <span>Registrar Pago Extra</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="column is-3"></div>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Crear constantes para acceder a HTML
+        const bt_Registrar = document.querySelector('#Boton_registrar');
+        const motivo = document.querySelector('#motivo');
+        const monto = document.querySelector('#monto');
+        const ayuda_motivo = document.querySelector('#ayuda_motivo');
+        const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
+        const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+
+        // Checar si hay contenido dentro del input, pata desactivar el boton
+        function checar_contenido() {
+            bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0;
+        }
+
+        // Activar mensaje si el motivo no tiene input
+        function mensaje_motivo() {
+            if (motivo.value.length === 0) {
+                ayuda_motivo.classList.remove('is-hidden');
+            } else {
+                ayuda_motivo.classList.add('is-hidden');
+            }
+        }
+
+        function mensaje_monto() {
+            if (monto.value.length === 0) {
+                ayuda_monto_vacio.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_vacio.classList.add('is-hidden');
+            }
+
+            if (monto.value < 0) {
+                ayuda_monto_negativo.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_negativo.classList.add('is-hidden');
+            }
+        }
+        // Detectar si el usuario maneja input y llamar las funciones anteriores
+        motivo.addEventListener('input', checar_contenido);
+        monto.addEventListener('input', checar_contenido);
+        motivo.addEventListener('input', mensaje_motivo);
+        monto.addEventListener('input', mensaje_monto);
+    </script>
+</section>

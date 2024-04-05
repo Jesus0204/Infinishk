@@ -1,0 +1,171 @@
+<%- include('../includes/dropdown_admin.ejs') %>
+
+<style>
+    input:focus {
+        border: 2px solid #910106 !important
+    }
+
+    input:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
+    .button:hover {
+        background-color: #5a6581 !important;
+        border-color: #910106 !important;
+    }
+</style>
+
+<section class="section">
+    <div class="container">
+        <h3 class="title is-3">Pagos Extra</h3>
+        <% let count = 0 %>
+        <% for (let pago of pagos) { %>
+        <table class="table is-hoverable is-fullwidth">
+            <tbody>
+                <div class="columns is-vcentered">
+                    <div class="column is-5">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo<%= count %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">Por favor
+                            escribe un concepto de Pago Extra.</p>
+                    </div>
+                    <div class="column">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio<%= count %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor
+                            escribe un monto válido del Pago Extra.</p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo<%= count %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">Por
+                            favor escribe un número mayor a 0. Un monto no puede ser un número negativo.</p>
+                    </div>
+                </div>
+                <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
+                    <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
+                    <tr style="display: table-cell;">
+                        <td style="display: block; border: none">
+                            <div class="columns is-vcentered">
+                                <div class="column" style="text-align: center;">
+                                    <label class="label is-medium" for="motivo<%= count %>">Motivo: </label>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="motivo" class="input is-medium" type="text"
+                                                id="motivo<%= count %>" placeholder="Concepto del Pago Extra"
+                                                value="<%= pago.motivoPago %>" style=" border: 2px solid #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="column" style="text-align: center;">
+                                    <label class="label is-medium" for="monto<%= count %>">Monto:</label>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="monto" class="input is-medium" type="number" step="any"
+                                                id="monto<%= count %>" placeholder="Monto del Pago Extra"
+                                                value="<%= pago.montoPagar.toFixed(2) %>" style="border: 2px solid
+                                                #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="display: table-cell;">
+                        <td style="display: block;">
+                            <div class="columns is-vcentered">
+                                <div class="column" style="text-align: center;">
+                                    <button type="submit" class="button is-rounded is-medium is-responsive"
+                                        style="font-size: medium;" id="Boton_modificar<%= count %>">
+                                        <span>Modificar</span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                </form>
+                </td>
+                <td style="display: block;">
+                    <div class="columns is-vcentered">
+                        <div class="column" style="text-align: center;">
+                            <form action="/pagos/pagos_extra/delete" method="POST">
+                                <button type="submit" class="button is-rounded is-medium is-responsive"
+                                    style="font-size: medium; background-color: #000000;"
+                                    id="Boton_eliminar<%= count %>">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </span>
+                                    <span>Eliminar</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+        <% count++ %>
+        <% } %>
+        <div class="columns">
+            <div class="column is-6 is-offset-3">
+                <form action="/pagos" method="GET">
+                    <button class="button is-rounded is-medium is-responsive"
+                        style="font-size: medium; margin: 8px 2px;">
+                        <span>Regresar a Pagos</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    for (count = 0; count < '<%= pagos.length %>'; count++) {
+        // Crear constantes para acceder a HTML
+        const bt_Modificar = document.querySelector('#Boton_modificar' + count);
+        const motivo = document.querySelector('#motivo' + count);
+        const monto = document.querySelector('#monto' + count);
+        const ayuda_motivo = document.querySelector('#ayuda_motivo' + count);
+        const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio' + count);
+        const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo' + count);
+
+        // Checar si hay contenido dentro del input, pata desactivar el boton
+        function checar_contenido() {
+            bt_Modificar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0;
+        }
+
+        // Activar mensaje si el motivo no tiene input
+        function mensaje_motivo() {
+            if (motivo.value.length === 0) {
+                ayuda_motivo.classList.remove('is-hidden');
+            } else {
+                ayuda_motivo.classList.add('is-hidden');
+            }
+        }
+
+        function mensaje_monto() {
+            if (monto.value.length === 0) {
+                ayuda_monto_vacio.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_vacio.classList.add('is-hidden');
+            }
+
+            if (monto.value < 0) {
+                ayuda_monto_negativo.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_negativo.classList.add('is-hidden');
+            }
+        }
+
+        // Detectar si el usuario maneja input y llamar las funciones anteriores
+        motivo.addEventListener('input', checar_contenido);
+        monto.addEventListener('input', checar_contenido);
+        motivo.addEventListener('input', mensaje_motivo);
+        monto.addEventListener('input', mensaje_monto);
+    }
+</script>
