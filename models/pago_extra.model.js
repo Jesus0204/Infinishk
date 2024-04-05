@@ -8,7 +8,11 @@ module.exports = class PagoExtra {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM pagosExtras');
+        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras IN (SELECT IDPagosExtras FROM Liquida)');
+    }
+
+    static fetchNoAsignados() {
+        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras NOT IN (SELECT IDPagosExtras FROM Liquida)');
     }
 
     static fetchOne(id){
@@ -24,6 +28,10 @@ module.exports = class PagoExtra {
     static update(id, motivo, monto) {
         return db.execute(`UPDATE pagosExtras SET motivoPago = ?, montoPagar = ?
         WHERE IDPagosExtras = ?`, [motivo, monto, id]);
+    }
+
+    static delete(id) {
+        return db.execute(`DELETE FROM pagosExtras WHERE IDPagosExtras = ?`, [id]);
     }
 
 };

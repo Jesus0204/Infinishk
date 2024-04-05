@@ -9,6 +9,7 @@ router.get('/registrar_pago_extra', pagosController.get__registrar_pago_extra);
 router.post('/registrar_pago_extra', pagosController.post_registrar_pago_extra);
 router.get('/pagos_extra', pagosController.get_pago_extra);
 router.post('/pagos_extra/modify', pagosController.post_pago_extra_modify);
+router.post('/pagos_extra/delete', pagosController.post_pago_extra_delete);
 router.get('/registroTransferencia', pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', pagosController.post_subir_archivo);
 

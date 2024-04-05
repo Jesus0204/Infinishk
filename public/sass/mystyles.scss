@@ -3,9 +3,6 @@
 @import "../../node_modules/bulma/sass/utilities/initial-variables";
 @import "../../node_modules/bulma/sass/utilities/functions";
 
-@import 'bulma';
-@import '~bulma-calendar';
-
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -45,6 +42,16 @@ $navbar-dropdown-item-hover-background-color: $rojo;
     background-color: black; /* Cambia el color de fondo a negro */
     color: white !important; /* Cambia el color del texto a blanco */
   }
+
+.ui-menu-item{
+  font-family: "Poppins", sans-serif;
+}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active{
+  background-color: $negro;
+  color: $blanco;
+  border-color: $vino;
+}
 
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
