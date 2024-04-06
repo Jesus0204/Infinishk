@@ -77,37 +77,60 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class=" columns is-vcentered">
-                                <div class="column is-8">
-                                    <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
-                                width: 150px; text-align: right; padding-right:3px; padding-top: 0.5em;">Motivo
-                                        Pago:</label>
-                                    <div class="select is-medium">
-                                        <select class="select_pago" name="pago" id="pago<%= count %>"
-                                            style="border: 2px solid #7c7f80;">
-                                            <% for (let pago of pagos) { %>
-                                            <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
-                                            <option value="<%= pago.IDPagosExtras %>"
-                                                data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
-                                                <%= pago.motivoPago %></option>
-                                            <% } else { %>
-                                            <option value="<%= pago.IDPagosExtras %>"
-                                                data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                                <%= pago.motivoPago %></option>
-                                            <% } %>
-                                            <% } %>
-                                        </select>
+                        </td>
+                            <td style="display: block;">
+                                <div class="columns is-vcentered">
+                                    <div class="column is-5">
+                                        <div class="column is-vcentered" style="text-align: center;">
+                                            <div class="column">
+                                                <p class="is-size-5" id="motivo<%= count %>"
+                                                    style="margin-bottom: -1.3em;">
+                                                    <strong>Motivo actual: </strong>
+                                                    <%= solicitud.motivoPago %>
+                                                </p>
+                                            </div>
+                                            <br>
+                                            <div class="column is-narrow">
+                                                <p class="is-size-5">
+                                                    <strong>Monto actual: </strong>
+                                                    $<%= solicitud.montoPagar.toFixed(2) %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <div class=" columns is-vcentered">
+                                            <div class="column">
+                                                <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
+                                            width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Motivo
+                                                    Pago:</label>
+                                                <div class="select">
+                                                    <select class="select_pago" name="pago" id="pago<%= count %>"
+                                                        style="border: 2px solid #7c7f80;">
+                                                        <% for (let pago of pagos) { %>
+                                                        <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                                        <option value="<%= pago.IDPagosExtras %>"
+                                                            data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
+                                                            <%= pago.motivoPago %></option>
+                                                        <% } else { %>
+                                                        <option value="<%= pago.IDPagosExtras %>"
+                                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                                            <%= pago.motivoPago %></option>
+                                                        <% } %>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                                <div class="column is-narrow">
+                                                    <p class="is-size-5" id="monto<%= count %>">
+                                                        <strong>Monto: </strong>
+                                                        $<%= solicitud.montoPagar.toFixed(2) %>
+                                                    </p>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
-                                <div class="column is-vcentered" style="text-align: center;">
-                                    <p class="is-size-5" id="monto<%= count %>" style="margin-bottom: -1.3em;">
-                                        <strong>Monto: </strong>
-                                        $<%= solicitud.montoPagar.toFixed(2) %>
-                                    </p>
-                                    <br>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
                 </tr>
                 <tr style="display: table-cell;">
                     <td style="display: block;">
