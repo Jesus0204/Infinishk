@@ -9,10 +9,10 @@ module.exports = class Diplomado{
     }
 
 
-    static save(duracion,precio,nombre) {
+    static save(duracion,precio,nombre,status) {
         return db.execute(
-            `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
-                [duracion,precio,nombre]);
+            `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado,diplomadoActivo) VALUES ( ?, ?, ?,?)`, 
+                [duracion,precio,nombre,status]);
     }
 
     static fetchAll() {

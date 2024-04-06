@@ -7,6 +7,7 @@
         <div class="container" style="display: flex; justify-content: center;">
             <p class="title" style="text-align: center;">Registrar Diplomado</p>
             <form id="formDiplomado" action="/diplomado/registrar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                <input type="hidden" name="statusDiplomado" value="1">
                 <label for="Duracion" class="label is-large">Duración:</label>
                 <input type="text" id="Duracion" name="Duracion" required class="input is-large">
                 <label for="precioDiplomado" class="label is-large">Precio:</label>
@@ -28,13 +29,18 @@
             var precio = document.getElementById("precioDiplomado").value;
             var nombre = document.getElementById("nombreDiplomado").value;
             var formValid = true;
+            var valor = document.getElementById('precioDiplomado').value;
 
             if (!duracion || !precio || !nombre) {
                 displayError("Por favor rellena todos los datos.");
                 formValid = false;
-            } else if (precio <= 0) {
+            } else if (parseFloat(precio) <= 0) {
                 displayError("El precio debe ser mayor a 0.");
                 formValid = false;
+            } else if (valor.includes('e') || valor.includes('E')) {
+                    mensaje = 'El precio no puede tener exponentes';
+                    $('#alerta').text(mensaje).show();
+                    $('button[type="submit"]').prop('disabled', true).addClass('is-light');
             } else {
                 clearError();
             }
