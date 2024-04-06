@@ -74,11 +74,13 @@ exports.post_modificar_diplomado = (request,response,next) => {
     const precio = request.body.precioDiplomado;
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
+    const status = request.body.statusDiplomado;
     console.log(id);
     console.log(precio);
     console.log(duracion);
     console.log(nombre);
-    Diplomado.update(id,duracion,precio,nombre)
+    console.log(status);
+    Diplomado.update(id,duracion,precio,nombre,status)
     .then(() => {
         return Diplomado.fetchOne(nombre)
     })
