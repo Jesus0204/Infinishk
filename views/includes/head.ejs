@@ -30,9 +30,151 @@
         </div>
         <div id="navbarViaDiseño" class="navbar-menu">
             <div class="navbar-start">
-                <div class="navbar-item">
-                    username
-                </div>
+                <% if (rol == 1) { %> 
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </span>
+                            Diplomado
+                        </a>
+                        <div class="navbar-dropdown">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-bell"></i>
+                            </span>
+                            Registrar Diplomado
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </span>
+                            Modificar Diplomado
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-clipboard"></i>
+                            </span>
+                            Consultar Diplomado
+                        </a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-users"></i>
+                            </span>
+                            Usuarios
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                Consultas
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-clipboard-user"></i>
+                                </span>
+                                Registros
+                            </a>
+                        </div>
+                    </div>
+
+                     <div class="navbar-item has-dropdown is-hoverable">
+                         <a class="navbar-link">
+                             <span class="icon is-large">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                             </span>
+                             Estado de Cuenta
+                         </a>
+
+                         <div class="navbar-dropdown">
+                             <a class="navbar-item" href="/">
+                                 <span class="icon is-large">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                 </span>
+                                 Modificar Pago
+                             </a>
+                             <hr class="navbar-divider">
+                             <a class="navbar-item" href="/">
+                                 <span class="icon is-large">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                 </span>
+                                 Consultar Estado Cuenta
+                             </a>
+                         </div>
+                     </div>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </span>
+                            Pagos
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-file-invoice"></i>
+                                </span>
+                                Registros
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </span>
+                                Reportes
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </span>
+                                Solicitudes de Pago
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/">
+                                 <span class="icon is-large">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                 </span>
+                                Pagos Extra
+                            </a>
+                            </div>
+                        </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-gear"></i>
+                            </span>
+                            Configuracion
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-money-bills"></i>
+                                </span>
+                                Precio Crédito
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-calendar-week"></i>
+                                </span>
+                                Planes de Pago
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
 
                 <% if (rol == 2) { %>
                 <a class="navbar-item" href="/">

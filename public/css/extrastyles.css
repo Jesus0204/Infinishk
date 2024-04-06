@@ -1,109 +1,13 @@
-.navbar-menu{
-  font-size: 25px; /* Ajusta este valor a tus necesidades */
+.navbar-item {
+  font-size: 20px; /* Reduce el tamaño de la fuente */
 }
 
-
-.headbar{
-  background-color: white;
-  height: 125px;
-  position: relative;
-  z-index: 30;
+.navbar {
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
 }
-
-
-.headbar-start, .headbar-item{
-  color: #000000;
-  margin:20px;
-  padding:20px;
-  text-align: center;
-}
-
-.headbar-img{
-  width: 135px;
-  height:135px;
-}
-
-.headbar-item {
-  color: #000000; /* Ajusta este valor al color que prefieras */
-  margin:20px;
-  padding:20px;
-  text-align: center;
-} 
-
-.sidebar-menu {
-  font-size: 25px;
-  margin-top: 0;
-  margin-left: 0;
-  padding-top: 0;
-  padding-right: 0;
-  font-size: 25px;
-  color:#000000;
-  }
-  /* Estilos para pantallas de tamaño grande */
-@media (min-width: 1200px) {
-  .sidebar-menu {
-    width: 300px; /* Ajusta este valor al ancho que prefieras para pantallas grandes */
-  }
-}
-
-/* Estilos para pantallas de tamaño mediano */
-@media (min-width: 768px) and (max-width: 1199px) {
-  .sidebar-menu {
-    width: 200px; /* Ajusta este valor al ancho que prefieras para pantallas medianas */
-  }
-}
-
-/* Estilos para pantallas de tamaño pequeño */
-@media (max-width: 767px) {
-  .sidebar-menu {
-    width: 100px; /* Ajusta este valor al ancho que prefieras para pantallas pequeñas */
-  }
-}
-
-
-.sidebar-list{
-  line-height: 2.25; 
-  background-color: #ffffff;
-  height: 100vh;
-  width: 75%; /* Esto hace que el elemento ocupe todo el ancho de su contenedor */
-  float: left;
-}
-
-.current-page {
-  background-color: black; /* Cambia el color de fondo a negro */
-  color: white !important; /* Cambia el color del texto a blanco */
-}
-
-.main-content{
-  font-size:50px;
-  text-align: center;
-}
-
-
-/* Estilos específicos para pantallas pequeñas */
-@media (min-width: 100px) and (max-width: 1200px),(orientation: landscape) {
-  .navbar-item {
-    font-size: 20px; /* Reduce el tamaño de la fuente */
-  }
-  .navbar-start {
-    background-color: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
-    width: 100%;
-    height: auto; /* Permite que el elemento se ajuste a su contenido */
-    justify-content: flex-start;
-  }
-  .navbar-dropdown {
-    display:none; /* Asegura que el menú desplegable se expanda horizontalmente */
-  }
-  .navbar-dropdown.open{
-    display:block;
-    align-items: end;
-  }
-
-  .navbar-end {
-    display: flex;
-    justify-content: flex-end;
-  }
+  
+.navbar-start {
+  width: 100%;
 }
 
 .button {
@@ -114,6 +18,18 @@
   border: solid #95404c;
   padding: 6px 6px;
   height: auto;
+}
+
+.button:disabled,
+button[disabled]{
+  border: 1px solid #910106;
+  background-color: #95404c;
+  color: #ffffff;
+}
+
+.button:hover:disabled,
+button[disabled]{
+  background-color: #7c7f80;
 }
 
 .button:hover {
