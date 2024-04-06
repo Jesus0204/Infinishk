@@ -44,11 +44,9 @@
                                             value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
 
                                         <label for="statusDiplomado" class="label is-large">Status:</label>
-                                        <input type="hidden" id="statusDiplomadoHidden" name="statusDiplomado"
-                                            value="1">
                                         <label class="checkbox">
-                                            <input type="checkbox" id="statusDiplomado" name="statusDiplomado" value="0"
-                                                onclick="checkStatus()">
+                                            <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
+                                                onclick="toggleInputs()" checked>
                                             <span class="checkmark"></span>
                                         </label>
 
@@ -149,17 +147,29 @@
                 });
             });
 
-            function checkStatus() {
+            document.getElementById('statusDiplomado').addEventListener('change', function () {
+                var hiddenInput = document.getElementById('statusDiplomadoHidden');
+                hiddenInput.value = this.checked ? 'on' : 'off';
+            });
+
+            function toggleInputs() {
                 var checkbox = document.getElementById('statusDiplomado');
-                var hidden = document.getElementById('statusDiplomadoHidden');
-                // Si el checkbox está marcado, deshabilitamos el campo oculto para que no se envíe
-                if (checkbox.checked) {
-                    hidden.disabled = true;
-                } else {
-                    // Si el checkbox no está marcado, habilitamos el campo oculto para que se envíe
-                    hidden.disabled = false;
-                }
+                var inputs = document.querySelectorAll('#Duracion, #precioDiplomado, #nombreDiplomado');
+                inputs.forEach(function (input) {
+                    input.disabled = !checkbox.checked;
+                });
             }
+
+            document.querySelector('form').addEventListener('submit', function () {
+                var inputs = document.querySelectorAll('#Duracion, #precioDiplomado, #nombreDiplomado');
+                inputs.forEach(function (input) {
+                    input.disabled = false;
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                toggleInputs(); // Llamar a la función al cargar la página para establecer el estado inicial correcto
+            });
 
         </script>
     </body>

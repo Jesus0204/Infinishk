@@ -19,6 +19,12 @@
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
+                                <p class="title is-4 has-text-black">Status:</p>
+                                <% if (diplomado.diplomadoActivo === 1) { %>
+                                    <p class="subtitle is-4 has-text-grey"> Activo</p>
+                                <% } else { %>
+                                    <p class="subtitle is-4 has-text-grey"> No Activo </p>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -44,6 +50,12 @@
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
+                                <p class="title is-4 has-text-black">Status:</p>
+                                <% if (diplomado.diplomadoActivo === 1) { %>
+                                    <p class="subtitle is-4 has-text-grey"> Activo</p>
+                                <% } else { %>
+                                    <p class="subtitle is-4 has-text-grey"> No Activo </p>
+                                <% } %>
                             </div>
                         </div>
                     </div>

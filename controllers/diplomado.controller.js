@@ -74,7 +74,7 @@ exports.post_modificar_diplomado = (request,response,next) => {
     const precio = request.body.precioDiplomado;
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
-    const status = request.body.statusDiplomado;
+    const status = request.body.statusDiplomado === 'on' ? '1' : '0';
     console.log(id);
     console.log(precio);
     console.log(duracion);
