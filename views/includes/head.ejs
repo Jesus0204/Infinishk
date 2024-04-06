@@ -33,9 +33,9 @@
                 <div class="navbar-item">
                     username
                 </div>
-                    
+
                 <% if (rol == 2) { %>
-                    <a class="navbar-item" href="/">
+                <a class="navbar-item" href="/">
                     <span class="icon is-large">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </span>
@@ -95,7 +95,6 @@
                             </span>
                             Estado de Cuenta Alumno
                         </a>
-                        <hr class="navbar-divider">
                     </div>
                 </div>
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -127,7 +126,6 @@
                             </span>
                             Periodo
                         </a>
-                        <hr class="navbar-divider">
                     </div>
                 </div>
                 <% } %>
@@ -156,4 +154,17 @@
                 <% } %>
             </div>
     </nav>
+    <script>
+        $(document).ready(function () {
+
+            // Check for click events on the navbar burger icon
+            $(".navbar-burger").click(function () {
+
+                // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                $(".navbar-burger").toggleClass("is-active");
+                $(".navbar-menu").toggleClass("is-active");
+
+            });
+        });
+    </script>
 </body>
