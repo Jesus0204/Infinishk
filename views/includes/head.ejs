@@ -33,36 +33,123 @@
                 <div class="navbar-item">
                     username
                 </div>
-                <% for (let permiso of permisos) { %>
-            
-                    <% if (rol == 3) { %>
-                        <% if (permiso.nombreCasoUso == 'Consultar Propuesta de Horario') { %>
+                    
+                <% if (rol == 2) { %>
+                    <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </span>
+                    Diplomado
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        Alumnos
+                    </a>
+
+                    <div class="navbar-dropdown">
                         <a class="navbar-item" href="/">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-calendar-week"></i>
                             </span>
-                            Horario
+                            Diplomado
                         </a>
-                        <% } %>
                         <hr class="navbar-divider">
-                        <% if (permiso.nombreCasoUso == 'Realizar Pago') { %>
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </span>
+                        Pagos
+                    </a>
+
+                    <div class="navbar-dropdown">
                         <a class="navbar-item" href="/">
                             <span class="icon is-large">
-                                <i class="fa-solid fa-dollar-sign"></i>
+                                <i class="fa-solid fa-calendar-week"></i>
                             </span>
-                            Realizar Pago
+                            Registrar Solicitud de Pago
                         </a>
-                        <% } %>
                         <hr class="navbar-divider">
-                        <% if (permiso.nombreCasoUso == 'Consultar estado de cuenta') { %>
                         <a class="navbar-item" href="/">
                             <span class="icon is-large">
-                                <i class="fa-solid fa-money-check-dollar"></i>
+                                <i class="fa-solid fa-calendar-week"></i>
                             </span>
-                            Estado de cuenta
+                            Modificar Solicitud de Pago
                         </a>
-                        <% } %>
-                    <% } %>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Consultar estado de cuenta alumno
+                        </a>
+                        <hr class="navbar-divider">
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        Configuracion
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Costo Crédito
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Plan de Pago
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Periodo
+                        </a>
+                        <hr class="navbar-divider">
+                    </div>
+                </div>
+                <% } %>
+
+                <% if (rol == 3) { %>
+                <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-calendar-week"></i>
+                    </span>
+                    Horario
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </span>
+                    Realizar Pago
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                    </span>
+                    Estado de cuenta
+                </a>
                 <% } %>
             </div>
     </nav>
