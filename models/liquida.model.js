@@ -20,15 +20,15 @@ module.exports = class Liquida {
         return db.execute('Select Pagado from liquida WHERE Matricula = ?',[matricula]);
     }
 
-    static save_transferencia(matricula,id,fecha,nota,importe) {
+    static save_transferencia(matricula,id,fecha,nota) {
         return db.execute(
-            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, tipoPago, Pagado, Nota, montoPagado) VALUES (?,?,?,'Transferencia','1',?,?)`, 
-                [matricula,id,fecha,nota,importe]);
+            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, tipoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`, 
+                [matricula,id,fecha,nota]);
     }
 
 
-    static update_transferencia(nota,fecha,id,importe){
-        return db.execute('UPDATE liquida SET Pagado = 1, tipoPago= "Transferencia", fechaPago=?, Nota = ?, montoPagado = ? WHERE IDLiquida = ?',
-        [fecha,nota, id,importe]);
+    static update_transferencia(nota,fecha,id){
+        return db.execute('UPDATE liquida SET Pagado = 1, tipoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        [fecha,nota, id]);
     }
 }
