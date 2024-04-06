@@ -40,4 +40,14 @@ module.exports = class Usuario{
             AND C.IDCasoUso = Ca.IDCasoUso`,
             [IDUsuario]);
     }
+
+    static getRol(IDUsuario) {
+        return db.execute(`SELECT Ca.nombreCasoUso, P.IDRol
+        FROM Usuario U
+        JOIN Posee P ON U.IDUsuario = P.IDUsuario
+        JOIN Rol R ON P.IDRol = R.IDRol
+        JOIN Contiene C ON R.IDRol = C.IDRol
+        JOIN CasoUso Ca ON C.IDCasoUso = Ca.IDCasoUso
+        WHERE U.IDUsuario = ?`, [IDUsuario]);
+    }
 }

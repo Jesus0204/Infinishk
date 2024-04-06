@@ -1,5 +1,8 @@
 exports.get_S1 = (request, response, next) => {
-    response.render('S1');
+    response.render('S1', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+    });
 };
 exports.get_S2 = (request, response, next) => {
     response.render('S2');

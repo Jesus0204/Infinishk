@@ -10,7 +10,11 @@ const csvParser = require('csv-parser');
 const fs = require('fs');
 
 exports.get_pago = (request,response,next) => {
-    response.render('pago/pago');
+    response.render('pago/pago', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
 };
 
 exports.get_registro_transferencias = (request,response,next) => {

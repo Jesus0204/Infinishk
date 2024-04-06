@@ -1,7 +1,3 @@
-const {
-    request,
-    response
-} = require('express');
 const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
@@ -14,6 +10,7 @@ exports.get_login = (request, response, next) => {
         error: error,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
     });
 };
 
@@ -30,12 +27,18 @@ exports.post_login = (request, response, next) => {
                         if (doMatch) {
                             Usuario.getPermisos(user.IDUsuario)
                                 .then(([permisos, fieldData]) => {
-                                    request.session.isLoggedIn = true;
-                                    request.session.permisos = permisos;
-                                    console.log(request.session.permisos);
-                                    request.session.username = user.username;
-                                    return request.session.save(err => {
-                                        response.redirect('/S1');
+                                    Usuario.getRol(user.IDUsuario)
+                                    .then(([rol, fieldData]) => {
+                                        request.session.isLoggedIn = true;
+                                        request.session.permisos = permisos;
+                                        request.session.rol = rol[0].IDRol;
+                                        request.session.username = user.username;
+                                        return request.session.save(err => {
+                                            response.redirect('/pagos');
+                                        })
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
                                     })
                                 })
                                 .catch((error) => {
@@ -77,6 +80,7 @@ exports.get_signup = (request, response, next) => {
         error: error,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
     });
 };
 

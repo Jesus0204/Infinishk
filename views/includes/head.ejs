@@ -8,6 +8,7 @@
     <link href="/css/mystyles.css" rel="stylesheet" type="text/css">
     <link href="/css/extrastyles.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/98026b1a47.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -30,31 +31,39 @@
         <div id="navbarViaDiseño" class="navbar-menu">
             <div class="navbar-start">
                 <div class="navbar-item">
-                    Miguel Miguel V01234
+                    username
                 </div>
-
                 <% for (let permiso of permisos) { %>
-                    <% if (rol == 1) { %>
-                        <% if (permiso == 'Consultar horario alumno') { %>
+            
+                    <% if (rol == 3) { %>
+                        <% if (permiso.nombreCasoUso == 'Consultar Propuesta de Horario') { %>
                         <a class="navbar-item" href="/">
-                            <i class="fas fa-graduation-cap"></i>
-                            Consultar y Confirmar Horario</a>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Horario
+                        </a>
                         <% } %>
                         <hr class="navbar-divider">
-                        <% if (permiso == 'Realizar Pago') { %>
+                        <% if (permiso.nombreCasoUso == 'Realizar Pago') { %>
                         <a class="navbar-item" href="/">
-                            <i class="fas fa-graduation-cap"></i>
-                            Realizar Pago</a>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </span>
+                            Realizar Pago
+                        </a>
                         <% } %>
                         <hr class="navbar-divider">
-                        <% if (permiso == 'Consultar estado de cuenta') { %>
+                        <% if (permiso.nombreCasoUso == 'Consultar estado de cuenta') { %>
                         <a class="navbar-item" href="/">
-                            <i class="fas fa-graduation-cap"></i>
-                            Consultar estado de cuenta</a>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                            </span>
+                            Estado de cuenta
+                        </a>
                         <% } %>
                     <% } %>
                 <% } %>
             </div>
     </nav>
-
 </body>
