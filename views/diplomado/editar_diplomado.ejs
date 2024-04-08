@@ -9,10 +9,20 @@
         <section class="section">
             <div class="container" style="display: flex; justify-content: center;">
                 <% if (fetch) { %>
+
+                    <form id="formSeleccion" style="width: 50%; margin-top: 50px;">
+                        <label for="estadoBusqueda" class="label is-large">Estado del Diplomado:</label>
+                        <select id="estadoBusqueda" name="estadoBusqueda" class="input is-large">
+                            <option value="activo">Activo</option>
+                            <option value="noactivo">No Activo</option>
+                        </select>
+                    </form>
+
                     <p class="title" style="text-align: center;">Buscar Diplomado</p>
                     <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
                         <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
                         <input type="text" id="nombre" name="nombre" required class="input is-large">
+                        <input type="hidden" id="estatus" name="estatus" value="">
                         <p id="mensajeValidacion" class="help is-danger"></p>
                         <button type="submit" id="buscarBtn"
                             class="button is-rounded is-large is-responsive">Buscar</button>
@@ -45,9 +55,15 @@
 
                                         <label for="statusDiplomado" class="label is-large">Status:</label>
                                         <label class="checkbox">
+                                            <% if (diplomado.diplomadoActivo === 0) { %>
                                             <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
-                                                onclick="toggleInputs()" checked>
+                                                onclick="toggleInputs()">
                                             <span class="checkmark"></span>
+                                            <% } else { %>
+                                                <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
+                                                    onclick="toggleInputs()" checked>
+                                                <span class="checkmark"></span>
+                                            <% } %>
                                         </label>
 
                                         <button type="submit" class="button is-rounded is-large is-responsive">Registrar
@@ -59,6 +75,7 @@
             </div>
         </section>
         <script>
+
             $(document).ready(function () {
                 // Inicializar el botón desactivado
                 actualizarBotonYMensaje();
@@ -96,12 +113,23 @@
             });
 
             $(function () {
-                var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
+                var nombresValidos = [];
+                var estadoBusqueda = 'activo'; // Estado por defecto
+
+                // Función para actualizar la URL de la solicitud AJAX basada en el estado de búsqueda
+                function actualizarUrlAutocomplete() {
+                    return estadoBusqueda === 'activo' ? "/diplomado/autocomplete" : "/diplomado/autocomplete_noactivo";
+                }
+
+                // Evento para manejar el cambio en el menú desplegable
+                $('#estadoBusqueda').change(function () {
+                    estadoBusqueda = $(this).val();
+                });
 
                 $("#nombre").autocomplete({
                     source: function (request, response) {
                         $.ajax({
-                            url: "/diplomado/autocomplete",
+                            url: actualizarUrlAutocomplete(),
                             dataType: "json",
                             data: {
                                 q: request.term
@@ -116,22 +144,20 @@
                     },
                     minLength: 2,
                     select: function (event, ui) {
-                        // Restablecer el mensaje de validación
                         $("#mensajeValidacion").text('');
-                        // Cambiar el estilo del botón si el nombre es válido
                         var esValido = nombresValidos.includes(ui.item.value);
                         $("#buscarBtn").prop('disabled', !esValido)
-                            .css('background-color', esValido ? '#910106' : '#ffcccc') // Color normal: azul, Color cuando es inválido: rojo ligero
-                            .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+                            .css('background-color', esValido ? '#910106' : '#ffcccc')
+                            .toggleClass('is-light', !esValido);
                     }
                 });
 
-                // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
+                // Inicializar el botón de búsqueda como deshabilitado
                 $("#buscarBtn").prop('disabled', true)
                     .css('background-color', '#ffcccc')
                     .addClass('is-light');
 
-                // Verificar si el nombre ingresado es válido al salir del campo de texto
+                // Validación al perder el foco del campo de nombre
                 $("#nombre").on("blur", function () {
                     var mensaje = '';
                     if (this.value === '') {
@@ -143,9 +169,10 @@
                     var esValido = nombresValidos.includes(this.value);
                     $("#buscarBtn").prop('disabled', !esValido)
                         .css('background-color', esValido ? '#910106' : '#ffcccc')
-                        .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+                        .toggleClass('is-light', !esValido);
                 });
             });
+
 
             document.getElementById('statusDiplomado').addEventListener('change', function () {
                 var hiddenInput = document.getElementById('statusDiplomadoHidden');

@@ -4,6 +4,14 @@ exports.get_diplomado = (request,response,next) => {
     response.render('diplomado/diplomado');
 };
 
+exports.get_opcion_diplomado = (request,response,next) => {
+    response.render('diplomado/editar_diplomado',{
+        editar:false,
+        fetch: true,
+        error: null,
+    });
+};
+
 exports.get_modificar_diplomado = (request,response,next) => {
     response.render('diplomado/editar_diplomado',{
         editar:false,
@@ -20,6 +28,17 @@ exports.get_registrar_diplomado = (request,response,next) => {
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
     Diplomado.buscar(consulta)
+        .then(([diplomados]) => {
+            response.json(diplomados);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+exports.get_autocomplete_noactivo = (request, response, next) => {
+    const consulta = request.query.q;
+    Diplomado.buscar_noactivo(consulta)
         .then(([diplomados]) => {
             response.json(diplomados);
         })
@@ -47,6 +66,9 @@ exports.get_check_diplomado = (request, response, next) => {
 
 exports.post_fetch_diplomado = (request,response,next) => {
     const nombre = request.body.nombre;
+    const estado = request.body.estatus;
+    console.log('El estado en el controller')
+    console.log(estado);
     Diplomado.fetchOne(nombre)
     .then(([diplomados,fieldData]) => {
         if (diplomados.length > 0) {

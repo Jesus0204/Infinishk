@@ -17,6 +17,8 @@ router.get('/check_diplomado', diplomadoController.get_check_diplomado);
 
 router.get('/autocomplete', diplomadoController.get_autocomplete);
 
+router.get('/autocomplete_noactivo', diplomadoController.get_autocomplete_noactivo);
+
 router.post('/editar_diplomado',diplomadoController.post_fetch_diplomado);
 
 router.post('/resultado_diplomado',diplomadoController.post_modificar_diplomado);

@@ -30,7 +30,14 @@ module.exports = class Diplomado{
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT * FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1',
+            'SELECT diplomado.* FROM diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
+            [`%${consulta}%`]
+        );
+    }
+
+    static buscar_noactivo(consulta) {
+        return db.execute(
+            'SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
             [`%${consulta}%`]
         );
     }
