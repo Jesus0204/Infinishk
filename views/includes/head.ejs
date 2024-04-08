@@ -239,8 +239,8 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>
                         </div>
+                    </div>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" style="padding-right: 2.1em;">
                             <span class="icon is-large" style="margin-left: -0.5em;">
@@ -250,19 +250,67 @@
                         </a>
 
                         <div class="navbar-dropdown">
-                            <a class="navbar-item" href="/">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-money-bills"></i>
-                                </span>
-                                Precio Crédito
-                            </a>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-money-bills"></i>
+                                    </span>
+                                    Precio
+                                    <br>
+                                    Crédito
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-csv"></i>
+                                            </span>
+                                            Consultar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             <hr class="navbar-divider">
-                            <a class="navbar-item" href="/">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-calendar-week"></i>
-                                </span>
-                                Planes de Pago
-                            </a>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-calendar-week"></i>
+                                    </span>
+                                    Planes
+                                    <br>
+                                    de Pago
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-csv"></i>
+                                            </span>
+                                            Administrar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <% } %>
