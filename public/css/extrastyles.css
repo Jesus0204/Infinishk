@@ -10,6 +10,10 @@
   width: 100%;
 }
 
+.navbar-link:hover::after {
+    border-color: #ffffff;
+}
+
 .button {
   width: 100%; 
   margin: 6px auto; 
