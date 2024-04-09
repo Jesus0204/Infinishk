@@ -13,3 +13,5 @@ const can_ConsultarAlumno = require('../util/privileges/can_consultar_alumno');
 const can_ConsultarHorarioAlumno = require('../util/privileges/can_consultar_HorarioAlumno');
 const can_RegistrarRol= require('../util/privileges/admin/registros/can_registrar_Rol');
 const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_registrar_usuario');
+
+module.exports = router;
