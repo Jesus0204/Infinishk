@@ -88,13 +88,143 @@
                     Realizar Pago
                 </a>
                 <% } %>
-                <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true) { %>
+                <!-- <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
+                       contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" style="padding-right: 2.1em">
+                        <span class="icon is-large" style="margin-left: -0.5em;">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        Alumnos
+                    </a>
+                    <div class="navbar-dropdown">
+                        <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large" style="margin-left: -0.5em;">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+                            Consultar
+                            <br>
+                            Alumno
+                        </a>
+                        <hr class="navbar-divider">
+                        <% } %>
+                        <% if (contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large" style="margin-left: -0.5em;">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </span>
+                            Horario
+                            <br>
+                            Alumno
+                        </a>
+                        <hr class="navbar-divider">
+                        <% } %>
+                    </div>
+                </div>
+                <hr class="navbar-divider">
+                <% } %> -->
+                <!-- <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true) { %>
                 <a class="navbar-item" href="/">
                     <span class="icon is-large">
                         <i class="fa-solid fa-money-check-dollar"></i>
                     </span>
                     Estado de cuenta
                 </a>
+                <% } %> -->
+                <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
+                       contienePermiso(permisos, 'Consultar plan de pago') == true ||
+                       contienePermiso(permisos, 'Registrar Costo Credito') == true ||
+                       contienePermiso(permisos, 'Registrar Plan de Pago') == true) { %>
+                <div class="navbar-item has-dropdown is-hoverable">
+                     <a class="navbar-link" style="padding-right: 2.1em">
+                         <span class="icon is-large" style="margin-left: -0.5em;">
+                             <i class="fa-solid fa-gear"></i>
+                         </span>
+                         Configuracion
+                     </a>
+                    <div class="navbar-dropdown" style="width: 115%;">
+                        <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) {%>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-money-bills"></i>
+                                    </span>
+                                    Precio
+                                    Crédito
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown" style="margin-left: -3em;">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-coins"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-comment-dollar"></i>
+                                            </span>
+                                            Consultar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="navbar-divider">
+                        <% } else if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-money-bills"></i>
+                            </span>
+                            Precio Crédito
+                        </a>
+                        <hr class="navbar-divider">
+                        <% } %>
+                        <% if (contienePermiso(permisos, 'Registrar Plan de Pago') == true) {%>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-calendar-week"></i>
+                                    </span>
+                                    Plan
+                                    de Pago
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown" style="margin-left: -2.4em; width: 100%;">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-calendar-plus"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item" style="padding-right: 0.8em;">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-calendar-check"></i>
+                                            </span>
+                                            Administrar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
+                        <a class="navbar-item" href="/">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-calendar-week"></i>
+                            </span>
+                            Plan de Pago
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+                <hr class="navbar-divider">
                 <% } %>
             </div> 
             <div class="navbar-end">
