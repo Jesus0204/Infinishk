@@ -55,15 +55,15 @@
 
                                         <label for="statusDiplomado" class="label is-large">Status:</label>
                                         <label class="checkbox">
-                                            <% if (diplomado.diplomadoActivo === 0) { %>
-                                            <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
-                                                onclick="toggleInputs()">
-                                            <span class="checkmark"></span>
-                                            <% } else { %>
+                                            <% if (diplomado.diplomadoActivo===0) { %>
                                                 <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
-                                                    onclick="toggleInputs()" checked>
+                                                    onclick="toggleInputs()">
                                                 <span class="checkmark"></span>
-                                            <% } %>
+                                                <% } else { %>
+                                                    <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
+                                                        onclick="toggleInputs()" checked>
+                                                    <span class="checkmark"></span>
+                                                    <% } %>
                                         </label>
 
                                         <button type="submit" class="button is-rounded is-large is-responsive">Registrar
@@ -172,6 +172,64 @@
                         .toggleClass('is-light', !esValido);
                 });
             });
+
+            $(document).ready(function () {
+                var nombresValidos = [];
+                var estadoBusqueda = $('#estadoBusqueda').val();
+
+                // Función para actualizar el mensaje de validación
+                function actualizarMensajeValidacion(esValido) {
+                    var mensaje = esValido ? '' : 'Por favor ingresa un nombre válido';
+                    $("#mensajeValidacion").text(mensaje);
+                }
+
+                // Función para verificar si el nombre ingresado es válido y actualizar el botón y el mensaje
+                function verificarNombre() {
+                    var nombreIngresado = $("#nombre").val();
+                    var esValido = nombresValidos.includes(nombreIngresado);
+                    $("#buscarBtn").prop('disabled', !esValido)
+                        .css('background-color', esValido ? '#910106' : '#ffcccc')
+                        .toggleClass('is-light', !esValido);
+                    actualizarMensajeValidacion(esValido); // Actualiza el mensaje de validación
+                }
+
+                // Evento change para el select de estadoBusqueda
+                $('#estadoBusqueda').change(function () {
+                    estadoBusqueda = $(this).val();
+                    nombresValidos = []; // Reinicia la lista de nombres válidos
+                    actualizarNombresValidos(); // Actualiza la lista de nombres válidos
+                    actualizarMensajeValidacion(false); // Limpia el mensaje de validación
+                    $("#nombre").trigger("blur"); // Fuerza la validación del nombre
+                });
+
+                // Evento blur para el input de nombre
+                $("#nombre").on("blur", function () {
+                    verificarNombre(); // Verifica si el nombre ingresado es válido
+                });
+
+                // Inicializa el autocompletado
+                $("#nombre").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: estadoBusqueda === 'activo' ? "/diplomado/autocomplete" : "/diplomado/autocomplete_noactivo",
+                            dataType: "json",
+                            data: { q: request.term },
+                            success: function (data) {
+                                nombresValidos = data.map(function (diplomado) {
+                                    return diplomado.nombreDiplomado;
+                                });
+                                response(nombresValidos);
+                            }
+                        });
+                    },
+                    minLength: 2,
+                    select: function (event, ui) {
+                        verificarNombre(); // Verifica si el nombre seleccionado es válido
+                    }
+                });
+            });
+
+
 
 
             document.getElementById('statusDiplomado').addEventListener('change', function () {
