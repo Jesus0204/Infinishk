@@ -88,6 +88,78 @@
                     Realizar Pago
                 </a>
                 <% } %>
+
+                <% if (contienePermiso(permisos, 'Registrar Rol') == true || 
+                       contienePermiso(permisos, 'Registrar usuario') == true) { %>
+                    <div data-target="usuarios" class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" style="padding-right: 2.1em;" onclick="click_target(this.parentElement)">
+                        <span class="icon is-large" style="margin-left: -0.5em;">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        Usuarios
+                        </a>
+                         <div class="navbar-dropdown" id="usuarios">
+                            <% if (contienePermiso(permisos, 'Registrar Rol') == true && 
+                            contienePermiso(permisos, 'Registrar usuario') == true) { %>
+                                <div class="nested dropdown has-dropdown is-hoverable">
+                                    <a class="navbar-item">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-clipboard-user"></i>
+                                        </span>
+                                        Registros
+                                        <span class="icon is-large ">
+                                            <i class="fas fa-angle-right"></i>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="navbar-dropdown">
+                                            <a class="navbar-item">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                                </span>
+                                                Usuario
+                                            </a>
+                                            <hr class="navbar-divider">
+                                            <a class="navbar-item">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-file-csv"></i>
+                                                </span>
+                                                Rol
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mobile">
+                                    <div data-target="registros_usuario" class="navbar-item has-dropdown">
+                                        <a class="navbar-link"
+                                            onclick="click_target(this.parentElement)">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-clipboard-user"></i>
+                                            </span>
+                                            Registros
+                                        </a>
+                                        <div class="navbar-dropdown" id="registros_usuario">
+                                            <a class="navbar-item">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                                </span>
+                                                Usuario
+                                            </a>
+                                            <hr class="navbar-divider">
+                                            <a class="navbar-item">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-file-csv"></i>
+                                                </span>
+                                                Rol
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                         </div>
+                    </div>
+                <% } %>
+
                 <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
                        contienePermiso(permisos, 'Modificar Solicitud de Pago') == true ||
                        contienePermiso(permisos, 'Registrar Pago Manual') == true ||
@@ -564,7 +636,6 @@
             }
         }
 
-        // https://stackoverflow.com/questions/55416573/bulma-navbar-menu-open-by-default-on-mobile
         if (window.matchMedia("(max-width: 1124px)").matches) {
             navbar_movil();
         };
