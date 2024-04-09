@@ -25,27 +25,23 @@ exports.get_registrar_diplomado = (request,response,next) => {
     });
 };
 
+
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
-    Diplomado.buscar(consulta)
-        .then(([diplomados]) => {
-            response.json(diplomados);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    
+    // Realiza ambas búsquedas simultáneamente y combina los resultados
+    Promise.all([
+        Diplomado.buscar(consulta), // Búsqueda de diplomados activos
+        Diplomado.buscar_noactivo(consulta) // Búsqueda de diplomados no activos
+    ]).then(results => {
+        // Combina los resultados de ambas búsquedas
+        const diplomados = [...results[0][0], ...results[1][0]];
+        response.json(diplomados);
+    }).catch((error) => {
+        console.log(error);
+    });
 };
 
-exports.get_autocomplete_noactivo = (request, response, next) => {
-    const consulta = request.query.q;
-    Diplomado.buscar_noactivo(consulta)
-        .then(([diplomados]) => {
-            response.json(diplomados);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
 
 exports.get_check_diplomado = (request, response, next) => {
     const nombre = request.query.nombre;

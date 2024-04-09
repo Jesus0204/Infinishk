@@ -9,21 +9,13 @@
         <section class="section">
             <div class="container" style="display: flex; justify-content: center;">
                 <% if (fetch) { %>
-
-                    <form id="formSeleccion" style="width: 50%; margin-top: 50px;">
-                        <label for="estadoBusqueda" class="label is-large">Estado del Diplomado:</label>
-                        <select id="estadoBusqueda" name="estadoBusqueda" class="input is-large">
-                            <option value="activo">Activo</option>
-                            <option value="noactivo">No Activo</option>
-                        </select>
-                    </form>
-
                     <p class="title" style="text-align: center;">Buscar Diplomado</p>
                     <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
                         <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
                         <input type="text" id="nombre" name="nombre" required class="input is-large">
-                        <input type="hidden" id="estatus" name="estatus" value="">
-                        <p id="mensajeValidacion" class="help is-danger"></p>
+
+                        <!-- El resto de tu formulario aquí -->
+
                         <button type="submit" id="buscarBtn"
                             class="button is-rounded is-large is-responsive">Buscar</button>
                     </form>
@@ -113,23 +105,12 @@
             });
 
             $(function () {
-                var nombresValidos = [];
-                var estadoBusqueda = 'activo'; // Estado por defecto
-
-                // Función para actualizar la URL de la solicitud AJAX basada en el estado de búsqueda
-                function actualizarUrlAutocomplete() {
-                    return estadoBusqueda === 'activo' ? "/diplomado/autocomplete" : "/diplomado/autocomplete_noactivo";
-                }
-
-                // Evento para manejar el cambio en el menú desplegable
-                $('#estadoBusqueda').change(function () {
-                    estadoBusqueda = $(this).val();
-                });
+                var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
 
                 $("#nombre").autocomplete({
                     source: function (request, response) {
                         $.ajax({
-                            url: actualizarUrlAutocomplete(),
+                            url: "/diplomado/autocomplete",
                             dataType: "json",
                             data: {
                                 q: request.term
@@ -144,20 +125,22 @@
                     },
                     minLength: 2,
                     select: function (event, ui) {
+                        // Restablecer el mensaje de validación
                         $("#mensajeValidacion").text('');
+                        // Cambiar el estilo del botón si el nombre es válido
                         var esValido = nombresValidos.includes(ui.item.value);
                         $("#buscarBtn").prop('disabled', !esValido)
-                            .css('background-color', esValido ? '#910106' : '#ffcccc')
-                            .toggleClass('is-light', !esValido);
+                            .css('background-color', esValido ? '#910106' : '#ffcccc') // Color normal: azul, Color cuando es inválido: rojo ligero
+                            .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
                     }
                 });
 
-                // Inicializar el botón de búsqueda como deshabilitado
+                // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
                 $("#buscarBtn").prop('disabled', true)
                     .css('background-color', '#ffcccc')
                     .addClass('is-light');
 
-                // Validación al perder el foco del campo de nombre
+                // Verificar si el nombre ingresado es válido al salir del campo de texto
                 $("#nombre").on("blur", function () {
                     var mensaje = '';
                     if (this.value === '') {
@@ -169,66 +152,9 @@
                     var esValido = nombresValidos.includes(this.value);
                     $("#buscarBtn").prop('disabled', !esValido)
                         .css('background-color', esValido ? '#910106' : '#ffcccc')
-                        .toggleClass('is-light', !esValido);
+                        .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
                 });
             });
-
-            $(document).ready(function () {
-                var nombresValidos = [];
-                var estadoBusqueda = $('#estadoBusqueda').val();
-
-                // Función para actualizar el mensaje de validación
-                function actualizarMensajeValidacion(esValido) {
-                    var mensaje = esValido ? '' : 'Por favor ingresa un nombre válido';
-                    $("#mensajeValidacion").text(mensaje);
-                }
-
-                // Función para verificar si el nombre ingresado es válido y actualizar el botón y el mensaje
-                function verificarNombre() {
-                    var nombreIngresado = $("#nombre").val();
-                    var esValido = nombresValidos.includes(nombreIngresado);
-                    $("#buscarBtn").prop('disabled', !esValido)
-                        .css('background-color', esValido ? '#910106' : '#ffcccc')
-                        .toggleClass('is-light', !esValido);
-                    actualizarMensajeValidacion(esValido); // Actualiza el mensaje de validación
-                }
-
-                // Evento change para el select de estadoBusqueda
-                $('#estadoBusqueda').change(function () {
-                    estadoBusqueda = $(this).val();
-                    nombresValidos = []; // Reinicia la lista de nombres válidos
-                    actualizarNombresValidos(); // Actualiza la lista de nombres válidos
-                    actualizarMensajeValidacion(false); // Limpia el mensaje de validación
-                    $("#nombre").trigger("blur"); // Fuerza la validación del nombre
-                });
-
-                // Evento blur para el input de nombre
-                $("#nombre").on("blur", function () {
-                    verificarNombre(); // Verifica si el nombre ingresado es válido
-                });
-
-                // Inicializa el autocompletado
-                $("#nombre").autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: estadoBusqueda === 'activo' ? "/diplomado/autocomplete" : "/diplomado/autocomplete_noactivo",
-                            dataType: "json",
-                            data: { q: request.term },
-                            success: function (data) {
-                                nombresValidos = data.map(function (diplomado) {
-                                    return diplomado.nombreDiplomado;
-                                });
-                                response(nombresValidos);
-                            }
-                        });
-                    },
-                    minLength: 2,
-                    select: function (event, ui) {
-                        verificarNombre(); // Verifica si el nombre seleccionado es válido
-                    }
-                });
-            });
-
 
 
 
