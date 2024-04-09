@@ -20,5 +20,4 @@ router.post('/editar_diplomado',diplomadoController.post_fetch_diplomado);
 router.post('/resultado_diplomado',diplomadoController.post_modificar_diplomado);
 router.get('/', diplomadoController.get_diplomado);
 
-
 module.exports = router;
