@@ -88,6 +88,30 @@
                     Realizar Pago
                 </a>
                 <% } %>
+                 <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
+                       contienePermiso(permisos, 'Modificar Solicitud de Pago') == true ||
+                       contienePermiso(permisos, 'Consultar diplomado') == true) { %>
+                 <div class="navbar-item has-dropdown is-hoverable">
+                     <a class="navbar-link" style="padding-right: 2.1em;">
+                         <span class="icon is-medium" style="margin-left: -0.5em;">
+                             <i class="fa-solid fa-dollar-sign"></i>
+                         </span>
+                         Pagos
+                     </a>
+                     <div class="navbar-dropdown">
+                         <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { %>
+                         
+                         <% } %>
+                         <% if (contienePermiso(permisos, 'Modificar Solicitud de Pago') == true) { %>
+                         
+                         <% } %>
+                         <% if (contienePermiso(permisos, 'Consultar diplomado') == true) { %>
+                         
+                         <% } %>
+                     </div>
+                 </div>
+                 <hr class="navbar-divider">
+                 <% } %>
                 <!-- <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
                        contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
                 <div class="navbar-item has-dropdown is-hoverable">
