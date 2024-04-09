@@ -33,7 +33,7 @@ exports.post_login = (request, response, next) => {
                                         request.session.isLoggedIn = true;
                                         request.session.permisos = permisos;
                                         request.session.rol = rol[0].IDRol;
-                                        request.session.username = user.username;
+                                        request.session.username = user.IDUsuario;
                                         return request.session.save(err => {
                                             response.redirect('/pagos');
                                         })

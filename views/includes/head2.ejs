@@ -32,11 +32,12 @@
             <div class="navbar-start">
                 <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
                 <a class="navbar-item" href="/">
-                    <span class="icon is-large" style="margin-left: -0.5em;">
+                    <span class="icon is-large">
                         <i class="fa-solid fa-calendar-week"></i>
                     </span>
                     Horario
                 </a>
+                <hr class="navbar-divider">
                 <% } %>
                 <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                        contienePermiso(permisos, 'Modificar diplomado') == true || 
@@ -77,8 +78,30 @@
                         <% } %>
                         </div>
                     </div>
+                    <hr class="navbar-divider">
+                <% } %>
+                <% if (contienePermiso(permisos, 'Realizar Pago') == true) { %>
+                <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </span>
+                    Realizar Pago
+                </a>
+                <% } %>
+                <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true) { %>
+                <a class="navbar-item" href="/">
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                    </span>
+                    Estado de cuenta
+                </a>
                 <% } %>
             </div> 
+            <div class="navbar-end">
+                <p class="navbar-item">
+                    <%= username %>
+                </p>
+            </div>
     </nav>
     <script>
         $(document).ready(function () {
