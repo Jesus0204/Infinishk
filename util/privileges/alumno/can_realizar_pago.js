@@ -1,11 +1,11 @@
 module.exports = (request, response, next) => {
-    let can_propuesta_horario = false;
+    let can_realizar_pago = false;
     for (let permiso of request.session.permisos) {
-        if (permiso.funcion == 'Consultar Propuesta de Horario') {
-            can_propuesta_horario = true;
+        if (permiso.funcion == 'Realizar Pago') {
+            can_realizar_pago = true;
         }
     }
-    if (can_propuesta_horario) {
+    if (can_realizar_pago) {
         next();
 
     } else {
