@@ -131,8 +131,20 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const fecha = request.body.fecha;
     const nota = request.body.nota;
     if (tipoPago === 'Pago de Colegiatura') {
+        let diferencia = 0;
+        const deuda = await Deuda.fetchDeuda(matricula);
         const idDeuda = await Deuda.fetchIDDeuda(matricula);
-        Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
+        const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+
+        if(importe > montoAPagar){
+            diferencia = importe - montoAPagar;
+        }
+        console.log(diferencia)
+        await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
+        const deudaNext = await Deuda.fetchIDDeuda(matricula)
+        if(deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined'){
+            await Deuda.updateDescuento(diferencia,deudaNext[0][0].IDDeuda);
+        } 
     }
     else if (tipoPago === 'Pago de Diplomado') {
         const idDiplomado = await Cursa.fetchDiplomado(matricula);

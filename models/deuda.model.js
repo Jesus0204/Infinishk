@@ -47,4 +47,9 @@ module.exports = class Deuda {
         [matricula]);
     }
     
+    static updateDescuento(diferencia,id){
+        return db.execute('UPDATE Deuda SET Descuento = Descuento + ? WHERE IDDeuda = ?',
+        [diferencia,id]);
+    }
+    
 }
