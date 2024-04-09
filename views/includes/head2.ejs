@@ -43,7 +43,7 @@
                        contienePermiso(permisos, 'Modificar diplomado') == true || 
                        contienePermiso(permisos, 'Consultar diplomado') == true) { %>
                 <div data-target="diplomado" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" style="padding-right: 2.1em;">
+                    <a class="navbar-link" style="padding-right: 2.1em;" onclick="click_target(this.parentElement)">
                         <span class="icon is-large" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-graduation-cap"></i>
                         </span>
@@ -95,7 +95,7 @@
                        contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
                        contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
                 <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" style="padding-right: 2.1em;">
+                    <a class="navbar-link" style="padding-right: 2.1em;" onclick="click_target(this.parentElement)">
                         <span class="icon is-medium" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-dollar-sign"></i>
                         </span>
@@ -105,7 +105,7 @@
                         <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true && 
                             contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
                         <div class="nested dropdown has-dropdown is-hoverable">
-                            <a class="navbar-item" style="padding-right: 0.8em;">
+                            <a class="navbar-item" style="padding-right: 0.8em;" >
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-file-invoice"></i>
                                 </span>
@@ -137,7 +137,8 @@
                         <hr class="navbar-divider">
                         <div class="mobile">
                             <div data-target="registros" class="navbar-item has-dropdown">
-                                <a class="navbar-link" style="padding-right: 0.8em;">
+                                <a class="navbar-link" style="padding-right: 0.8em;"
+                                    onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-file-invoice"></i>
                                     </span>
@@ -197,7 +198,8 @@
                         <hr class="navbar-divider">
                         <div class="mobile">
                             <div data-target="reportes" class="navbar-item has-dropdown">
-                                <a class="navbar-link" style="padding-right: 0.8em;">
+                                <a class="navbar-link" style="padding-right: 0.8em;"
+                                    onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-chart-line"></i>
                                     </span>
@@ -257,7 +259,8 @@
                         <hr class="navbar-divider">
                         <div class="mobile">
                             <div data-target="pago_extra" class="navbar-item has-dropdown">
-                                <a class="navbar-link" style="padding-right: 0.8em;">
+                                <a class="navbar-link" style="padding-right: 0.8em;"
+                                    onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-money-bill-wave"></i>
                                     </span>
@@ -358,7 +361,7 @@
                        contienePermiso(permisos, 'Registrar Costo Credito') == true ||
                        contienePermiso(permisos, 'Registrar Plan de Pago') == true) { %>
                 <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" style="padding-right: 2.1em">
+                    <a class="navbar-link" style="padding-right: 2.1em" onclick="click_target(this.parentElement)">
                         <span class="icon is-large" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-gear"></i>
                         </span>
@@ -397,7 +400,7 @@
                         </div>
                         <div class="mobile">
                             <div data-target="precio_credito" class="navbar-item has-dropdown">
-                                <a class="navbar-link">
+                                <a class="navbar-link" onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-money-bills"></i>
                                     </span>
@@ -461,7 +464,7 @@
                         </div>
                         <div class="mobile">
                             <div data-target="plan_pago" class="navbar-item has-dropdown">
-                                <a class="navbar-link">
+                                <a class="navbar-link" onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-calendar-week"></i>
                                     </span>
@@ -518,9 +521,22 @@
 
             });
         });
-        
-        // https://stackoverflow.com/questions/55416573/bulma-navbar-menu-open-by-default-on-mobile
-        if (window.matchMedia("(min-width: 1124px)").matches) {
+
+        const click_target = (element) => {
+            if (window.innerWidth < 1124) {
+                // Get the target from the "data-target" attribute
+                const target = element.dataset.target;
+                const $target = document.getElementById(target);
+    
+                if ($target.style.display === "block") {
+                    $target.style.display = "none";
+                } else {
+                    $target.style.display = "block";
+                }
+            }
+        }
+
+        function navbar_movil() {
             const $navDropdowns = document.querySelectorAll(".navbar-item.has-dropdown");
             if ($navDropdowns.length > 0) {
                 $navDropdowns.forEach((el) => {
@@ -529,22 +545,36 @@
                     const target = el.dataset.target;
                     const $target = document.getElementById(target);
                     $target.style.display = "none";
-
-
-                    //Register the click event on the dropdown list
-                    navbar_link.addEventListener("click", () => {
-                        // Get the target from the "data-target" attribute
-                        const target = el.dataset.target;
-                        const $target = document.getElementById(target);
-
-                        if ($target.style.display === "block") {
-                            $target.style.display = "none";
-                        } else {
-                            $target.style.display = "block";
-                        }
-                    });
                 });
             }
         }
+
+        // Regresas las variables a como estaban antes
+        function navbar_desktop() {
+            const $navDropdowns = document.querySelectorAll(".navbar-item.has-dropdown");
+            if ($navDropdowns.length > 0) {
+                $navDropdowns.forEach((el) => {
+                    // Agarrar al hijo para solo sea cuando dan click ahi
+                    const navbar_link = el.firstElementChild;
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+                    $target.style.display = "";
+                });
+
+            }
+        }
+
+        // https://stackoverflow.com/questions/55416573/bulma-navbar-menu-open-by-default-on-mobile
+        if (window.matchMedia("(max-width: 1124px)").matches) {
+            navbar_movil();
+        };
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1124) {
+                navbar_desktop();
+            } else {
+                navbar_movil();
+            }
+        });
     </script>
 </body>
