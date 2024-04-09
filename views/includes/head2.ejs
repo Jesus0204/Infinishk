@@ -174,6 +174,34 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mobile">
+                                <div class="navbar-item has-dropdown">
+                                    <a class="navbar-link" style="padding-right: 2.1em;">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-money-bills"></i>
+                                        </span>
+                                        Precio Crédito
+                                        <span class="icon is-large ">
+                                            <i class="fas fa-angle-down"></i>
+                                        </span>
+                                    </a>
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-coins"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-comment-dollar"></i>
+                                            </span>
+                                            Consultar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             <hr class="navbar-divider">
                         <% } else if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                         <a class="navbar-item" href="/">
@@ -190,8 +218,7 @@
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-calendar-week"></i>
                                     </span>
-                                    Plan
-                                    de Pago
+                                    Plan de Pago
                                     <span class="icon is-large ">
                                         <i class="fas fa-angle-right"></i>
                                     </span>
@@ -214,6 +241,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mobile">
+                                <div class="navbar-item has-dropdown">
+                                    <a class="navbar-link" style="padding-right: 2.1em;">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-calendar-week"></i>
+                                        </span>
+                                        Plan de Pago
+                                        <span class="icon is-large ">
+                                            <i class="fas fa-angle-down"></i>
+                                        </span>
+                                    </a>
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-calendar-plus"></i>
+                                            </span>
+                                            Registrar
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-calendar-check"></i>
+                                            </span>
+                                            Administrar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="navbar-divider">
                         <% } else if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
                         <a class="navbar-item" href="/">
                             <span class="icon is-large">

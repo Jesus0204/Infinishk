@@ -10,13 +10,26 @@
     width: 100%;
 }
 
-.navbar-link:hover::after {
-    border-color: #ffffff;
-}
-
-.dropdown-menu {
+@media (min-width: 1124px) {
+    .dropdown-menu {
     top: -14px;
     margin-left: 100%;
+    }
+
+    .mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 1124px) {
+    .nested {
+        display: none;
+    }
+}
+
+
+.navbar-link:hover::after {
+    border-color: #ffffff;
 }
 
 .button {

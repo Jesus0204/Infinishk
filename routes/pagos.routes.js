@@ -35,6 +35,6 @@ const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_adm
 router.get('/registroTransferencia', pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', pagosController.post_subir_archivo);
 router.post('/resultadoTransferencia', pagosController.post_registrar_transferencia);
-router.get('/', pagosController.get_pago);
+router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;
