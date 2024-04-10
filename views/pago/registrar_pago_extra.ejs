@@ -79,7 +79,7 @@
         // Checar si hay contenido dentro del input, pata desactivar el boton
         function checar_contenido() {
             bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
-                monto.value==='0' ;
+                monto.value === '0' || monto.value === '-0' ;
         }
 
         // Activar mensaje si el motivo no tiene input
@@ -100,8 +100,7 @@
 
             if (monto.value < 0) {
                 ayuda_monto_negativo.classList.remove('is-hidden');
-            } else if (monto.value === '0') {
-
+            } else if (monto.value === '0' || monto.value === '-0') {
                 ayuda_monto_negativo.classList.remove('is-hidden'); 
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
