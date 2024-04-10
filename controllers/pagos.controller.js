@@ -33,7 +33,7 @@ exports.post_subir_archivo = (request, response, next) => {
             const dia = Fecha.substring(1, 3);
             const mes = Fecha.substring(3, 5);
             const anio = Fecha.substring(5, 9);
-            fechaFormato = anio + '-' + mes + '-' + dia;
+            fechaFormato = anio + '-' + mes + '-' + dia + ' ' + Hora;
             filas.push({ fechaFormato, Hora, Importe, Referencia, Matricula, inicioRef });
         })
         .on('end', async () => {
@@ -57,22 +57,37 @@ exports.post_subir_archivo = (request, response, next) => {
                 if (fila.inicioRef == '1') {
 
                     let montoAPagar = 0;
+                    const idDeudaPagada = await Deuda.fetchIDDeudaPagada(fila.Matricula);
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
-                    
-                    if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
-                        // La deuda existe y tiene un monto a pagar definido
-                        montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
-                    } else {
-                        montoAPagar = Number(deudaPagada[0][0].montoAPagar.toFixed(2));
-                    }
-
                     const idLiquida = await Liquida.fetchID(fila.Matricula);
                     const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
                     const estado = await Deuda.fetchEstado(fila.Matricula);
                     const pagado = (estado[0][0].Pagado);
 
-                    if(idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1){
+                    if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
+                        montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+                    }
+                    else {
+                        montoAPagar = Number(deudaPagada[0][0].montoAPagar.toFixed(2));
+                    }
+
+                    if (deudaPagada && deudaPagada[0] && deudaPagada[0][0] && typeof deudaPagada[0][0].montoAPagar !== 'undefined') {
+                        const pagoCompleto = await Pago.fetch_fecha_pago(idDeudaPagada[0][0].IDDeuda);
+
+                        const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
+
+                        const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
+
+                        const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
+                        const importeRedondeado = Math.round(fila.Importe * 100) / 100;
+
+                        if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                            tipoPago = 'Pago Completo';
+                        }
+                    }
+
+                    if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1) {
                         tipoPago = 'Pago Completo';
                     }
 
@@ -80,17 +95,22 @@ exports.post_subir_archivo = (request, response, next) => {
                         if (pagado === 0) {
                             tipoPago = 'Pago de Colegiatura';
                             deudaEstudiante = montoAPagar;
-                        } else {
+                        }
+                        else if (pagado === 1) {
                             tipoPago = 'Pago Completo';
                             deudaEstudiante = montoAPagar;
                         }
                     }
 
                     else {
-                        tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
-                        deudaEstudiante = montoAPagar;
+                        if (tipoPago === 'Pago Completo') {
+                            tipoPago = 'Pago Completo';
+                        }
+                        else {
+                            tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
+                            deudaEstudiante = montoAPagar;
+                        }
                     }
-
                 }
 
                 else if (fila.inicioRef == '8') {
@@ -136,15 +156,15 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         const idDeuda = await Deuda.fetchIDDeuda(matricula);
         const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
 
-        if(importe > montoAPagar){
+        if (importe > montoAPagar) {
             diferencia = importe - montoAPagar;
         }
         console.log(diferencia)
         await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
-        if(deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined'){
-            await Deuda.updateDescuento(diferencia,deudaNext[0][0].IDDeuda);
-        } 
+        if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
+            await Deuda.updateDescuento(diferencia, deudaNext[0][0].IDDeuda);
+        }
     }
     else if (tipoPago === 'Pago de Diplomado') {
         const idDiplomado = await Cursa.fetchDiplomado(matricula);
