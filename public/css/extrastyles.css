@@ -19,14 +19,22 @@
     .mobile {
         display: none;
     }
+
+    .cerrar_sesion_mobile {
+        display: none;
+    }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     .nested {
         display: none;
     }
 
     .desktop {
+        display: none;
+    }
+
+    .navbar-end {
         display: none;
     }
 }
