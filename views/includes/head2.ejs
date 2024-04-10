@@ -89,75 +89,83 @@
                 </a>
                 <% } %>
 
-                <% if (contienePermiso(permisos, 'Registrar Rol') == true || 
-                       contienePermiso(permisos, 'Registrar usuario') == true) { %>
-                    <div data-target="usuarios" class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" style="padding-right: 2.1em;" onclick="click_target(this.parentElement)">
+                <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
+                       contienePermiso(permisos, 'Consultar horario alumno') == true||
+                       contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
+                <div data-target="alumnos" class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" style="padding-right: 2.1em" onclick="click_target(this.parentElement)">
                         <span class="icon is-large" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-users"></i>
                         </span>
-                        Usuarios
+                        Alumnos
+                    </a>
+                    <div class="navbar-dropdown" id="alumnos">
+                        <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item">
+                                <span class="icon is-large" style="margin-left: -0.5em;">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                </span>
+                                Alumnos
+                                <br>
+                                Atrasados
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item">
+                                <span class="icon is-large" style="margin-left: -0.5em;">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                </span>
+                                Alumnos Atrasados
+                                </a>
+                            </div>
                         </a>
-                         <div class="navbar-dropdown" id="usuarios">
-                            <% if (contienePermiso(permisos, 'Registrar Rol') == true && 
-                            contienePermiso(permisos, 'Registrar usuario') == true) { %>
-                                <div class="nested dropdown has-dropdown is-hoverable">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-clipboard-user"></i>
-                                        </span>
-                                        Registros
-                                        <span class="icon is-large ">
-                                            <i class="fas fa-angle-right"></i>
-                                        </span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <div class="navbar-dropdown">
-                                            <a class="navbar-item">
-                                                <span class="icon is-large">
-                                                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                                                </span>
-                                                Usuario
-                                            </a>
-                                            <hr class="navbar-divider">
-                                            <a class="navbar-item">
-                                                <span class="icon is-large">
-                                                    <i class="fa-solid fa-file-csv"></i>
-                                                </span>
-                                                Rol
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mobile">
-                                    <div data-target="registros_usuario" class="navbar-item has-dropdown">
-                                        <a class="navbar-link"
-                                            onclick="click_target(this.parentElement)">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-clipboard-user"></i>
-                                            </span>
-                                            Registros
-                                        </a>
-                                        <div class="navbar-dropdown" id="registros_usuario">
-                                            <a class="navbar-item">
-                                                <span class="icon is-large">
-                                                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                                                </span>
-                                                Usuario
-                                            </a>
-                                            <hr class="navbar-divider">
-                                            <a class="navbar-item">
-                                                <span class="icon is-large">
-                                                    <i class="fa-solid fa-file-csv"></i>
-                                                </span>
-                                                Rol
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% } %>
-                         </div>
+                        <hr class="navbar-divider">
+                        <% } %>
+                        <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" href="/">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    Consultar
+                                    <br>
+                                    Alumno
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    Consultar Alumno
+                                </a>
+                            </div>
+                        <hr class="navbar-divider">
+                        <% } %>
+                        <% if (contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" href="/">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                    </span>
+                                    Horario
+                                    <br>
+                                    Alumno
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                    </span>
+                                    Horario Alumno
+                                </a>
+                            </div>
+                        <% } %>
                     </div>
+                </div>
+                <hr class="navbar-divider">
                 <% } %>
 
                 <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
@@ -303,9 +311,9 @@
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-money-bill-wave"></i>
                                 </span>
-                                Pagos
+                                Otros
                                 <br>
-                                Extra
+                                Pagos
                                 <span class="icon is-large ">
                                     <i class="fas fa-angle-right"></i>
                                 </span>
@@ -336,7 +344,7 @@
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-money-bill-wave"></i>
                                     </span>
-                                    Pagos Extra
+                                    Otros Pagos
                                 </a>
                                 <div class="navbar-dropdown" id="pago_extra">
                                     <a class="navbar-item">
@@ -372,9 +380,9 @@
                             <span class="icon is-large">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </span>
-                            Administrar
-                            <br>
                             Solicitudes
+                            <br>
+                            Pendientes
                         </a>
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar diplomado') == true) { %>
@@ -384,54 +392,14 @@
                 </div>
                 <hr class="navbar-divider">
                 <% } %>
-                <!-- <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
-                       contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" style="padding-right: 2.1em">
-                        <span class="icon is-large" style="margin-left: -0.5em;">
-                            <i class="fa-solid fa-users"></i>
-                        </span>
-                        Alumnos
-                    </a>
-                    <div class="navbar-dropdown">
-                        <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
-                        <a class="navbar-item" href="/">
-                            <span class="icon is-large" style="margin-left: -0.5em;">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                            Consultar
-                            <br>
-                            Alumno
-                        </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Consultar horario alumno') == true) { %>
-                        <a class="navbar-item" href="/">
-                            <span class="icon is-large" style="margin-left: -0.5em;">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </span>
-                            Horario
-                            <br>
-                            Alumno
-                        </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                    </div>
-                </div>
-                <hr class="navbar-divider">
-                <% } %> -->
-                <!-- <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true) { %>
-                <a class="navbar-item" href="/">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-money-check-dollar"></i>
-                    </span>
-                    Estado de cuenta
-                </a>
-                <% } %> -->
+                
                 <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
                        contienePermiso(permisos, 'Consultar plan de pago') == true ||
                        contienePermiso(permisos, 'Registrar Costo Credito') == true ||
-                       contienePermiso(permisos, 'Registrar Plan de Pago') == true) { %>
+                       contienePermiso(permisos, 'Registrar Plan de Pago') == true ||
+                       contienePermiso(permisos, 'Registrar usuario') == true ||
+                       contienePermiso(permisos, 'Consultar Usuario') == true ||
+                       contienePermiso(permisos, 'Registrar Rol') == true) { %>
                 <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link" style="padding-right: 2.1em" onclick="click_target(this.parentElement)">
                         <span class="icon is-large" style="margin-left: -0.5em;">
@@ -440,7 +408,7 @@
                         Configuracion
                     </a>
                     <div class="navbar-dropdown" style="width: 115%;" id="configuracion">
-                        <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) {%>
+                        <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) { %>
                         <div class="nested dropdown has-dropdown is-hoverable">
                             <a class="navbar-item">
                                 <span class="icon is-large">
@@ -505,7 +473,7 @@
                         </a>
                         <hr class="navbar-divider">
                         <% } %>
-                        <% if (contienePermiso(permisos, 'Registrar Plan de Pago') == true) {%>
+                        <% if (contienePermiso(permisos, 'Registrar Plan de Pago') == true) { %>
                         <div class="nested dropdown has-dropdown is-hoverable">
                             <a class="navbar-item">
                                 <span class="icon is-large">
@@ -562,6 +530,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr class="navbar-divider">
                         <% } else if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
                         <a class="navbar-item" href="/">
                             <span class="icon is-large">
@@ -570,9 +539,73 @@
                             Plan de Pago
                         </a>
                         <% } %>
+                        <% if (contienePermiso(permisos, 'Registrar usuario') == true &&
+                       contienePermiso(permisos, 'Consultar Usuario') == true) { %>
+                        <div class="nested dropdown has-dropdown is-hoverable">
+                            <a class="navbar-item" style="padding-left: 1.3em;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </span>
+                                Usuarios
+                                <span class="icon is-large ">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-user-tag"></i>
+                                        </span>
+                                        Consultar
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-user-plus"></i>
+                                        </span>
+                                        Registrar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mobile">
+                            <div data-target="usuarios" class="navbar-item has-dropdown">
+                                <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-users-gear"></i>
+                                    </span>
+                                    Usuarios
+                                </a>
+                                <div class="navbar-dropdown" id="usuarios">
+                                    <a class="navbar-item">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-user-tag"></i>
+                                        </span>
+                                        Consultar
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-user-plus"></i>
+                                        </span>
+                                        Registrar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="navbar-divider">
+                        <% } %> 
+                        <% if (contienePermiso(permisos, 'Registrar Rol') == true) { %>
+                            <a class="navbar-item">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-user-gear"></i>
+                                </span>
+                                Registrar Rol
+                            </a>
+                        <% } %>
                     </div>
                 </div>
-                <hr class="navbar-divider">
                 <% } %>
             </div>
             <div class="navbar-end">
