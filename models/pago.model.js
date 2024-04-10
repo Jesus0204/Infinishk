@@ -12,9 +12,9 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    static fetch_fecha_pago(id){
-        return db.execute('SELECT fechaPago,montoPagado FROM pago WHERE IDDeuda = ?',
-        [id]);
+    static fetch_fecha_pago(fecha){
+        return db.execute('SELECT fechaPago,montoPagado FROM pago WHERE fechaPago = ?',
+        [fecha]);
     }
 
     static save_transferencia(id,monto,nota,fecha) {

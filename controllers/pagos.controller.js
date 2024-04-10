@@ -73,7 +73,8 @@ exports.post_subir_archivo = (request, response, next) => {
                     }
 
                     if (deudaPagada && deudaPagada[0] && deudaPagada[0][0] && typeof deudaPagada[0][0].montoAPagar !== 'undefined') {
-                        const pagoCompleto = await Pago.fetch_fecha_pago(idDeudaPagada[0][0].IDDeuda);
+
+                        const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
                         const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
 
