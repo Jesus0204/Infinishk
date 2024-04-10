@@ -34,7 +34,7 @@ exports.get_pago_extra = (request, response, next) => {
             Pago_Extra.fetchNoAsignados()
                 .then(([pagosExtraNoAsignados, fieldData]) => {
                     response.render('pago/pagos_extra', {
-                        pagosNoAsignados: pagosExtraNoAsignados, 
+                        pagosNoAsignados: pagosExtraNoAsignados,
                         pagos: pagosExtra
                     })
                 })
