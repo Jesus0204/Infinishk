@@ -65,7 +65,66 @@
         </div>
         <div id="con_solicitudes">
             <% let count_con = 0 %>
-            <p>Hola</p>
+            <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+            <table class="table is-bordered is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>
+                            <strong>Motivo: </strong>
+                        </th>
+                        <th>
+                            <strong>Monto: </strong>
+                        </th>
+                        <th>
+                            <strong>Fecha Creacion: </strong>
+                        </th>
+                        <th>
+                            Estatus:
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let pago of pagos) { %>
+                    <tr id="<%= pago.IDPagosExtras %>">
+                        <td>
+                            <div class="column">
+                                <%= pago.motivoPago %>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="column">
+                                $ <%= pago.montoPagar.toLocaleString('mx') %>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="column">
+                                <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
+                            </div>
+                        </td>
+                        <td>
+                            <form action="/pagos/pagos_extra/modify_status" method="POST" class="form-modificar-estatus">
+                                <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
+                                <div class="field">
+                                    <input id="switchRoundedDefault <%= count_con %>" type="checkbox"
+                                        name="switchRoundedDefault" class="switch is-rounded"
+                                        <% if (pago.pagoExtraActivo == 1)  { %>
+                                        checked="checked"
+                                        <% } %>>
+                                    <label for="switchRoundedDefault <%= count_con %>">
+                                        <% if (pago.pagoExtraActivo == 1)  { %>
+                                        Activo
+                                        <% } else { %>
+                                        Desactivado
+                                        <% } %>
+                                    </label>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    <% count_con++ %>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
 
         <div id="sin_solicitudes" class="is-hidden">

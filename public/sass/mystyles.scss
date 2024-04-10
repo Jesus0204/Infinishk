@@ -52,7 +52,6 @@ $navbar-dropdown-item-hover-background-color: $rojo;
   color: $blanco;
   border-color: $vino;
 }
-
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -64,3 +63,7 @@ $navbar-dropdown-item-hover-background-color: $rojo;
 @import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
 @import "../../node_modules/bulma/bulma.sass";
+
+$switch-focus: none;
+/* Bulma Switch Control */
+@import "../../node_modules/bulma-switch/src/sass/index.sass";

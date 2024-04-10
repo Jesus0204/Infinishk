@@ -8,7 +8,9 @@ module.exports = class PagoExtra {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras IN (SELECT IDPagosExtras FROM Liquida)');
+        return db.execute(`SELECT * FROM pagosExtras 
+        WHERE IDPagosExtras IN (SELECT IDPagosExtras FROM Liquida)
+        ORDER BY pagoExtraActivo DESC`);
     }
 
     static fetchNoAsignados() {
