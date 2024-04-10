@@ -10,7 +10,7 @@
     width: 100%;
 }
 
-@media (min-width: 1124px) {
+@media (min-width: 1024px) {
     .dropdown-menu {
     top: -14px;
     margin-left: 100%;
@@ -21,7 +21,7 @@
     }
 }
 
-@media (max-width: 1124px) {
+@media (max-width: 1024px) {
     .nested {
         display: none;
     }
