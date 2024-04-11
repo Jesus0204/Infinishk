@@ -1,9 +1,4 @@
-<%- include('../includes/dropdown_admin.ejs') %>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
+<%- include('../includes/head.ejs') %>
 
     <body>
         <section class="section">
@@ -11,6 +6,7 @@
                 <% if (fetch) { %>
                     <p class="title" style="text-align: center;">Buscar Diplomado</p>
                     <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                         <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
                         <input type="text" id="nombre" name="nombre" required class="input is-large">
 
@@ -31,6 +27,7 @@
                                     <p class="title" style="text-align: center;">Modificar Diplomado</p>
                                     <form action="/diplomado/resultado_diplomado" method="POST"
                                         onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
                                         <label for="Duracion" class="label is-large">Duración:</label>
                                         <input type="text" id="Duracion" name="Duracion"

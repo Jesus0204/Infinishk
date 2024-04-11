@@ -29,6 +29,7 @@ exports.post_login = (request, response, next) => {
                                 .then(([permisos, fieldData]) => {
                                     Usuario.getRol(user.IDUsuario)
                                     .then(([rol, fieldData]) => {
+                                        console.log(permisos)
                                         request.session.isLoggedIn = true;
                                         request.session.permisos = permisos;
                                         request.session.rol = rol[0].IDRol;
