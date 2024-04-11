@@ -23,51 +23,58 @@
                                 <% if (modificar) { %>
                                     <p class="title" style="text-align: center;">Consultar Usuario</p>
                                     <div style="display: flex; justify-content: center;">
-                                        <form action="/configuracion/consultar_usuario" method="POST" style="width: 50%; margin-top: 50px;">
+                                        <form action="/configuracion/consultar_usuario" method="POST"
+                                            style="width: 50%; margin-top: 50px;">
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <label for="username" class="label is-large">Username del Usuario:</label>
-                                            <input type="text" id="username" name="username" required class="input is-large">
-                                            <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive"
+                                            <input type="text" id="username" name="username" required
+                                                class="input is-large">
+                                            <button type="submit" id="buscarBtn"
+                                                class="button is-rounded is-large is-responsive"
                                                 style="margin-left: 10px;">Buscar</button>
                                         </form>
                                     </div>
-                                
+
                                     <% if (error) { %>
                                         <p class="is-size-4">
                                             <%= error %>
                                         </p>
                                         <% } %>
-                                
+
                                             <p class="title" style="text-align: center;"></p>
-                                            <form action="/configuracion/resultado_usuario" method="POST" style="width: 50%; margin-top: 50px;">
+                                            <form action="/configuracion/resultado_usuario" method="POST"
+                                                style="width: 50%; margin-top: 50px;">
                                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                                <input type="hidden" name="IDUsuario" id="IDUsuario" value="<%= usuario.IDUsuario %>">
+                                                <input type="hidden" name="IDUsuario" id="IDUsuario"
+                                                    value="<%= usuario.IDUsuario %>">
                                                 <label for="Username" class="label is-large">Username:</label>
                                                 <p class="is-size-5">
                                                     <%= usuario.IDUsuario %>
                                                 </p>
-                                
+
                                                 <label for="correo" class="label is-large">Correo:</label>
                                                 <p class="is-size-5">
                                                     <%= usuario.correoElectronico %>
                                                 </p>
-                                
+
                                                 <label for="statusDiplomado" class="label is-large">Status:</label>
                                                 <label class="checkbox">
                                                     <% if (usuario.usuarioActivo===0) { %>
                                                         <input type="checkbox" id="statusUsuario" name="statusUsuario">
                                                         <span class="checkmark"></span>
                                                         <% } else { %>
-                                                            <input type="checkbox" id="statusUsuario" name="statusUsuario" checked>
+                                                            <input type="checkbox" id="statusUsuario"
+                                                                name="statusUsuario" checked>
                                                             <span class="checkmark"></span>
                                                             <% } %>
                                                 </label>
-                                
-                                                <button type="submit" class="button is-rounded is-large is-responsive">Registrar
+
+                                                <button type="submit"
+                                                    class="button is-rounded is-large is-responsive">Registrar
                                                     Cambios</button>
                                                 <p id="alerta" class="help is-danger" style="display: none;"></p>
                                             </form>
-                                
+
                                             <% } if (resultado) { %>
                                                 <div class="card" style="margin-bottom: 20px;">
                                                     <div class="card-content">
@@ -94,7 +101,8 @@
                                                     </div>
                                                 </div>
                                                 <form action="/configuracion/consultar_usuario" method="GET">
-                                                    <button type="submit" class="button is-rounded is-large is-responsive">Consultar otro
+                                                    <button type="submit"
+                                                        class="button is-rounded is-large is-responsive">Consultar otro
                                                         Usuario</button>
                                                 </form>
                                                 <% } %>
@@ -103,63 +111,46 @@
         </section>
         <script>
 
-             $(function () {
-                  var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
+            // $(function () {
+            //     var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
 
-                  $("#nombre").autocomplete({
-                      source: function (request, response) {
-                          $.ajax({
-                              url: "/configuracion/autocomplete",
-                              dataType: "json",
-                              data: {
-                                  q: request.term
-                              },
-                              success: function (data) {
-                                  nombresValidos = data.map(function (usuario) {
-                                      return usuario.IDUsuario;
-                                  });
-                                  response(nombresValidos);
-                              }
-                          });
-                      },
-                      minLength: 2,
-                      select: function (event, ui) {
-                          // Restablecer el mensaje de validación
-                          $("#mensajeValidacion").text('');
-                          // Cambiar el estilo del botón si el nombre es válido
-                          var esValido = nombresValidos.includes(ui.item.value);
-                          $("#buscarBtn").prop('disabled', !esValido)
-                              .css('background-color', esValido ? '#910106' : '#ffcccc') // Color normal: azul, Color cuando es inválido: rojo ligero
-                              .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
-                      }
-                  });
+            //     $("#nombre").autocomplete({
+            //         source: function (request, response) {
+            //             $.ajax({
+            //                 url: "/configuracion/autocomplete_usuario",
+            //                 dataType: "json",
+            //                 data: {
+            //                     q: request.term
+            //                 },
+            //                 success: function (data) {
+            //                     console.log('Consulta enviada:',request.term)
+            //                     nombresValidos = data.map(function (usuario) {
+            //                         return usuario.IDUsuario;
+            //                     });
+            //                     response(nombresValidos);
+            //                 }
+            //             });
+            //         },
+            //         minLength: 2,
+            //         select: function (event, ui) {
+            //             // Restablecer el mensaje de validación
+            //             $("#mensajeValidacion").text('');
+            //             // Cambiar el estilo del botón si el nombre es válido
+            //             var esValido = nombresValidos.includes(ui.item.value);
+            //             $("#buscarBtn").prop('disabled', !esValido)
+            //                 .css('background-color', esValido ? '#910106' : '#ffcccc') 
+            //                 .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+            //         }
+            //     });
 
-                  // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
-                  $("#buscarBtn").prop('disabled', true)
-                      .css('background-color', '#ffcccc')
-                      .addClass('is-light');
+            //     // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
+            //     $("#buscarBtn").prop('disabled', true)
+            //         .css('background-color', '#ffcccc')
+            //         .addClass('is-light');
 
-                  // Verificar si el nombre ingresado es válido al salir del campo de texto
-                  $("#nombre").on("blur", function () {
-                      var mensaje = '';
-                      if (this.value === '') {
-                          mensaje = 'Por favor ingresa un nombre';
-                      } else if (!nombresValidos.includes(this.value)) {
-                          mensaje = 'Por favor ingresa un nombre válido';
-                      }
-                      $("#mensajeValidacion").text(mensaje);
-                      var esValido = nombresValidos.includes(this.value);
-                      $("#buscarBtn").prop('disabled', !esValido)
-                          .css('background-color', esValido ? '#910106' : '#ffcccc')
-                          .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
-                  });
-              });
-
-              document.getElementById('statusUsuario').addEventListener('change', function () {
-                  var hiddenInput = document.getElementById('statusUsuarioHidden');
-                  hiddenInput.value = this.checked ? 'on' : 'off';
-              });
-
+            //     // Verificar si el nombre ingresado es válido al salir del campo de texto
+            //     $("#nombre").on(/*...*/);
+            // });
 
         </script>
     </body>

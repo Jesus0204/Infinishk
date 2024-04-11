@@ -44,7 +44,6 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
-
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
 

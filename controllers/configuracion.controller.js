@@ -32,20 +32,21 @@ exports.get_consultar_usuario = (request, response, next) => {
     })
 }
 
-exports.get_autocomplete = (request, response, next) => {
+exports.get_autocomplete_usuario = (request, response, next) => {
     const consulta = request.query.q;
-
-    // Realiza ambas búsquedas simultáneamente y combina los resultados
-    Promise.all([
-        Usuario.buscar(consulta), // Búsqueda de diplomados activos
-    ]).then(results => {
-        // Combina los resultados de ambas búsquedas
-        const usuarios = [...results[0][0], ...results[1][0]];
+    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
+    Usuario.buscar(consulta) // Búsqueda de usuarios
+    .then(results => {
+        const usuarios = results[0].map(usuario => usuario.IDUsuario); // Obtener solo los IDs de usuario
+        console.log('Usuarios encontrados:', usuarios); // Verifica los usuarios encontrados
         response.json(usuarios);
     }).catch((error) => {
         console.log(error);
+        response.status(500).json({ error: 'Error al obtener sugerencias de usuario' });
     });
 };
+
+
 
 exports.get_check_usuario = (request, response, next) => {
     const id = request.query.id;

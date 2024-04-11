@@ -18,11 +18,11 @@ const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_reg
 
 router.get('/administrar_planpago',configuracionController.get_administrar_planpago);
 
-router.get('/consultar_usuario',can_ConsultarUsuario,configuracionController.get_consultar_usuario);
-router.get('/check_usuario',can_ConsultarUsuario,configuracionController.get_check_usuario);
-router.get('/autocomplete',can_ConsultarUsuario,configuracionController.get_autocomplete);
-router.post('/consultar_usuario',can_ConsultarUsuario,configuracionController.post_buscar_usuario);
-router.post('/resultado_usuario',can_ConsultarUsuario,configuracionController.post_modificar_usuario);
+router.get('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionController.get_consultar_usuario);
+router.get('/check_usuario',isAuth,can_ConsultarUsuario,configuracionController.get_check_usuario);
+router.get('/autocomplete_usuario',isAuth,can_ConsultarUsuario,configuracionController.get_autocomplete_usuario);
+router.post('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_buscar_usuario);
+router.post('/resultado_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
 
 router.get('/', configuracionController.get_configuracion);
 
