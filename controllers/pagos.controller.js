@@ -8,6 +8,7 @@ const Cursa = require('../models/cursa.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
+const multer = require('multer');
 const upload = multer({
     dest: 'uploads/'
 });
@@ -17,13 +18,19 @@ exports.get_pago = (request,response,next) => {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
     });
 };
 
 const Pago_Extra = require('../models/pago_extra.model');
 
 exports.get__registrar_pago_extra = (request, response, next) => {
-    response.render('pago/registrar_pago_extra');
+    response.render('pago/registrar_pago_extra', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
 };
 
 exports.post_registrar_pago_extra = (request, response, next) => {
@@ -45,7 +52,11 @@ exports.get_pago_extra = (request, response, next) => {
                 .then(([pagosExtraNoAsignados, fieldData]) => {
                     response.render('pago/pagos_extra', {
                         pagosNoAsignados: pagosExtraNoAsignados,
-                        pagos: pagosExtra
+                        pagos: pagosExtra, 
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
                     })
                 })
                 .catch((error) => {

@@ -1,4 +1,8 @@
-<%- include('../includes/dropdown_admin.ejs') %>
+<%- include('../includes/head', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
 
 <section class="section">
     <div class="container">
@@ -9,6 +13,7 @@
             </div>
         </div>
         <form action="/pagos/registrar_pago_extra" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6">

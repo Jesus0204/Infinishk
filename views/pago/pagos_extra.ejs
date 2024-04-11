@@ -1,4 +1,8 @@
-<%- include('../includes/dropdown_admin.ejs') %>
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <style>
@@ -38,6 +42,7 @@
             </div>
             <!-- < } > -->
         </div>
+        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
         <div class="tabs is-boxed">
             <ul>
                 <li class="is-active" id="nav_con_solicitudes">
@@ -412,11 +417,14 @@
     }
 
     const modify_status = (id, estatus) => {
+        //El token de protección CSRF
+        const csrf = document.getElementById('_csrf').value;
 
         fetch('/pagos/pagos_extra/modify_status', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'csrf-token': csrf
                 },
                 body: JSON.stringify({
                     id: id,
@@ -439,11 +447,15 @@
     };
 
     const eliminar = (id) => {
+        //El token de protección CSRF
+        const csrf = document.getElementById('_csrf').value;
+
         // Enviar los datos al servidor
         fetch('/pagos/pagos_extra/delete', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'csrf-token': csrf
                 },
                 body: JSON.stringify({
                     id: id
