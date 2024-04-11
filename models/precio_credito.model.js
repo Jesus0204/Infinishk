@@ -15,6 +15,6 @@ module.exports = class PrecioCredito {
     }
 
     static update() {
-        return db.execute(`UPDATE precioCredito SET precioActivo = 0 WEHRE precioActivo = 1`);
+        return db.execute(`UPDATE precioCredito SET precioActivo = 0 WHERE precioActivo = 1`);
     }
 };
