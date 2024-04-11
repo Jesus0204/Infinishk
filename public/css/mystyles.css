@@ -2804,7 +2804,7 @@ a.navbar-item,
 .navbar-link:not(.is-arrowless) {
   padding-right: 2.5em; }
   .navbar-link:not(.is-arrowless)::after {
-    border-color: #910106;
+    border-color: #ffffff;
     margin-top: -0.375em;
     right: 1.125em; }
 
@@ -7665,7 +7665,7 @@ a.navbar-item,
 .navbar-link:not(.is-arrowless) {
   padding-right: 2.5em; }
   .navbar-link:not(.is-arrowless)::after {
-    border-color: #910106;
+    border-color: #ffffff;
     margin-top: -0.375em;
     right: 1.125em; }
 
