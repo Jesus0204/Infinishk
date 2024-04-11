@@ -14,15 +14,6 @@
         background-color: #5a6581 !important;
         border-color: #910106 !important;
     }
-
-    #notificacion:hover {
-        background-color: #910106 !important;
-        border-color: #000000 !important
-    }
-
-    #notificacion {
-        background-color:#000000;
-    }
 </style>
 
 <section class="section">
@@ -34,8 +25,8 @@
             <!-- < if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { > -->
             <div class="column is-offset-5">
                 <p class="control">
-                    <a class="button is-rounded is-responsive"
-                        style="font-size: large;" href="/pagos/registrar_pago_extra">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/pagos/registrar_pago_extra">
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-plus"></i>
                         </span>
@@ -66,6 +57,13 @@
         <div id="con_solicitudes">
             <% let count_con = 0 %>
             <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+
+            <div id="modificacion_estatus" class="notification is-hidden"
+                style="background-color: #5a6581; color:#ffffff;">
+                <button id="btn_eliminar_estatus" class="delete"></button>
+                ¡Estatus de Pago Modificado!
+            </div>
+
             <table class="table is-bordered is-hoverable is-fullwidth">
                 <thead>
                     <tr>
@@ -85,7 +83,7 @@
                 </thead>
                 <tbody>
                     <% for (let pago of pagos) { %>
-                    <tr id="<%= pago.IDPagosExtras %>">
+                    <tr>
                         <td>
                             <div class="column">
                                 <%= pago.motivoPago %>
@@ -102,23 +100,18 @@
                             </div>
                         </td>
                         <td>
-                            <form action="/pagos/pagos_extra/modify_status" method="POST" class="form-modificar-estatus">
-                                <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
-                                <div class="field">
-                                    <input id="switchRoundedDefault <%= count_con %>" type="checkbox"
-                                        name="switchRoundedDefault" class="switch is-rounded"
-                                        <% if (pago.pagoExtraActivo == 1)  { %>
-                                        checked="checked"
-                                        <% } %>>
-                                    <label for="switchRoundedDefault <%= count_con %>">
-                                        <% if (pago.pagoExtraActivo == 1)  { %>
-                                        Activo
-                                        <% } else { %>
-                                        Desactivado
-                                        <% } %>
-                                    </label>
-                                </div>
-                            </form>
+                            <div class="field">
+                                <input id="estatus <%= count_con %>" type="checkbox" name="estatus"
+                                    class="switch is-rounded" onclick="modify_status('<%= pago.IDPagosExtras %>')"
+                                    <% if (pago.pagoExtraActivo == 1)  { %> checked="checked" <% } %>>
+                                <label for="estatus <%= count_con %>">
+                                    <% if (pago.pagoExtraActivo == 1)  { %>
+                                    Activo
+                                    <% } else { %>
+                                    Desactivado
+                                    <% } %>
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     <% count_con++ %>
@@ -129,23 +122,25 @@
 
         <div id="sin_solicitudes" class="is-hidden">
             <% let count_sin = 0 %>
-            <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
-                <button class="delete"></button>
+            <div id="eliminacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+                <button id="btn_eliminar_notificacion" class="delete"></button>
                 ¡Pago extra eliminado!
             </div>
-    
+
             <% if (pagosNoAsignados.length == 0) { %>
-            <article id="inexistente" class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+            <article id="inexistente" class="message"
+                style="background-color: #5a6581; color:#ffffff; text-align: center;">
                 <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
                     <p>No existen pagos extras modificables / eliminables </p>
                     <button id="btn_eliminar_mensaje" class="delete" aria-label="delete"></button>
                 </div>
-            <div class="message-body" style="color:#ffffff;">
-                Actualmente no existen pagos extra que se puedan modificar su motivo, monto o que se puedan eliminar.
-            </div>
-        </article>
-        <% } %>
-    
+                <div class="message-body" style="color:#ffffff;">
+                    Actualmente no existen pagos extra que se puedan modificar su motivo, monto o que se puedan
+                    eliminar.
+                </div>
+            </article>
+            <% } %>
+
             <% for (let pago of pagosNoAsignados) { %>
             <table class="table is-hoverable is-fullwidth" id="<%= pago.IDPagosExtras %>">
                 <tbody>
@@ -165,7 +160,7 @@
                                 favor escribe un número mayor a 0.</p>
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente<%= count_sin %>"
                                 style="padding: 0.5em; margin-bottom: -2em;">Por favor escribe un motivo sin exponente.
-                                </p>
+                            </p>
                         </div>
                     </div>
                     <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
@@ -222,84 +217,83 @@
                         <div class="columns is-vcentered">
                             <div class="column" style="text-align: center;">
                                 <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                        style="font-size: medium; background-color: #000000;"
-                                        id="Boton_eliminar<%= count_sin %>"
-                                        data-target="modal-confirmar-eliminar<%= count_sin %>">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Eliminar</span>
-                                    </button>
-                            </div>
-                        </div>
-                    </td>
-                </div>
-            </tr>
-            </tbody>
-            </table>
-            <div id="modal-confirmar-eliminar<%= count_sin %>" class="modal">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title" style="text-align: center;">
-                            <strong> Eliminar Pago Extra</strong>
-                        </p>
-                         <button class="delete" aria-label="delete"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <p class="is-size-5" style="text-align: center;">
-                            <strong>¡Esta acción no se puede deshacer!</strong>
-                        </p>
-                        <br>
-                        <p class="is-size-5" style="text-align: center;">
-                            Los datos del pago extra a eliminar son los siguientes:
-                        </p>
-                        <br>
-                        <div class="columns is-vcentered">
-                            <div class="column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Motivo: </strong><%= pago.motivoPago %>
-                                </p>
-                            </div>
-                            <div class=" column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Monto a Pagar: </strong><%= pago.montoPagar.toFixed(2)%>
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot" style="justify-content: center;">
-                        <div class="field is-grouped">
-                            <p class="control">
-                                <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                                    style="font-size: large; margin: 8px 2px;">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
-                                    </span>
-                                    <span>Regresar</span>
-                                </button>
-                            </p>
-                            <p class="control">
-                                <button class="button is-rounded is-medium is-responsive"
-                                    onclick="eliminar('<%= pago.IDPagosExtras %>')"
-                                    style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                    style="font-size: medium; background-color: #000000;"
+                                    id="Boton_eliminar<%= count_sin %>"
+                                    data-target="modal-confirmar-eliminar<%= count_sin %>">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                     </span>
                                     <span>Eliminar</span>
                                 </button>
-                            </p>
-                    </footer>
-                </div>
-            </div>
-            <% count_sin++ %>
-            <% } %>
+                            </div>
+                        </div>
+                    </td>
         </div>
+        </tr>
+        </tbody>
+        </table>
+        <div id="modal-confirmar-eliminar<%= count_sin %>" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title" style="text-align: center;">
+                        <strong> Eliminar Pago Extra</strong>
+                    </p>
+                    <button class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p class="is-size-5" style="text-align: center;">
+                        <strong>¡Esta acción no se puede deshacer!</strong>
+                    </p>
+                    <br>
+                    <p class="is-size-5" style="text-align: center;">
+                        Los datos del pago extra a eliminar son los siguientes:
+                    </p>
+                    <br>
+                    <div class="columns is-vcentered">
+                        <div class="column is-half">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Motivo: </strong><%= pago.motivoPago %>
+                            </p>
+                        </div>
+                        <div class=" column is-half">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Monto a Pagar: </strong><%= pago.montoPagar.toFixed(2)%>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot" style="justify-content: center;">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                style="font-size: large; margin: 8px 2px;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                </span>
+                                <span>Regresar</span>
+                            </button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-rounded is-medium is-responsive"
+                                onclick="eliminar('<%= pago.IDPagosExtras %>')"
+                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                </span>
+                                <span>Eliminar</span>
+                            </button>
+                        </p>
+                </footer>
+            </div>
+        </div>
+        <% count_sin++ %>
+        <% } %>
+    </div>
     </div>
 </section>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
-
     function con_solicitudes() {
         // Cambias las bars que estan activas
         const tab_sin_solicitudes = document.querySelector('#nav_sin_solicitudes');
@@ -311,7 +305,7 @@
         // Quitar la tabla sin solicitudes
         const tabla_sin_solicitudes = document.querySelector('#sin_solicitudes');
         tabla_sin_solicitudes.classList.add('is-hidden');
-        
+
         // Poner la tabla con solicitudes
         const tabla_con_solicitudes = document.querySelector('#con_solicitudes');
         tabla_con_solicitudes.classList.remove('is-hidden');
@@ -334,7 +328,7 @@
         tabla_con_solicitudes.classList.add('is-hidden');
     }
 
-    for (count = 0; count < '<%= pagosNoAsignados.length %>' ; count++) {
+    for (count = 0; count < '<%= pagosNoAsignados.length %>'; count++) {
         // Crear constantes para acceder a HTML
         const bt_Modificar = document.querySelector('#Boton_modificar' + count);
         const motivo = document.querySelector('#motivo' + count);
@@ -347,7 +341,7 @@
         // Checar si hay contenido dentro del input, pata desactivar el boton
         function checar_contenido() {
             bt_Modificar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
-                monto.value === '0' || monto.value === '-0' ;
+                monto.value === '0' || monto.value === '-0';
         }
 
         // Activar mensaje si el motivo no tiene input
@@ -370,7 +364,7 @@
             if (monto.value < 0) {
                 ayuda_monto_negativo.classList.remove('is-hidden');
             } else if (monto.value === '0' || monto.value === '-0') {
-                ayuda_monto_negativo.classList.remove('is-hidden'); 
+                ayuda_monto_negativo.classList.remove('is-hidden');
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
             }
@@ -379,7 +373,7 @@
                 bt_Modificar.disabled = true;
                 ayuda_monto_exponente.classList.remove('is-hidden');
 
-                if (monto.value < 0){
+                if (monto.value < 0) {
                     ayuda_monto_negativo.style.marginBottom = '-1em';
                 }
             } else {
@@ -396,11 +390,35 @@
         monto.addEventListener('input', checar_contenido);
         motivo.addEventListener('input', mensaje_motivo);
         monto.addEventListener('input', mensaje_monto);
-    
+
     }
 
-        const eliminar = (id) => {
-        console.log(id);
+    const modify_status = (id) => {
+        fetch('/pagos/pagos_extra/modify_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+
+                document.getElementById('modificacion_estatus').classList.remove('is-hidden');
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+            })
+            .catch(error => {
+                console.error('Error en la petición fetch:', error);
+            });
+    };
+
+    const eliminar = (id) => {
         // Enviar los datos al servidor
         fetch('/pagos/pagos_extra/delete', {
                 method: 'POST',
@@ -424,7 +442,7 @@
                     console.error(`No se encontró la fila ${id}.`);
                 }
 
-                document.getElementById('modificacion').classList.remove('is-hidden');
+                document.getElementById('eliminacion').classList.remove('is-hidden');
                 $('html, body').animate({
                     scrollTop: 0
                 }, 'slow');
@@ -432,16 +450,23 @@
             .catch(error => {
                 console.error('Error en la petición fetch:', error);
             });
-        }
+    };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const notifiacion_eliminacion = document.querySelector('#btn_eliminar_notificacion');
 
-            $delete.addEventListener('click', () => {
-                document.getElementById('modificacion').classList.add('is-hidden');
-            });
-        });
-    });
+    if (notifiacion_eliminacion) {
+        notifiacion_eliminacion.addEventListener('click', () => {
+            document.getElementById('eliminacion').classList.add('is-hidden');
+        })
+    };
+
+    const notifiacion_estatus = document.querySelector('#btn_eliminar_estatus');
+
+    if (notifiacion_estatus) {
+        notifiacion_estatus.addEventListener('click', () => {
+            document.getElementById('modificacion_estatus').classList.add('is-hidden');
+        })
+    };
 
     const mensaje = document.querySelector('#btn_eliminar_mensaje');
 
@@ -449,6 +474,5 @@
         mensaje.addEventListener('click', () => {
             document.getElementById('inexistente').classList.add('is-hidden');
         })
-    }
-
+    };
 </script>

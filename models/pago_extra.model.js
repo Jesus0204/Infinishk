@@ -32,6 +32,11 @@ module.exports = class PagoExtra {
         WHERE IDPagosExtras = ?`, [motivo, monto, id]);
     }
 
+    static update_estatus(id, estatus) {
+        return db.execute(`UPDATE pagosExtras SET pagoExtraActivo = ?
+        WHERE IDPagosExtras = ?`, [estatus, id])
+    }
+
     static delete(id) {
         return db.execute(`DELETE FROM pagosExtras WHERE IDPagosExtras = ?`, [id]);
     }
