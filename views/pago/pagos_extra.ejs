@@ -19,11 +19,11 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-3">
+            <div class="column is-4">
                 <h3 class="title is-3">Pagos Extra</h3>
             </div>
             <!-- < if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { > -->
-            <div class="column is-offset-5">
+            <div class="column is-offset-4">
                 <p class="control">
                     <a class="button is-rounded is-responsive" style="font-size: large;"
                         href="/pagos/registrar_pago_extra">
@@ -63,7 +63,6 @@
                 <button id="btn_eliminar_estatus" class="delete"></button>
                 ¡Estatus de Pago Modificado!
             </div>
-
             <table class="table is-bordered is-hoverable is-fullwidth">
                 <thead>
                     <tr>
@@ -76,7 +75,7 @@
                         <th>
                             <strong>Fecha Creacion: </strong>
                         </th>
-                        <th>
+                        <th style="width: 12%">
                             Estatus:
                         </th>
                     </tr>
@@ -105,13 +104,7 @@
                                     class="switch is-rounded" onclick="modify_status('<%= pago.IDPagosExtras %>',
                                     checked)"
                                     <% if (pago.pagoExtraActivo == 1)  { %> checked="checked" <% } %>>
-                                <label for="estatus<%= count_con %>">
-                                    <% if (pago.pagoExtraActivo == 1)  { %>
-                                    Activo
-                                    <% } else { %>
-                                    Desactivado
-                                    <% } %>
-                                </label>
+                                <label for="estatus<%= count_con %>"></label>
                             </div>
                         </td>
                     </tr>
@@ -259,7 +252,7 @@
                         </div>
                         <div class=" column is-half">
                             <p class="is-size-5" style="text-align: center;">
-                                <strong>Monto a Pagar: </strong><%= pago.montoPagar.toFixed(2)%>
+                                <strong>Monto a Pagar: </strong>$ <%= pago.montoPagar.toLocaleString('mx')%>
                             </p>
                         </div>
                     </div>
