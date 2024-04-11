@@ -21,13 +21,13 @@
                         <div class="columns is-vcentered">
                             <div class="column is-half">
                                 <p class="is-size-5" style="text-align: center;">
-                                    <strong>Precio: </strong><%= precio_actual.precioPesos %>
+                                    <strong>Precio: </strong>$<%= precio_actual[0].precioPesos %>
                                 </p>
                             </div>
                         <div class="columns is-vcentered">
                             <div class="column is-half">
                                 <p class="is-size-5" style="text-align: center;">
-                                    <strong>Fecha de Registro: </strong><%= precio_actual.fechaModificacion %>
+                                    <strong>Fecha de Registro: </strong><%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString('es-ES') %>
                                 </p>
                             </div>
                         </div>

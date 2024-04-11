@@ -19,9 +19,9 @@ exports.get_administrar_planpago = (request, response, next) => {
 
 exports.get__registrar_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
-        .then(([precio_actual]) => {
+        .then((precio_actual) => {
             response.render('configuracion/registrar_precio_credito', 
-            {precio_actual});
+            {precio_actual: precio_actual[0]});
         })
         .catch((error) => {
             console.log(error);
