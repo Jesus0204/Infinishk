@@ -50,4 +50,16 @@ module.exports = class Usuario{
         JOIN CasoUso Ca ON C.IDCasoUso = Ca.IDCasoUso
         WHERE U.IDUsuario = ?`, [IDUsuario]);
     }
+
+    static update(IDUsuario,estado){
+        return db.execute('UPDATE Usuario SET UsuarioActivo = ? WHERE IDUsuario = ?',
+        [estado,IDUsuario])
+    }
+
+    static buscar(consulta) {
+        return db.execute(
+            'SELECT usuario.* FROM usuario WHERE IDUsuario LIKE ?',
+            [`%${consulta}%`]
+        );
+    }
 }
