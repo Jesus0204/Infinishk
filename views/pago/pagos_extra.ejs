@@ -26,7 +26,7 @@
             <div class="column is-4">
                 <h3 class="title is-3">Pagos Extra</h3>
             </div>
-            <!-- < if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { > -->
+            <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { %>
             <div class="column is-offset-4">
                 <p class="control">
                     <a class="button is-rounded is-responsive" style="font-size: large;"
@@ -40,7 +40,7 @@
                     </a>
                 </p>
             </div>
-            <!-- < } > -->
+            <% } %>
         </div>
         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
         <div class="tabs is-boxed">

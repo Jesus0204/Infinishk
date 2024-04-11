@@ -32,15 +32,15 @@ const can_ReportesMetodoPago = require('../util/privileges/admin/consultas/can_R
 const can_RegistrarPagoExtra = require('../util/privileges/admin/registros/can_registrar_PagoExtra');
 const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_administrar_PagoExtra');
 
-router.get('/registrar_pago_extra', pagosController.get__registrar_pago_extra);
-router.post('/registrar_pago_extra', pagosController.post_registrar_pago_extra);
-router.get('/pagos_extra', pagosController.get_pago_extra);
-router.post('/pagos_extra/modify', pagosController.post_pago_extra_modify);
-router.post('/pagos_extra/modify_status', pagosController.post_modify_status);
-router.post('/pagos_extra/delete', pagosController.post_pago_extra_delete);
-router.get('/registroTransferencia', pagosController.get_registro_transferencias);
-router.post('/registroTransferencia', pagosController.post_subir_archivo);
-router.post('/resultadoTransferencia', pagosController.post_registrar_transferencia);
+router.get('/registrar_pago_extra', isAuth, pagosController.get__registrar_pago_extra);
+router.post('/registrar_pago_extra', isAuth, pagosController.post_registrar_pago_extra);
+router.get('/pagos_extra', isAuth, pagosController.get_pago_extra);
+router.post('/pagos_extra/modify', isAuth, pagosController.post_pago_extra_modify);
+router.post('/pagos_extra/modify_status', isAuth, pagosController.post_modify_status);
+router.post('/pagos_extra/delete', isAuth, pagosController.post_pago_extra_delete);
+router.get('/registroTransferencia', isAuth, pagosController.get_registro_transferencias);
+router.post('/registroTransferencia', isAuth, pagosController.post_subir_archivo);
+router.post('/resultadoTransferencia', isAuth, pagosController.post_registrar_transferencia);
 router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;
