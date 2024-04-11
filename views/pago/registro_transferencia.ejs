@@ -1,4 +1,4 @@
-<%- include('../includes/dropdown_admin.ejs') %>
+<%- include('../includes/head.ejs') %>
 
     <style>
         form {
@@ -87,6 +87,7 @@
         <% if (subir) { %>
             <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
                 onsubmit="return validateFile()">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;"
                     onchange="updateLabel()">
                 <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i
@@ -199,6 +200,7 @@
                                                         <td>
                                                             <form action="/pagos/resultadoTransferencia" method="POST"
                                                                 id="form<%= index %>" class="form-enviar-datos">
+                                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                                                 <select name="tipoPago">
                                                                     <% if (fila.Matricula.charAt(0)==='1' ){ %>
                                                                         <option value="Pago de Colegiatura"
@@ -345,7 +347,7 @@
                                 const formData = new FormData(form);
                                 fetch('/pagos/resultadoTransferencia', {
                                     method: 'POST',
-                                    body: formData
+                                    body: formData,
                                 })
                                     .then(response => response.json()) // Convertir la respuesta a JSON
                                     .then(data => {

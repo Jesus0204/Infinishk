@@ -10,7 +10,12 @@ const csvParser = require('csv-parser');
 const fs = require('fs');
 
 exports.get_pago = (request, response, next) => {
-    response.render('pago/pago');
+    response.render('pago/pago', {
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
 };
 
 exports.get_registro_transferencias = (request, response, next) => {
@@ -18,6 +23,9 @@ exports.get_registro_transferencias = (request, response, next) => {
         subir: true,
         revisar: false,
         resultado: false,
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
     });
 };
 
@@ -57,7 +65,6 @@ exports.post_subir_archivo = (request, response, next) => {
                 if (fila.inicioRef == '1') {
 
                     let montoAPagar = 0;
-                    const idDeudaPagada = await Deuda.fetchIDDeudaPagada(fila.Matricula);
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
                     const idLiquida = await Liquida.fetchID(fila.Matricula);
@@ -136,6 +143,9 @@ exports.post_subir_archivo = (request, response, next) => {
                 subir: false,
                 revisar: true,
                 datos: resultados,
+                csrfToken: request.csrfToken(),
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
             });
         });
 };
