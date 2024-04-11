@@ -9,7 +9,11 @@ module.exports = class PagoExtra {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM pagosExtras WHERE pagoExtraActivo = 1');
+        return db.execute('SELECT * FROM pagosExtras');
+    }
+
+    static fetchID(importe){
+        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
     }
 
 };

@@ -13,13 +13,28 @@ module.exports = class Deuda {
     }
 
     static fetchDeuda(matricula){
-        return db.execute('SELECT montoAPagar FROM deuda WHERE Pagado=0 AND Now()>fechaLimitePago AND Matricula = ?',
+        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM deuda WHERE Matricula = ?',
+        [matricula]);
+    }
+
+    static fetchEstado(matricula){
+        return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
         [matricula]);
     }
 
     static update_transferencia(monto,id_deuda){
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);
+    }
+
+    static fetchIDDeuda(matricula){
+        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ?',
+        [matricula]);
+    }
+    
+    static fetchIDColegiatura(matricula){
+        return db.execute('SELECT IDColegiatura FROM deuda WHERE Matricula = ?',
+        [matricula]);
     }
     
 }

@@ -12,10 +12,10 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    save_transferencia() {
+    static save_transferencia(id,monto,nota,fecha) {
         return db.execute(
-            `INSERT INTO pago (IDDeuda,montoPagado,tipoPago,fechaPago) VALUES (?, ?, ?, ?)`, 
-                [this.IDDeuda, this.montoPagado, this.tipoPago, this.fechaPago]);
+            `CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
+                [id, monto, nota,fecha]);
     }
     
     
