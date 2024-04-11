@@ -3,16 +3,13 @@ const express = require('express');
 // Ahora en vez de usar app, se usa el router de express
 const router = express.Router();
 
-const alumnosController = require('../controllers/alumnos.controller');
+const usuariosController = require('../controllers/alumnos.controller');
 
+// Incluyes el archivo para verificar si esta autenticado y los permisos
+const isAuth = require('../util/is-Auth');
+const can_AlumnosAtrasados = require('../util/privileges/admin/consultas/can_Alumnos_atrasados');
+const can_ConsultarAlumno = require('../util/privileges/can_consultar_alumno');
+const can_ConsultarHorarioAlumno = require('../util/privileges/can_consultar_HorarioAlumno');
+const can_ModificarDeuda = require('../util/privileges/admin/otros/can_modificar_Deuda');
 
-router.get('/A1', alumnosController.get_A1);//AGREGAR A LA RUTA '/' de alumno '/alumno'
-router.get('/A2', alumnosController.get_A2);
-router.get('/A3', alumnosController.get_A3);
-router.get('/A4', alumnosController.get_A4);
-router.get('/V1', alumnosController.get_V1);
-router.get('/V2', alumnosController.get_V2);
-router.get('/test', alumnosController.get_test);
-
-// Con esta linea se permite que se exporte en el principal
 module.exports = router;
