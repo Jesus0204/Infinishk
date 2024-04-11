@@ -58,7 +58,6 @@ exports.post_pago_extra_modify = (request, response, next) => {
 };
 
 exports.post_modify_status = (request, response, next) => {
-    console.log(request.body.estatus);
     Pago_Extra.update_estatus(request.body.id, request.body.estatus)
     .then(([rows, fieldData]) => {
             response.status(200).json({

@@ -101,10 +101,11 @@
                         </td>
                         <td>
                             <div class="field">
-                                <input id="estatus <%= count_con %>" type="checkbox" name="estatus"
-                                    class="switch is-rounded" onclick="modify_status('<%= pago.IDPagosExtras %>')"
+                                <input id="estatus<%= count_con %>" type="checkbox" name="estatus"
+                                    class="switch is-rounded" onclick="modify_status('<%= pago.IDPagosExtras %>',
+                                    checked)"
                                     <% if (pago.pagoExtraActivo == 1)  { %> checked="checked" <% } %>>
-                                <label for="estatus <%= count_con %>">
+                                <label for="estatus<%= count_con %>">
                                     <% if (pago.pagoExtraActivo == 1)  { %>
                                     Activo
                                     <% } else { %>
@@ -393,14 +394,16 @@
 
     }
 
-    const modify_status = (id) => {
+    const modify_status = (id, estatus) => {
+
         fetch('/pagos/pagos_extra/modify_status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: id
+                    id: id,
+                    estatus: estatus
                 })
             })
             .then((response) => {
