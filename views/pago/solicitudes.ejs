@@ -27,7 +27,26 @@
 
 <section class="section">
     <div class="container">
-        <h3 class="title is-3">Solicitudes de pago sin liquidar</h3>
+        <div class="columns">
+            <div class="column is-6">
+                <h3 class="title is-3">Solicitudes Pendientes</h3>
+            </div>
+            <!-- < if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { > -->
+            <div class="column is-offset-2">
+                <p class="control">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/pagos/registrar_solicitud">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                        <span>
+                            Registrar Solicitud
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+            <!-- < } > -->
         <% let count = 0 %>
         <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button class="delete"></button>
@@ -93,7 +112,7 @@
                                             <div class="column is-narrow">
                                                 <p class="is-size-5">
                                                     <strong>Monto actual: </strong>
-                                                    $<%= solicitud.montoPagar.toFixed(2) %>
+                                                    $<%= solicitud.montoPagar.toLocaleString('mx') %>
                                                 </p>
                                             </div>
                                         </div>
@@ -110,11 +129,12 @@
                                                         <% for (let pago of pagos) { %>
                                                         <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
                                                         <option value="<%= pago.IDPagosExtras %>"
-                                                            data-monto="<%= pago.montoPagar.toFixed(2) %>" selected>
+                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>"
+                                                            selected>
                                                             <%= pago.motivoPago %></option>
                                                         <% } else { %>
                                                         <option value="<%= pago.IDPagosExtras %>"
-                                                            data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
                                                             <%= pago.motivoPago %></option>
                                                         <% } %>
                                                         <% } %>
@@ -123,7 +143,7 @@
                                                 <div class="column is-narrow">
                                                     <p class="is-size-5" id="monto<%= count %>">
                                                         <strong>Monto: </strong>
-                                                        $<%= solicitud.montoPagar.toFixed(2) %>
+                                                        $<%= solicitud.montoPagar.toLocaleString('mx') %>
                                                     </p>
                                                 </div>
                                             </div>
