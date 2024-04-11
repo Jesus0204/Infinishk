@@ -28,7 +28,7 @@ module.exports = class PagoExtra {
     }
 
     static update(id, motivo, monto) {
-        return db.execute(`UPDATE pagosExtras SET motivoPago = ?, montoPagar = ?
+        return db.execute(`UPDATE pagosExtras SET motivoPago = ?, montoPagar = ?, createdAT = NOW()
         WHERE IDPagosExtras = ?`, [motivo, monto, id]);
     }
 

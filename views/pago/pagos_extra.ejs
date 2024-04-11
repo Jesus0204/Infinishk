@@ -73,7 +73,7 @@
                             <strong>Monto: </strong>
                         </th>
                         <th>
-                            <strong>Fecha Creacion: </strong>
+                            <strong>Fecha Creación: </strong>
                         </th>
                         <th style="width: 12%">
                             Estatus:
@@ -190,6 +190,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="columns is-vcentered">
+                                    <div class="column is-4" style="text-align: center;">
+                                        <label class="label is-medium">
+                                            Fecha Creación:
+                                        </label> 
+                                    </div>
+                                    <div class="column" style="text-align: center;">
+                                        <p class="is-size-5">
+                                            <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
+                                        </p>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr style="display: table-cell;">
@@ -253,6 +265,18 @@
                         <div class=" column is-half">
                             <p class="is-size-5" style="text-align: center;">
                                 <strong>Monto a Pagar: </strong>$ <%= pago.montoPagar.toLocaleString('mx')%>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered">
+                        <div class="column is-4 is-offset-1" style="text-align: center;">
+                            <label class="label is-medium">
+                                Fecha Creación:
+                            </label>
+                        </div>
+                        <div class="column">
+                            <p class="is-size-5">
+                                <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
                             </p>
                         </div>
                     </div>
