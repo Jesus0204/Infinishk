@@ -41,4 +41,8 @@ module.exports = class PagoExtra {
         return db.execute(`DELETE FROM pagosExtras WHERE IDPagosExtras = ?`, [id]);
     }
 
+    static fetchID(importe){
+        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
+    }
+
 };

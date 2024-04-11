@@ -8,4 +8,9 @@ module.exports = class Cursa{
         this.fechaInicio = mi_fechaInicio;
         this.fechaFin = mi_fechaFin;
     }
+
+    static fetchDiplomado(matricula){
+        return db.execute('SELECT IDDiplomado FROM cursa WHERE Matricula = ?',
+        [matricula]);
+    }
 }

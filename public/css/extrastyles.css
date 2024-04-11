@@ -1,92 +1,141 @@
 .navbar-item {
-  font-size: 20px; /* Reduce el tamaño de la fuente */
+    font-size: 18px;
 }
 
 .navbar {
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 1);
 }
-  
+
 .navbar-start {
-  width: 100%;
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .dropdown-menu {
+    top: -14px;
+    margin-left: 100%;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    .cerrar_sesion_mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 1023px) {
+    .nested {
+        display: none;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .navbar-end {
+        display: none;
+    }
+}
+
+
+.navbar-link:hover::after {
+    border-color: #ffffff;
 }
 
 .button {
-  width: 100%; 
-  margin: 6px auto; 
-  background-color: #910106;
-  color: #ffffff;
-  border: solid #95404c;
-  padding: 6px 6px;
-  height: auto;
+    width: 100%;
+    margin: 6px auto;
+    background-color: #910106;
+    color: #ffffff;
+    border: solid #95404c;
+    padding: 6px 6px;
+    height: auto;
 }
 
 .button:disabled,
-button[disabled]{
-  border: 1px solid #910106;
-  background-color: #95404c;
-  color: #ffffff;
+button[disabled] {
+    border: 1px solid #910106;
+    background-color: #95404c;
+    color: #ffffff;
 }
 
 .button:hover:disabled,
-button[disabled]{
-  background-color: #7c7f80;
+button[disabled] {
+    background-color: #7c7f80;
 }
 
 .button:hover {
-background-color: #000000;
-color: #ffffff;
-border-color: #95404c;
+    background-color: #000000;
+    color: #ffffff;
+    border: solid #95404c;
 }
 
 .button:focus {
-box-shadow: 0 0 0 4px #95404c;
-background-color: #910106;
-color: #ffffff;
+    box-shadow: 0 0 0 4px #95404c;
+    background-color: #910106;
+    color: #ffffff;
 }
 
 .checkbox input {
-height: 0;
-width: 0;
+    height: 0;
+    width: 0;
 }
 
 .checkbox {
-display: block;
-position: relative;
-user-select: none;
+    display: block;
+    position: relative;
+    user-select: none;
 }
 
 .checkmark {
-position: absolute;
-height: 20px;
-width: 20px;
-border: 2px solid #95404c;
-background-color: #dedbdb;
-border-radius: 50%;
-} 
-
-.checkbox:hover input ~ .checkmark {
-background-color: #910106;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    border: 2px solid #95404c;
+    background-color: #dedbdb;
+    border-radius: 50%;
 }
-.checkbox input:checked ~ .checkmark {
-background-color: #910106;
+
+.checkbox:hover input~.checkmark {
+    background-color: #910106;
+}
+
+.checkbox input:checked~.checkmark {
+    background-color: #910106;
 }
 
 .checkbox .checkmark:after {
-top: -1px;
-width: 5px;
-height: 10px;
-left: 2px;
-color: white;
+    top: -1px;
+    width: 5px;
+    height: 10px;
+    left: 2px;
+    color: white;
 }
 
-.checkbox input:checked ~ .checkmark:after {
-display: block;
-} 
+.checkbox input:checked~.checkmark:after {
+    display: block;
+}
 
 .checkmark:after {
-content:'✓';
-position: absolute;
-display: none;
-} 
+    content: '✓';
+    position: absolute;
+    display: none;
+}
 
- 
+.Pago-de-Colegiatura {
+    background-color: #910106;
+}
+
+.Pago-de-Diplomado {
+    background-color: #5a6581;
+}
+
+.Pago-a-Registrar {
+    background-color: #ffc800;
+}
+
+.Pago-Extra {
+    background-color: #16ac37;
+}

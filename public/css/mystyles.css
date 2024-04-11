@@ -5,6 +5,11 @@
   color: white !important;
   /* Cambia el color del texto a blanco */ }
 
+.card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 5px solid #910106; }
+
 .ui-menu-item {
   font-family: "Poppins", sans-serif; }
 
@@ -2213,7 +2218,7 @@ table th {
     font-size: 1.5rem; }
 
 .navbar {
-  background-color: #ffffff;
+  background-color: #95404c;
   min-height: 3.25rem;
   position: relative;
   z-index: 30; }
@@ -2807,7 +2812,7 @@ a.navbar-item,
 .navbar-link:not(.is-arrowless) {
   padding-right: 2.5em; }
   .navbar-link:not(.is-arrowless)::after {
-    border-color: #910106;
+    border-color: #ffffff;
     margin-top: -0.375em;
     right: 1.125em; }
 
@@ -2836,7 +2841,7 @@ a.navbar-item,
   .navbar-link::after {
     display: none; }
   .navbar-menu {
-    background-color: #ffffff;
+    background-color: #95404c;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
     padding: 0.5rem 0; }
     .navbar-menu.is-active {
@@ -7074,7 +7079,7 @@ button.dropdown-item {
   padding: 20px; }
 
 .navbar {
-  background-color: #ffffff;
+  background-color: #95404c;
   min-height: 3.25rem;
   position: relative;
   z-index: 30; }
@@ -7668,7 +7673,7 @@ a.navbar-item,
 .navbar-link:not(.is-arrowless) {
   padding-right: 2.5em; }
   .navbar-link:not(.is-arrowless)::after {
-    border-color: #910106;
+    border-color: #ffffff;
     margin-top: -0.375em;
     right: 1.125em; }
 
@@ -7697,7 +7702,7 @@ a.navbar-item,
   .navbar-link::after {
     display: none; }
   .navbar-menu {
-    background-color: #ffffff;
+    background-color: #95404c;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
     padding: 0.5rem 0; }
     .navbar-menu.is-active {

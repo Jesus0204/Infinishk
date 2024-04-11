@@ -34,6 +34,20 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+
+app.use(bodyParser.json());
+
+// Para proteger del Cross-Site Request Forgery
+const csrf = require('csurf');
+const csrfProtection = csrf();
+
+//...Y después del código para inicializar la sesión... 
+app.use(csrfProtection);
+
+
+const rutasSession = require('./routes/session.routes');
+app.use('/auth', rutasSession);
+
 app.use(bodyParser.json());
 
 const rutasDiplomado = require('./routes/diplomado.routes');
@@ -54,14 +68,6 @@ app.locals.contienePermiso = (permisos, casoUso) => {
 
     return contains;
 };
-
-
-const rutasAlumnos = require('./routes/alumnos.routes');
-app.use('/alumnos', rutasAlumnos);
-const rutasAdmin = require('./routes/administrador.routes');
-app.use('/administrador', rutasAdmin);
-const rutasVisualizador = require('./routes/visualizador.routes');
-app.use('/visualizador', rutasVisualizador);
 
 
 //Para error 404
