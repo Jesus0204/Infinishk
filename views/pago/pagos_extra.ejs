@@ -95,7 +95,7 @@
                 </thead>
                 <tbody>
                     <% for (let pago of pagos) { %>
-                    <tr>
+                    <tr id="pagination-content">
                         <td>
                             <div class="column">
                                 <%= pago.motivoPago %>
@@ -115,8 +115,7 @@
                             <div class="field">
                                 <input id="estatus<%= count_con %>" type="checkbox" name="estatus"
                                     class="switch is-rounded" onclick="modify_status('<%= pago.IDPagosExtras %>',
-                                    checked)"
-                                    <% if (pago.pagoExtraActivo == 1)  { %> checked="checked" <% } %>>
+                                    checked)" <% if (pago.pagoExtraActivo == 1)  { %> checked="checked" <% } %>>
                                 <label for="estatus<%= count_con %>"></label>
                             </div>
                         </td>
@@ -125,6 +124,15 @@
                     <% } %>
                 </tbody>
             </table>
+            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" id="prev-button">Anterior</a>
+                <a class="pagination-next" id="next-button">Siguiente</a>
+                <ul class="pagination-list" id="pagination-list">
+                    <div id="pagination-numbers">
+
+                    </div>
+                </ul>
+            </nav>
         </div>
 
         <div id="sin_solicitudes" class="is-hidden">
@@ -171,6 +179,7 @@
                         </div>
                     </div>
                     <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
                         <tr style="display: table-cell;">
                             <td style="display: block; border: none">
@@ -207,7 +216,7 @@
                                     <div class="column is-4" style="text-align: center;">
                                         <label class="label is-medium">
                                             Fecha Creación:
-                                        </label> 
+                                        </label>
                                     </div>
                                     <div class="column" style="text-align: center;">
                                         <p class="is-size-5">
@@ -323,6 +332,7 @@
     </div>
     </div>
 </section>
+<script type="text/javascript" src="/js/pagination.js"></script>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
     function con_solicitudes() {
@@ -492,18 +502,18 @@
             });
     };
 
-    const notifiacion_eliminacion = document.querySelector('#btn_eliminar_notificacion');
+    const notificacion_eliminacion = document.querySelector('#btn_eliminar_notificacion');
 
-    if (notifiacion_eliminacion) {
-        notifiacion_eliminacion.addEventListener('click', () => {
+    if (notificacion_eliminacion) {
+        notificacion_eliminacion.addEventListener('click', () => {
             document.getElementById('eliminacion').classList.add('is-hidden');
         })
     };
 
-    const notifiacion_estatus = document.querySelector('#btn_eliminar_estatus');
+    const notificacion_estatus = document.querySelector('#btn_eliminar_estatus');
 
-    if (notifiacion_estatus) {
-        notifiacion_estatus.addEventListener('click', () => {
+    if (notificacion_estatus) {
+        notificacion_estatus.addEventListener('click', () => {
             document.getElementById('modificacion_estatus').classList.add('is-hidden');
         })
     };

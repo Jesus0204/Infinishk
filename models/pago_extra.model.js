@@ -10,7 +10,7 @@ module.exports = class PagoExtra {
     static fetchAll() {
         return db.execute(`SELECT * FROM pagosExtras 
         WHERE IDPagosExtras IN (SELECT IDPagosExtras FROM Liquida)
-        ORDER BY pagoExtraActivo DESC`);
+        ORDER BY pagoExtraActivo DESC, createdAT DESC`);
     }
 
     static fetchNoAsignados() {
