@@ -52,6 +52,7 @@ app.use(helmet({
             "script-src": ["'self'", "'unsafe-inline'",
                 'code.jquery.com', 'ajax.googleapis.com'
             ],
+            "script-src-attr": ["'unsafe-inline'"]
         },
     },
 }));
