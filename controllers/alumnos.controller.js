@@ -12,7 +12,11 @@ exports.get_alumnos_atrasados = (request, response, next) => {
             }
             // Pasas a plantilla deudas de alumnos que tienen pago atrasado
             response.render('alumnos/alumnos_atrasados', {
-                pagos_atrasados: deudas
+                pagos_atrasados: deudas, 
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
             });
         })
         .catch((error) => {

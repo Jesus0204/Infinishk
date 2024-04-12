@@ -12,29 +12,20 @@ module.exports = class Deuda {
         this.Pagado = mi_Pagado;
     }
 
-    static fetchDeuda(matricula){
-        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM deuda WHERE Matricula = ?',
-        [matricula]);
+    static fetchNoPagados() {
+        return db.execute(`SELECT DISTINCT(matricula) FROM Deuda 
+        WHERE Pagado = 0 AND Now() > fechaLimitePago`);
     }
 
-    static fetchEstado(matricula){
-        return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
-        [matricula]);
-    }
-
-    static update_transferencia(monto,id_deuda){
-        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
-        [monto, id_deuda]);
-    }
-
-    static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ?',
-        [matricula]);
-    }
-    
-    static fetchIDColegiatura(matricula){
-        return db.execute('SELECT IDColegiatura FROM deuda WHERE Matricula = ?',
-        [matricula]);
+    static fetchDeuda(matricula) {
+        return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
+        (D.montoAPagar - D.Descuento) AS 'montoAPagar',
+        ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.pagado
+        FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
+        WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
+        C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?;`,
+            [matricula]);
     }
     
 }

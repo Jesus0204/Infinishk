@@ -32,9 +32,6 @@ const can_ReportesMetodoPago = require('../util/privileges/admin/consultas/can_R
 const can_RegistrarPagoExtra = require('../util/privileges/admin/registros/can_registrar_PagoExtra');
 const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_administrar_PagoExtra');
 
-router.get('/registroTransferencia', pagosController.get_registro_transferencias);
-router.post('/registroTransferencia', pagosController.post_subir_archivo);
-router.post('/resultadoTransferencia', pagosController.post_registrar_transferencia);
 router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;
