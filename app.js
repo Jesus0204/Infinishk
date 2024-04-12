@@ -4,7 +4,7 @@ const express = require('express');
 // Inicia la app usuando a express
 const app = express();
 
-// Configuras a EJS como motor de templates con express
+// Configuramos a EJS como motor de templates con express
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
