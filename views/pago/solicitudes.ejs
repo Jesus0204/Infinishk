@@ -1,4 +1,8 @@
-<%- include('../includes/dropdown_admin.ejs') %>
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <style>
@@ -27,11 +31,12 @@
 
 <section class="section">
     <div class="container">
+        <input type="hidden" id="_csrf" value="<%= csrfToken %>">
         <div class="columns">
             <div class="column is-6">
                 <h3 class="title is-3">Solicitudes Pendientes</h3>
             </div>
-            <!-- < if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { > -->
+            <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { %>
             <div class="column is-offset-2">
                 <p class="control">
                     <a class="button is-rounded is-responsive" style="font-size: large;"
@@ -46,7 +51,7 @@
                 </p>
             </div>
         </div>
-            <!-- < } > -->
+            <% } %>
         <% let count = 0 %>
         <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button class="delete"></button>
@@ -55,25 +60,11 @@
         <% if (solicitudes.length == 0) { %>
         <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
             <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                <p>No existen solicitudes</p>
+                <p>No existen solicitudes pendientes</p>
                 <button class="delete" aria-label="delete"></button>
             </div>
             <div class="message-body" style="color:#ffffff;">
-                Actualmente no existen solicitudes de pago que se puedan modificar.
-                <br>
-                Si quieres registrar una solicitud, da click al siguiente botón:
-                <div class="columns is-vcentered">
-                    <div class="column is-3"></div>
-                    <div class="column is-6">
-                        <a href="/pagos/registrar_solicitud" class="button is-rounded is-medium is-responsive"
-                            style="font-size: large; margin: 8px 2px;" id="notificacion">
-                            <span>Registrar solicitud de Pago</span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </a>
-                    </div>
-                </div>
+                Actualmente no existen solicitudes de pago que se puedan modificar o eliminar.
             </div>
         </article>
         <% } %>
@@ -82,6 +73,7 @@
             <tbody>
                 <tr style="display: table-cell;">
                     <form action="/pagos/solicitudes/modify" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <td style="display: block; border: none">
                             <div class="columns is-vcentered">
                                 <div class="column is-7">
@@ -168,7 +160,7 @@
                     <td style="display: block;">
                         <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
-                                <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                <button class="js-modal-trigger button is-rounded is-medium is-responsive"
                                     style="font-size: medium; background-color: #000000;"
                                     id="Boton_eliminar<%= count %>" data-target="modal-confirmar-eliminar<%= count %>">
                                     <span class="icon is-large">
@@ -271,11 +263,15 @@
 
     const eliminar = (id) => {
         console.log(id);
+        //El token de protección CSRF
+        const csrf = document.getElementById('_csrf').value;
+
         // Enviar los datos al servidor
         fetch('/pagos/solicitudes/delete', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'csrf-token': csrf
                 },
                 body: JSON.stringify({
                     id: id

@@ -18,10 +18,9 @@ exports.get_pago = (request,response,next) => {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
     });
 };
-
-const Liquida = require('../models/liquida.model');
 const Pago_Extra = require('../models/pago_extra.model');
 
 exports.get_solicitudes = (request, response, next) => {
@@ -32,6 +31,10 @@ exports.get_solicitudes = (request, response, next) => {
                     response.render('pago/solicitudes', {
                         solicitudes: rows,
                         pagos: pagos_extra,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
                     })
                 })
                 .catch((error) => {

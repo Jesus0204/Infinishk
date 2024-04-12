@@ -32,9 +32,9 @@ const can_ReportesMetodoPago = require('../util/privileges/admin/consultas/can_R
 const can_RegistrarPagoExtra = require('../util/privileges/admin/registros/can_registrar_PagoExtra');
 const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_administrar_PagoExtra');
 
-router.get('/solicitudes', pagosController.get_solicitudes);
-router.post('/solicitudes/modify', pagosController.post_solicitudes_modify);
-router.post('/solicitudes/delete', pagosController.post_solicitudes_delete);
+router.get('/solicitudes', isAuth, can_AdministrarSolicitud, pagosController.get_solicitudes);
+router.post('/solicitudes/modify', isAuth, can_AdministrarSolicitud, pagosController.post_solicitudes_modify);
+router.post('/solicitudes/delete', isAuth, can_AdministrarSolicitud, pagosController.post_solicitudes_delete);
 router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;
