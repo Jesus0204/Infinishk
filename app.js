@@ -44,6 +44,18 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
+// const helmet = require("helmet");
+
+// app.use(
+//     helmet({
+//         contentSecurityPolicy: {
+//             directives: {
+//                 scriptSrc: ["'self'", "https://kit.fontawesome.com/98026b1a47.js"],
+//             },
+//         },
+//     })
+// );
+
 const compression = require("compression");
 
 app.use(compression());

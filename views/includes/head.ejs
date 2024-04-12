@@ -403,62 +403,14 @@
                             Plan de Pago
                         </a>
                         <% } %>
-                        <% if (contienePermiso(permisos, 'Registrar usuario') == true &&
-                       contienePermiso(permisos, 'Consultar Usuario') == true) { %>
+                        <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
                         <hr class="navbar-divider">
-                        <div class="nested dropdown has-dropdown is-hoverable">
                             <a class="navbar-item" style="padding-right: 2.5em;">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-users-gear"></i>
                                 </span>
                                 Usuarios
-                                <span class="icon is-large ">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
                             </a>
-                            <div class="dropdown-menu">
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-tag"></i>
-                                        </span>
-                                        Consultar
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </span>
-                                        Registrar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mobile">
-                            <div data-target="usuarios" class="navbar-item has-dropdown">
-                                <a class="navbar-link" onclick="click_target(this.parentElement)">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-users-gear"></i>
-                                    </span>
-                                    Usuarios
-                                </a>
-                                <div class="navbar-dropdown" id="usuarios">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-tag"></i>
-                                        </span>
-                                        Consultar
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </span>
-                                        Registrar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Registrar Rol') == true) { %>
