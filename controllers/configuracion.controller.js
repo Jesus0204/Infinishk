@@ -120,7 +120,7 @@ exports.post_modificar_usuario = (request, response, next) => {
             });
         })
         .catch((error) => {
-            console.log('Hubo erro')
+            console.log('Hubo error')
             console.log(error)
         });
 }

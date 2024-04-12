@@ -110,8 +110,8 @@
             </div>
         </section>
         <script>
-            
-            $(document).ready(function () {
+
+            $(function () {
                 var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
 
                 $("#username").autocomplete({
@@ -121,12 +121,13 @@
                             dataType: "json",
                             data: { q: request.term },
                             success: function (data) {
-                                console.log('Consulta enviada:', request.term)
+                                console.log('Datos recibidos:', data); // Agrega esta línea para ver los datos recibidos en la consola
                                 nombresValidos = data.map(function (usuario) {
                                     return usuario.IDUsuario;
                                 });
                                 response(nombresValidos);
                             }
+
                         });
                     },
                     minLength: 2,
