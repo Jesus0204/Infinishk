@@ -18,41 +18,47 @@ exports.post_login = (request, response, next) => {
     Usuario.fetchOne(request.body.IDUsuario)
         .then(([users, fieldData]) => {
             if (users.length == 1) {
-                // users[0] contiene el objeto de la respuesta de la consulta
-                const user = users[0];
-                // Ya que verificamos que el usuario existe en la base de datos
-                bcrypt.compare(request.body.password, user.Contraseña)
-                    .then(doMatch => {
-                        // Si la promesa es verdadero, entonces inicias sesion en la pagina
-                        if (doMatch) {
-                            Usuario.getPermisos(user.IDUsuario)
-                                .then(([permisos, fieldData]) => {
-                                    Usuario.getRol(user.IDUsuario)
-                                    .then(([rol, fieldData]) => {
-                                        request.session.isLoggedIn = true;
-                                        request.session.permisos = permisos;
-                                        request.session.rol = rol[0].IDRol;
-                                        request.session.username = user.IDUsuario;
-                                        return request.session.save(err => {
-                                            response.redirect('/pagos');
+                if (users[0].usuarioActivo == 1) {
+                    // users[0] contiene el objeto de la respuesta de la consulta
+                    const user = users[0];
+                    // Ya que verificamos que el usuario existe en la base de datos
+                    bcrypt.compare(request.body.password, user.Contraseña)
+                        .then(doMatch => {
+                            // Si la promesa es verdadero, entonces inicias sesion en la pagina
+                            if (doMatch) {
+                                Usuario.getPermisos(user.IDUsuario)
+                                    .then(([permisos, fieldData]) => {
+                                        Usuario.getRol(user.IDUsuario)
+                                        .then(([rol, fieldData]) => {
+                                            request.session.isLoggedIn = true;
+                                            request.session.permisos = permisos;
+                                            request.session.rol = rol[0].IDRol;
+                                            request.session.username = user.IDUsuario;
+                                            return request.session.save(err => {
+                                                response.redirect('/pagos');
+                                            })
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
                                         })
                                     })
                                     .catch((error) => {
-                                        console.log(error);
-                                    })
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                });
-                            // Por si los passwords no hacen match
-                        } else {
-                            request.session.error = 'El usuario y/o contraseña con incorrectos.';
-                            return response.redirect('/auth/login');
-                        }
-                        // Por si hay un error en la libreria o algo
-                    }).catch(err => {
-                        response.redirect('/auth/login');
-                    });
+                                        console.log(error)
+                                    });
+                                // Por si los passwords no hacen match
+                            } else {
+                                request.session.error = 'El usuario y/o contraseña con incorrectos.';
+                                return response.redirect('/auth/login');
+                            }
+                            // Por si hay un error en la libreria o algo
+                        }).catch(err => {
+                            response.redirect('/auth/login');
+                        });
+
+                } else {
+                    request.session.error = 'El usuario insertado ya no está activo en el sistema. Por favor busca ayuda si requieres iniciar sesión.';
+                    response.redirect('/auth/login')
+                }
                 // Por si el usuario no existe en la base de datos
             } else {
                 request.session.error = 'El usuario y/o contraseña con incorrectos.';
