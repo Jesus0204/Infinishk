@@ -44,6 +44,7 @@ exports.get_solicitudes = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         });
+};
 
 exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
@@ -137,7 +138,7 @@ exports.get_autocomplete = (request, response, next) => {
                 })
                 .catch((error) => {
                     console.log(error)
-                })
+                });
         } else if (matches_matricula) {
             matricula = matches_matricula[0];
 
@@ -161,7 +162,7 @@ exports.get_autocomplete = (request, response, next) => {
                 })
                 .catch((error) => {
                     console.log(error)
-                })
+                });
         }
     }
 };
