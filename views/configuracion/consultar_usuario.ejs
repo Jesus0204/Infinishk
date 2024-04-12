@@ -117,7 +117,7 @@
                 $("#username").autocomplete({
                     source: function (request, response) {
                         $.ajax({
-                            url: "/configuracion/autocomplete_usuario",
+                            url: "/configuracion/autocomplete",
                             dataType: "json",
                             data: { q: request.term },
                             success: function (data) {
