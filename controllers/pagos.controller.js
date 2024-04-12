@@ -83,15 +83,17 @@ exports.post_subir_archivo = (request, response, next) => {
 
                         const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
-                        const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
+                        if ( pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && typeof pagoCompleto[0][0].fechaPago !== 'undefined') {
+                            const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
 
-                        const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
+                            const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
 
-                        const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
-                        const importeRedondeado = Math.round(fila.Importe * 100) / 100;
+                            const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
+                            const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                        if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
-                            tipoPago = 'Pago Completo';
+                            if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                                tipoPago = 'Pago Completo';
+                            }
                         }
                     }
 
