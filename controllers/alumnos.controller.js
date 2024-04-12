@@ -1,21 +1,21 @@
-exports.get_A1 = (request, response, next) => {
-    response.render('A1');
-};
-exports.get_A2 = (request, response, next) => {
-    response.render('A2');
-};
-exports.get_A3 = (request, response, next) => {
-    response.render('A3');
-};
-exports.get_A4 = (request, response, next) => {
-    response.render('A4');
-};
-exports.get_V1 = (request, response, next) => {
-    response.render('V1');
-};
-exports.get_V2 = (request, response, next) => {
-    response.render('V2');
-};
-exports.get_test = (request, response, next) => {
-    response.render('test');
+const Deuda = require('../models/Deuda.model');
+
+exports.get_alumnos_atrasados = (request, response, next) => {
+    // Primero sacas las matriculas de alumnos que estan atrasados
+    Deuda.fetchNoPagados()
+        .then(async ([alumnos_atrasados, fieldData]) => {
+            let deudas = [];
+            // Para cada alumno atrasado sacas todos los datos
+            for (let alumno of alumnos_atrasados) {
+                const [deuda, fieldData] = await Deuda.fetchDeuda(alumno.matricula);
+                deudas.push(deuda);
+            }
+            // Pasas a plantilla deudas de alumnos que tienen pago atrasado
+            response.render('alumnos/alumnos_atrasados', {
+                pagos_atrasados: deudas
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };

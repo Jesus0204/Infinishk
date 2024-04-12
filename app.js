@@ -34,15 +34,40 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-const rutasAlumnos = require('./routes/alumnos.routes');
-app.use('/alumnos', rutasAlumnos);
-const rutasAdmin = require('./routes/administrador.routes');
-app.use('/administrador', rutasAdmin);
-const rutasVisualizador = require('./routes/visualizador.routes');
-app.use('/visualizador', rutasVisualizador);
+app.use(bodyParser.json());
+
+// Para proteger del Cross-Site Request Forgery
+const csrf = require('csurf');
+const csrfProtection = csrf();
+
+//...Y después del código para inicializar la sesión... 
+app.use(csrfProtection);
+
+
+const rutasSession = require('./routes/session.routes');
+app.use('/auth', rutasSession);
+
+const rutasDiplomado = require('./routes/diplomado.routes');
+app.use('/diplomado', rutasDiplomado);
+
+const rutasConfiguracion = require('./routes/configuracion.routes');
+app.use('/configuracion', rutasConfiguracion);
+
+const rutasPago = require('./routes/pagos.routes');
+app.use('/pagos', rutasPago);
 
 const rutasUsuarios = require('./routes/usuarios.routes');
 app.use('/usuarios', rutasUsuarios);
+
+// Agregar funcion para iterar la lista del ejs, y que el codigo se vea limpio
+app.locals.contienePermiso = (permisos, casoUso) => {
+
+    const contains = !!permisos.find(caso => {
+        return caso.funcion === casoUso;
+    })
+
+    return contains;
+};
 
 
 //Para error 404
