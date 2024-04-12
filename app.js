@@ -69,7 +69,6 @@ app.locals.contienePermiso = (permisos, casoUso) => {
     return contains;
 };
 
-
 //Para error 404
 app.use((request, response) => {
     response.status(404).sendFile(path.join(__dirname, "views", "404.html"));
