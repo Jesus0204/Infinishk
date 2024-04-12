@@ -1,0 +1,321 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+    .button:hover {
+        background-color: #5a6581 !important;
+        border-color: #910106 !important;
+    }
+
+    #notificacion:hover {
+        background-color: #910106 !important;
+        border-color: #000000 !important
+    }
+
+    #notificacion {
+        background-color: #000000;
+    }
+
+    .select_pago:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
+    .select_pago:focus {
+        border: 2px solid #910106 !important;
+    }
+</style>
+
+<section class="section">
+    <div class="container">
+        <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+        <div class="columns">
+            <div class="column is-6">
+                <h3 class="title is-3">Solicitudes Pendientes</h3>
+            </div>
+            <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { %>
+            <div class="column is-offset-2">
+                <p class="control">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/pagos/registrar_solicitud">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                        <span>
+                            Registrar Solicitud
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+            <% } %>
+        <% let count = 0 %>
+        <div id="modificacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+            <button class="delete"></button>
+            ¡Solicitud de pago eliminada!
+        </div>
+        <% if (solicitudes.length == 0) { %>
+        <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+            <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                <p>No existen solicitudes pendientes</p>
+                <button class="delete" aria-label="delete"></button>
+            </div>
+            <div class="message-body" style="color:#ffffff;">
+                Actualmente no existen solicitudes de pago que se puedan modificar o eliminar.
+            </div>
+        </article>
+        <% } %>
+        <% for (let solicitud of solicitudes) { %>
+        <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
+            <tbody>
+                <tr style="display: table-cell;">
+                    <form action="/pagos/solicitudes/modify" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <td style="display: block; border: none">
+                            <div class="columns is-vcentered">
+                                <div class="column is-7">
+                                    <p class="is-size-5" style="padding-left: 0.7em;">
+                                        <strong>Nombre: </strong><%= solicitud.Nombre %>
+                                        <%= solicitud.Apellidos %>
+                                    </p>
+                                </div>
+                                <div class="column is-5">
+                                    <p class="is-size-5">
+                                        <strong>Matricula: </strong><%= solicitud.Matricula %>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                            <td style="display: block;">
+                                <div class="columns is-vcentered">
+                                    <div class="column is-5">
+                                        <div class="column is-vcentered" style="text-align: center;">
+                                            <div class="column">
+                                                <p class="is-size-5" id="motivo<%= count %>"
+                                                    style="margin-bottom: -1.3em;">
+                                                    <strong>Motivo actual: </strong>
+                                                    <%= solicitud.motivoPago %>
+                                                </p>
+                                            </div>
+                                            <br>
+                                            <div class="column is-narrow">
+                                                <p class="is-size-5">
+                                                    <strong>Monto actual: </strong>
+                                                    $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <div class=" columns is-vcentered" style="text-align: center;">
+                                            <div class="column">
+                                                <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
+                                            width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Motivo
+                                                    Pago:</label>
+                                                <div class="select">
+                                                    <select class="select_pago" name="pago" id="pago<%= count %>"
+                                                        style="border: 2px solid #7c7f80;">
+                                                        <% for (let pago of pagos) { %>
+                                                        <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                                        <option value="<%= pago.IDPagosExtras %>"
+                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>"
+                                                            selected>
+                                                            <%= pago.motivoPago %></option>
+                                                        <% } else { %>
+                                                        <option value="<%= pago.IDPagosExtras %>"
+                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
+                                                            <%= pago.motivoPago %></option>
+                                                        <% } %>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                                <div class="column is-narrow">
+                                                    <p class="is-size-5" id="monto<%= count %>">
+                                                        <strong>Monto: </strong>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </td>
+                </tr>
+                <tr style="display: table-cell;">
+                    <td style="display: block;">
+                        <div class="columns is-vcentered">
+                            <div class="column is-full" style="text-align: center;">
+                                <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
+                                <button type="submit" class="button is-rounded is-medium is-responsive"
+                                    style="font-size: medium;">
+                                    <span>Modificar</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                                </button>
+                            </div>
+                            </form>
+                    <td style="display: block;">
+                        <div class="columns is-vcentered">
+                            <div class="column is-full" style="text-align: center;">
+                                <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                    style="font-size: medium; background-color: #000000;"
+                                    id="Boton_eliminar<%= count %>" data-target="modal-confirmar-eliminar<%= count %>">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </span>
+                                    <span>Eliminar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+    </div>
+    </tr>
+    </tbody>
+    </table>
+    <div id="modal-confirmar-eliminar<%= count %>" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" style="text-align: center;">
+                    <strong> Eliminar Solicitud</strong>
+                </p>
+                <button class="delete" aria-label="delete"></button>
+            </header>
+            <section class="modal-card-body">
+                <p class="is-size-5" style="text-align: center;">
+                    <strong>¡Esta acción no se puede deshacer!</strong>
+                </p>
+                <br>
+                <p class="is-size-5" style="text-align: center;">
+                    Los datos de la solicitud de pago a eliminar son los siguientes:
+                </p>
+                <br>
+                <div class="columns is-vcentered">
+                    <div class="column is-7">
+                        <p class="is-size-5" style="text-align: center;">
+                            <strong>Nombre: </strong><%= solicitud.Nombre %>
+                            <%= solicitud.Apellidos %>
+                        </p>
+                    </div>
+                    <div class=" column is-5">
+                        <p class="is-size-5" style="text-align: center;">
+                            <strong>Matricula: </strong><%= solicitud.Matricula %>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns is-vcentered">
+                    <div class="column is-half">
+                        <p class="is-size-5" style="text-align: center;" id="motivo_modal<%= count %>">
+                            <strong>Motivo Pago: </strong> 
+                            <%= solicitud.motivoPago %>
+                        </p>
+                    </div>
+                    <div class="column is-half">
+                        <p class="is-size-5" style="text-align: center;" id="monto_modal<%= count %>">
+                            <strong>Monto Pago: </strong>
+                            $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot" style="justify-content: center;">
+                <div class="field is-grouped">
+                    <p class="control">
+                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                            style="font-size: large; margin: 8px 2px;">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                            </span>
+                            <span>Regresar</span>
+                        </button>
+                    </p>
+                    <p class="control">
+                        <button class="button is-rounded is-medium is-responsive"
+                            onclick="eliminar('<%= solicitud.IDLiquida %>')"
+                            style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                            </span>
+                            <span>Eliminar</span>
+                        </button>
+            </footer>
+        </div>
+    </div>
+    <% count++ %>
+    <% } %>
+    </div>
+</section>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
+<script>
+    for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
+        $('#pago' + count).change(function () {
+            // Sacas el monto de la opcion con data-monto
+            let num_monto = $(this).find(':selected').data('monto');
+            // Cambias el DOM para mostrar el precio correcto
+            const monto = document.querySelector('#monto' + count);
+            monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+        });
+
+    }
+
+    const eliminar = (id) => {
+        console.log(id);
+        //El token de protección CSRF
+        const csrf = document.getElementById('_csrf').value;
+
+        // Enviar los datos al servidor
+        fetch('/pagos/solicitudes/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'csrf-token': csrf
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+
+                const table = document.getElementById(id);
+
+                if (table) {
+                    table.remove();
+                } else {
+                    console.error(`No se encontró la fila ${id}.`);
+                }
+
+                document.getElementById('modificacion').classList.remove('is-hidden');
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+            })
+            .catch(error => {
+                console.error('Error en la petición fetch:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+
+            $delete.addEventListener('click', () => {
+                document.getElementById('modificacion').classList.add('is-hidden');
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.message .delete') || []).forEach(($delete) => {
+            const $message = $delete.parentNode.parentNode;
+
+            $delete.addEventListener('click', () => {
+                $message.parentNode.removeChild($message);
+            });
+        });
+    });
+</script>

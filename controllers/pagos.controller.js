@@ -18,10 +18,32 @@ exports.get_pago = (request,response,next) => {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
     });
 };
-
 const Pago_Extra = require('../models/pago_extra.model');
+
+exports.get_solicitudes = (request, response, next) => {
+    Liquida.fetchNoPagados()
+        .then(([rows, fieldData]) => {
+            Pago_Extra.fetchAll()
+                .then(([pagos_extra, fieldData]) => {
+                    response.render('pago/solicitudes', {
+                        solicitudes: rows,
+                        pagos: pagos_extra,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 
 exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
@@ -32,6 +54,28 @@ exports.get_registrar_solicitud = (request, response, next) => {
         rol: request.session.rol || "",
         csrfToken: request.csrfToken()
     });
+};
+
+exports.post_solicitudes_modify = (request, response, next) => {
+    Liquida.update(request.body.id, request.body.pago)
+        .then(([rows, fieldData]) => {
+            response.redirect('/pagos/solicitudes');
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+};
+
+exports.post_solicitudes_delete = (request, response, next) => {
+    Liquida.delete(request.body.id)
+        .then(([rows, fieldData]) => {
+            response.status(200).json({
+                success: true
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 };
 
 exports.post_fetch_registrar_solicitud = (request, response, next) => {
