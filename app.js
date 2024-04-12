@@ -44,6 +44,13 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
+const helmet = require("helmet");
+
+app.use(helmet());
+
+const compression = require("compression");
+
+app.use(compression());
 
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
