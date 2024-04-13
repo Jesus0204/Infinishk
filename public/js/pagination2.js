@@ -12,6 +12,7 @@ let currentPage2;
 const appendPageNumber2 = (index) => {
     const pageNumber2 = document.createElement("a");
     pageNumber2.className = "pagination-link";
+    pageNumber2.classList.add('pag-2');
     pageNumber2.innerHTML = index;
     pageNumber2.setAttribute("page-index", index);
     pageNumber2.setAttribute("aria-label", "Page " + index);
@@ -43,7 +44,7 @@ const handlePageButtonsStatus2 = () => {
 };
 
 const handleActivePageNumber2 = () => {
-    document.querySelectorAll(".pagination-link").forEach((button) => {
+    document.querySelectorAll(".pag-2").forEach((button) => {
         button.classList.remove("is-current");
 
         const pageIndex2 = Number(button.getAttribute("page-index"));
@@ -77,7 +78,7 @@ window.addEventListener("load", () => {
     nextButton2.addEventListener("click", () => {
         setCurrentPage2(currentPage2 + 1);
     });
-    document.querySelectorAll(".pagination-link").forEach((button) => {
+    document.querySelectorAll(".pag-2").forEach((button) => {
         const pageIndex2 = Number(button.getAttribute("page-index"));
         if (pageIndex2) {
             button.addEventListener("click", () => {
