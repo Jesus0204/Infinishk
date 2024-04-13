@@ -60,7 +60,7 @@ const setCurrentPage2 = (pageNum) => {
 
     const prevRange2 = (pageNum - 1) * paginationLimit2;
     const currRange2 = pageNum * paginationLimit2;
-    listItems.forEach((item, index) => {
+    listItems2.forEach((item, index) => {
         item.classList.add("is-hidden");
         if (index >= prevRange2 && index < currRange2) {
             item.classList.remove("is-hidden");
@@ -71,10 +71,10 @@ const setCurrentPage2 = (pageNum) => {
 window.addEventListener("load", () => {
     getPaginationNumbers2();
     setCurrentPage2(1);
-    prevButton.addEventListener("click", () => {
+    prevButton2.addEventListener("click", () => {
         setCurrentPage2(currentPage2 - 1);
     });
-    nextButton.addEventListener("click", () => {
+    nextButton2.addEventListener("click", () => {
         setCurrentPage2(currentPage2 + 1);
     });
     document.querySelectorAll(".pagination-link").forEach((button) => {
