@@ -21,21 +21,44 @@ exports.get_administrar_planpago = (request, response, next) => {
 };
 
 exports.get_consultar_usuario = (request, response, next) => {
-    response.render('configuracion/consultar_usuario', {
-        fetch: true,
-        modificar: false,
-        resultado: false,
-        error: null,
-        csrfToken: request.csrfToken(),
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    })
+    Usuario.fetchActivos()
+        .then(([usuariosActivos, fieldData]) => {
+            Usuario.fetchNoActivos()
+                .then(([usuariosNoActivos, fieldData]) => {
+                    response.render('configuracion/consultar_usuario', {
+                        usuariosNoActivos: usuariosNoActivos,
+                        usuariosActivos: usuariosActivos,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
-exports.get_autocomplete_usuario = (request, response, next) => {
+exports.get_search_activo = (request, response, next) => {
     const consulta = request.query.q;
     console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
     Usuario.buscar(consulta) // Búsqueda de usuarios
+    .then(([usuarios]) => {
+        response.json(usuarios);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
+exports.get_search_noactivo = (request, response, next) => {
+    const consulta = request.query.q;
+    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
+    Usuario.buscarNoActivos(consulta)// Búsqueda de usuarios
     .then(([usuarios]) => {
         response.json(usuarios);
     })
@@ -95,31 +118,19 @@ exports.post_buscar_usuario = (request, response, next) => {
 };
 
 exports.post_modificar_usuario = (request, response, next) => {
-    console.log('Llegue aqui')
     const id = request.body.IDUsuario;
     const status = request.body.statusUsuario === 'on' ? '1' : '0';
-    console.log('El Id')
-    console.log(id);
-    console.log('El Status')
-    console.log(status);
-    Usuario.update(id,status)
+
+    Usuario.update(id, status)
         .then(() => {
-            return Usuario.fetchOne(id)
-        })
-        .then(([usuarios, fieldData]) => {
-            response.render('configuracion/consultar_usuario', {
-                fetch: false,
-                modificar: false,
-                resultado: true,
-                usuario: usuarios[0],
-                csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-            });
+            // Redirigir al usuario de vuelta a la misma página
+            response.redirect('/configuracion/consultar_usuario');
         })
         .catch((error) => {
-            console.log('Hubo error')
-            console.log(error)
+            console.log('Hubo error');
+            console.log(error);
+            // Manejar el error de alguna forma
+            response.redirect('/configuracion/consultar_usuario');
         });
 }
 

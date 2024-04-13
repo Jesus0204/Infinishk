@@ -1,167 +1,263 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+    <script type="text/javascript" src="/js/pagination.js"></script>
+    <script type="text/javascript" src="/js/modal_popup.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <style>
+        input:focus {
+            border: 2px solid #910106 !important
+        }
+
+        input:hover {
+            border: 2px solid #5a6581 !important;
+        }
+
+        .button:hover {
+            background-color: #5a6581 !important;
+            border-color: #910106 !important;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .table-container {
+            position: relative;
+        }
+
+        .pagination-container {
+            margin-top: 20px;
+        }
+
+        .pagination-btn {
+            margin: 0 5px;
+        }
+    </style>
 
     <body>
         <section class="section">
-            <div class="container" style="display: flex; justify-content: center;">
-                <% if (fetch) { %>
-                    <p class="title" style="text-align: center;">Buscar Usuario</p>
-                    <form action="/configuracion/consultar_usuario" method="POST" style="width: 50%; margin-top: 50px;">
-                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                        <label for="username" class="label is-large">Username del Usuario:</label>
-                        <input type="text" id="username" name="username" required class="input is-large">
-                        <button type="submit" id="buscarBtn"
-                            class="button is-rounded is-large is-responsive">Buscar</button>
-                    </form>
-                    <% if (error) { %>
-                        <p class="is-size-4">
-                            <%= error %>
-                        </p>
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-6">
+                        <h3 class="title is-3">Configuración Usuarios</h3>
+                    </div>
+                    <% if (contienePermiso(permisos, 'Registrar usuario') == true) { %>
+                        <div class="column is-offset-2">
+                            <p class="control">
+                                <a class="button is-rounded is-responsive" style="font-size: large;"
+                                    href="/configuracion/registrar_usuario">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                    </span>
+                                    <span>
+                                        Registrar Usuario
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
                         <% } %>
-                            <% } %>
+                    </div>
 
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
-                                <% if (modificar) { %>
-                                    <p class="title" style="text-align: center;">Consultar Usuario</p>
-                                    <div style="display: flex; justify-content: center;">
-                                        <form action="/configuracion/consultar_usuario" method="POST"
-                                            style="width: 50%; margin-top: 50px;">
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <label for="username" class="label is-large">Username del Usuario:</label>
-                                            <input type="text" id="username" name="username" required
-                                                class="input is-large">
-                                            <button type="submit" id="buscarBtn"
-                                                class="button is-rounded is-large is-responsive"
-                                                style="margin-left: 10px;">Buscar</button>
-                                        </form>
-                                    </div>
+                <div class="tabs is-boxed">
+                    <ul>
+                        <li class="is-active" id="nav_activos">
+                            <a onclick="usuarios_activos()">
+                                <span class="icon is-small"><i class="fa-solid fa-users"></i></span>
+                                <span>Usuarios Activos</span>
+                            </a>
+                        </li>
+                        <li id="nav_no_activos">
+                            <a onclick="usuarios_no_activos()">
+                                <span class="icon is-small"><i class="fa-regular fa-users-slash"></i></span>
+                                <span>Usuarios No Activos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-                                    <% if (error) { %>
-                                        <p class="is-size-4">
-                                            <%= error %>
-                                        </p>
-                                        <% } %>
+                <div id="usuarios_activos">
+                    <% let count_activos=0 %>
+                        <% if (usuariosActivos.length===0) { %>
+                            <p>No hay usuarios activos por el momento.</p>
+                            <% } else { %>
+                                <div class="search-bar">
+                                    <input type="text" id="searchActivos" class="search-input"
+                                        placeholder="Buscar usuarios activos">
+                                </div>
+                                <div id="tablaActivos" class="table-container">
+                                    <table class="table is-bordered is-hoverable is-fullwidth">
+                                        <thead>
+                                            <tr id="pagination-content">
+                                                <th>
+                                                    <p class="is-size-5"><strong>Nombre: </strong></p>
+                                                </th>
+                                                <th>
+                                                    <p class="is-size-5"><strong>Email: </strong></p>
+                                                </th>
+                                                <th>
+                                                    <p class="is-size-5"><strong>Status: </strong></p>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let usuario of usuariosActivos) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= usuario.IDUsuario %>
+                                                    </td>
+                                                    <td>
+                                                        <%= usuario.correoElectronico %>
+                                                    </td>
+                                                    <td>
+                                                        <form method="POST" action="/configuracion/modificar_usuario">
+                                                            <input type="hidden" name="_csrf" id="_csrf"
+                                                                value="<%= csrfToken %>">
+                                                            <input type="hidden" name="IDUsuario"
+                                                                value="<%= usuario.IDUsuario %>">
+                                                            <input type="hidden" name="statusUsuario" value="off">
+                                                            <button type="submit"
+                                                                class="button is-danger">Desactivar</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <% count_activos++ %>
+                                                    <% } %>
+                                        </tbody>
+                                    </table>
+                                    <!-- <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                        <a class="pagination-previous" id="prev-button">Anterior</a>
+                                        <a class="pagination-next" id="next-button">Siguiente</a>
+                                        <ul class="pagination-list" id="pagination-list">
+                                            <div id="pagination-numbers">
 
-                                            <p class="title" style="text-align: center;"></p>
-                                            <form action="/configuracion/resultado_usuario" method="POST"
-                                                style="width: 50%; margin-top: 50px;">
-                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                                <input type="hidden" name="IDUsuario" id="IDUsuario"
-                                                    value="<%= usuario.IDUsuario %>">
-                                                <label for="Username" class="label is-large">Username:</label>
-                                                <p class="is-size-5">
-                                                    <%= usuario.IDUsuario %>
-                                                </p>
+                                            </div>
+                                        </ul>
+                                    </nav> -->
+                                </div>
+                                <% } %>
+                </div>
 
-                                                <label for="correo" class="label is-large">Correo:</label>
-                                                <p class="is-size-5">
-                                                    <%= usuario.correoElectronico %>
-                                                </p>
-
-                                                <label for="statusDiplomado" class="label is-large">Status:</label>
-                                                <label class="checkbox">
-                                                    <% if (usuario.usuarioActivo===0) { %>
-                                                        <input type="checkbox" id="statusUsuario" name="statusUsuario">
-                                                        <span class="checkmark"></span>
-                                                        <% } else { %>
-                                                            <input type="checkbox" id="statusUsuario"
-                                                                name="statusUsuario" checked>
-                                                            <span class="checkmark"></span>
-                                                            <% } %>
-                                                </label>
-
-                                                <button type="submit"
-                                                    class="button is-rounded is-large is-responsive">Registrar
-                                                    Cambios</button>
-                                                <p id="alerta" class="help is-danger" style="display: none;"></p>
-                                            </form>
-
-                                            <% } if (resultado) { %>
-                                                <div class="card" style="margin-bottom: 20px;">
-                                                    <div class="card-content">
-                                                        <div class="media">
-                                                            <div class="media-content">
-                                                                <p class="title is-4 has-text-black">Username:</p>
-                                                                <p class="subtitle is-4 has-text-grey">
-                                                                    <%= usuario.IDUsuario %>
-                                                                </p>
-                                                                <p class="title is-4 has-text-black">Correo:</p>
-                                                                <p class="subtitle is-4 has-text-grey">
-                                                                    <%= usuario.correoElectronico %>
-                                                                </p>
-                                                                <p class="title is-4 has-text-black">Status:</p>
-                                                                <% if (usuario.usuarioActivo===1) { %>
-                                                                    <p class="subtitle is-4 has-text-grey"> Activo</p>
-                                                                    <% } else { %>
-                                                                        <p class="subtitle is-4 has-text-grey"> No
-                                                                            Activo
-                                                                        </p>
-                                                                        <% } %>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <form action="/configuracion/consultar_usuario" method="GET">
-                                                    <button type="submit"
-                                                        class="button is-rounded is-large is-responsive">Consultar otro
-                                                        Usuario</button>
-                                                </form>
-                                                <% } %>
-
+                <div id="usuarios_no_activos" class="is-hidden">
+                    <% let count_no_activos=0 %>
+                        <% if (usuariosNoActivos.length===0) { %>
+                            <p>No hay usuarios no activos por el momento.</p>
+                            <% } else { %>
+                                <div class="search-bar">
+                                    <input type="text" id="searchNoActivos" class="search-input"
+                                        placeholder="Buscar usuarios no activos">
+                                </div>
+                                <div id="tablaNoActivos" class="table-container">
+                                    <table class="table is-bordered is-hoverable is-fullwidth">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <p class="is-size-5"><strong>Nombre: </strong></p>
+                                                </th>
+                                                <th>
+                                                    <p class="is-size-5"><strong>Email: </strong></p>
+                                                </th>
+                                                <th>
+                                                    <p class="is-size-5"><strong>Status: </strong></p>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (let usuario of usuariosNoActivos) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= usuario.IDUsuario %>
+                                                    </td>
+                                                    <td>
+                                                        <%= usuario.correoElectronico %>
+                                                    </td>
+                                                    <td>
+                                                        <form method="POST" action="/configuracion/modificar_usuario">
+                                                            <input type="hidden" name="_csrf" id="_csrf"
+                                                                value="<%= csrfToken %>">
+                                                            <input type="hidden" name="IDUsuario"
+                                                                value="<%= usuario.IDUsuario %>">
+                                                            <input type="hidden" name="statusUsuario" value="on">
+                                                            <button type="submit"
+                                                                class="button is-success">Activar</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <% count_no_activos++ %>
+                                                    <% } %>
+                                        </tbody>
+                                    </table>
+                                    <!-- <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                        <a class="pagination-previous" id="prev-button">Anterior</a>
+                                        <a class="pagination-next" id="next-button">Siguiente</a>
+                                        <ul class="pagination-list" id="pagination-list">
+                                            <div id="pagination-numbers">
+                                            </div>
+                                        </ul>
+                                    </nav> -->
+                                </div>
+                                <% } %>
+                </div>
             </div>
         </section>
         <script>
 
-            $(function () {
-                var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
-
-                $("#username").autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: "/configuracion/autocomplete",
-                            dataType: "json",
-                            data: { q: request.term },
-                            success: function (data) {
-                                console.log('Datos recibidos:', data); // Agrega esta línea para ver los datos recibidos en la consola
-                                nombresValidos = data.map(function (usuario) {
-                                    return usuario.IDUsuario;
-                                });
-                                response(nombresValidos);
-                            }
-
-                        });
-                    },
-                    minLength: 2,
-                    select: function (event, ui) {
-                        // Restablecer el mensaje de validación
-                        $("#mensajeValidacion").text('');
-                        // Cambiar el estilo del botón si el nombre es válido
-                        var esValido = nombresValidos.includes(ui.item.value);
-                        $("#buscarBtn").prop('disabled', !esValido)
-                            .css('background-color', esValido ? '#910106' : '#ffcccc')
-                            .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
-                    }
+            $(document).ready(function () {
+                // Función para manejar la búsqueda en la tabla de usuarios activos
+                $('#searchActivos').on('input', function () {
+                    const consulta = $(this).val().toLowerCase();
+                    $('#tablaActivos tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(consulta) > -1);
+                    });
                 });
 
-                // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
-                $("#buscarBtn").prop('disabled', true)
-                    .css('background-color', '#ffcccc')
-                    .addClass('is-light');
-
-                $("#username").on("blur", function () {
-                    var mensaje = '';
-                    if (this.value === '') {
-                        mensaje = 'Por favor ingresa un nombre';
-                    } else if (!nombresValidos.includes(this.value)) {
-                        mensaje = 'Por favor ingresa un nombre válido';
-                    }
-                    $("#mensajeValidacion").text(mensaje);
-                    var esValido = nombresValidos.includes(this.value);
-                    $("#buscarBtn").prop('disabled', !esValido)
-                        .css('background-color', esValido ? '#910106' : '#ffcccc')
-                        .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
+                // Función para manejar la búsqueda en la tabla de usuarios no activos
+                $('#searchNoActivos').on('input', function () {
+                    const consulta = $(this).val().toLowerCase();
+                    $('#tablaNoActivos tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(consulta) > -1);
+                    });
                 });
             });
 
+            /* Funciones para alternar entre usuarios activos y no activos */
+            function usuarios_activos() {
+                const tab_no_activos = document.querySelector('#nav_no_activos');
+                const tab_activos = document.querySelector('#nav_activos');
+
+                tab_no_activos.classList.remove('is-active');
+                tab_activos.classList.add('is-active');
+
+                const usuarios_no_activos = document.querySelector('#usuarios_no_activos');
+                usuarios_no_activos.classList.add('is-hidden');
+
+                const usuarios_activos = document.querySelector('#usuarios_activos');
+                usuarios_activos.classList.remove('is-hidden');
+            }
+
+            function usuarios_no_activos() {
+                const tab_no_activos = document.querySelector('#nav_no_activos');
+                const tab_activos = document.querySelector('#nav_activos');
+
+                tab_no_activos.classList.add('is-active');
+                tab_activos.classList.remove('is-active');
+
+                const usuarios_no_activos = document.querySelector('#usuarios_no_activos');
+                usuarios_no_activos.classList.remove('is-hidden');
+
+                const usuarios_activos = document.querySelector('#usuarios_activos');
+                usuarios_activos.classList.add('is-hidden');
+            }
         </script>
     </body>
 
