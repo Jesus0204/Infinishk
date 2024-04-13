@@ -49,7 +49,7 @@
                         <% if (solicitud_pago == true) { %>
                         <span>Registrar Solicitud al Alumno</span>
                         <% } else if (pago_manual == true) { %>
-                        </span>Registrar Pago Manual al Alumno</span>
+                        </span>Registrar Pago Manual</span>
                         <% } %>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -86,7 +86,7 @@
     const buscar_alumno = () => {
         const valor_busqueda = document.getElementById('buscar').value;
         //función que manda la petición asíncrona
-        fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
+        fetch('/pagos/fetch_alumno/autocomplete/' + valor_busqueda, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
