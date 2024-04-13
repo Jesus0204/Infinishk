@@ -135,7 +135,7 @@
                     <div class="navbar-dropdown" id="alumnos">
                         <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
                         <div class="desktop">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-file-invoice-dollar"></i>
                                 </span>
@@ -145,7 +145,7 @@
                             </a>
                         </div>
                         <div class="mobile">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-file-invoice-dollar"></i>
                                 </span>
@@ -178,7 +178,7 @@
                         <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
                         <hr class="navbar-divider">
                         <div class="desktop">
-                            <a class="navbar-item" href="/">
+                            <a class="navbar-item">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>
@@ -188,7 +188,7 @@
                             </a>
                         </div>
                         <div class="mobile">
-                            <a class="navbar-item" href="/">
+                            <a class="navbar-item">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>
@@ -229,7 +229,7 @@
                             </a>
                             <div class="dropdown-menu">
                                 <div class="navbar-dropdown">
-                                    <a class="navbar-item">
+                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-cash-register"></i>
                                         </span>
@@ -257,7 +257,7 @@
                                     Registros
                                 </a>
                                 <div class="navbar-dropdown" id="registros">
-                                    <a class="navbar-item">
+                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-cash-register"></i>
                                         </span>
@@ -397,7 +397,7 @@
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="/configuracion/administrar_planpago">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-calendar-week"></i>
                             </span>
@@ -406,7 +406,8 @@
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
                         <hr class="navbar-divider">
-                            <a class="navbar-item" style="padding-right: 2.5em;">
+                            <a class="navbar-item" style="padding-right: 2.5em;"
+                                href="/configuracion/consultar_usuario">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-users-gear"></i>
                                 </span>
@@ -415,7 +416,7 @@
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Registrar Rol') == true) { %>
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="/configuracion/registrar_rol">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-user-gear"></i>
                             </span>
