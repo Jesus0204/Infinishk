@@ -35,8 +35,8 @@ const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_adm
 router.get('/solicitudes', isAuth, can_AdministrarSolicitud, pagosController.get_solicitudes);
 router.post('/solicitudes/modify', isAuth, can_AdministrarSolicitud, pagosController.post_solicitudes_modify);
 router.post('/solicitudes/delete', isAuth, can_AdministrarSolicitud, pagosController.post_solicitudes_delete);
-router.get('/registrar_solicitud/autocomplete/:valor_busqueda', isAuth, can_RegistrarSolicitud, pagosController.get_autocomplete);
-router.get('/registrar_solicitud/autocomplete/', isAuth, can_RegistrarSolicitud, pagosController.get_autocomplete);
+router.get('/fetch_alumno/autocomplete/:valor_busqueda', isAuth, pagosController.get_autocomplete);
+router.get('/fetch_alumno/autocomplete/', isAuth, pagosController.get_autocomplete);
 router.get('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.get_registrar_solicitud);
 router.post('/fetch_registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.post_fetch_registrar_solicitud);
 router.post('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.post_registrar_solicitud);

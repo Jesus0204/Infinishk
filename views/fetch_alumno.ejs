@@ -3,11 +3,6 @@
     permisos: permisos,
     rol: rol
 }) %>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-
-
 <section class="section">
     <div class="container">
         <div class="columns">
@@ -90,7 +85,7 @@
     const buscar_alumno = () => {
         const valor_busqueda = document.getElementById('buscar').value;
         //función que manda la petición asíncrona
-        fetch('/pagos/registrar_solicitud/autocomplete/' + valor_busqueda, {
+        fetch('/pagos/fetch_alumno/autocomplete/' + valor_busqueda, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
