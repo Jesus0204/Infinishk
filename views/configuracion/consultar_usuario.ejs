@@ -48,7 +48,7 @@
                     <div class="column is-6">
                         <h3 class="title is-3">Configuración Usuarios</h3>
                     </div>
-                    <% if (contienePermiso(permisos, 'Registrar usuario') == true) { %>
+                    <% if (contienePermiso(permisos, 'Registrar usuario' )==true) { %>
                         <div class="column is-offset-2">
                             <p class="control">
                                 <a class="button is-rounded is-responsive" style="font-size: large;"
@@ -63,7 +63,7 @@
                             </p>
                         </div>
                         <% } %>
-                    </div>
+                </div>
 
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
@@ -83,7 +83,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <div id="usuarios_activos">
                     <% let count_activos=0 %>
                         <% if (usuariosActivos.length===0) { %>
@@ -96,6 +95,7 @@
                                 <div id="tablaActivos" class="table-container">
                                     <table class="table is-bordered is-hoverable is-fullwidth">
                                         <thead>
+                                            <tr>
                                             <tr>
                                                 <th>
                                                     <p class="is-size-5"><strong>Nombre: </strong></p>
@@ -138,7 +138,6 @@
                                         <a class="pagination-next" id="next-button">Siguiente</a>
                                         <ul class="pagination-list" id="pagination-list">
                                             <div id="pagination-numbers">
-
                                             </div>
                                         </ul>
                                     </nav>
@@ -172,7 +171,7 @@
                                         </thead>
                                         <tbody>
                                             <% for (let usuario of usuariosNoActivos) { %>
-                                                <tr>
+                                                <tr id="pagination-content-2">
                                                     <td>
                                                         <%= usuario.IDUsuario %>
                                                     </td>
@@ -195,12 +194,22 @@
                                                     <% } %>
                                         </tbody>
                                     </table>
+                                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                                        <ul class="pagination-list" id="pagination-list-2">
+                                            <div id="pagination-numbers-2">
+                        
+                                            </div>
+                                        </ul>
+                                    </nav>
                                 </div>
                                 <% } %>
                 </div>
             </div>
         </section>
         <script type="text/javascript" src="/js/pagination.js"></script>
+        <script type="text/javascript" src="/js/pagination2.js"></script>
         <script>
             $(document).ready(function () {
                 // Función para manejar la búsqueda en la tabla de usuarios activos
