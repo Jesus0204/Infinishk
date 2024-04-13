@@ -16,7 +16,8 @@
                 <% } %>
             </div>
         </div>
-        <form action="/pagos/fetch_registrar_solicitud" method="POST">
+        <form action="/pagos/fetch_registrar_<% if (solicitud_pago) { %>solicitud <% } else { %>pago_manual <% } %>"
+            method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="columns">
                 <div class="column is-3"></div>
@@ -79,6 +80,7 @@
         }
 
         if (buscar.value.length === 0) {
+            bt_buscar.disabled = true;
             ayuda_alumno.classList.add('is-hidden');
         }
     }
