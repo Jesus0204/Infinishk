@@ -12,10 +12,71 @@
                 <h3 class="title is-3">Registrar Pago Manual</h3>
             </div>
         </div>
+        <div class="tabs is-boxed">
+            <ul>
+                <li class="is-active" id="nav_pago_normal">
+                    <a onclick="pago_normal()">
+                        <% if (alumno.Matricula[0] == 1) { %>
+                            <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                            <span>Pago Colegiatura</span>
+                        <% } else if (alumno.Matricula[0] == 8) {%>
+                            <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                            <span>Pago Diplomado</span>
+                        <% } %>
+                    </a>
+                </li>
+                <li id="nav_pago_extra">
+                    <a onclick="pago_extra()">
+                        <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
+                        <span>Pago Extras</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="pago_normal">
+            <p>Soy un pago normal!</p>
+        </div>
+        <div id="pago_extra" class="is-hidden">
+            <p>Soy un pago Extra</p>
+        </div>
         <input id="datepickerDemo" class="input" type="date">
     </div>
 </section>
 <script>
+    function pago_extra() {
+        // Cambias las bars que estan activas
+        const tab_pago_normal = document.querySelector('#nav_pago_normal');
+        const tab_pagos_extras = document.querySelector('#nav_pago_extra');
+
+        tab_pago_normal.classList.remove('is-active');
+        tab_pagos_extras.classList.add('is-active');
+
+        // Quitar la tabla sin solicitudes
+        const pago_normal = document.querySelector('#pago_normal');
+        pago_normal.classList.add('is-hidden');
+
+        // Poner la tabla con solicitudes
+        const pago_extra = document.querySelector('#pago_extra');
+        pago_extra.classList.remove('is-hidden');
+    }
+
+    function pago_normal() {
+        // Cambias las bars que estan activas
+        const tab_pago_normal = document.querySelector('#nav_pago_normal');
+        const tab_pagos_extras = document.querySelector('#nav_pago_extra');
+
+        tab_pago_normal.classList.add('is-active');
+        tab_pagos_extras.classList.remove('is-active');
+
+        // Activar la tabla sin solicitudes
+        const pago_normal = document.querySelector('#pago_normal');
+        pago_normal.classList.remove('is-hidden');
+
+        // Quitar la tabla con solicitudes
+        const pago_extra = document.querySelector('#pago_extra');
+        pago_extra.classList.add('is-hidden');
+    }
+
     // Initialize all input of date type.
     const calendars = bulmaCalendar.attach('[type="date"]', {
         startDate: new Date(),
@@ -24,8 +85,6 @@
         maxDate: new Date(),
         weekStart: 1,
         lang: 'es',
-        showFooter: false,
-        cancelLabel: 'Cancelar',
-        clearLabel: 'Borrar'
+        showFooter: false
     });
 </script>

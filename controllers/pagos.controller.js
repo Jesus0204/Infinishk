@@ -84,8 +84,9 @@ exports.post_fetch_registrar_pago_manual= (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
+            console.log(alumno[0]);
                 response.render('pago/pago_manual_registro', {
-                    alumno: alumno,
+                    alumno: alumno[0],
                     username: request.session.username || '',
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
