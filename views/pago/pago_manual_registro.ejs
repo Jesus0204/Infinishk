@@ -4,6 +4,13 @@
     rol: rol
 }) %>
 
+<style>
+    .button:hover {
+        background-color: #5a6581 !important;
+        border-color: #910106 !important;
+    }
+</style>
+
 <section class="section">
     <div class="container">
         <div class="columns">
@@ -47,97 +54,167 @@
             </div>
         </div>
         <div id="pago_extra" class="is-hidden">
-            <form action="/pagos/" method="POST">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" value="<%= alumno.Matricula %>" id="matricula" name="matricula">
-                <div class="columns is-vcentered">
-                    <div class="column is-2"></div>
-                    <div class="column is-5">
-                        <p class="is-size-5">
-                            <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                            <%= alumno[0].Apellidos %>
-                        </p>
-                    </div>
-                    <div class="column is-3">
-                        <p class="is-size-5">
-                            <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
-                        </p>
-                    </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" value="<%= alumno.Matricula %>" id="matricula" name="matricula">
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5">
+                    <p class="is-size-5">
+                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                        <%= alumno[0].Apellidos %>
+                    </p>
                 </div>
-                <div class="columns is-vcentered">
-                    <div class="column is-2"></div>
-                    <div class="column is-5">
-                        <label class="label is-medium" for="pago">Pagos Extra:</label>
-                        <div class="control has-icons-left">
-                            <div class="select is-medium">
-                                <select name="pago" id="pago">
-                                    <% for (let pago of pagos_extra) { %>
-                                    <option value="<%= pago.IDPagosExtras %>"
-                                        data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                        <%= pago.motivoPago %></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                            <div class="icon is-medium is-left">
-                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                            </div>
+                <div class="column is-3">
+                    <p class="is-size-5">
+                        <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
+                    </p>
+                </div>
+            </div>
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5">
+                    <label class="label is-medium" for="pago">Pagos Extra:</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium">
+                            <select name="pago" id="pago">
+                                <% for (let pago of pagos_extra) { %>
+                                <option value="<%= pago.IDPagosExtras %>"
+                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                    <%= pago.motivoPago %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </div>
                     </div>
-                    <div class="column is-narrow">
-                        <p class="is-size-5" id="monto">
-                            <strong>Monto: </strong>
-                            $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                </div>
+                <div class="column is-narrow">
+                    <p class="is-size-5" id="monto">
+                        <strong>Monto: </strong>
+                        $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                    </p>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-3">
+                    <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
+                </div>
+                <div class="column is-4">
+                    <input id="fechapago" class="input is-medium" type="date">
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-3">
+                    <label class="label is-medium" for="metodo">Método de Pago: </label>
+                </div>
+                <div class="column is-4">
+                    <div class="control has-icons-left">
+                        <div class="select is-medium" style="width: 110%;">
+                            <select name="metodo" id="metodo" style="width: 110%;">
+                                <option value="Tarjeta en Oficina">
+                                    Tarjeta en Oficina
+                                </option>
+                                <option value="Efectivo">
+                                    Efectivo
+                                </option>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-3">
+                    <label class="label is-medium" for="nota">Nota: </label>
+                </div>
+                <div class="column is-4">
+                    <textarea name="nota" class="input is-medium" placeholder="Escribe tu nota aquí."></textarea>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-5">
+                    <button class="js-modal-trigger button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar"
+                        data-target="modal-confirmar-registro_extra">
+                        <span>Registrar Pago</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div id="modal-confirmar-registro_extra" class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title" style="text-align: center;">
+                            <strong>Registrar Pago de Otros Pagos</strong>
                         </p>
-                    </div>
+                        <button class="delete" aria-label="delete"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <p class="is-size-5" style="text-align: center;">
+                            Los datos del pago del alumno son los siguientes:
+                        </p>
+                        <br>
+                        <div class="columns is-vcentered">
+                            <div class="column is-half">
+                                <p class="is-size-5" style="text-align: center;">
+                                    <strong>Motivo: </strong> holaa
+                                </p>
+                            </div>
+                            <div class=" column is-half">
+                                <p class="is-size-5" style="text-align: center;">
+                                    <strong>Monto a Pagar: </strong> JAJAJ
+                                </p>
+                            </div>
+                        </div>
+                        <div class="columns is-vcentered">
+                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                <label class="label is-medium">
+                                    Fecha Creación:
+                                </label>
+                            </div>
+                            <div class="column">
+                                <p class="is-size-5">
+                                    Jajajaja
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <footer class="modal-card-foot" style="justify-content: center;">
+                        <div class="field is-grouped">
+                            <p class="control">
+                                <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                    style="font-size: large; margin: 8px 2px;">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                    </span>
+                                    <span>Regresar</span>
+                                </button>
+                            </p>
+                            <p class="control">
+                                <button class="button is-rounded is-medium is-responsive"
+                                    style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    </span>
+                                    <span>Registrar Pago</span>
+                                </button>
+                            </p>
+                    </footer>
                 </div>
-                <div class="columns">
-                    <div class="column is-2"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
-                    </div>
-                    <div class="column is-4">
-                        <input id="fechapago" class="input is-medium" type="date">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-2"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="metodo">Método de Pago: </label>
-                    </div>
-                    <div class="column is-4">
-                       <div class="control has-icons-left">
-                           <div class="select is-medium" style="width: 110%;">
-                               <select name="metodo" id="metodo" style="width: 110%;">
-                                   <option value="Tarjeta en Oficina">
-                                       Tarjeta en Oficina
-                                    </option>
-                                    <option value="Efectivo">
-                                        Efectivo
-                                    </option>
-                               </select>
-                           </div>
-                           <div class="icon is-medium is-left">
-                               <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
-                           </div>
-                       </div>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-3"></div>
-                    <div class="column is-5">
-                        <button class="button is-rounded is-medium is-responsive" type="submit"
-                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
-                            <span>Registrar Pago</span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </section>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
     function pago_extra() {
         // Cambias las bars que estan activas
