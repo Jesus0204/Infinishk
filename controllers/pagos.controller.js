@@ -129,16 +129,19 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                 let update = false;
                 // Si ese alumno tiene una solicitud, entonces se itera sobre las solicitudes
                 for (let idpago_extra of pendientes) {
-                    // Si el ID del pago extra es igual se  actualiza y se declara update para que no se guarde el pago dos veces
-                    if (idpago_extra.IDPagosExtras == pago) {
-                        update = true;
-                        Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota)
-                            .then(([rows, fieldData]) => {
-                                response.redirect('/pagos/registrar_pago_manual');
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                    // Se asegura que no se haya guardado el pago una vez
+                    if (update == false) {
+                        // Si el ID del pago extra es igual se  actualiza y se declara update para que no se guarde el pago dos veces
+                        if (idpago_extra.IDPagosExtras == pago) {
+                            update = true;
+                            Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota)
+                                .then(([rows, fieldData]) => {
+                                    response.redirect('/pagos/registrar_pago_manual');
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
+                        }
                     }
                 }
                 // Si ninguna solicitud es igual solo se guarda el pago con un nuevo registro
