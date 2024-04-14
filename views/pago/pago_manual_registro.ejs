@@ -12,34 +12,130 @@
                 <h3 class="title is-3">Registrar Pago Manual</h3>
             </div>
         </div>
-        <div class="tabs is-boxed">
-            <ul>
-                <li class="is-active" id="nav_pago_normal">
-                    <a onclick="pago_normal()">
-                        <% if (alumno.Matricula[0] == 1) { %>
-                            <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
-                            <span>Pago Colegiatura</span>
-                        <% } else if (alumno.Matricula[0] == 8) {%>
-                            <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
-                            <span>Pago Diplomado</span>
-                        <% } %>
-                    </a>
-                </li>
-                <li id="nav_pago_extra">
-                    <a onclick="pago_extra()">
-                        <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
-                        <span>Pago Extras</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="tabs is-boxed">
+                    <ul>
+                        <li class="is-active" id="nav_pago_normal">
+                            <a onclick="pago_normal()">
+                                <% if (alumno[0].Matricula[0] == 1) { %>
+                                <span class="icon is-small"><i class="fa-solid fa-clipboard-user"></i></span>
+                                <span>Pago Colegiatura</span>
+                                <% } else if (alumno[0].Matricula[0] == 8) {%>
+                                <span class="icon is-small"><i class="fa-solid fa-chalkboard-user"></i></span>
+                                <span>Pago Diplomado</span>
+                                <% } %>
+                            </a>
+                        </li>
+                        <li id="nav_pago_extra">
+                            <a onclick="pago_extra()">
+                                <span class="icon is-small"><i class="fa-solid fa-clipboard-question"></i></span>
+                                <span>Otros Pagos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="pago_normal">
-            <p>Soy un pago normal!</p>
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column">
+                    <p>Soy un pago normal!</p>
+                </div>
+            </div>
         </div>
         <div id="pago_extra" class="is-hidden">
-            <p>Soy un pago Extra</p>
+            <form action="/pagos/" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" value="<%= alumno.Matricula %>" id="matricula" name="matricula">
+                <div class="columns is-vcentered">
+                    <div class="column is-2"></div>
+                    <div class="column is-5">
+                        <p class="is-size-5">
+                            <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                            <%= alumno[0].Apellidos %>
+                        </p>
+                    </div>
+                    <div class="column is-3">
+                        <p class="is-size-5">
+                            <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns is-vcentered">
+                    <div class="column is-2"></div>
+                    <div class="column is-5">
+                        <label class="label is-medium" for="pago">Pagos Extra:</label>
+                        <div class="control has-icons-left">
+                            <div class="select is-medium">
+                                <select name="pago" id="pago">
+                                    <% for (let pago of pagos_extra) { %>
+                                    <option value="<%= pago.IDPagosExtras %>"
+                                        data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                        <%= pago.motivoPago %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="icon is-medium is-left">
+                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-narrow">
+                        <p class="is-size-5" id="monto">
+                            <strong>Monto: </strong>
+                            $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-3">
+                        <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
+                    </div>
+                    <div class="column is-4">
+                        <input id="fechapago" class="input is-medium" type="date">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-3">
+                        <label class="label is-medium" for="metodo">Método de Pago: </label>
+                    </div>
+                    <div class="column is-4">
+                       <div class="control has-icons-left">
+                           <div class="select is-medium" style="width: 110%;">
+                               <select name="metodo" id="metodo" style="width: 110%;">
+                                   <option value="Tarjeta en Oficina">
+                                       Tarjeta en Oficina
+                                    </option>
+                                    <option value="Efectivo">
+                                        Efectivo
+                                    </option>
+                               </select>
+                           </div>
+                           <div class="icon is-medium is-left">
+                               <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                           </div>
+                       </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-5">
+                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
+                            <span>Registrar Pago</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <input id="datepickerDemo" class="input" type="date">
     </div>
 </section>
 <script>
@@ -86,5 +182,13 @@
         weekStart: 1,
         lang: 'es',
         showFooter: false
+    });
+
+    $('#pago').change(function () {
+        // Sacas el monto de la opcion con data-monto
+        var num_monto = $(this).find(':selected').data('monto');
+        // Cambias el DOM para mostrar el precio correcto
+        const monto = document.querySelector('#monto');
+        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
     });
 </script>

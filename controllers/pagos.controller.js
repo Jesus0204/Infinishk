@@ -79,19 +79,27 @@ exports.get_autocomplete = (request, response, next) => {
     }
 };
 
+const Pago_Extra = require('../models/pago_extra.model');
+
 exports.post_fetch_registrar_pago_manual= (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
-            console.log(alumno[0]);
-                response.render('pago/pago_manual_registro', {
-                    alumno: alumno[0],
-                    username: request.session.username || '',
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                    csrfToken: request.csrfToken()
+            Pago_Extra.fetchAll()
+                .then(([pagos_extra, fieldData]) => {
+                    response.render('pago/pago_manual_registro', {
+                        alumno: alumno,
+                        pagos_extra: pagos_extra,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
+                    })
                 })
+                .catch((error) => {
+                    console.log(error)
+                });
         })
         .catch((error) => {
             console.log(error)
