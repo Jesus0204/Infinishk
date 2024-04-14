@@ -35,8 +35,8 @@ const can_AdministrarPagoExtra = require('../util/privileges/admin/otros/can_adm
 router.get('/registrar_pago_manual', isAuth, can_RegistrarPagoManual, pagosController.get_registrar_pago_manual);
 router.get('/fetch_alumno/autocomplete/:valor_busqueda', isAuth, pagosController.get_autocomplete);
 router.get('/fetch_alumno/autocomplete/', isAuth, pagosController.get_autocomplete);
-router.post('/fetch_registrar_pago_manual', isAuth, pagosController.post_fetch_registrar_pago_manual);
-router.post('/registrar_pago_manual/pago_extra', isAuth, pagosController.post_registrar_pago_manual_pago_extra)
+router.post('/fetch_registrar_pago_manual', isAuth, can_RegistrarPagoManual, pagosController.post_fetch_registrar_pago_manual);
+router.post('/registrar_pago_manual/pago_extra', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_pago_extra)
 router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;

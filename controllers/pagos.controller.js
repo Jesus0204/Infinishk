@@ -9,7 +9,7 @@ const Cursa = require('../models/cursa.model');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 
-exports.get_pago = (request,response,next) => {
+exports.get_pago = (request, response, next) => {
     response.render('pago/pago', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -102,17 +102,25 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                 });
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         });
 };
 
 exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
-    console.log(request.body.matricula);
-    console.log(request.body.fecha);
-    console.log(request.body.nota);
-    console.log(request.body.metodo);
-    console.log(request.body.pago);
-    // const idLiquida = await Liquida.fetchID(matricula);
+    // Declaracion de variables a usar del body
+    const matricula = request.body.matricula;
+    const fecha = request.body.fecha;
+    const nota = request.body.nota;
+    const metodo = request.body.metodo;
+    const pago = request.body.pago;
+
+    Liquida.fetchID_Pendientes(matricula)
+        .then(async ([pendientes, fieldData]) => {
+            console.log(pendientes);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     // if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
     //     Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
     // } else {
