@@ -17,7 +17,17 @@ module.exports = class Liquida {
     }
 
     static fetchID_Pendientes(matricula) {
-        return db.execute('Select IDLiquida from liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
+        return db.execute('SELECT IDLiquida, IDPagosExtras from liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
+    }
+
+    static save_pago_manual(matricula, pago, fecha, metodo, nota) {
+        return db.execute('INSERT INTO Liquida (Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?, ?, ?, ?, 1, ?)', [matricula, pago, fecha, metodo, nota]);
+    }
+
+    static update_pago_manual(matricula, pago, fecha, metodo, nota) {
+        return db.execute(`UPDATE Liquida SET fechaPago = ?, metodoPago = ?, Nota = ?, Pagado = 1
+        WHERE Matricula = ? AND IDPagosExtras = ?`, 
+        [fecha, metodo, nota, matricula, pago]);
     }
 
     static fetchStatus(matricula){
@@ -29,7 +39,6 @@ module.exports = class Liquida {
             `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, tipoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`, 
                 [matricula,id,fecha,nota]);
     }
-
 
     static update_transferencia(nota,fecha,id){
         return db.execute('UPDATE liquida SET Pagado = 1, tipoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',

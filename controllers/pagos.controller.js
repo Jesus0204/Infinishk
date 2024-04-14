@@ -109,26 +109,51 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
 exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
     // Declaracion de variables a usar del body
     const matricula = request.body.matricula;
-    const fecha = request.body.fecha;
+    const fecha = request.body.fecha.split("/").reverse().join("-");
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const pago = request.body.pago;
 
     Liquida.fetchID_Pendientes(matricula)
         .then(async ([pendientes, fieldData]) => {
-            console.log(pendientes);
+            // Si no hay una solicitud de pago se guarda dicho pago
+            if (pendientes.length == 0) {
+                Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
+                    .then(([rows, fieldData]) => {
+                        response.redirect('/pagos/registrar_pago_manual')
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            } else {
+                let update = false;
+                // Si ese alumno tiene una solicitud, entonces se itera sobre las solicitudes
+                for (let idpago_extra of pendientes) {
+                    // Si el ID del pago extra es igual se  actualiza y se declara update para que no se guarde el pago dos veces
+                    if (idpago_extra.IDPagosExtras == pago) {
+                        update = true;
+                        Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota)
+                            .then(([rows, fieldData]) => {
+                                response.redirect('/pagos/registrar_pago_manual');
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    }
+                }
+                // Si ninguna solicitud es igual solo se guarda el pago con un nuevo registro
+                if (update == false) {
+                    Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
+                        .then(([rows, fieldData]) => {
+                            response.redirect('/pagos/registrar_pago_manual');
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+            }
         })
         .catch((error) => {
             console.log(error);
         });
-    // if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
-    //     Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
-    // } else {
-    //     const idPagoExtra = await pagoExtra.fetchID(importe);
-    //     if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-    //         Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
-    //     } else {
-    //         success = false;
-    //     }
-    // }
 };
