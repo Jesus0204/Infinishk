@@ -133,6 +133,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                     if (update == false) {
                         // Si el ID del pago extra es igual se  actualiza y se declara update para que no se guarde el pago dos veces
                         if (idpago_extra.IDPagosExtras == pago) {
+                            // Agarro el IDLiquida para que solo se guarde una vez en SQL
                             const liquida = idpago_extra.IDLiquida;
                             update = true;
                             Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota, liquida)
