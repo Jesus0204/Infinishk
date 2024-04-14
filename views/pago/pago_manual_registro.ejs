@@ -79,7 +79,7 @@
                             <select name="pago" id="pago">
                                 <% for (let pago of pagos_extra) { %>
                                 <option value="<%= pago.IDPagosExtras %>"
-                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                    data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
                                     <%= pago.motivoPago %></option>
                                 <% } %>
                             </select>
@@ -92,7 +92,7 @@
                 <div class="column is-narrow">
                     <p class="is-size-5" id="monto">
                         <strong>Monto: </strong>
-                        $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                        $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
                     </p>
                 </div>
             </div>
@@ -134,14 +134,14 @@
                     <label class="label is-medium" for="nota">Nota: </label>
                 </div>
                 <div class="column is-4">
-                    <textarea name="nota" class="input is-medium" placeholder="Escribe tu nota aquí."></textarea>
+                    <textarea name="nota" id="nota" class="input is-medium" placeholder="Escribe tu nota aquí."></textarea>
                 </div>
             </div>
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-5">
                     <button class="js-modal-trigger button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar_pago_extra"
                         data-target="modal-confirmar-registro_extra">
                         <span>Registrar Pago</span>
                         <span class="icon is-large">
@@ -155,7 +155,7 @@
                 <div class="modal-card">
                     <header class="modal-card-head">
                         <p class="modal-card-title" style="text-align: center;">
-                            <strong>Registrar Pago de Otros Pagos</strong>
+                            <strong>Registrar Pago: Otros Pagos</strong>
                         </p>
                         <button class="delete" aria-label="delete"></button>
                     </header>
@@ -165,26 +165,64 @@
                         </p>
                         <br>
                         <div class="columns is-vcentered">
-                            <div class="column is-half">
+                            <div class="column is-7">
                                 <p class="is-size-5" style="text-align: center;">
-                                    <strong>Motivo: </strong> holaa
+                                    <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                                    <%= alumno[0].Apellidos %>
+                                </p>
+                            </div>
+                            <div class=" column is-5">
+                                <p class="is-size-5" style="text-align: center;">
+                                    <strong>Matricula: </strong><%= alumno[0].Matricula %>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="columns is-vcentered">
+                            <div class="column is-half">
+                                <p class="is-size-5" style="text-align: center;" id="motivo_modal">
+                                    <strong>Motivo: </strong> <%= pagos_extra[0].motivoPago %>
                                 </p>
                             </div>
                             <div class=" column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Monto a Pagar: </strong> JAJAJ
+                                <p class="is-size-5" style="text-align: center;" id="monto_modal">
+                                    <strong>Monto Pagado: </strong>
+                                    $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
                                 </p>
                             </div>
                         </div>
                         <div class="columns is-vcentered">
                             <div class="column is-4 is-offset-1" style="text-align: center;">
                                 <label class="label is-medium">
-                                    Fecha Creación:
+                                    Fecha de Pago:
                                 </label>
                             </div>
                             <div class="column">
-                                <p class="is-size-5">
+                                <p class="is-size-5" id="fecha_modal">
                                     Jajajaja
+                                </p>
+                            </div>
+                        </div>
+                        <div class="columns is-vcentered">
+                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                <label class="label is-medium">
+                                    Método de Pago: 
+                                </label>
+                            </div>
+                            <div class="column">
+                                <p class="is-size-5" id="metodo_modal">
+                                    Tarjeta en Oficina
+                                </p>
+                            </div>
+                        </div>
+                        <div class="columns is-vcentered">
+                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                <label class="label is-medium">
+                                    Nota:
+                                </label>
+                            </div>
+                            <div class="column">
+                                <p class="is-size-5" id="nota_modal">
+                                    
                                 </p>
                             </div>
                         </div>
@@ -211,8 +249,8 @@
                             </p>
                     </footer>
                 </div>
+            </div>
         </div>
-    </div>
 </section>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script>
@@ -263,9 +301,44 @@
 
     $('#pago').change(function () {
         // Sacas el monto de la opcion con data-monto
-        var num_monto = $(this).find(':selected').data('monto');
+        let num_monto = $(this).find(':selected').data('monto');
+        let motivo = $(this).find(':selected').text();
         // Cambias el DOM para mostrar el precio correcto
         const monto = document.querySelector('#monto');
         monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+        // Cambias el DOM dentro del modal
+        document.querySelector('#monto_modal').innerHTML = '<strong>Monto Pagado: </strong> $' + num_monto;
+        document.querySelector('#motivo_modal').innerHTML = '<strong>Motivo: </strong>' + motivo;
     });
+
+    $('#metodo').change(function () {
+        // Sacas el metodo de la opcion seleccionada
+        let metodo_seleccionado = $(this).find(':selected').text();
+        // Cambias el DOM para mostrar el precio correcto
+        const metodo = document.querySelector('#metodo_modal');
+        metodo.innerHTML = metodo_seleccionado;
+    });
+
+    // Para modificar la nota en el modal haces lo siguiente:
+    const nota = document.querySelector('#nota');
+
+    function cambiar_nota_modal() {
+        document.querySelector('#nota_modal').innerHTML = nota.value;
+    };
+
+    // Agregas el event listener de la nota para ponerlo en el modal
+    nota.addEventListener('input', cambiar_nota_modal);
+
+    // Para modificar la fecha en el modal haces lo siguiente:
+    const fecha = document.querySelector('#fechapago');
+
+    function cambiar_fecha_modal(){
+        document.querySelector('#fecha_modal').innerHTML = fecha.value;
+    };
+
+    // Para modificar la fecha en el modal haces lo siguiente:
+    const boton_pago_extra = document.querySelector('#Boton_registrar_pago_extra');
+
+    window.addEventListener('load', cambiar_fecha_modal);
+    boton_pago_extra.addEventListener('click', cambiar_fecha_modal);
 </script>
