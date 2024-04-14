@@ -24,10 +24,10 @@ module.exports = class Liquida {
         return db.execute('INSERT INTO Liquida (Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?, ?, ?, ?, 1, ?)', [matricula, pago, fecha, metodo, nota]);
     }
 
-    static update_pago_manual(matricula, pago, fecha, metodo, nota) {
+    static update_pago_manual(matricula, pago, fecha, metodo, nota, idliquida) {
         return db.execute(`UPDATE Liquida SET fechaPago = ?, metodoPago = ?, Nota = ?, Pagado = 1
-        WHERE Matricula = ? AND IDPagosExtras = ?`, 
-        [fecha, metodo, nota, matricula, pago]);
+        WHERE Matricula = ? AND IDPagosExtras = ? AND IDLiquida = ?`, 
+        [fecha, metodo, nota, matricula, pago, idliquida]);
     }
 
     static fetchStatus(matricula){

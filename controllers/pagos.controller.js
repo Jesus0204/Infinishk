@@ -133,8 +133,9 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                     if (update == false) {
                         // Si el ID del pago extra es igual se  actualiza y se declara update para que no se guarde el pago dos veces
                         if (idpago_extra.IDPagosExtras == pago) {
+                            const liquida = idpago_extra.IDLiquida;
                             update = true;
-                            Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota)
+                            Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota, liquida)
                                 .then(([rows, fieldData]) => {
                                     response.redirect('/pagos/registrar_pago_manual');
                                 })
