@@ -81,7 +81,7 @@ exports.get_autocomplete = (request, response, next) => {
 
 const Pago_Extra = require('../models/pago_extra.model');
 
-exports.post_fetch_registrar_pago_manual= (request, response, next) => {
+exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
@@ -104,4 +104,23 @@ exports.post_fetch_registrar_pago_manual= (request, response, next) => {
         .catch((error) => {
             console.log(error)
         });
+};
+
+exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
+    console.log(request.body.matricula);
+    console.log(request.body.fecha);
+    console.log(request.body.nota);
+    console.log(request.body.metodo);
+    console.log(request.body.pago);
+    // const idLiquida = await Liquida.fetchID(matricula);
+    // if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
+    //     Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
+    // } else {
+    //     const idPagoExtra = await pagoExtra.fetchID(importe);
+    //     if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
+    //         Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
+    //     } else {
+    //         success = false;
+    //     }
+    // }
 };
