@@ -127,14 +127,39 @@ exports.post_subir_archivo = (request, response, next) => {
                     const idLiquida = await Liquida.fetchID(fila.Matricula);
                     const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
 
+                    const pagoDiplomadoCompleto = await pagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
+
+                    if (pagoDiplomadoCompleto && pagoDiplomadoCompleto[0] && pagoDiplomadoCompleto[0][0] && typeof pagoDiplomadoCompleto[0][0].fechaPago !== 'undefined') {
+                        const fechaParseada = new Date(pagoDiplomadoCompleto[0][0].fechaPago)
+
+                        const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
+
+                        const montoRedondeado = Math.round(pagoDiplomadoCompleto[0][0].montoPagado * 100) / 100;
+                        const importeRedondeado = Math.round(fila.Importe * 100) / 100;
+
+                        if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
+                        }
+                    }
+
                     if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1) {
                         tipoPago = 'Pago Completo';
                     }
 
                     else {
 
-                        tipoPago = 'Pago de Diplomado';
+                        if (tipoPago === 'Pago Completo') {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 'N/A';
+                        }
+                        else {
+                            tipoPago = 'Pago de Diplomado'; // Si el importe no coincide con el monto a pagar
+                        }
                     }
+
+
+
                 }
                 else if (fila.inicioRef = 'A') {
                     tipoPago = 'Pago a Ignorar';

@@ -17,5 +17,10 @@ module.exports = class pagoDiplomado {
             `CALL insertarPagoDiplomado (?,?,?,?, '', ?, 'Transferencia');`, 
                 [matricula,id,fecha,monto,nota]);
     }
+
+    static fetch_fecha_pago(fecha){
+        return db.execute('SELECT fechaPago,montoPagado FROM pagadiplomado WHERE fechaPago = ?',
+        [fecha]);
+    }
         
 }
