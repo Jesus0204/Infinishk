@@ -60,9 +60,22 @@
                 <div class="column is-3"></div>
             </div>
         </form>
+        <input id="datepickerDemo" class="input" type="date">
     </div>
 </section>
 <script>
+    // Initialize all input of date type.
+    const calendars = bulmaCalendar.attach('[type="date"]', {
+        startDate: new Date(),
+        displayMode: 'dialog',
+        dateFormat: 'dd/MM/yyyy',
+        weekStart: 1,
+        lang: 'es', 
+        showFooter: false,
+        cancelLabel: 'Cancelar', 
+        clearLabel: 'Borrar'
+    });
+
     let alumno = "";
     const bt_buscar = document.querySelector('#Boton_buscar');
     const ayuda_alumno = document.querySelector('#ayuda_alumno');

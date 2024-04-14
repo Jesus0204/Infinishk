@@ -11063,14 +11063,18 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     .datetimepicker .datepicker-nav .datepicker-nav-year {
       font-weight: 700; }
     .datetimepicker .datepicker-nav .datepicker-nav-previous, .datetimepicker .datepicker-nav .datepicker-nav-next {
-      flex-basis: auto;
-      flex-grow: 0;
-      flex-shrink: 0;
+      width: 5em;
       text-decoration: none;
       color: white; }
       .datetimepicker .datepicker-nav .datepicker-nav-previous:hover, .datetimepicker .datepicker-nav .datepicker-nav-next:hover {
-        background-color: transparent; }
+        background-color: #5a6581;
+        border: solid #910106; }
         .datetimepicker .datepicker-nav .datepicker-nav-previous:hover svg, .datetimepicker .datepicker-nav .datepicker-nav-next:hover svg {
+          stroke-width: 1em; }
+      .datetimepicker .datepicker-nav .datepicker-nav-previous:focus, .datetimepicker .datepicker-nav .datepicker-nav-next:focus {
+        background-color: #5a6581;
+        border: solid #910106; }
+        .datetimepicker .datepicker-nav .datepicker-nav-previous:focus svg, .datetimepicker .datepicker-nav .datepicker-nav-next:focus svg {
           stroke-width: 1em; }
       .datetimepicker .datepicker-nav .datepicker-nav-previous svg, .datetimepicker .datepicker-nav .datepicker-nav-next svg {
         stroke: currentColor;
@@ -11137,7 +11141,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
           animation: bounce-button-in 0.45s 0s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
           .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
             background: transparent;
-            border: 0.1rem dotted #95404c;
+            border: 0.1rem solid #95404c;
             color: #95404c; }
           .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:focus {
             background: white;
