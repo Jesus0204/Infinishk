@@ -1,0 +1,31 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Registrar Pago Manual</h3>
+            </div>
+        </div>
+        <input id="datepickerDemo" class="input" type="date">
+    </div>
+</section>
+<script>
+    // Initialize all input of date type.
+    const calendars = bulmaCalendar.attach('[type="date"]', {
+        startDate: new Date(),
+        displayMode: 'dialog',
+        dateFormat: 'dd/MM/yyyy',
+        maxDate: new Date(),
+        weekStart: 1,
+        lang: 'es',
+        showFooter: false,
+        cancelLabel: 'Cancelar',
+        clearLabel: 'Borrar'
+    });
+</script>

@@ -84,13 +84,13 @@ exports.post_fetch_registrar_pago_manual= (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
-                    // response.render('pago/registrar_solicitud', {
-                    //     alumno: alumno,
-                    //     username: request.session.username || '',
-                    //     permisos: request.session.permisos || [],
-                    //     rol: request.session.rol || "",
-                    //     csrfToken: request.csrfToken()
-                    // })
+                response.render('pago/pago_manual_registro', {
+                    alumno: alumno,
+                    username: request.session.username || '',
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                    csrfToken: request.csrfToken()
+                })
         })
         .catch((error) => {
             console.log(error)
