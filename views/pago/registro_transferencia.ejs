@@ -172,7 +172,8 @@
                                 <% datos.forEach((fila,index)=> { %>
                                     <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar'
                                         || fila.tipoPago==='Pago de Diplomado' ) { %>
-                                        <tr id="fila<%= index %>" class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
+                                        <tr id="fila<%= index %>"
+                                            class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
                                             <td>
                                                 <%= fila.nombre %>
                                                     <%= fila.apellidos %>
@@ -200,7 +201,8 @@
                                                         <td>
                                                             <form action="/pagos/resultadoTransferencia" method="POST"
                                                                 id="form<%= index %>" class="form-enviar-datos">
-                                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                                                <input type="hidden" name="_csrf" id="_csrf"
+                                                                    value="<%= csrfToken %>">
                                                                 <select name="tipoPago">
                                                                     <% if (fila.Matricula.charAt(0)==='1' ){ %>
                                                                         <option value="Pago de Colegiatura"
@@ -262,7 +264,7 @@
                     </div>
                 </div>
                 <% } %>
-
+                    <script type="text/javascript" src="/js/pagination.js"></script>
                     <script>
                         function updateLabel() {
                             var archivo = document.getElementById('archivo');

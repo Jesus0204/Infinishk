@@ -70,7 +70,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     const idLiquida = await Liquida.fetchID(fila.Matricula);
                     const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
                     const estado = await Deuda.fetchEstado(fila.Matricula);
-                    const pagado = (estado[0][0].Pagado);
+                    const pagado = estado[0][estado[0].length - 1].Pagado;
 
                     if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
                         montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
@@ -79,21 +79,19 @@ exports.post_subir_archivo = (request, response, next) => {
                         montoAPagar = Number(deudaPagada[0][0].montoAPagar.toFixed(2));
                     }
 
-                    if (deudaPagada && deudaPagada[0] && deudaPagada[0][0] && typeof deudaPagada[0][0].montoAPagar !== 'undefined') {
+                    const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
-                        const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
+                    if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && typeof pagoCompleto[0][0].fechaPago !== 'undefined') {
+                        const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
 
-                        if ( pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && typeof pagoCompleto[0][0].fechaPago !== 'undefined') {
-                            const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
+                        const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
 
-                            const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours().toString().padStart(2, '0')}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
+                        const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
+                        const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                            const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
-                            const importeRedondeado = Math.round(fila.Importe * 100) / 100;
-
-                            if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
-                                tipoPago = 'Pago Completo';
-                            }
+                        if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
                         }
                     }
 
@@ -105,16 +103,18 @@ exports.post_subir_archivo = (request, response, next) => {
                         if (pagado === 0) {
                             tipoPago = 'Pago de Colegiatura';
                             deudaEstudiante = montoAPagar;
+
                         }
                         else if (pagado === 1) {
                             tipoPago = 'Pago Completo';
-                            deudaEstudiante = montoAPagar;
+                            deudaEstudiante = 0;
                         }
                     }
 
                     else {
                         if (tipoPago === 'Pago Completo') {
                             tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
                         }
                         else {
                             tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
