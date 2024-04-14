@@ -83,8 +83,16 @@
                         </li>
                     </ul>
                 </div>
+
                 <div id="usuarios_activos">
                     <% let count_activos=0 %>
+
+                        <div id="modificacion_estatus_activar" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            <button id="btn_eliminar_estatus" class="delete"></button>
+                            ¡Usuario Desactivado! Recargando datos...
+                        </div>
+
                         <% if (usuariosActivos.length===0) { %>
                             <p>No hay usuarios activos por el momento.</p>
                             <% } else { %>
@@ -110,7 +118,7 @@
                                         </thead>
                                         <tbody>
                                             <% for (let usuario of usuariosActivos) { %>
-                                                <tr id="pagination-content">
+                                                <tr>
                                                     <td>
                                                         <%= usuario.IDUsuario %>
                                                     </td>
@@ -118,7 +126,8 @@
                                                         <%= usuario.correoElectronico %>
                                                     </td>
                                                     <td>
-                                                        <form method="POST" action="/configuracion/modificar_usuario">
+                                                        <form id="form_activar_usuario" method="POST"
+                                                            action="/configuracion/modificar_usuario">
                                                             <input type="hidden" name="_csrf" id="_csrf"
                                                                 value="<%= csrfToken %>">
                                                             <input type="hidden" name="IDUsuario"
@@ -133,20 +142,19 @@
                                                     <% } %>
                                         </tbody>
                                     </table>
-                                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                                        <a class="pagination-previous" id="prev-button">Anterior</a>
-                                        <a class="pagination-next" id="next-button">Siguiente</a>
-                                        <ul class="pagination-list" id="pagination-list">
-                                            <div id="pagination-numbers">
-                                            </div>
-                                        </ul>
-                                    </nav>
                                 </div>
                                 <% } %>
                 </div>
 
                 <div id="usuarios_no_activos" class="is-hidden">
                     <% let count_no_activos=0 %>
+
+                        <div id="modificacion_estatus_desactivar" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            <button id="btn_eliminar_estatus" class="delete"></button>
+                            ¡Usuario Activado! Recargando datos...
+                        </div>
+
                         <% if (usuariosNoActivos.length===0) { %>
                             <p>No hay usuarios no activos por el momento.</p>
                             <% } else { %>
@@ -171,7 +179,7 @@
                                         </thead>
                                         <tbody>
                                             <% for (let usuario of usuariosNoActivos) { %>
-                                                <tr id="pagination-content-2">
+                                                <tr>
                                                     <td>
                                                         <%= usuario.IDUsuario %>
                                                     </td>
@@ -179,7 +187,8 @@
                                                         <%= usuario.correoElectronico %>
                                                     </td>
                                                     <td>
-                                                        <form method="POST" action="/configuracion/modificar_usuario">
+                                                        <form id="form_desactivar_usuario"="POST"
+                                                            action="/configuracion/modificar_usuario">
                                                             <input type="hidden" name="_csrf" id="_csrf"
                                                                 value="<%= csrfToken %>">
                                                             <input type="hidden" name="IDUsuario"
@@ -194,22 +203,11 @@
                                                     <% } %>
                                         </tbody>
                                     </table>
-                                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
-                                        <a class="pagination-next" id="next-button-2">Siguiente</a>
-                                        <ul class="pagination-list" id="pagination-list-2">
-                                            <div id="pagination-numbers-2">
-                        
-                                            </div>
-                                        </ul>
-                                    </nav>
                                 </div>
                                 <% } %>
                 </div>
             </div>
         </section>
-        <script type="text/javascript" src="/js/pagination.js"></script>
-        <script type="text/javascript" src="/js/pagination2.js"></script>
         <script>
             $(document).ready(function () {
                 // Función para manejar la búsqueda en la tabla de usuarios activos
@@ -257,6 +255,47 @@
                 const usuarios_activos = document.querySelector('#usuarios_activos');
                 usuarios_activos.classList.add('is-hidden');
             }
+
+            $(document).ready(function () {
+    // Función para mostrar la notificación y recargar la página
+    function mostrarNotificacionYRecargar(tabla, notificacion) {
+        $(notificacion).removeClass('is-hidden'); // Mostrar notificación
+
+        // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
+        setTimeout(function () {
+            window.location.reload(); // Recargar la página
+        }, 1500);
+    }
+
+    // Mostrar la notificación y recargar la página después de enviar cualquier formulario
+    $('form').submit(function (event) {
+        event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'), // Obtener la URL del formulario actual
+            data: $(this).serialize(),
+            success: function () {
+                // Buscar la tabla y la notificación relacionadas con el formulario enviado
+                var tabla = $(event.target).closest('.table-container').find('table');
+                var notificacion = $(event.target).closest('.table-container').siblings('.notification');
+
+                mostrarNotificacionYRecargar(tabla, notificacion);
+            },
+            error: function () {
+                console.log('Error al enviar el formulario');
+            }
+        });
+    });
+
+    // Cerrar notificación al hacer clic en el botón eliminar
+    $('.delete').click(function () {
+        $(this).parent().addClass('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
+    });
+});
+
+
+
         </script>
     </body>
 

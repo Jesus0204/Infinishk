@@ -43,77 +43,28 @@ exports.get_consultar_usuario = (request, response, next) => {
         });
 }
 
+
 exports.get_search_activo = (request, response, next) => {
     const consulta = request.query.q;
     console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
     Usuario.buscar(consulta) // Búsqueda de usuarios
-    .then(([usuarios]) => {
-        response.json(usuarios);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-};
-
-exports.get_search_noactivo = (request, response, next) => {
-    const consulta = request.query.q;
-    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
-    Usuario.buscarNoActivos(consulta)// Búsqueda de usuarios
-    .then(([usuarios]) => {
-        response.json(usuarios);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-};
-
-
-
-exports.get_check_usuario = (request, response, next) => {
-    const id = request.query.id;
-    Usuario.fetchOne(id)
         .then(([usuarios]) => {
-            if (usuarios.length > 0) {
-                response.json({ exists: true });
-            } else {
-                response.json({ exists: false });
-            }
+            response.json(usuarios);
         })
         .catch((error) => {
             console.log(error);
         });
 };
 
-
-exports.post_buscar_usuario = (request, response, next) => {
-    const username = request.body.username;
-    Usuario.fetchOne(username)
-        .then(([usuarios, fieldData]) => {
-            if (usuarios.length > 0) {
-                response.render('configuracion/consultar_usuario', {
-                    fetch: false,
-                    modificar: true,
-                    resultado: false,
-                    error: null,
-                    usuario: usuarios[0],
-                    csrfToken: request.csrfToken(),
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                });
-            } else {
-                response.render('configuracion/consultar_usuario', {
-                    fetch: true,
-                    modificar: true,
-                    resultado: false,
-                    error: 'Ese usuario no existe, por favor ingresa uno valido',
-                    csrfToken: request.csrfToken(),
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                });
-            }
+exports.get_search_noactivo = (request, response, next) => {
+    const consulta = request.query.q;
+    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
+    Usuario.buscarNoActivos(consulta)// Búsqueda de usuarios
+        .then(([usuarios]) => {
+            response.json(usuarios);
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         });
 };
 
