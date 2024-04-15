@@ -88,8 +88,13 @@ app.locals.contienePermiso = (permisos, casoUso) => {
 
 
 //Para error 404
-app.use((request, response) => {
-    response.status(404).sendFile(path.join(__dirname, "views", "404.html"));
+app.use((request, response, next) => {
+    response.status(404);
+    response.render('404', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
 });
 
 // Para que el servidor este activo
