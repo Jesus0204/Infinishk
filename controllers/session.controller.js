@@ -25,25 +25,31 @@ exports.post_login = (request, response, next) => {
                     .then(doMatch => {
                         // Si la promesa es verdadero, entonces inicias sesion en la pagina
                         if (doMatch) {
-                            Usuario.getPermisos(user.IDUsuario)
-                                .then(([permisos, fieldData]) => {
-                                    Usuario.getRol(user.IDUsuario)
-                                    .then(([rol, fieldData]) => {
-                                        request.session.isLoggedIn = true;
-                                        request.session.permisos = permisos;
-                                        request.session.rol = rol[0].IDRol;
-                                        request.session.username = user.IDUsuario;
-                                        return request.session.save(err => {
-                                            response.redirect('/pagos');
-                                        })
+                            // Si el usuario aun esta activo en el sistema
+                            if (users[0].usuarioActivo == 1) {
+                                Usuario.getPermisos(user.IDUsuario)
+                                    .then(([permisos, fieldData]) => {
+                                        Usuario.getRol(user.IDUsuario)
+                                            .then(([rol, fieldData]) => {
+                                                request.session.isLoggedIn = true;
+                                                request.session.permisos = permisos;
+                                                request.session.rol = rol[0].IDRol;
+                                                request.session.username = user.IDUsuario;
+                                                return request.session.save(err => {
+                                                    response.redirect('/pagos');
+                                                })
+                                            })
+                                            .catch((error) => {
+                                                console.log(error);
+                                            })
                                     })
                                     .catch((error) => {
-                                        console.log(error);
-                                    })
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                });
+                                        console.log(error)
+                                    });
+                            } else {
+                                request.session.error = 'El usuario insertado ya no está activo en el sistema. Por favor busca ayuda si requieres iniciar sesión.';
+                                response.redirect('/auth/login')
+                            }
                             // Por si los passwords no hacen match
                         } else {
                             request.session.error = 'El usuario y/o contraseña con incorrectos.';
@@ -53,6 +59,7 @@ exports.post_login = (request, response, next) => {
                     }).catch(err => {
                         response.redirect('/auth/login');
                     });
+
                 // Por si el usuario no existe en la base de datos
             } else {
                 request.session.error = 'El usuario y/o contraseña con incorrectos.';

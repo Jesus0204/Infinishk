@@ -44,6 +44,23 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
+const helmet = require("helmet");
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "script-src": ["'self'", "'unsafe-inline'",
+                'code.jquery.com', 'ajax.googleapis.com'
+            ],
+            "script-src-attr": ["'unsafe-inline'"]
+        },
+    },
+}));
+
+const compression = require("compression");
+
+app.use(compression());
+
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
 
@@ -57,6 +74,9 @@ app.use('/configuracion', rutasConfiguracion);
 
 const rutasPago = require('./routes/pagos.routes');
 app.use('/pagos', rutasPago);
+
+const rutasAlumnos = require('./routes/alumnos.routes');
+app.use('/alumnos', rutasAlumnos);
 
 // Agregar funcion para iterar la lista del ejs, y que el codigo se vea limpio
 app.locals.contienePermiso = (permisos, casoUso) => {
