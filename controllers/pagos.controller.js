@@ -67,10 +67,10 @@ exports.post_subir_archivo = (request, response, next) => {
                     let montoAPagar = 0;
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
-                    const idLiquida = await Liquida.fetchID(fila.Matricula);
-                    const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
+                    const idLiquida = await Liquida.fetchIDPagado(fila.Matricula,fila.fechaFormato);
                     const estado = await Deuda.fetchEstado(fila.Matricula);
                     const pagado = estado[0][estado[0].length - 1].Pagado;
+                    const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
                     if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
                         montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
@@ -79,7 +79,6 @@ exports.post_subir_archivo = (request, response, next) => {
                         montoAPagar = Number(deudaPagada[0][0].montoAPagar.toFixed(2));
                     }
 
-                    const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
                     if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && typeof pagoCompleto[0][0].fechaPago !== 'undefined') {
                         const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
@@ -95,11 +94,13 @@ exports.post_subir_archivo = (request, response, next) => {
                         }
                     }
 
-                    if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1) {
-                        tipoPago = 'Pago Completo';
+                    if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
                     }
 
-                    else if (fila.Importe == montoAPagar) {
+
+                    if (fila.Importe == montoAPagar) {
                         if (pagado === 0) {
                             tipoPago = 'Pago de Colegiatura';
                             deudaEstudiante = montoAPagar;
@@ -129,6 +130,7 @@ exports.post_subir_archivo = (request, response, next) => {
 
                     const pagoDiplomadoCompleto = await pagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
 
+    
                     if (pagoDiplomadoCompleto && pagoDiplomadoCompleto[0] && pagoDiplomadoCompleto[0][0] && typeof pagoDiplomadoCompleto[0][0].fechaPago !== 'undefined') {
                         const fechaParseada = new Date(pagoDiplomadoCompleto[0][0].fechaPago)
 
@@ -144,7 +146,14 @@ exports.post_subir_archivo = (request, response, next) => {
                     }
 
                     if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1) {
-                        tipoPago = 'Pago Completo';
+                        const fechaParseadaLiquida = new Date(idLiquida[0][0].fechaPago)
+
+                        const fechaFormateadaLiquida = `${fechaParseadaLiquida.getFullYear()}-${(fechaParseadaLiquida.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseadaLiquida.getDate().toString().padStart(2, '0')} ${fechaParseadaLiquida.getHours().toString().padStart(2, '0')}:${fechaParseadaLiquida.getMinutes().toString().padStart(2, '0')}`;
+
+                        if (fechaFormateadaLiquida === fila.fechaFormato) {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
+                        }
                     }
 
                     else {

@@ -13,7 +13,11 @@ module.exports = class Liquida {
     }
 
     static fetchID(matricula){
-        return db.execute('Select IDLiquida from liquida WHERE Matricula = ?',[matricula]);
+        return db.execute('Select IDLiquida from liquida WHERE Matricula = ? AND Pagado = 0',[matricula]);
+    }
+
+    static fetchIDPagado(matricula,fecha){
+        return db.execute('Select fechaPago, IDLiquida from liquida WHERE Matricula = ? AND Pagado = 1 AND fechaPago = ?',[matricula,fecha]);
     }
 
     static fetchStatus(matricula){
