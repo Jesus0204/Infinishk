@@ -3,15 +3,30 @@
     permisos: permisos,
     rol: rol
 }) %>
-
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
-                <h3 class="title is-3">Precio Crédito</h3>
-            </div>
-        </div>
+        
+        <section class="section">
+            <div class="container">
+                <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+                <div class="columns">
+                    <div class="column is-6">
+                        <h3 class="title is-3">Precio Crédito</h3>
+                    </div>
+                    <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) { %>
+                    <div class="column is-offset-2">
+                        <p class="control">
+                            <a class="button is-rounded is-responsive" style="font-size: large;"
+                                href="/configuracion/registrar_precio_credito">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                </span>
+                                <% } %>
+                                <span>
+                                    Registrar Precio Crédito
+                                </span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
 
     <section class="section">
         <div class="container">
