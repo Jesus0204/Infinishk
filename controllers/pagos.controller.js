@@ -67,7 +67,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     let montoAPagar = 0;
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
-                    const idLiquida = await Liquida.fetchIDPagado(fila.Matricula,fila.fechaFormato);
+                    const idLiquida = await Liquida.fetchIDPagado(fila.Matricula, fila.fechaFormato);
                     const estado = await Deuda.fetchEstado(fila.Matricula);
                     const pagado = estado[0][estado[0].length - 1].Pagado;
                     const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
@@ -95,8 +95,8 @@ exports.post_subir_archivo = (request, response, next) => {
                     }
 
                     if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
-                            tipoPago = 'Pago Completo';
-                            deudaEstudiante = 0;
+                        tipoPago = 'Pago Completo';
+                        deudaEstudiante = 0;
                     }
 
 
@@ -125,12 +125,11 @@ exports.post_subir_archivo = (request, response, next) => {
                 }
 
                 else if (fila.inicioRef == '8') {
-                    const idLiquida = await Liquida.fetchID(fila.Matricula);
-                    const pagadoLiquida = await Liquida.fetchStatus(fila.Matricula);
+                    const idLiquidaPagada = await Liquida.fetchIDPagado(fila.Matricula,fila.fechaFormato);
 
                     const pagoDiplomadoCompleto = await pagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
 
-    
+
                     if (pagoDiplomadoCompleto && pagoDiplomadoCompleto[0] && pagoDiplomadoCompleto[0][0] && typeof pagoDiplomadoCompleto[0][0].fechaPago !== 'undefined') {
                         const fechaParseada = new Date(pagoDiplomadoCompleto[0][0].fechaPago)
 
@@ -145,15 +144,9 @@ exports.post_subir_archivo = (request, response, next) => {
                         }
                     }
 
-                    if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined' && pagadoLiquida[0][0].Pagado === 1) {
-                        const fechaParseadaLiquida = new Date(idLiquida[0][0].fechaPago)
-
-                        const fechaFormateadaLiquida = `${fechaParseadaLiquida.getFullYear()}-${(fechaParseadaLiquida.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseadaLiquida.getDate().toString().padStart(2, '0')} ${fechaParseadaLiquida.getHours().toString().padStart(2, '0')}:${fechaParseadaLiquida.getMinutes().toString().padStart(2, '0')}`;
-
-                        if (fechaFormateadaLiquida === fila.fechaFormato) {
-                            tipoPago = 'Pago Completo';
-                            deudaEstudiante = 0;
-                        }
+                    if (idLiquidaPagada[0] && idLiquidaPagada[0][0] && typeof idLiquidaPagada[0][0].IDLiquida !== 'undefined') {
+                        tipoPago = 'Pago Completo';
+                        deudaEstudiante = 0;
                     }
 
                     else {
@@ -236,7 +229,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         }
     }
 
-    response.json({ success: success });
+    response.json({ success: success, pagosRegistrar: pagosRegistrar });
 }
 
 
