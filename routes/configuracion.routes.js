@@ -17,6 +17,8 @@ const can_ConsultarUsuario = require('../util/privileges/admin/consultas/can_con
 const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_registrar_usuario');
 
 router.get('/administrar_planpago',configuracionController.get_administrar_planpago);
+router.get('/registrar_precio_credito', configuracionController.get__registrar_precio_credito);
+router.post('/registrar_precio_credito', configuracionController.post_registrar_precio_credito);
 router.get('/', configuracionController.get_configuracion);
 
 module.exports = router;
