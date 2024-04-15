@@ -5,6 +5,7 @@ const pagoExtra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
+const Colegiatura = require('../models/colegiatura.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -208,9 +209,13 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const nota = request.body.nota;
     if (tipoPago === 'Pago de Colegiatura') {
         let diferencia = 0;
+
         const deuda = await Deuda.fetchDeuda(matricula);
         const idDeuda = await Deuda.fetchIDDeuda(matricula);
         const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+
+        console.log(importe);
+        console.log(montoAPagar);
 
         if (importe > montoAPagar) {
             diferencia = importe - montoAPagar;
@@ -245,6 +250,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         }
     }
 
-    response.json({ success: success, pagosRegistrar: pagosRegistrar });
+    response.json({ success: success});
 }
 
