@@ -86,11 +86,6 @@ app.locals.contienePermiso = (permisos, casoUso) => {
     return contains;
 };
 
-app.use('/', (request, response, next) => {
-    response.redirect('/auth/login');
-});
-
-
 //Para error 404
 app.use((request, response, next) => {
     response.status(404);
