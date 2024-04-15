@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Precio Crédito</h3>
+            </div>
+        </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <p class="is-size-5" style="text-align: center;">
+                            Los datos del precio crédito actual son:
+                        </p>
+                        <br>
+                        <div class="columns is-vcentered">
+                            <div class="column is-half">
+                                <p class="is-size-5" style="text-align: center;">
+                                    <strong>Precio: </strong>$<%= precio_actual[0].precioPesos %>
+                                </p>
+                            </div>
+                        <div class="columns is-vcentered">
+                            <div class="column is-half">
+                                <p class="is-size-5" style="text-align: center;">
+                                    <strong>Fecha de Registro: </strong><%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString('es-ES') %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
