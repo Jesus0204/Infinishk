@@ -1,7 +1,7 @@
 module.exports = (request, response, next) => {
     let can_AdministrarSolicitud = false;
     for (let permiso of request.session.permisos) {
-        if (permiso.funcion == 'Modificar Solicitud de Pago' || permiso.funcion == 'Eliminar Solicitud de Pago') {
+        if (permiso.funcion == 'Administrar Solicitud de Pago') {
             can_AdministrarSolicitud = true;
         }
     }

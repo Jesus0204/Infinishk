@@ -43,6 +43,22 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
+const helmet = require("helmet");
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "script-src": ["'self'", "'unsafe-inline'",
+                'code.jquery.com', 'ajax.googleapis.com'
+            ],
+            "script-src-attr": ["'unsafe-inline'"]
+        },
+    },
+}));
+
+const compression = require("compression");
+
+app.use(compression());
 
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);

@@ -7,8 +7,9 @@
     <title>VIAPago</title>
     <link href="/css/mystyles.min.css" rel="stylesheet" type="text/css">
     <link href="/css/extrastyles.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://kit.fontawesome.com/98026b1a47.js" crossorigin="anonymous"></script>
+    <link href="/css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="/css/fontawesome/css/brands.min.css" rel="stylesheet" />
+    <link href="/css/fontawesome/css/solid.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -32,8 +33,7 @@
                 <img src="\images\logo.png" alt="Via diseño logo" width="100" height="100">
             </a>
             <p class="control" style="margin-left: auto; margin-top: 1.5em; padding-right: 1em;">
-                <a class="button is-rounded is-responsive cerrar_sesion_mobile"
-                    style="font-size: large;"
+                <a class="button is-rounded is-responsive cerrar_sesion_mobile" style="font-size: large;"
                     href="/auth/logout">
                     <span>
                         Cerrar Sesión
@@ -45,9 +45,9 @@
             </p>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarViaDiseño"
                 style="margin-left: 0%;">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+                <span aria-hidden="true" style="color: #ffffff"></span>
+                <span aria-hidden="true" style="color: #ffffff"></span>
+                <span aria-hidden="true" style="color: #ffffff"></span>
             </a>
         </div>
         <div id="navbarViaDiseño" class="navbar-menu">
@@ -135,7 +135,7 @@
                     <div class="navbar-dropdown" id="alumnos">
                         <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
                         <div class="desktop">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-file-invoice-dollar"></i>
                                 </span>
@@ -145,7 +145,7 @@
                             </a>
                         </div>
                         <div class="mobile">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-file-invoice-dollar"></i>
                                 </span>
@@ -178,7 +178,7 @@
                         <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
                         <hr class="navbar-divider">
                         <div class="desktop">
-                            <a class="navbar-item" href="/">
+                            <a class="navbar-item">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>
@@ -188,7 +188,7 @@
                             </a>
                         </div>
                         <div class="mobile">
-                            <a class="navbar-item" href="/">
+                            <a class="navbar-item">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>
@@ -201,7 +201,7 @@
                 <% } %>
 
                 <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
-                       contienePermiso(permisos, 'Modificar Solicitud de Pago') == true ||
+                       contienePermiso(permisos, 'Administrar Solicitud de Pago') == true ||
                        contienePermiso(permisos, 'Registrar Pago Manual') == true ||
                        contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true ||
                        contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
@@ -229,7 +229,7 @@
                             </a>
                             <div class="dropdown-menu">
                                 <div class="navbar-dropdown">
-                                    <a class="navbar-item">
+                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-cash-register"></i>
                                         </span>
@@ -257,7 +257,7 @@
                                     Registros
                                 </a>
                                 <div class="navbar-dropdown" id="registros">
-                                    <a class="navbar-item">
+                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-cash-register"></i>
                                         </span>
@@ -334,7 +334,7 @@
                             </div>
                         </div>
                         <% } %>
-                        <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true && contienePermiso(permisos, 'Modificar Solicitud de Pago') == true && rol == 1) { %>
+                        <% if (contienePermiso(permisos, 'Administrar Solicitud de Pago') == true) { %>
                         <div class="desktop">
                             <a class="navbar-item" href="/pagos/solicitudes">
                                 <span class="icon is-large">
@@ -344,7 +344,6 @@
                                 <br>
                                 De Pago
                             </a>
-                            <hr class="navbar-divider">
                         </div>
                         <div class="mobile">
                             <a class="navbar-item" href="/pagos/solicitudes">
@@ -354,38 +353,10 @@
                                 Solicitudes De Pago
                             </a>
                         </div>
-                        <% } else if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true && contienePermiso(permisos, 'Modificar Solicitud de Pago') == true) { %>
-                        <a class="navbar-item">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-bell"></i>
-                            </span>
-                            Registrar
-                            <br>
-                            Solicitud
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </span>
-                            Solicitudes
-                            <br>
-                            Pendientes
-                        </a>
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
-                            contienePermiso(permisos, 'Modificar Pago Extra') == true  && 
-                            contienePermiso(permisos, 'Eliminar Pago Extra') == true) { %>
-                        <a class="navbar-item" style="padding-right: 2.8em;" href="/pagos/pagos_extra">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-money-bill-wave"></i>
-                            </span>
-                            Otros Pagos
-                        </a>
                         <% } %>
                     </div>
+                    <% } %>
                 </div>
-                <% } %>
 
                 <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
                        contienePermiso(permisos, 'Consultar plan de pago') == true ||
@@ -393,7 +364,9 @@
                        contienePermiso(permisos, 'Registrar Plan de Pago') == true ||
                        contienePermiso(permisos, 'Registrar usuario') == true ||
                        contienePermiso(permisos, 'Consultar Usuario') == true ||
-                       contienePermiso(permisos, 'Registrar Rol') == true) { %>
+                       contienePermiso(permisos, 'Registrar Rol') == true || 
+                       contienePermiso(permisos, 'Registrar Pago Extra') == true ||
+                       contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
 
                 <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
@@ -403,7 +376,17 @@
                         </span>
                         Configuracion
                     </a>
-                    <div class="navbar-dropdown" id="configuracion" style="width: 115%">
+                    <div class="navbar-dropdown" id="configuracion" style="width: 110%">
+                        <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
+                            contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
+                        <a class="navbar-item" style="padding-right: 2.8em;" href="/pagos/pagos_extra">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-sliders"></i>
+                            </span>
+                            Otros Pagos
+                        </a>
+                        <hr class="navbar-divider">
+                        <% } %>
                         <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                         <a class="navbar-item">
                             <span class="icon is-large">
@@ -414,73 +397,26 @@
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="/configuracion/administrar_planpago">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-calendar-week"></i>
                             </span>
                             Plan de Pago
                         </a>
                         <% } %>
-                        <% if (contienePermiso(permisos, 'Registrar usuario') == true &&
-                       contienePermiso(permisos, 'Consultar Usuario') == true) { %>
+                        <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
                         <hr class="navbar-divider">
-                        <div class="nested dropdown has-dropdown is-hoverable">
-                            <a class="navbar-item">
+                            <a class="navbar-item" style="padding-right: 2.5em;"
+                                href="/configuracion/consultar_usuario">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-users-gear"></i>
                                 </span>
                                 Usuarios
-                                <span class="icon is-large ">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
                             </a>
-                            <div class="dropdown-menu">
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-tag"></i>
-                                        </span>
-                                        Consultar
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </span>
-                                        Registrar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mobile">
-                            <div data-target="usuarios" class="navbar-item has-dropdown">
-                                <a class="navbar-link" onclick="click_target(this.parentElement)">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-users-gear"></i>
-                                    </span>
-                                    Usuarios
-                                </a>
-                                <div class="navbar-dropdown" id="usuarios">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-tag"></i>
-                                        </span>
-                                        Consultar
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </span>
-                                        Registrar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Registrar Rol') == true) { %>
-                        <a class="navbar-item">
+                        <a class="navbar-item" href="/configuracion/registrar_rol">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-user-gear"></i>
                             </span>
@@ -492,8 +428,7 @@
                 <% } %>
                 <div class="navbar-end">
                     <p class="control" style="margin-top: 1.5em; padding-right: 1em;">
-                        <a class="button is-rounded is-responsive" style="font-size: large;"
-                            href="/auth/logout">
+                        <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
                             <span>
                                 Cerrar Sesión
                             </span>
