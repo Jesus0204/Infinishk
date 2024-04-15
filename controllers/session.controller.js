@@ -52,7 +52,7 @@ exports.post_login = (request, response, next) => {
                             }
                             // Por si los passwords no hacen match
                         } else {
-                            request.session.error = 'El usuario y/o contraseña con incorrectos.';
+                            request.session.error = 'El usuario y/o contraseña son incorrectos.';
                             return response.redirect('/auth/login');
                         }
                         // Por si hay un error en la libreria o algo
