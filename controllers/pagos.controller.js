@@ -1,7 +1,7 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
-const pagoDiplomado = require('../models/pagadiplomado.model');
-const pagoExtra = require('../models/pago_extra.model');
+const PagoDiplomado = require('../models/pagadiplomado.model');
+const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
@@ -132,7 +132,7 @@ exports.post_subir_archivo = (request, response, next) => {
                 else if (fila.inicioRef == '8') {
                     const idLiquidaPagada = await Liquida.fetchIDPagado(fila.Matricula, fila.fechaFormato);
 
-                    const pagoDiplomadoCompleto = await pagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
+                    const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
 
 
                     if (pagoDiplomadoCompleto && pagoDiplomadoCompleto[0] && pagoDiplomadoCompleto[0][0] && typeof pagoDiplomadoCompleto[0][0].fechaPago !== 'undefined') {
@@ -213,6 +213,9 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         const deuda = await Deuda.fetchDeuda(matricula);
         const idDeuda = await Deuda.fetchIDDeuda(matricula);
         const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+        const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
+        const idColegiatura = colegiatura[0][0].IDColegiatura;
+        console.log(idColegiatura);
 
         console.log(importe);
         console.log(montoAPagar);
@@ -221,6 +224,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             diferencia = importe - montoAPagar;
         }
         console.log(diferencia)
+        await Colegiatura.update_transferencia(importe,idColegiatura)
         await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
         if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
@@ -229,7 +233,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     }
     else if (tipoPago === 'Pago de Diplomado') {
         const idDiplomado = await Cursa.fetchDiplomado(matricula);
-        pagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
+        PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
     }
     else if (tipoPago === 'Pago a Registrar') {
         pagosRegistrar.push({ nombre, matricula, referencia, importe, deuda, tipoPago, fecha });
@@ -240,7 +244,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
         }
         else {
-            const idPagoExtra = await pagoExtra.fetchID(importe);
+            const idPagoExtra = await Pago_Extra.fetchID(importe);
             if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
                 Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
             }
