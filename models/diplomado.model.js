@@ -30,7 +30,7 @@ module.exports = class Diplomado{
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT Diplomado.* FROM Diplomado LEFT JOIN cursa ON Diplomado.IDDiplomado = Cursa.IdDiplomado WHERE Cursa.IdDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
+            'SELECT Diplomado.* FROM Diplomado LEFT JOIN Cursa ON Diplomado.IDDiplomado = Cursa.IdDiplomado WHERE Cursa.IdDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
             [`%${consulta}%`]
         );
     }
