@@ -22,8 +22,6 @@ exports.get_pago = (request,response,next) => {
     });
 };
 
-const Pago_Extra = require('../models/pago_extra.model');
-
 exports.get__registrar_pago_extra = (request, response, next) => {
     response.render('pago/registrar_pago_extra', {
         username: request.session.username || '',
