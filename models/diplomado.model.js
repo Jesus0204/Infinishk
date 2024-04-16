@@ -16,7 +16,7 @@ module.exports = class Diplomado{
     }
 
     static fetchAll() {
-        return db.execute('Select * from diplomado')
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
     }
 
     static fetchOne(nombre){

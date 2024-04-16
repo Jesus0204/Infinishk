@@ -105,6 +105,33 @@ exports.post_fetch_diplomado = (request, response, next) => {
         });
 };
 
+exports.get_consultar_diplomado = (request, response, next) =>{
+    const estado = request.body.estatus;
+    console.log('El estado en el controller')
+    console.log(estado);
+    Diplomado.fetchAll()
+        .then(([diplomados, fieldData]) => {
+            if (diplomados.length > 0) {
+                response.render('diplomado/consultar_diplomado', {
+                    editar: false,
+                    fetch: false,
+                    diplomados,
+                    csrfToken: request.csrfToken(),
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                });
+            } else {
+                response.render('diplomado/consultar_diplomado', {
+                    editar: false,
+                    fetch: false,
+                    error: 'No hay diplomados disponibles',
+                    csrfToken: request.csrfToken(),
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                });
+            }
+        })
+};
 
 exports.post_modificar_diplomado = (request, response, next) => {
     const id = request.body.IDDiplomado;
