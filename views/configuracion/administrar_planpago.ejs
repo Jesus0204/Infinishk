@@ -31,7 +31,7 @@
                                                 <div class="field">
                                                     <label class="label">Nombre del Plan</label>
                                                     <div class="control">
-                                                        <input class="input" type="text" name="nombrePlan"
+                                                        <input required class="input" type="text" name="nombrePlan"
                                                             value="<%= plan.nombrePlan %>" />
                                                     </div>
                                                 </div>
@@ -90,6 +90,17 @@
                                                 <p class="subtitle is-3 has-text-grey">
                                                     <%= plan.numeroPagos %>
                                                 </p>
+
+                                                <p class="title is-3 has-text-black">Estado:</p>
+                                                <p class="subtitle is-3 has-text-grey">
+                                                    <% if (plan.planPagoActivo===1) { %>
+                                                        Activo
+                                                    <% } %>
+
+                                                    <% if (plan.planPagoActivo===0) { %>
+                                                        No Activo
+                                                    <% } %>
+                                                </p>                  
                                             </div>
                                         </div>
                                     </div>
