@@ -6,40 +6,41 @@
 
 <section class="section">
     <div class="container">
-        <div class="columns">
+        <div class="columns" >
             <div class="column is-3"></div>
-            <div class="column is-6">
-                <h3 class="title is-3">Registrar Nuevo Precio Crédito</h3>
+            <div class="column is-7">
+                <h3 class="title is-3" >Registrar Nuevo Precio Crédito</h3>
             </div>
         </div>
-
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-3"></div>
-                    <div class="column is-6">
-                        <p class="is-size-5" style="text-align: center;">
-                            Los datos del precio crédito actual son:
-                        </p>
-                        <br>
-                        <div class="columns is-vcentered">
-                            <div class="column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Precio: </strong>$<%= precio_actual[0].precioPesos %>
-                                </p>
-                            </div>
-                        <div class="columns is-vcentered">
-                            <div class="column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Fecha de Registro: </strong><%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString('es-ES') %>
-                                </p>
-                            </div>
+        <br>
+        <div class="columns">
+            <div class="column is-3"></div>
+                <div class="column is-6">
+                    <p class="is-size-5" style="text-align: center;">
+                        Los datos del precio crédito actual son:
+                    </p>
+                    <br>
+                    <br>
+                    <div class="columns is-vcentered">
+                        <div class="column is-two-fifths is-offset-1">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Precio: </strong>$<%= precio_actual[0].precioPesos %>
+                            </p>
+                        </div>
+                    <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+                    <div class="columns is-vcentered">
+                        <div class="column">
+                            <p class="is-size-5" style="text-align: center;">
+                                <strong>Fecha de Registro:
+                                </strong>
+                                <br>
+                                <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
         <form action="/configuracion/registrar_precio_credito" method="POST">
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken%>">
@@ -53,6 +54,9 @@
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                         style="padding: 0.5em; margin-top: -1em;">
                         El monto debe ser mayor de 0.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                        style="padding: 0.5em; margin-top: -1em;">
+                        Por favor escribe un monto sin exponente.</p>
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="monto" class="input is-medium" type="number" step="any" id="monto"
@@ -85,13 +89,14 @@
         const monto = document.querySelector('#monto');
         const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
         const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+        const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
 
         // Checar si hay contenido dentro del input para desactivar el boton
         function checar_contenido() {
-            bt_Registrar.disabled = monto.value.length === 0 || monto.value <= 0;
+            bt_Registrar.disabled = monto.value.length === 0 || monto.value < 0 || monto.value === '0' || monto.value === '-0';
         }
 
-        // Activar mensaje si el monto no tiene input o es <= a 0
+        // Activar mensaje si el monto no tiene input o es < a 0
         function mensaje_monto() {
             if (monto.value.length === 0) {
                 ayuda_monto_vacio.classList.remove('is-hidden');
@@ -99,12 +104,22 @@
                 ayuda_monto_vacio.classList.add('is-hidden');
             }
 
-            if (monto.value <= 0) {
+            if (monto.value < 0) {
+                ayuda_monto_negativo.classList.remove('is-hidden');
+            } else if (monto.value === '0' || monto.value === '-0') {
                 ayuda_monto_negativo.classList.remove('is-hidden');
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
             }
-        }
+
+            if (monto.value.trim().toLowerCase().includes('e')) {
+                bt_Registrar.disabled = true;
+                ayuda_monto_exponente.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_exponente.classList.add('is-hidden');
+            }
+       }
+       
         // Detectar si el usuario maneja input y llamar las funciones anteriores
         monto.addEventListener('input', checar_contenido);
         monto.addEventListener('input', mensaje_monto);
