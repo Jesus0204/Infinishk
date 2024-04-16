@@ -1,0 +1,73 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-8">
+                <h3 class="title is-3">Registrar Solicitud de Pago</h3>
+            </div>
+        </div>
+        <form action="/pagos/registrar_solicitud" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" value="<%= alumno[0].Matricula %>" id="matricula" name="matricula">
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5">
+                    <p class="is-size-5">
+                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                        <%= alumno[0].Apellidos %>
+                    </p>
+                </div>
+                <div class="column is-3">
+                    <p class="is-size-5">
+                        <strong>Matricula: </strong> <%= alumno[0].Matricula %>
+                    </p>
+                </div>
+            </div>
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-5">
+                    <label class="label is-medium" for="pago">Pagos Extra:</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium">
+                            <select name="pago" id="pago">
+                                <% for (let pago of pagos_extra) { %>
+                                <option value="<%= pago.IDPagosExtras %>"
+                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                    <%= pago.motivoPago %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-narrow">
+                    <p class="is-size-5" id="monto">
+                        <strong>Monto: </strong>
+                        $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                    </p>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
+                        <span>Registrar Solicitud</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script type="text/javascript" src="/js/registrar_solicitud.js"></script>

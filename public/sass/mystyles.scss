@@ -46,6 +46,16 @@ $navbar-dropdown-item-hover-background-color: $rojo;
     color: white !important; /* Cambia el color del texto a blanco */
   }
 
+.ui-menu-item{
+  font-family: "Poppins", sans-serif;
+}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active{
+  background-color: $negro;
+  color: $blanco;
+  border-color: $vino;
+}
+
 .card {
   margin-top: 20px;
   margin-bottom: 20px;
