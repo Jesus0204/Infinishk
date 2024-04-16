@@ -9,10 +9,10 @@ module.exports = class Diplomado{
     }
 
 
-    save() {
+    static save(duracion,precio,nombre) {
         return db.execute(
-            `INSERT INTO tropa (IDDiplomado, Duracion, precioDiplomado, nombreDiplomado) VALUES (?, ?, ?, ?)`, 
-                [this.IDDiplomado, this.Duracion, this.precioDiplomado, this.nombreDiplomado]);
+            `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
+                [duracion,precio,nombre]);
     }
 
     static fetchAll() {
