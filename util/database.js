@@ -1,5 +1,4 @@
 const mysql = require('mysql2');
+const pool = mysql.createPool(process.env.JAWSDB_URL);
 
-const connection = mysql.createConnection(process.env.JAWSDB_URL);
-
-module.exports = connection;
+module.exports = pool.promise();
