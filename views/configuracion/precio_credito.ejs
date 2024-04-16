@@ -7,54 +7,55 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <style>
-    .select_anio:hover {
+    .anio:hover {
         border: 2px solid #5a6581 !important;
     }
     
-    .select_anio:focus {
+    .anio:focus {
         border: 2px solid #910106 !important;
     }
     </style>
 
 <section class="section">
-     <div class="container">
-         <input type="hidden" id="_csrf" value="<%= csrfToken %>">
-         <div class="columns">
-             <div class="column is-6">
-                 <h3 class="title is-3">Precio Crédito</h3>
-             </div>
-             <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) { %>
-             <div class="column is-offset-1">
-                 <p class="control">
-                     <a class="button is-rounded is-responsive" style="font-size: large;"
-                         href="/configuracion/registrar_precio_credito">
-                         <span class="icon is-large">
-                             <i class="fa-solid fa-circle-plus"></i>
-                         </span>
-                         <span>
-                             Registrar Precio Crédito
-                         </span>
-                     </a>
-                 </p>
-             </div>
-             <% } %>
-         </div>
-
-         <div class="column">
-            <div class="columns is-vcentered" style="text-align: center;">
-                <div class="column">
-                    <label class="label is-size-5" for="anio" style="display: inline-block;
-                        width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Año:</label>
-                    <div class="select">
-                        <select class="anio" name="anio" id="anio" style="border: 2px solid #7c7f80; margin-bottom: -2em;">
-                            <% anios.forEach(anio => { %>
+    <div class="container">
+        <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+        <div class="columns is-vcentered">
+            <div class="column is-4">
+                <h3 class="title is-3">Precio Crédito</h3>
+            </div>
+            <div class="column is-3">
+                <div class="columns is-vcentered" style="text-align: center;">
+                    <div class="column is-3">
+                        <label class="label is-size-5" for="anio">Año:</label>
+                    </div>
+                    <div class="column is-7">
+                        <div class="select is-fullwidth">
+                            <select class="anio" name="anio" id="anio">
+                                <% anios.forEach(anio => { %>
                                 <option value="<%= anio['year(fechaModificacion)'] %>"
                                     selected><%= anio['year(fechaModificacion)'] %></option>
                                 <% }); %>
-                        </select>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
+            <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) { %>
+            <div class="column is-5">
+                <p class="control">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/configuracion/registrar_precio_credito">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                        <span>
+                            Registrar Precio Crédito
+                        </span>
+                    </a>
+                </p>
+            </div>
+            <% } %>
+        </div>
 
                 <table id="tablaActual" class="table is-bordered is-hoverable is-fullwidth">
                     <thead>
