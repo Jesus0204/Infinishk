@@ -63,6 +63,8 @@ app.use(compression());
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
 
+app.use(bodyParser.json());
+
 const rutasDiplomado = require('./routes/diplomado.routes');
 app.use('/diplomado', rutasDiplomado);
 

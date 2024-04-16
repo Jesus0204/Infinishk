@@ -52,6 +52,17 @@ $navbar-dropdown-item-hover-background-color: $rojo;
   border: 5px solid #910106;
 }
 
+.ui-menu-item{
+  font-family: "Poppins", sans-serif;
+}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active{
+  background-color: $negro;
+  color: $blanco;
+  border-color: $vino;
+}
+
+
 
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
@@ -64,3 +75,7 @@ $navbar-dropdown-item-hover-background-color: $rojo;
 @import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
 @import "../../node_modules/bulma/bulma.sass";
+
+$switch-focus: none;
+/* Bulma Switch Control */
+@import "../../node_modules/bulma-switch/src/sass/index.sass";

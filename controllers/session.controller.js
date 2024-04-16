@@ -5,7 +5,7 @@ exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
     response.render('login', {
-        IDUsuario: request.session.username || '',
+        username: request.session.username || '',
         registrar: false,
         error: error,
         csrfToken: request.csrfToken(),
