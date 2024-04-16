@@ -4,7 +4,7 @@ const listItems = document.querySelectorAll("#pagination-content");
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 
-const paginationLimit = 25;
+const paginationLimit = 15;
 console.log(listItems);
 const pageCount = Math.ceil(listItems.length / paginationLimit);
 let currentPage;
