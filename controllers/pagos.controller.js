@@ -69,8 +69,6 @@ exports.post_subir_archivo = (request, response, next) => {
                     const deuda = await Deuda.fetchDeuda(fila.Matricula);
                     const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
                     const idLiquida = await Liquida.fetchIDPagado(fila.Matricula, fila.fechaFormato);
-                    const estado = await Deuda.fetchEstado(fila.Matricula);
-                    const pagado = estado[0][estado[0].length - 1].Pagado;
                     const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
                     if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
@@ -86,12 +84,8 @@ exports.post_subir_archivo = (request, response, next) => {
 
                         const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours()}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
 
-                        console.log(fechaFormateada);
-
                         const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                         const importeRedondeado = Math.round(fila.Importe * 100) / 100;
-
-                        console.log(fila.fechaFormato);
 
                         if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
                             tipoPago = 'Pago Completo';
@@ -110,6 +104,7 @@ exports.post_subir_archivo = (request, response, next) => {
                             tipoPago = 'Pago Completo';
                             deudaEstudiante = 0;
                         }
+
                         else {
                             tipoPago = 'Pago de Colegiatura';
                             deudaEstudiante = montoAPagar;
@@ -222,7 +217,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         let importe_trans = importe - diferencia;
         await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
         await Colegiatura.update_transferencia(importe, idColegiatura)
-        await Deuda.update_transferencia(importe_trans,idDeuda[0][0].IDDeuda)
+        await Deuda.update_transferencia(importe_trans, idDeuda[0][0].IDDeuda)
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
         if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
             await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
