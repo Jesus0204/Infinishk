@@ -53,6 +53,9 @@
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                         style="padding: 0.5em; margin-top: -1em;">
                         El monto debe ser mayor de 0.</p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                        style="padding: 0.5em; margin-top: -1em;">
+                        Por favor escribe un monto sin exponente.</p>
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="monto" class="input is-medium" type="number" step="any" id="monto"
@@ -85,13 +88,14 @@
         const monto = document.querySelector('#monto');
         const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
         const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+        const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
 
         // Checar si hay contenido dentro del input para desactivar el boton
         function checar_contenido() {
-            bt_Registrar.disabled = monto.value.length === 0 || monto.value <= 0;
+            bt_Registrar.disabled = monto.value.length === 0 || monto.value < 0 || monto.value === '0' || monto.value === '-0';
         }
 
-        // Activar mensaje si el monto no tiene input o es <= a 0
+        // Activar mensaje si el monto no tiene input o es < a 0
         function mensaje_monto() {
             if (monto.value.length === 0) {
                 ayuda_monto_vacio.classList.remove('is-hidden');
@@ -99,12 +103,22 @@
                 ayuda_monto_vacio.classList.add('is-hidden');
             }
 
-            if (monto.value <= 0) {
+            if (monto.value < 0) {
+                ayuda_monto_negativo.classList.remove('is-hidden');
+            } else if (monto.value === '0' || monto.value === '-0') {
                 ayuda_monto_negativo.classList.remove('is-hidden');
             } else {
                 ayuda_monto_negativo.classList.add('is-hidden');
             }
-        }
+
+            if (monto.value.trim().toLowerCase().includes('e')) {
+                bt_Registrar.disabled = true;
+                ayuda_monto_exponente.classList.remove('is-hidden');
+            } else {
+                ayuda_monto_exponente.classList.add('is-hidden');
+            }
+       }
+       
         // Detectar si el usuario maneja input y llamar las funciones anteriores
         monto.addEventListener('input', checar_contenido);
         monto.addEventListener('input', mensaje_monto);

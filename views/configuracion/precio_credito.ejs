@@ -15,28 +15,53 @@
 
     <section class="section">
         <div class="container">
+            <input type="hidden" id="_csrf" value="<%= csrfToken %>">
             <div class="columns">
-                <div class="column is-3"></div>
                     <div class="column is-6">
-                        <p class="is-size-5" style="text-align: center;">
-                            Los datos del precio crédito actual son:
-                        </p>
-                        <br>
-                        <div class="columns is-vcentered">
-                            <div class="column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Precio: </strong>$<%= precio_actual[0].precioPesos %>
-                                </p>
-                            </div>
-                        <div class="columns is-vcentered">
-                            <div class="column is-half">
-                                <p class="is-size-5" style="text-align: center;">
-                                    <strong>Fecha de Registro: </strong><%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString('es-ES') %>
-                                </p>
-                            </div>
+                        <h3 class="title is-3">Precio Crédito</h3>
                         </div>
+                        <% if (contienePermiso(permisos, 'Registrar Costo Credito') == true) { %>
+                        <div class="column is-offset-2">
+                            <p class="control">
+                                <a class="button is-rounded is-responsive" style="font-size: large;"
+                                href="/configuracion/registrar_precio_credito">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                </span>
+                                <% } %>
+                                <span>
+                                    Registrar Precio Crédito
+                                </span>
+                            </a>
+                        </p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+
+                <table class="table is-bordered is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Monto: </strong>
+                                </p>
+                            </th>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Fecha de Registro: </strong>
+                                </p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <td>
+                                <div class="column">
+                                    $ <%= precio_actual[0].precioPesos %>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="column">
+                                    <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString('es-ES') %>
+                                </div>
+                            </td>
+                        </tbody>
+                    </table>
