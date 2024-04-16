@@ -41,7 +41,6 @@ exports.get_registrar_diplomado = (request, response, next) => {
 
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
-
     // Realiza ambas búsquedas simultáneamente y combina los resultados
     Promise.all([
         Diplomado.buscar(consulta), // Búsqueda de diplomados activos
@@ -75,9 +74,6 @@ exports.get_check_diplomado = (request, response, next) => {
 
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
-    const estado = request.body.estatus;
-    console.log('El estado en el controller')
-    console.log(estado);
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
@@ -112,11 +108,6 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
     const status = request.body.statusDiplomado === 'on' ? '1' : '0';
-    console.log(id);
-    console.log(precio);
-    console.log(duracion);
-    console.log(nombre);
-    console.log(status);
     Diplomado.update(id, duracion, precio, nombre, status)
         .then(() => {
             return Diplomado.fetchOne(nombre)
@@ -140,9 +131,6 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const precio = request.body.precioDiplomado;
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
-    console.log(precio);
-    console.log(duracion);
-    console.log(nombre);
     Diplomado.save(duracion, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
