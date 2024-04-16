@@ -13,11 +13,11 @@ const can_ModificarDiplomado = require('../util/privileges/admin/otros/can_modif
 
 router.get('/registrar_diplomado',isAuth,can_RegistrarDiplomado,diplomadoController.get_registrar_diplomado);
 router.post('/registrar_diplomado',isAuth,can_RegistrarDiplomado,diplomadoController.post_registrar_diplomado);
-router.get('/editar_diplomado',diplomadoController.get_modificar_diplomado);
-router.get('/check_diplomado', diplomadoController.get_check_diplomado);
-router.get('/autocomplete', diplomadoController.get_autocomplete);
-router.post('/editar_diplomado',diplomadoController.post_fetch_diplomado);
-router.post('/resultado_diplomado',diplomadoController.post_modificar_diplomado);
+router.get('/editar_diplomado',isAuth,can_ModificarDiplomado,diplomadoController.get_modificar_diplomado);
+router.get('/check_diplomado',isAuth,can_ModificarDiplomado,diplomadoController.get_check_diplomado);
+router.get('/autocomplete',isAuth,can_ModificarDiplomado,diplomadoController.get_autocomplete);
+router.post('/editar_diplomado',isAuth,can_ModificarDiplomado,diplomadoController.post_fetch_diplomado);
+router.post('/resultado_diplomado',isAuth,can_ModificarDiplomado,diplomadoController.post_modificar_diplomado);
 router.get('/', diplomadoController.get_diplomado);
 
 module.exports = router;
