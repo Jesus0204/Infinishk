@@ -13,6 +13,10 @@ module.exports = class PagoExtra {
         ORDER BY pagoExtraActivo DESC, createdAT DESC`);
     }
 
+    static fetchActivos() {
+        return db.execute('SELECT * FROM pagosExtras WHERE pagoExtraActivo = 1');
+    }
+
     static fetchNoAsignados() {
         return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras NOT IN (SELECT IDPagosExtras FROM Liquida)');
     }

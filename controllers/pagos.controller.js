@@ -103,7 +103,7 @@ exports.post_pago_extra_delete = (request, response, next) => {
 exports.get_solicitudes = (request, response, next) => {
     Liquida.fetchNoPagados()
         .then(([rows, fieldData]) => {
-            Pago_Extra.fetchAll()
+            Pago_Extra.fetchActivos()
                 .then(([pagos_extra, fieldData]) => {
                     response.render('pago/solicitudes', {
                         solicitudes: rows,
@@ -161,7 +161,7 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
-            Pago_Extra.fetchAll()
+            Pago_Extra.fetchActivos()
                 .then(([pagos_extra, fieldData]) => {
                     response.render('pago/registrar_solicitud', {
                         alumno: alumno,
