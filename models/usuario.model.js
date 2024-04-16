@@ -16,7 +16,7 @@ module.exports = class Usuario{
         //El código es asíncrono, por lo que hay que regresar la promesa
         return bcrypt.hash(this.password, 12)
             .then((password_cifrado) => {
-                return db.execute(
+                return db.query(
                     'INSERT INTO Usuario (IDUsuario, Contraseña, usuarioActivo) VALUES (?, ?, 1)',
                     [this.IDUsuario, password_cifrado]
                 );
@@ -28,11 +28,11 @@ module.exports = class Usuario{
     }
 
     static fetchOne(IDUsuario, Contrasena) {
-        return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
+        return db.query('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
     static getPermisos(IDUsuario) {
-        return db.execute(
+        return db.query(
             `SELECT funcion
             FROM Usuario U, Posee P, Rol R, Contiene C, CasoUso Ca
             WHERE U.IDUsuario = ? AND U.IDUsuario = P.IDUsuario
@@ -42,7 +42,7 @@ module.exports = class Usuario{
     }
 
     static getRol(IDUsuario) {
-        return db.execute(`SELECT Ca.funcion, P.IDRol
+        return db.query(`SELECT Ca.funcion, P.IDRol
         FROM Usuario U
         JOIN Posee P ON U.IDUsuario = P.IDUsuario
         JOIN Rol R ON P.IDRol = R.IDRol
