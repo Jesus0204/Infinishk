@@ -166,272 +166,278 @@
                     </div>
 
 
-                    <% if (datos.some(fila=> ['Pago Colegiatura', 'Pago a Registrar', 'Pago de
-                        Diplomado'].includes(fila.tipoPago))) { %>
-                        <div class="table-container">
-                            <div id="tablaNoCompleta">
-                                <p class="title is-4 mt-5">Pagos Faltantes</p>
-                                <table class="ta">
-                                    <thead>
-                                        <tr class="has-text-white">
-                                            <th class="has-text-white">Nombre</th>
-                                            <th class="has-text-white">Matricula</th>
-                                            <th class="has-text-white">Referencia</th>
-                                            <th class="has-text-white">Fecha y Hora</th>
-                                            <th class="has-text-white">Importe</th>
-                                            <th class="has-text-white">Deuda</th>
-                                            <th class="has-text-white">Tipo de Pago</th>
-                                            <th class="has-text-white">Nota</th>
-                                            <th class="has-text-white">Acciones</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <% datos.forEach((fila,index)=> { %>
-                                            <% if (fila.tipoPago==='Pago de Colegiatura' ||
-                                                fila.tipoPago==='Pago a Registrar' ||
-                                                fila.tipoPago==='Pago de Diplomado' ) { %>
-                                                <tr id="fila<%= index %>"
-                                                    class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
-                                                    <td>
-                                                        <%= fila.nombre %>
-                                                            <%= fila.apellidos %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.Matricula %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.Referencia %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.fechaFormato %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.Importe %>
-                                                    </td>
-                                                    <% if (fila.tipoPago==='Pago de Colegiatura' ||
-                                                        fila.tipoPago==='Pago a Registrar' ) { %>
-                                                        <td>
-                                                            <%= fila.deudaEstudiante %>
-                                                        </td>
-                                                        <% } else { %>
-                                                            <td>N/A</td>
-                                                            <% } %>
-                                                                <td>
-                                                                    <form action="/pagos/resultadoTransferencia"
-                                                                        method="POST" id="form<%= index %>"
-                                                                        class="form-enviar-datos">
-                                                                        <input type="hidden" name="_csrf" id="_csrf"
-                                                                            value="<%= csrfToken %>">
-                                                                        <select name="tipoPago">
-                                                                            <% if (fila.Matricula.charAt(0)==='1' ){ %>
-                                                                                <option value="Pago de Colegiatura"
-                                                                                    <%=fila.tipoPago==='Pago de Colegiatura'
-                                                                                    ? 'selected' : '' %>>Pago de
-                                                                                    Colegiatura
-                                                                                </option>
-                                                                                <option value="Pago a Registrar"
-                                                                                    <%=fila.tipoPago==='Pago a Registrar'
-                                                                                    ? 'selected' : '' %>>Pago a
-                                                                                    Registrar
-                                                                                </option>
-                                                                                <option value="Pago Extra"
-                                                                                    <%=fila.tipoPago==='Pago Extra'
-                                                                                    ? 'selected' : '' %>>Pago Extra
-                                                                                </option>
-                                                                                <% } %>
-
-                                                                                    <% if
-                                                                                        (fila.Matricula.charAt(0)==='8'
-                                                                                        ){ %>
-                                                                                        <option value="Pago a Registrar"
-                                                                                            <%=fila.tipoPago==='Pago a Registrar'
-                                                                                            ? 'selected' : '' %>>Pago a
-                                                                                            Registrar</option>
-                                                                                        <option
-                                                                                            value="Pago de Diplomado"
-                                                                                            <%=fila.tipoPago==='Pago de Diplomado'
-                                                                                            ? 'selected' : '' %>>Pago de
-                                                                                            Diplomado</option>
-                                                                                        <option value="Pago Extra"
-                                                                                            <%=fila.tipoPago==='Pago Extra'
-                                                                                            ? 'selected' : '' %>>Pago
-                                                                                            Extra
-                                                                                        </option>
-                                                                                        <% } %>
-                                                                        </select>
-                                                                </td>
-                                                                <td>
-                                                                    <textarea name="nota"
-                                                                        placeholder="Escribe tu nota aquí"></textarea>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="hidden" name="nombre"
-                                                                        value="<%= fila.nombre %> <%= fila.apellidos %>">
-                                                                    <input type="hidden" name="matricula"
-                                                                        value="<%= fila.Matricula %>">
-                                                                    <input type="hidden" name="referencia"
-                                                                        value="<%= fila.Referencia %>">
-                                                                    <input type="hidden" name="fecha"
-                                                                        value="<%= fila.fechaFormato %>">
-                                                                    <input type="hidden" name="importe"
-                                                                        value="<%= fila.Importe %>">
-                                                                    <input type="hidden" name="deuda"
-                                                                        value="<%= fila.deudaEstudiante %>">
-                                                                    <button type="submit"
-                                                                        class="button my-button is-large is-rounded is-responsive">Enviar
-                                                                        datos</button>
-                                                                    </form>
-                                                                </td>
-                                                </tr>
-                                                <% } %>
-                                                    <% }); %>
-                                    </tbody>
-                                </table>
-                                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                                    <a class="pagination-previous" id="prev-button-2">Anterior</a>
-                                    <a class="pagination-next" id="next-button-2">Siguiente</a>
-                                    <ul class="pagination-list" id="pagination-list-2">
-                                        <div id="pagination-numbers-2">
-
-                                        </div>
-                                    </ul>
-                                </nav>
-                                <button id="toggleButtonActivo" class="button is-large is-rounded is-responsive">Revisar
-                                    Completos</button>
-                                <% } else { %>
-                                    <div id="tablaNoCompleta" class="has-text-centered mt-5">
-                                        <div class="alert alert-info is-size-4">No hay pagos para registrar en este
-                                            archivo.</div>
-                                        <button id="toggleButtonActivo"
-                                            class="button is-large is-rounded is-responsive">Revisar
-                                            Completos</button>
-                                    </div>
-                                    <% } %>
-                            </div>
+                    <% if (!datos.some(fila=> ['Pago Colegiatura', 'Pago a Registrar', 'Pago de Diplomado'].includes(fila.tipoPago))) { %>
+                        <div id="tablaNoCompleta" class="has-text-centered mt-5">
+                            <div class="alert alert-info is-size-4">No hay pagos para registrar en este
+                                archivo.</div>
+                            <button id="toggleButtonActivo" class="button is-large is-rounded is-responsive">Revisar
+                                Completos</button>
                         </div>
-                        <% } %>
-                            <script type="text/javascript" src="/js/pagination.js"></script>
-                            <script type="text/javascript" src="/js/pagination_activos.js"></script>
-                            <script>
-                                function updateLabel() {
-                                    var archivo = document.getElementById('archivo');
-                                    var label = document.getElementById('labelArchivo');
-                                    label.innerHTML = '<i class="fas fa-upload"></i> ' + archivo.files[0].name;
-                                }
-                                function validateFile() {
-                                    var archivo = document.getElementById('archivo');
-                                    var error = document.getElementById('error');
-                                    if (archivo.files.length === 0) {
-                                        error.textContent = 'Por favor ingresa un archivo';
+                        <% } else { %>
+                            <div class="table-container">
+                                <div id="tablaNoCompleta">
+                                    <p class="title is-4 mt-5">Pagos Faltantes</p>
+                                    <table class="ta">
+                                        <thead>
+                                            <tr class="has-text-white">
+                                                <th class="has-text-white">Nombre</th>
+                                                <th class="has-text-white">Matricula</th>
+                                                <th class="has-text-white">Referencia</th>
+                                                <th class="has-text-white">Fecha y Hora</th>
+                                                <th class="has-text-white">Importe</th>
+                                                <th class="has-text-white">Deuda</th>
+                                                <th class="has-text-white">Tipo de Pago</th>
+                                                <th class="has-text-white">Nota</th>
+                                                <th class="has-text-white">Acciones</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <% datos.forEach((fila,index)=> { %>
+                                                <% if (fila.tipoPago==='Pago de Colegiatura' ||
+                                                    fila.tipoPago==='Pago a Registrar' ||
+                                                    fila.tipoPago==='Pago de Diplomado' ) { %>
+                                                    <tr id="fila<%= index %>"
+                                                        class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
+                                                        <td>
+                                                            <%= fila.nombre %>
+                                                                <%= fila.apellidos %>
+                                                        </td>
+                                                        <td>
+                                                            <%= fila.Matricula %>
+                                                        </td>
+                                                        <td>
+                                                            <%= fila.Referencia %>
+                                                        </td>
+                                                        <td>
+                                                            <%= fila.fechaFormato %>
+                                                        </td>
+                                                        <td>
+                                                            <%= fila.Importe %>
+                                                        </td>
+                                                        <% if (fila.tipoPago==='Pago de Colegiatura' ||
+                                                            fila.tipoPago==='Pago a Registrar' ) { %>
+                                                            <td>
+                                                                <%= fila.deudaEstudiante %>
+                                                            </td>
+                                                            <% } else { %>
+                                                                <td>N/A</td>
+                                                                <% } %>
+                                                                    <td>
+                                                                        <form action="/pagos/resultadoTransferencia"
+                                                                            method="POST" id="form<%= index %>"
+                                                                            class="form-enviar-datos">
+                                                                            <input type="hidden" name="_csrf" id="_csrf"
+                                                                                value="<%= csrfToken %>">
+                                                                            <select name="tipoPago">
+                                                                                <% if (fila.Matricula.charAt(0)==='1' ){
+                                                                                    %>
+                                                                                    <option value="Pago de Colegiatura"
+                                                                                        <%=fila.tipoPago==='Pago de Colegiatura'
+                                                                                        ? 'selected' : '' %>>Pago de
+                                                                                        Colegiatura
+                                                                                    </option>
+                                                                                    <option value="Pago a Registrar"
+                                                                                        <%=fila.tipoPago==='Pago a Registrar'
+                                                                                        ? 'selected' : '' %>>Pago a
+                                                                                        Registrar
+                                                                                    </option>
+                                                                                    <option value="Pago Extra"
+                                                                                        <%=fila.tipoPago==='Pago Extra'
+                                                                                        ? 'selected' : '' %>>Pago Extra
+                                                                                    </option>
+                                                                                    <% } %>
+
+                                                                                        <% if
+                                                                                            (fila.Matricula.charAt(0)==='8'
+                                                                                            ){ %>
+                                                                                            <option
+                                                                                                value="Pago a Registrar"
+                                                                                                <%=fila.tipoPago==='Pago a Registrar'
+                                                                                                ? 'selected' : '' %>
+                                                                                                >Pago a
+                                                                                                Registrar</option>
+                                                                                            <option
+                                                                                                value="Pago de Diplomado"
+                                                                                                <%=fila.tipoPago==='Pago de Diplomado'
+                                                                                                ? 'selected' : '' %>
+                                                                                                >Pago de
+                                                                                                Diplomado</option>
+                                                                                            <option value="Pago Extra"
+                                                                                                <%=fila.tipoPago==='Pago Extra'
+                                                                                                ? 'selected' : '' %>
+                                                                                                >Pago
+                                                                                                Extra
+                                                                                            </option>
+                                                                                            <% } %>
+                                                                            </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <textarea name="nota"
+                                                                            placeholder="Escribe tu nota aquí"></textarea>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="hidden" name="nombre"
+                                                                            value="<%= fila.nombre %> <%= fila.apellidos %>">
+                                                                        <input type="hidden" name="matricula"
+                                                                            value="<%= fila.Matricula %>">
+                                                                        <input type="hidden" name="referencia"
+                                                                            value="<%= fila.Referencia %>">
+                                                                        <input type="hidden" name="fecha"
+                                                                            value="<%= fila.fechaFormato %>">
+                                                                        <input type="hidden" name="importe"
+                                                                            value="<%= fila.Importe %>">
+                                                                        <input type="hidden" name="deuda"
+                                                                            value="<%= fila.deudaEstudiante %>">
+                                                                        <button type="submit"
+                                                                            class="button my-button is-large is-rounded is-responsive">Enviar
+                                                                            datos</button>
+                                                                        </form>
+                                                                    </td>
+                                                    </tr>
+                                                    <% } %>
+                                                        <% }); %>
+                                        </tbody>
+                                    </table>
+                                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                                        <ul class="pagination-list" id="pagination-list-2">
+                                            <div id="pagination-numbers-2">
+
+                                            </div>
+                                        </ul>
+                                    </nav>
+                                    <button id="toggleButtonActivo"
+                                        class="button is-large is-rounded is-responsive">Revisar
+                                        Completos</button>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% } %>
+                                <script type="text/javascript" src="/js/pagination.js"></script>
+                                <script type="text/javascript" src="/js/pagination_activos.js"></script>
+                                <script>
+                                    function updateLabel() {
+                                        var archivo = document.getElementById('archivo');
+                                        var label = document.getElementById('labelArchivo');
+                                        label.innerHTML = '<i class="fas fa-upload"></i> ' + archivo.files[0].name;
+                                    }
+                                    function validateFile() {
+                                        var archivo = document.getElementById('archivo');
+                                        var error = document.getElementById('error');
+                                        if (archivo.files.length === 0) {
+                                            error.textContent = 'Por favor ingresa un archivo';
+                                            return false;
+                                        }
+                                        var file = archivo.files[0];
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            var content = e.target.result;
+                                            // Aquí deberías agregar la lógica para validar el contenido del CSV
+                                            // Por ejemplo, verificar que las columnas necesarias estén presentes
+                                            if (csvContentIsValid(content)) {
+                                                // Si el contenido es válido, permitir la carga del archivo
+                                                document.forms[0].submit(); // Esto enviará el formulario
+                                            } else {
+                                                error.textContent = 'Por favor ingresa un csv válido.';
+                                            }
+                                        };
+                                        reader.onerror = function () {
+                                            error.textContent = 'Hubo un error al leer el archivo';
+                                        };
+                                        reader.readAsText(file);
+                                        return false; // Esto detiene la carga hasta que la validación sea exitosa
+                                    }
+
+                                    function csvContentIsValid(csvContent) {
+                                        // Implementa la lógica para validar el contenido del CSV aquí
+                                        // Esta es solo una estructura básica, necesitarás adaptarla a tus necesidades
+                                        var lines = csvContent.split('\n');
+                                        if (lines.length > 1) {
+                                            var headers = lines[0].split(',');
+                                            // Verifica que las cabeceras necesarias estén presentes
+                                            if (headers.indexOf('Fecha') > -1 && headers.indexOf('Hora') > -1) {
+                                                // Añade más validaciones según sea necesario
+                                                return true;
+                                            }
+                                        }
                                         return false;
                                     }
-                                    var file = archivo.files[0];
-                                    var reader = new FileReader();
-                                    reader.onload = function (e) {
-                                        var content = e.target.result;
-                                        // Aquí deberías agregar la lógica para validar el contenido del CSV
-                                        // Por ejemplo, verificar que las columnas necesarias estén presentes
-                                        if (csvContentIsValid(content)) {
-                                            // Si el contenido es válido, permitir la carga del archivo
-                                            document.forms[0].submit(); // Esto enviará el formulario
-                                        } else {
-                                            error.textContent = 'Por favor ingresa un csv válido.';
-                                        }
-                                    };
-                                    reader.onerror = function () {
-                                        error.textContent = 'Hubo un error al leer el archivo';
-                                    };
-                                    reader.readAsText(file);
-                                    return false; // Esto detiene la carga hasta que la validación sea exitosa
-                                }
-
-                                function csvContentIsValid(csvContent) {
-                                    // Implementa la lógica para validar el contenido del CSV aquí
-                                    // Esta es solo una estructura básica, necesitarás adaptarla a tus necesidades
-                                    var lines = csvContent.split('\n');
-                                    if (lines.length > 1) {
-                                        var headers = lines[0].split(',');
-                                        // Verifica que las cabeceras necesarias estén presentes
-                                        if (headers.indexOf('Fecha') > -1 && headers.indexOf('Hora') > -1) {
-                                            // Añade más validaciones según sea necesario
-                                            return true;
-                                        }
-                                    }
-                                    return false;
-                                }
 
 
-                                // Inicialmente ocultar la tabla de Pagos No Completos
-                                document.getElementById('tablaNoCompleta').style.display = 'none';
+                                    // Inicialmente ocultar la tabla de Pagos No Completos
+                                    document.getElementById('tablaNoCompleta').style.display = 'none';
 
-                                // Agregar un evento de click al botón
-                                document.getElementById('toggleButton').addEventListener('click', function () {
-                                    // Comprobar si la tabla de Pago Completo está visible
-                                    var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
-                                    console.log(isTablaCompletaVisible);
-                                    // Cambiar la visibilidad de las tablas
-                                    document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
-                                    document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
-                                });
-
-                                document.getElementById('toggleButtonActivo').addEventListener('click', function () {
-                                    // Comprobar si la tabla de Pago Completo está visible
-                                    var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
-                                    console.log(isTablaCompletaVisible);
-                                    // Cambiar la visibilidad de las tablas
-                                    document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
-                                    document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
-                                });
-
-
-
-                                document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
-                                    select.addEventListener('change', (event) => {
-                                        // Obtener el elemento tr ancestro más cercano del select
-                                        const fila = select.closest('tr');
-                                        // Asegurarse de que se encontró una fila
-                                        if (fila) {
-                                            // Actualizar la clase de la fila basada en el valor seleccionado
-                                            fila.className = event.target.value.replace(/\s/g, '-');
-                                        } else {
-                                            console.error('No se encontró la fila correspondiente al select.');
-                                        }
+                                    // Agregar un evento de click al botón
+                                    document.getElementById('toggleButton').addEventListener('click', function () {
+                                        // Comprobar si la tabla de Pago Completo está visible
+                                        var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
+                                        console.log(isTablaCompletaVisible);
+                                        // Cambiar la visibilidad de las tablas
+                                        document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
+                                        document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
                                     });
-                                });
 
-                                document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
-                                    form.addEventListener('submit', (event) => {
-                                        event.preventDefault();
-                                        const formData = new FormData(form);
-                                        fetch('/pagos/resultadoTransferencia', {
-                                            method: 'POST',
-                                            body: formData,
-                                        })
-                                            .then(response => response.json()) // Convertir la respuesta a JSON
-                                            .then(data => {
-                                                if (!data.success) {
-                                                    // Manejar el caso en que success no es true
-                                                    console.error('La operación no fue exitosa:', data);
-                                                    // Aquí puedes agregar código para mostrar un mensaje de error al usuario
-                                                    alert('Por favor verifica tu tipo de pago');
-                                                } else {
-                                                    // Si la respuesta fue exitosa, eliminar la fila de la tabla
-                                                    const filaId = form.parentElement.parentElement.id;
-                                                    const fila = document.getElementById(filaId);
-                                                    if (fila) {
-                                                        fila.remove();
-                                                    } else {
-                                                        console.error(`No se encontró la fila ${filaId}.`);
-                                                    }
-                                                }
+                                    document.getElementById('toggleButtonActivo').addEventListener('click', function () {
+                                        // Comprobar si la tabla de Pago Completo está visible
+                                        var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
+                                        console.log(isTablaCompletaVisible);
+                                        // Cambiar la visibilidad de las tablas
+                                        document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
+                                        document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
+                                    });
+
+
+
+                                    document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
+                                        select.addEventListener('change', (event) => {
+                                            // Obtener el elemento tr ancestro más cercano del select
+                                            const fila = select.closest('tr');
+                                            // Asegurarse de que se encontró una fila
+                                            if (fila) {
+                                                // Actualizar la clase de la fila basada en el valor seleccionado
+                                                fila.className = event.target.value.replace(/\s/g, '-');
+                                            } else {
+                                                console.error('No se encontró la fila correspondiente al select.');
+                                            }
+                                        });
+                                    });
+
+                                    document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
+                                        form.addEventListener('submit', (event) => {
+                                            event.preventDefault();
+                                            const formData = new FormData(form);
+                                            fetch('/pagos/resultadoTransferencia', {
+                                                method: 'POST',
+                                                body: formData,
                                             })
-                                            .catch(error => {
-                                                console.error('Error en la petición fetch:', error);
-                                                alert('Por favor verifica tu tipo de pago.');
-                                            });
+                                                .then(response => response.json()) // Convertir la respuesta a JSON
+                                                .then(data => {
+                                                    if (!data.success) {
+                                                        // Manejar el caso en que success no es true
+                                                        console.error('La operación no fue exitosa:', data);
+                                                        // Aquí puedes agregar código para mostrar un mensaje de error al usuario
+                                                        alert('Por favor verifica tu tipo de pago');
+                                                    } else {
+                                                        // Si la respuesta fue exitosa, eliminar la fila de la tabla
+                                                        const filaId = form.parentElement.parentElement.id;
+                                                        const fila = document.getElementById(filaId);
+                                                        if (fila) {
+                                                            fila.remove();
+                                                        } else {
+                                                            console.error(`No se encontró la fila ${filaId}.`);
+                                                        }
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error en la petición fetch:', error);
+                                                    alert('Por favor verifica tu tipo de pago.');
+                                                });
+                                        });
                                     });
-                                });
 
-                            </script>
+                                </script>
     </body>
+
+    </html>
