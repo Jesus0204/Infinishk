@@ -40,6 +40,21 @@ exports.get_precio_credito = (request, response, next) => {
     });
 };
 
+exports.post_precio_credito = (request, response, next) => {
+    const anioSelect = request.body.anio;
+    PrecioCredito.fetchPrecioAnio(anioSelect)
+    .then(([precio_anio, fieldData]) => {
+        response.status(200).json({
+            success: true,
+            precio_anio: precio_anio
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+        response.status(500).json({success: false, error: 'Error cargando precioCredito'});
+    });
+};
+
 exports.get_registrar_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
         .then((precio_actual) => {

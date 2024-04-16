@@ -46,44 +46,113 @@
                     <label class="label is-size-5" for="anio" style="display: inline-block;
                         width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Año:</label>
                     <div class="select">
-                        <select class="select_anio" name="anio" id="anio" style="border: 2px solid #7c7f80; margin-bottom: -2em;">
+                        <select class="anio" name="anio" id="anio" style="border: 2px solid #7c7f80; margin-bottom: -2em;">
                             <% anios.forEach(anio => { %>
-                                <option value="<% anio['year(fechaModificacion)'] %>"><%= anio['year(fechaModificacion)'] %></option>
+                                <option value="<%= anio['year(fechaModificacion)'] %>"
+                                    selected><%= anio['year(fechaModificacion)'] %></option>
                                 <% }); %>
                         </select>
                     </div>
                 </div>
             </div>
-        </div>
 
-         <table class="table is-bordered is-hoverable is-fullwidth">
-             <thead>
-                 <tr>
-                     <th>
-                         <p class="is-size-5">
-                             <strong>Monto: </strong>
-                         </p>
-                     </th>
-                     <th>
-                         <p class="is-size-5">
-                             <strong>Fecha de Registro: </strong>
-                         </p>
-                     </th>
-                 </tr>
-             </thead>
-             <tbody>
-                 <td>
-                     <div class="column">
-                         $ <%= precio_actual[0].precioPesos %>
-                     </div>
-                 </td>
-                 <td>
-                     <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
-                     <div class="column">
-                         <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
-                     </div>
-                 </td>
-             </tbody>
-         </table>
-     </div>
+                <table id="tablaActual" class="table is-bordered is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Monto Actual: </strong>
+                                </p>
+                            </th>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Fecha de Registro: </strong>
+                                </p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td>
+                            <div class="column">
+                                $ <%= precio_actual[0].precioPesos.toFixed(2).toLocaleString('es-MX') %>
+                            </div>
+                        </td>
+                        <td>
+                            <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+                            <div class="column">
+                                <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
+                            </div>
+                        </td>
+                    </tbody>
+                </table>
+
+                <table id="precioCreditoContainer" style="display: none;" class="table is-bordered is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Monto Pasado: </strong>
+                                </p>
+                            </th>
+                            <th>
+                                <p class="is-size-5">
+                                    <strong>Fecha de Registro: </strong>
+                                </p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="precioCreditoRows">
+                    </tbody>
+                </table>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    $('#anio').change(function () {
+        let anioSelect = $(this).val();
+        updatePrecioCredito(anioSelect);
+    });
+});
+
+const updatePrecioCredito = (anio) => {
+    const csrf = document.getElementById('_csrf').value;
+
+    fetch('/configuracion/precio_credito', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            anio: anio
+        })
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then((data) => {
+        const precioCreditoRows = document.getElementById('precioCreditoRows');
+        precioCreditoRows.innerHTML = '';
+        data.precio_anio.forEach((precio) => {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.innerHTML = `$ ${precio.precioPesos.toFixed(2).toLocaleString('es-MX')}`;
+            const td2 = document.createElement('td');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const fechaModificacion = new Date(precio.fechaModificacion).toLocaleDateString("es-MX", options);
+            td2.innerHTML = fechaModificacion;
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            precioCreditoRows.appendChild(tr);
+        });
+        const precioCreditoContainer = document.getElementById('precioCreditoContainer');
+        precioCreditoContainer.style.display = 'table';
+    })
+    .catch(error => {
+        console.error('Error en la petición fetch');
+    });
+}
+</script>

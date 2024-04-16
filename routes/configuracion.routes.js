@@ -18,6 +18,7 @@ const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_reg
 
 router.get('/administrar_planpago',configuracionController.get_administrar_planpago);
 router.get('/precio_credito', isAuth, can_ConsultarCostoCredito, configuracionController.get_precio_credito);
+router.post('/precio_credito', isAuth, can_ConsultarCostoCredito, configuracionController.post_precio_credito);
 router.get('/registrar_precio_credito', isAuth, can_RegistrarCostoCredito, configuracionController.get_registrar_precio_credito);
 router.post('/registrar_precio_credito', isAuth, can_RegistrarCostoCredito, configuracionController.post_registrar_precio_credito);
 router.get('/', configuracionController.get_configuracion);
