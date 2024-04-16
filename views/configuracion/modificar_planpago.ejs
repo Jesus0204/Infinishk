@@ -10,7 +10,8 @@
                         <div class="media">
                             <div class="media-content">
                                 <form action="/configuracion/modificar_planpago" method="POST">
-                                    <input type="hidden" name="nombrePlan" value="<%= plan.nombrePlan %>" />
+                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
                                     <div class="field">
                                         <label class="label">Nombre del Plan</label>
                                         <div class="control">
