@@ -5,7 +5,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20%;
+            margin-top: 8%;
             max-width: 50%;
             width: 80%;
             margin-left: auto;
@@ -74,6 +74,7 @@
             /* El color del fondo */
             color: white;
             /* El color del texto */
+            width: 85%;
         }
 
         .my-button:hover {
@@ -85,6 +86,19 @@
     <section class="section">
         <body>
             <% if (subir) { %>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-7">
+                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                         <p>Por favor ingresa un archivo csv del banco para registrar las transferencias recibidas a la base de
+                             datos.</p>
+                    </div>
+                </div>
                 <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
                     onsubmit="return validateFile()">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -145,6 +159,7 @@
                             </div>
                             </tbody>
                             </table>
+                            <br>
                             <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
                                 <a class="pagination-previous" id="prev-button">Anterior</a>
                                 <a class="pagination-next" id="next-button">Siguiente</a>
@@ -154,8 +169,12 @@
                                     </div>
                                 </ul>
                             </nav>
-                            <button id="toggleButton" class="button is-large is-rounded is-responsive">Revisar No
-                                Completos</button>
+                            <button id="toggleButton" class="button is-large is-rounded is-responsive">
+                                <span>Revisar No Completos</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                                </button>
                             <% } else { %>
                                 <div id="tablaCompleta" class="has-text-centered mt-5">
                                     <div class="alert alert-info is-size-4">No hay pagos completos en este archivo.</div>
@@ -188,7 +207,7 @@
                                                     <th class="has-text-white">Deuda</th>
                                                     <th class="has-text-white">Tipo de Pago</th>
                                                     <th class="has-text-white">Nota</th>
-                                                    <th class="has-text-white">Acciones</th>
+                                                    <th class="has-text-white" style="width: 200px">Acciones</th>
                                                 </tr>
                                             </thead>
     
@@ -290,8 +309,13 @@
                                                                             <input type="hidden" name="deuda"
                                                                                 value="<%= fila.deudaEstudiante %>">
                                                                             <button type="submit"
-                                                                                class="button my-button is-large is-rounded is-responsive">Enviar
-                                                                                datos</button>
+                                                                                class="button my-button is-large is-rounded is-responsive">
+                                                                                <span>Enviar datos</span>
+                                                                                <span class="icon is-large">
+                                                                                    <i class="fa-solid fa-circle-chevron-right"
+                                                                                        style="color: #ffffff;"></i>
+                                                                                </span>
+                                                                            </button>
                                                                             </form>
                                                                         </td>
                                                         </tr>
@@ -299,6 +323,7 @@
                                                             <% }); %>
                                             </tbody>
                                         </table>
+                                        <br>
                                         <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
                                             <a class="pagination-previous" id="prev-button-2">Anterior</a>
                                             <a class="pagination-next" id="next-button-2">Siguiente</a>
@@ -309,8 +334,12 @@
                                             </ul>
                                         </nav>
                                         <button id="toggleButtonActivo"
-                                            class="button is-large is-rounded is-responsive">Revisar
-                                            Completos</button>
+                                            class="button is-large is-rounded is-responsive">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                            </span>
+                                            <span>Revisar Completos</span>
+                                        </button>
                                         <% } %>
                                     </div>
                                 </div>
