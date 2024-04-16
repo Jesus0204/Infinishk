@@ -73,9 +73,6 @@ exports.post_subir_archivo = (request, response, next) => {
                     const pagado = estado[0][estado[0].length - 1].Pagado;
                     const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
-                    console.log(deuda);
-                    console.log(deudaPagada);
-
                     if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
                         montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
                     }
@@ -109,8 +106,14 @@ exports.post_subir_archivo = (request, response, next) => {
 
 
                     if (fila.Importe == montoAPagar) {
-                        tipoPago = 'Pago de Colegiatura';
-                        deudaEstudiante = montoAPagar;
+                        if (tipoPago === 'Pago Completo') {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
+                        }
+                        else {
+                            tipoPago = 'Pago de Colegiatura';
+                            deudaEstudiante = montoAPagar;
+                        }
                     }
 
                     else {
@@ -211,20 +214,18 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
         const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
         const idColegiatura = colegiatura[0][0].IDColegiatura;
-        console.log(idColegiatura);
-
-        console.log(importe);
-        console.log(montoAPagar);
 
         if (importe > montoAPagar) {
             diferencia = importe - montoAPagar;
         }
-        console.log(diferencia)
-        await Colegiatura.update_transferencia(importe, idColegiatura)
+
+        let importe_trans = importe - diferencia;
         await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
+        await Colegiatura.update_transferencia(importe, idColegiatura)
+        await Deuda.update_transferencia(importe_trans,idDeuda[0][0].IDDeuda)
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
         if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
-            await Deuda.updateDescuento(diferencia, deudaNext[0][0].IDDeuda);
+            await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
         }
     }
     else if (tipoPago === 'Pago de Diplomado') {
