@@ -46,7 +46,7 @@ module.exports = class PagoExtra {
     }
 
     static fetchID(importe){
-        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
+        return db.execute('Select IDPagosExtras from pagosExtras WHERE montoPagar = ?',[importe]);
     }
 
 };

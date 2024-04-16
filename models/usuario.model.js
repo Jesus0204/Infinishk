@@ -66,14 +66,14 @@ module.exports = class Usuario{
 
     static buscarActivos(consulta) {
         return db.execute(
-            'SELECT usuario.* FROM usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 1',
+            'SELECT usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 1',
             [`%${consulta}%`]
         );
     }
 
     static buscarNoActivos(consulta) {
         return db.execute(
-            'SELECT usuario.* FROM usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 0',
+            'SELECT usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 0',
             [`%${consulta}%`]
         );
     }
