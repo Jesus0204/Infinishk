@@ -48,9 +48,7 @@ exports.get_registrar_precio_credito = (request, response, next) => {
 };
 
 exports.post_registrar_precio_credito = (request, response, next) => {
-    PrecioCredito.update()
-    const nuevo_precio = new PrecioCredito(request.body.monto);
-    nuevo_precio.save()
+    PrecioCredito.update(request.body.monto)
         .then(([precio_credito, fieldData]) => {
             response.redirect('/configuracion/precio_credito');
         })
