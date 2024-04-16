@@ -1,6 +1,6 @@
 <%- include('../includes/head.ejs') %>
 
-    <% if (rol=='1' ) { %>
+    <% if (contienePermiso(permisos, 'Modificar Plan de Pago') == true) { %>
         <div class="container" style="display: flex; justify-content: center;">
             <div class="content" style="width: 70%; margin-top: 50px;">
                 <h1 class="title is-2 has-text-centered">Planes de Pago</h1>
@@ -49,11 +49,10 @@
                     <% }) %>
             </div>
         </div>
-        <% } %>
 
 
 
-            <% if (rol=='2' ) { %>
+            <% } else { %>
                 <div class="container" style="display: flex; justify-content: center;">
                     <div class="content" style="width: 70%; margin-top: 50px;">
                         <h1 class="title is-2 has-text-centered">Planes de Pago</h1>
