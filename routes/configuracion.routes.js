@@ -17,6 +17,12 @@ const can_ConsultarUsuario = require('../util/privileges/admin/consultas/can_con
 const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_registrar_usuario');
 
 router.get('/administrar_planpago',configuracionController.get_administrar_planpago);
+
+router.get('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionController.get_consultar_usuario);
+router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_activo);
+router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
+router.post('/modificar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
+
 router.get('/', configuracionController.get_configuracion);
 
 module.exports = router;
