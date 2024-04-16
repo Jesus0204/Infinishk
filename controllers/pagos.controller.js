@@ -73,6 +73,9 @@ exports.post_subir_archivo = (request, response, next) => {
                     const pagado = estado[0][estado[0].length - 1].Pagado;
                     const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
+                    console.log(deuda);
+                    console.log(deudaPagada);
+
                     if (deuda && deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
                         montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
                     }
@@ -83,10 +86,10 @@ exports.post_subir_archivo = (request, response, next) => {
 
                     if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && typeof pagoCompleto[0][0].fechaPago !== 'undefined') {
                         const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
-                        
+
                         const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours()}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
 
-                        console.log(fechaFormateada); 
+                        console.log(fechaFormateada);
 
                         const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                         const importeRedondeado = Math.round(fila.Importe * 100) / 100;
@@ -106,15 +109,8 @@ exports.post_subir_archivo = (request, response, next) => {
 
 
                     if (fila.Importe == montoAPagar) {
-                        if (pagado === 0) {
-                            tipoPago = 'Pago de Colegiatura';
-                            deudaEstudiante = montoAPagar;
-
-                        }
-                        else if (pagado === 1) {
-                            tipoPago = 'Pago Completo';
-                            deudaEstudiante = 0;
-                        }
+                        tipoPago = 'Pago de Colegiatura';
+                        deudaEstudiante = montoAPagar;
                     }
 
                     else {
@@ -224,7 +220,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             diferencia = importe - montoAPagar;
         }
         console.log(diferencia)
-        await Colegiatura.update_transferencia(importe,idColegiatura)
+        await Colegiatura.update_transferencia(importe, idColegiatura)
         await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
         if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
@@ -254,6 +250,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         }
     }
 
-    response.json({ success: success});
+    response.json({ success: success });
 }
 
