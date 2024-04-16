@@ -76,8 +76,6 @@ exports.get_check_diplomado = (request, response, next) => {
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
     const estado = request.body.estatus;
-    console.log('El estado en el controller')
-    console.log(estado);
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
@@ -105,27 +103,27 @@ exports.post_fetch_diplomado = (request, response, next) => {
         });
 };
 
-exports.get_consultar_diplomado = (request, response, next) =>{
+exports.get_consultar_diplomado = (request, response, next) => {
     Diplomado.fetchAllActives()
-        .then(([diplomados, fieldData]) => {
-            if (diplomados.length > 0) {
-                response.render('diplomado/consultar_diplomado', {
-                    diplomados_activos: diplomados,
-                    username: request.session.username || '',
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                    csrfToken: request.csrfToken(),
+        .then(([diplomadosActivos, fieldData]) => {
+            Diplomado.fetchAllNoActives()
+                .then(([diplomadosNoActivos, fieldData]) => {
+                    response.render('diplomado/consultar_diplomado', {
+                        diplomadosActivos: diplomadosActivos,
+                        diplomadosNoActivos: diplomadosNoActivos,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken(),
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
                 });
-            } else {
-                response.render('diplomado/consultar_diplomado', {
-                    error: 'No hay diplomados disponibles',
-                    username: request.session.username || '',
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                    csrfToken: request.csrfToken(),
-                });
-            }
         })
+        .catch((error) => {
+            console.log(error)
+        });
 };
 
 exports.post_modificar_diplomado = (request, response, next) => {
@@ -134,11 +132,6 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
     const status = request.body.statusDiplomado === 'on' ? '1' : '0';
-    console.log(id);
-    console.log(precio);
-    console.log(duracion);
-    console.log(nombre);
-    console.log(status);
     Diplomado.update(id, duracion, precio, nombre, status)
         .then(() => {
             return Diplomado.fetchOne(nombre)

@@ -19,6 +19,10 @@ module.exports = class Diplomado{
         return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
     }
 
+    static fetchAllNoActives() {
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 0')
+    }
+
     static fetchOne(nombre){
         return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
