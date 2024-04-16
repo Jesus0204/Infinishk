@@ -26,13 +26,13 @@ module.exports = class Liquida {
 
     static save_transferencia(matricula,id,fecha,nota) {
         return db.execute(
-            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, tipoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`, 
+            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`, 
                 [matricula,id,fecha,nota]);
     }
 
 
     static update_transferencia(nota,fecha,id){
-        return db.execute('UPDATE liquida SET Pagado = 1, tipoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        return db.execute('UPDATE liquida SET Pagado = 1, metodoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
         [fecha,nota, id]);
     }
 }
