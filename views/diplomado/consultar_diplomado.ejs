@@ -1,11 +1,31 @@
-<%- include('../includes/head.ejs') %>
-    <body>
-        <section class="section">
-            <div class="container">
-
-                    <p class="title" style="text-align: center;">Consultar Diplomado</p>
-                    <section style="width: 50%; margin-top: 50px;">
-                        <p>Seccion</p>
-                    </section>
-    </body>
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+    <section class="section">
+        <div class="container">
+            <h3 class="title is-3">Diplomados</h3>
+            <% console.log(diplomados_activos) %>
+            <% for (let diplomados_disponibles of diplomados_activos) { %>
+            <table class="table is bordered is hoverable is-fullwidth">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="column">
+                                <strong>Nombre: </strong> <%= diplomados_disponibles.nombreDiplomado %>
+                                <br>
+                                <strong>ID: </strong> <%= diplomados_disponibles.IDDiplomado %>
+                                <br>
+                                <strong>Duracion: </strong> <%= diplomados_disponibles.Duracion %>
+                                <br>
+                                <strong>Precio: </strong> <%= diplomados_disponibles.precioDiplomado.toLocaleString('es-MX', {style: 'decimal'}) %>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <% } %>
+        </div>
+    </section>
 </html>
