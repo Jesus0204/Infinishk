@@ -106,7 +106,7 @@ exports.post_fetch_diplomado = (request, response, next) => {
 };
 
 exports.get_consultar_diplomado = (request, response, next) =>{
-    Diplomado.fetchAll()
+    Diplomado.fetchAllActives()
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
                 response.render('diplomado/consultar_diplomado', {

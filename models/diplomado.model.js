@@ -15,7 +15,7 @@ module.exports = class Diplomado{
                 [duracion,precio,nombre]);
     }
 
-    static fetchAll() {
+    static fetchAllActives() {
         return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
     }
 
