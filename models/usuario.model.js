@@ -27,7 +27,7 @@ module.exports = class Usuario{
             });
     }
 
-    static fetchOne(IDUsuario, Contrasena) {
+    static fetchOne(IDUsuario) {
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
@@ -49,5 +49,32 @@ module.exports = class Usuario{
         JOIN Contiene C ON R.IDRol = C.IDRol
         JOIN casoUso Ca ON C.IDCasoUso = Ca.IDCasoUso
         WHERE U.IDUsuario = ?`, [IDUsuario]);
+    }
+
+    static fetchActivos() {
+        return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 1');
+    }
+
+    static fetchNoActivos() {
+        return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 0');
+    }
+
+    static update(IDUsuario,estado){
+        return db.execute('UPDATE Usuario SET UsuarioActivo = ? WHERE IDUsuario = ?',
+        [estado,IDUsuario])
+    }
+
+    static buscarActivos(consulta) {
+        return db.execute(
+            'SELECT usuario.* FROM usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 1',
+            [`%${consulta}%`]
+        );
+    }
+
+    static buscarNoActivos(consulta) {
+        return db.execute(
+            'SELECT usuario.* FROM usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 0',
+            [`%${consulta}%`]
+        );
     }
 }

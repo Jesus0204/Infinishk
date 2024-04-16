@@ -9,10 +9,10 @@ module.exports = class Diplomado{
     }
 
 
-    save() {
+    static save(duracion,precio,nombre) {
         return db.execute(
-            `INSERT INTO tropa (IDDiplomado, Duracion, precioDiplomado, nombreDiplomado) VALUES (?, ?, ?, ?)`, 
-                [this.IDDiplomado, this.Duracion, this.precioDiplomado, this.nombreDiplomado]);
+            `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
+                [duracion,precio,nombre]);
     }
 
     static fetchAll() {
@@ -23,14 +23,21 @@ module.exports = class Diplomado{
         return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
-    static update(id,duracion,precio,nombre){
-        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=? WHERE IDDiplomado=?',
-        [duracion,precio,nombre,id]);
+    static update(id,duracion,precio,nombre,status){
+        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=?, diplomadoActivo=? WHERE IDDiplomado=?',
+        [duracion,precio,nombre,status,id]);
     }
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT * FROM diplomado WHERE nombreDiplomado LIKE ?',
+            'SELECT diplomado.* FROM diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
+            [`%${consulta}%`]
+        );
+    }
+
+    static buscar_noactivo(consulta) {
+        return db.execute(
+            'SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
             [`%${consulta}%`]
         );
     }

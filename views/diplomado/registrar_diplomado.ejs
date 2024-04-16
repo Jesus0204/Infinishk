@@ -1,0 +1,24 @@
+
+<%- include('../includes/head.ejs') %>
+<body>
+    <section class="section">
+        <div class="container" style="display: flex; justify-content: center;">
+            <p class="title" style="text-align: center;">Registrar Diplomado</p>
+            <form id="formDiplomado" action="/diplomado/registrar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <label for="Duracion" class="label is-large">Duración:</label>
+                <input type="text" id="Duracion" name="Duracion" required class="input is-large">
+                <label for="precioDiplomado" class="label is-large">Precio:</label>
+                <input type="number" id="precioDiplomado" name="precioDiplomado" step="any" required class="input is-large">
+                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large">
+                <br>
+                <br>
+                <button type="submit" id="btnSubmit" class="button is-large is-rounded is-responsive">Registrar Diplomado</button>
+                <p id="errorMessage" style="color: red;"></p>
+            </form>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/registrar_diplomado.js"></script>
+</body>
+</html>

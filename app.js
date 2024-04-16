@@ -4,7 +4,7 @@ const express = require('express');
 // Inicia la app usuando a express
 const app = express();
 
-// Configuras a EJS como motor de templates con express
+// Configuramos a EJS como motor de templates con express
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -34,8 +34,22 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+const multer = require('multer');
 
-app.use(bodyParser.json());
+//fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
+const fileStorage = multer.diskStorage({
+    destination: (request, file, callback) => {
+        //'uploads': Es el directorio del servidor donde se subirán los archivos 
+        callback(null, 'uploads');
+    },
+    filename: (request, file, callback) => {
+        //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
+        //para que no haya problema si se suben 2 archivos con el mismo nombre concatenamos el timestamp
+        callback(null,Number(new Date()).toString() + file.originalname);
+    },
+});
+
+app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 // Para proteger del Cross-Site Request Forgery
 const csrf = require('csurf');
@@ -49,8 +63,7 @@ const helmet = require("helmet");
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'", "'unsafe-inline'",
-                'code.jquery.com', 'ajax.googleapis.com'
+            "script-src": ["'self'",'code.jquery.com', 'ajax.googleapis.com'
             ],
             "script-src-attr": ["'unsafe-inline'"]
         },
@@ -63,6 +76,8 @@ app.use(compression());
 
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
+
+app.use(bodyParser.json());
 
 const rutasDiplomado = require('./routes/diplomado.routes');
 app.use('/diplomado', rutasDiplomado);
