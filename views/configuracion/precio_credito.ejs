@@ -4,6 +4,18 @@
     rol: rol
 }) %>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+    .select_anio:hover {
+        border: 2px solid #5a6581 !important;
+    }
+    
+    .select_anio:focus {
+        border: 2px solid #910106 !important;
+    }
+    </style>
+
 <section class="section">
      <div class="container">
          <input type="hidden" id="_csrf" value="<%= csrfToken %>">
@@ -27,6 +39,22 @@
              </div>
              <% } %>
          </div>
+
+         <div class="column">
+            <div class="columns is-vcentered" style="text-align: center;">
+                <div class="column">
+                    <label class="label is-size-5" for="anio" style="display: inline-block;
+                        width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Año:</label>
+                    <div class="select">
+                        <select class="select_anio" name="anio" id="anio" style="border: 2px solid #7c7f80; margin-bottom: -2em;">
+                            <% anios.forEach(anio => { %>
+                                <option value="<% anio['year(fechaModificacion)'] %>"><%= anio['year(fechaModificacion)'] %></option>
+                                <% }); %>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
          <table class="table is-bordered is-hoverable is-fullwidth">
              <thead>

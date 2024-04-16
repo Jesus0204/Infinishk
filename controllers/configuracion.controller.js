@@ -20,16 +20,24 @@ exports.get_administrar_planpago = (request, response, next) => {
 exports.get_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
         .then((precio_actual) => {
-            response.render('configuracion/precio_credito', {
-                precio_actual: precio_actual[0], 
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken()});
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            PrecioCredito.fetchAnios()
+                .then(([anios, fieldData]) => {
+                    response.render('configuracion/precio_credito', {
+                        precio_actual: precio_actual[0],
+                        anios: anios,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    })
+    .catch((error) => {
+        console.log(error)
+    });
 };
 
 exports.get_registrar_precio_credito = (request, response, next) => {
