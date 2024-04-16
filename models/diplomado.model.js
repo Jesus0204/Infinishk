@@ -20,7 +20,7 @@ module.exports = class Diplomado{
     }
 
     static fetchOne(nombre){
-        return db.execute('Select * fromDdiplomado WHERE nombreDiplomado = ?',[nombre]);
+        return db.execute('Select * from Diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
     static update(id,duracion,precio,nombre,status){
@@ -30,14 +30,14 @@ module.exports = class Diplomado{
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT diplomado.* FROM Diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
+            'SELECT Diplomado.* FROM Diplomado LEFT JOIN cursa ON Diplomado.IDDiplomado = Cursa.IdDiplomado WHERE Cursa.IdDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
             [`%${consulta}%`]
         );
     }
 
     static buscar_noactivo(consulta) {
         return db.execute(
-            'SELECT diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
+            'SELECT Diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
             [`%${consulta}%`]
         );
     }
