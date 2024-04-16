@@ -176,6 +176,12 @@
                                 </span>
                                 </button>
                             <% } else { %>
+                                <div class="columns">
+                                    <div class="column is-3"></div>
+                                    <div class="column is-7">
+                                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                                    </div>
+                                </div>
                                 <div id="tablaCompleta" class="has-text-centered mt-5">
                                     <div class="alert alert-info is-size-4">No hay pagos completos en este archivo.</div>
                                     <button id="toggleButton" class="button is-large is-rounded is-responsive">Revisar No
@@ -207,7 +213,7 @@
                                                     <th class="has-text-white">Deuda</th>
                                                     <th class="has-text-white">Tipo de Pago</th>
                                                     <th class="has-text-white">Nota</th>
-                                                    <th class="has-text-white" style="width: 200px">Acciones</th>
+                                                    <th class="has-text-white">Acciones</th>
                                                 </tr>
                                             </thead>
     
@@ -309,7 +315,7 @@
                                                                             <input type="hidden" name="deuda"
                                                                                 value="<%= fila.deudaEstudiante %>">
                                                                             <button type="submit"
-                                                                                class="button my-button is-large is-rounded is-responsive">
+                                                                                class="button my-button is-medium is-rounded is-responsive">
                                                                                 <span>Enviar datos</span>
                                                                                 <span class="icon is-large">
                                                                                     <i class="fa-solid fa-circle-chevron-right"
