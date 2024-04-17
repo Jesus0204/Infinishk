@@ -25,7 +25,7 @@
 
             <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
                 <div class="container" style="display: flex; justify-content: center;">
-                    <div id="modificacion_estatus_activar" class="notification is-hidden"
+                    <div id="modificacion_plan_pago" class="notificationPlanPago is-hidden"
                         style="background-color: #5a6581; color:#ffffff;">
                         <button id="btn_eliminar_estatus" class="delete"></button>
                         ¡Plan de Pago Modificado! Recargando datos...
@@ -36,7 +36,7 @@
                                 <div class="card-content">
                                     <div class="media">
                                         <div class="media-content">
-                                            <form action="/configuracion/modificar_planpago" method="POST">
+                                            <form class="formModificarPlanPago" action="/configuracion/modificar_planpago" method="POST">
                                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
                                                 <div class="field">
@@ -121,50 +121,42 @@
                     </div>
                     <% } %>
 
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                // Función para mostrar la notificación y recargar la página
-                                function mostrarNotificacionYRecargar(notificacion) {
-                                    notificacion.classList.remove('is-hidden'); // Mostrar notificación
-
-                                    // Recargar la página después de mostrar la notificación por 1.5 segundos (1500 milisegundos)
-                                    setTimeout(function () {
-                                        location.reload(); // Recargar la página
-                                    }, 1500);
-                                }
-
-                                // Mostrar la notificación y recargar la página después de enviar cualquier formulario
-                                document.querySelectorAll('form').forEach(function (form) {
-                                    form.addEventListener('submit', function (event) {
-                                        event.preventDefault(); // Prevenir el envío por defecto del formulario
-
-                                        // Obtener la notificación relacionada con el formulario enviado
-                                        var notificacion = form.closest('.container').querySelector('.notification');
-
-                                        fetch(form.action, {
-                                            method: form.method,
-                                            body: new FormData(form),
-                                        })
-                                            .then(function (response) {
-                                                if (response.ok) {
-                                                    mostrarNotificacionYRecargar(notificacion);
-                                                } else {
-                                                    throw new Error('Error al enviar el formulario');
-                                                }
-                                            })
-                                            .catch(function (error) {
-                                                console.error(error);
-                                                // Manejar el error, por ejemplo, mostrar una alerta al usuario
-                                            });
-                                    });
-                                });
-
-                                // Cerrar notificación al hacer clic en el botón eliminar
-                                document.querySelectorAll('.delete').forEach(function (deleteBtn) {
-                                    deleteBtn.addEventListener('click', function () {
-                                        deleteBtn.closest('.notification').classList.add('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
-                                    });
+                    <script>
+                        $(document).ready(function () {
+                            // Función para mostrar la notificación y recargar la página
+                            function mostrarNotificacionYRecargar(notificacion) {
+                                $(notificacion).removeClass('is-hidden'); // Mostrar notificación
+                    
+                                // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
+                                setTimeout(function () {
+                                    window.location.reload(); // Recargar la página
+                                }, 1500);
+                            }
+                    
+                            // Mostrar la notificación y recargar la página después de enviar un formulario
+                            $('.formModificarPlanPago').submit(function (event) {
+                                event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+                    
+                                $.ajax({
+                                    type: 'POST',
+                                    url: $(this).attr('action'), // Obtener la URL del formulario actual
+                                    data: $(this).serialize(),
+                                    success: function () {
+                                        // Buscar la notificación relacionada con el formulario enviado
+                                        var notificacion = $('.notificationPlanPago');
+                    
+                                        mostrarNotificacionYRecargar(notificacion);
+                                    },
+                                    error: function () {
+                                        console.log('Error al enviar el formulario');
+                                    }
                                 });
                             });
-
-                        </script>
+                    
+                            // Cerrar notificación al hacer clic en el botón eliminar
+                            $('.delete').click(function () {
+                                $(this).parent().addClass('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
+                            });
+                        });
+                    </script>
+                    
