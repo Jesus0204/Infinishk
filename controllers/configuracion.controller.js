@@ -109,10 +109,25 @@ exports.get_precio_credito = (request, response, next) => {
         });
 };
 
+// Configuras a moment con el locale. 
+const moment = require('moment');
+moment.locale('es-mx');
+
 exports.post_precio_credito = (request, response, next) => {
     const anioSelect = request.body.anio;
     PrecioCredito.fetchPrecioAnio(anioSelect)
         .then(([precio_anio, fieldData]) => {
+            // Conviertes las fechas a tu zona horaria
+            let fechas_convertidas = [];
+            for (let fecha of precio_anio) {
+                fechas_convertidas.push(moment(new Date(fecha.fechaModificacion)).format('LL'));
+            };
+
+            // Cambias la fecha obtenida en el json a la de la zona horaria
+            for (let count = 0; count < precio_anio.length; count++) {
+                precio_anio[count].fechaModificacion = fechas_convertidas[count];
+            };
+            
             response.status(200).json({
                 success: true,
                 precio_anio: precio_anio
