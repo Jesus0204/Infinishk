@@ -1,7 +1,7 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const pagoDiplomado = require('../models/pagadiplomado.model');
-const pagoExtra = require('../models/pago_extra.model');
+const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
@@ -78,8 +78,6 @@ exports.get_autocomplete = (request, response, next) => {
         }
     }
 };
-
-const Pago_Extra = require('../models/pago_extra.model');
 
 exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
