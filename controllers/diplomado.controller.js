@@ -71,11 +71,8 @@ exports.get_check_diplomado = (request, response, next) => {
         });
 };
 
-
-
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
-    const estado = request.body.estatus;
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
