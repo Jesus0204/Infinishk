@@ -1,6 +1,7 @@
 const PlanPago = require('../models/planpago.model');
 const PrecioCredito = require('../models/precio_credito.model');
-const Usuario = require('../models/usuario.model')
+const Usuario = require('../models/usuario.model');
+const { getAllUsers } = require('../util/adminApiClient');
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -160,3 +161,24 @@ exports.post_registrar_precio_credito = (request, response, next) => {
             console.log(error);
         });
 };
+
+exports.get_actualizar_base = (request, response, next) => {
+    response.render('configuracion/actualizarBase', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
+};
+
+exports.post_actualizar_base = async (request,response,next) => {
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const users = await getAllUsers();
+        response.send(users);
+        // Muestra los datos en la consola
+        console.log('Usuarios:', users);
+    } catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+}

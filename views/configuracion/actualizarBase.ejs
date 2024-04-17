@@ -1,0 +1,11 @@
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+
+<meta name="_csrf" content="<%= csrfToken %>">
+
+<body>
+    <h1>Actualizar Base de Datos</h1>
+    <button onclick="actualizarBase()">Realizar Operaciones</button>
+
+    <script type="text/javascript" src="/js/actualizarBase.js"></script>
+</body>
+</html>

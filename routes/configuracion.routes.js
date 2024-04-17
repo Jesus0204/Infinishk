@@ -7,6 +7,7 @@ const configuracionController = require('../controllers/configuracion.controller
 
 // Incluyes el archivo para verificar si esta autenticado y los permisos
 const isAuth = require('../util/is-Auth');
+const can_ActualizarBase = require('../util/privileges/admin/otros/can_actualizar_Base');
 const can_ConsultarCostoCredito = require('../util/privileges/can_consultar_precioCredito');
 const can_ConsultarPlanPago = require('../util/privileges/can_consultar_planPago');
 const can_RegistrarCostoCredito = require('../util/privileges/admin/registros/can_registrar_PrecioCredito');
@@ -27,6 +28,9 @@ router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionControl
 router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
 router.post('/modificar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
 
-router.get('/', configuracionController.get_configuracion);
+router.get('/actualizarBase',isAuth,can_ActualizarBase,configuracionController.get_actualizar_base);
+router.post('/actualizarBase',isAuth,can_ActualizarBase,configuracionController.post_actualizar_base);
+
+router.get('/', isAuth, can_ActualizarBase, configuracionController.get_configuracion);
 
 module.exports = router;
