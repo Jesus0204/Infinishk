@@ -37,7 +37,7 @@ const updatePrecioCredito = (anio) => {
                     month: 'long',
                     day: 'numeric'
                 };
-                const fechaModificacion = new Date(precio.fechaModificacion).toLocaleDateString("es-MX", options);
+                const fechaModificacion = precio.fechaModificacion.toLocaleDateString("es-MX", options);
                 td2.innerHTML = fechaModificacion;
                 tr.appendChild(td1);
                 tr.appendChild(td2);
