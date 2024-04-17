@@ -79,7 +79,7 @@
                         <td>
                             <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
                             <div class="column">
-                                <%= precio_actual[0].fechaModificacion.toLocaleDateString("es-MX", options) %>
+                                <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
                             </div>
                         </td>
                     </tbody>
