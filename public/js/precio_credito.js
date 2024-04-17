@@ -32,12 +32,7 @@ const updatePrecioCredito = (anio) => {
                 const td1 = document.createElement('td');
                 td1.innerHTML = `$ ${precio.precioPesos.toFixed(2).toLocaleString('es-MX')}`;
                 const td2 = document.createElement('td');
-                const options = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                };
-                const fechaModificacion = new Date(precio.fechaModificacion).toLocaleDateString("es-MX", options);
+                const fechaModificacion = precio.fechaModificacion;
                 td2.innerHTML = fechaModificacion;
                 tr.appendChild(td1);
                 tr.appendChild(td2);

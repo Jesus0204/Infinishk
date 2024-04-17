@@ -65,7 +65,7 @@ const helmet = require("helmet");
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com'],
+            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net'],
             "script-src-attr": ["'unsafe-inline'"]
         },
     },
