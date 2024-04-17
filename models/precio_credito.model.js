@@ -10,7 +10,7 @@ module.exports = class PrecioCredito {
     }
 
     static fetchAnios() {
-        return db.execute(`SELECT DISTINCT year(fechaModificacion) FROM precioCredito ORDER BY year(fechaModificacion) DESC`);
+        return db.execute(`SELECT DISTINCT year(fechaModificacion) FROM precioCredito ORDER BY year(fechaModificacion) ASC`);
     }
 
     static fetchPrecioAnio(anio) {
