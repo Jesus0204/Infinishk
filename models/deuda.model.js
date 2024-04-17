@@ -13,8 +13,9 @@ module.exports = class Deuda {
     }
 
     static fetchNoPagados() {
-        return db.execute(`SELECT DISTINCT(matricula) FROM Deuda 
-        WHERE Pagado = 0 AND Now() > fechaLimitePago`);
+        return db.execute(`SELECT DISTINCT(matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P
+        WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
+        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1;`);
     }
 
     static fetchDeuda(matricula) {
