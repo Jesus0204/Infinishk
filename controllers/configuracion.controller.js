@@ -45,20 +45,11 @@ exports.post_modificar_planpago = (request, response, next) => {
     console.log(IDPlanPago);
     PlanPago.update(nombre, activo, IDPlanPago)
         .then(([planespago, fieldData]) => {
-            response.render('configuracion/resultado_plan', {
-                modificar: true,
-                registrar: false,
-                PlanPago: planespago[0],
-                csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-            });
+            // Aquí puedes enviar una respuesta JSON indicando éxito
+            response.json({ success: true });
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
+            response.status(500).json({ success: false, error: 'Error al modificar el plan de pago' });
         });
 }
-
-exports.get_resultado_plan = (request,response,next) => {
-    response.render('configuracion/resultado_plan');
-};

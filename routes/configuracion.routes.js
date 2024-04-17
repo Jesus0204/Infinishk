@@ -19,7 +19,6 @@ const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_reg
 router.get('/administrar_planpago',isAuth,can_ConsultarPlanPago,configuracionController.get_administrar_planpago);
 router.get('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.get_modificar_planpago);
 router.post('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.post_modificar_planpago);
-router.get('/resultado_plan',isAuth,can_ConsultarPlanPago,configuracionController.get_resultado_plan);
 
 
 module.exports = router;
