@@ -13,12 +13,12 @@ module.exports = class Deuda {
     }
 
     static fetchDeuda(matricula){
-        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
 
     static fetchEstado(matricula){
-        return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT Pagado FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
 
@@ -28,12 +28,12 @@ module.exports = class Deuda {
     }
 
     static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
     
     static fetchIDColegiatura(matricula){
-        return db.execute('SELECT IDColegiatura FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
     
