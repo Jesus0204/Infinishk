@@ -1,25 +1,31 @@
 <%- include('../includes/head.ejs') %>
 
-    <% if (contienePermiso(permisos, 'Registrar Plan de Pago' )==true) { %>
-        <div class="column is-offset-2">
-            <p class="control">
-                <a class="button is-rounded is-responsive" style="font-size: large;"
-                    href="/configuracion/registrar_usuario">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </span>
-                    <span>
-                        Registrar Plan de Pago
-                    </span>
-                </a>
-            </p>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <h3 class="title is-3" style="margin-bottom: 0;">Planes de Pago</h3>
+            </div>
+            <% if (contienePermiso(permisos, 'Registrar Plan de Pago' )==true) { %>
+            <div class="column is-offset-2">
+                <p class="control" style="margin-bottom: 0;">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/configuracion/registrar_usuario">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                        <span>
+                            Registrar Plan de Pago
+                        </span>
+                    </a>
+                </p>
+            </div>
+            <% } %>
         </div>
-        <% } %>
 
-            <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
+        <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
                 <div class="container" style="display: flex; justify-content: center;">
                     <div class="content" style="width: 70%; margin-top: 50px;">
-                        <h1 class="title is-2 has-text-centered">Planes de Pago</h1>
                         <% planpago.forEach(plan=> { %>
                             <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
                                 <div class="card-content">
@@ -59,9 +65,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button type="submit"
-                                                    class="button is-large is-rounded is-responsive">Aplicar
-                                                    cambios</button>
+                                                <button id="btn_aplicar_cambios" type="submit" class="button is-large is-rounded is-responsive">Aplicar cambios</button>
+
+                                                <div id="modificacion_estatus" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+                                                <button id="btn_eliminar_estatus" class="delete"></button>
+                                                  ¡Estatus de Pago Modificado!
+                                                </div>
+
                                             </form>
                                         </div>
                                     </div>
@@ -109,3 +119,4 @@
                         </div>
                     </div>
                     <% } %>
+                    
