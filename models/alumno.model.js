@@ -20,7 +20,7 @@ module.exports = class Alumno {
     }
 
     static fetchOne(matricula) {
-        return db.execute(`SELECT Matricula, Nombre, Apellidos 
+        return db.execute(`SELECT Matricula, Nombre, Apellidos
         FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 }

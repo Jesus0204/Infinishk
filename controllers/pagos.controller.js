@@ -5,6 +5,7 @@ const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
+const Periodo = require('../models/periodo.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -79,21 +80,78 @@ exports.get_autocomplete = (request, response, next) => {
     }
 };
 
+// Configuras a moment con el locale. 
+const moment = require('moment');
+const Colegiatura = require('../models/colegiatura.model');
+moment.locale('es-mx');
+
 exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
             Pago_Extra.fetchAll()
-                .then(([pagos_extra, fieldData]) => {
-                    response.render('pago/pago_manual_registro', {
-                        alumno: alumno,
-                        pagos_extra: pagos_extra,
-                        username: request.session.username || '',
-                        permisos: request.session.permisos || [],
-                        rol: request.session.rol || "",
-                        csrfToken: request.csrfToken()
-                    })
+                .then(async ([pagos_extra, fieldData]) => {
+                    const [periodoActivo, fieldData_2] = await Periodo.fetchActivo();
+                    // Si es estudiante de colegiatura sacas la siguiente información
+                    if (matches[0][0] == '1') {
+                        const [infoColegiatura, fieldData] = await Colegiatura.fetchColegiaturaActiva(matches[0]);
+                        let info_Deuda = '';
+
+                        // Si existe sacas la información de la deuda
+                        if (infoColegiatura.length != 0) {
+                            const [infoDeuda, fieldData_2] = await Colegiatura.fetchNoPagadas(infoColegiatura[0].IDColegiatura);
+
+                            // Conviertes la fecha si existe
+                            for (let count = 0; count < infoDeuda.length; count++) {
+                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).format('LL');
+                            }
+                            info_Deuda = infoDeuda;
+                        };
+                        
+                        response.render('pago/pago_manual_registro', {
+                            alumno: alumno,
+                            periodo: periodoActivo,
+                            pagos_extra: pagos_extra,
+                            colegiatura: infoColegiatura,
+                            deuda: info_Deuda,
+                            pago_col: true,
+                            diplomado: '',
+                            pagoDiplomado: '',
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken()
+                        })
+                    // Si no, es alumno de diplomado
+                    } else if (matches[0][0] == '8') {
+                        // Sacas información del diplomado que estan cursando
+                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(matches[0]);
+                        let infoPagosDiplomado = '';
+                        if (infoDiplomado.length != 0) {
+                            // Sacas información de algún pago si es que existe
+                            const [infoPagosDipl, fieldData_2] = await Cursa.fetchPagosHechos(matches[0], infoDiplomado[0].IDDiplomado);
+                            // Conviertes la fecha si existe
+                            for (let count = 0; count < infoPagosDipl.length; count++) {
+                                infoPagosDipl[count].fechaPago = moment(new Date(infoPagosDipl[count].fechaPago)).format('LL');
+                            }
+                            infoPagosDiplomado = infoPagosDipl;
+                        }
+                        response.render('pago/pago_manual_registro', {
+                            alumno: alumno,
+                            periodo: periodoActivo,
+                            pagos_extra: pagos_extra,
+                            colegiatura: '',
+                            deuda: '',
+                            pago_col: false,
+                            diplomado: infoDiplomado,
+                            pagoDiplomado: infoPagosDiplomado,
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken()
+                        })
+                    };
                 })
                 .catch((error) => {
                     console.log(error)

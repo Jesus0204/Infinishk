@@ -19,9 +19,98 @@
                 <h3 class="title is-3">Registrar Pago Manual</h3>
             </div>
         </div>
-        <div class="columns">
-            <div class="column is-4"></div>
-            <div class="column is-8">
+        <div class="columns is-centered">
+            <div class="column is-4">
+                <br>
+                <p class="is-size-5" style="text-align: center;">
+                    <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                    <%= alumno[0].Apellidos %>
+                </p>
+                <br>
+                <p class="is-size-5" style="text-align: center;">
+                    <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
+                </p>
+                <br>
+                <div id="info_pago_normal">
+                    <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
+                    <table class="table is-bordered Pago-de-Diplomado" style="color: #ffffff">
+                        <caption class="is-size-5">
+                            <strong>
+                                Ficha de Pago a registrar:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Fecha Límite
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto a Pagar
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto Pagado
+                            </th>
+                        <tbody>
+                            <td>
+                                <%= deuda[0].fechaLimitePago %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoAPagar.toLocaleString('mx') %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoPagado.toLocaleString('mx') %>
+                            </td>
+                        </tbody>
+                        </thead>
+                    </table>
+                    <% } %>
+                    <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
+                    <% if (pagoDiplomado.length != 0) { %>
+                    <table class="table is-bordered">
+                        <caption>
+                            <strong>
+                                Pagos anteriores:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th>
+                                Monto
+                            </th>
+                            <th>
+                                Fecha de Pago
+                            </th>
+                        </thead>
+                        <% for (let pago of pagoDiplomado) { %>
+                        <tbody>
+                            <td>
+                                $<%= pago.montoPagado.toLocaleString('mx') %>
+                            </td>
+                            <td>
+                                <%= pago.fechaPago %>
+                            </td>
+                            <% } %>
+                    </table>
+                    <% } %>
+                    <% } %>
+                    <% if (deuda.length == 0 && colegiatura.length != 0) { %>
+                        <div style="text-align: center;">
+                            <span>
+                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                            </span>
+                            <span class="is-size-5">
+                                <strong> 
+                                    Pagos Completos
+                                </strong>
+                            </span>
+                        </div>
+                    <% } %>
+                </div>
+                <div id="info_pago_extra" class="is-hidden">
+                    <p>
+                        Pago extra info
+                    </p>
+                </div>
+            </div>
+            <div class="column is-offset-1">
                 <div class="tabs is-boxed">
                     <ul>
                         <li class="is-active" id="nav_pago_normal">
@@ -43,436 +132,456 @@
                         </li>
                     </ul>
                 </div>
+                <div id="pago_normal">
+                    <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
+                    <% if (colegiatura.length != 0) { %>
+                    <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
+                        <% } else if (diplomado.length != 0) { %>
+                        <form action="/pagos/registrar_pago_manual/diplomado" method="POST">
+                            <input type="hidden" name="IDDiplomado" value="<%= diplomado[0].IDDiplomado %>">
+                            <% } %>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <label class="label is-medium" for="motivo_col">Motivo: </label>
+                                </div>
+                                <div class="column">
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
+                                        style="padding: 0.5em; margin-top: -1em;">Por favor
+                                        escribe un motivo del pago del alumno</p>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="motivo" class="input is-medium" type="text" id="motivo_col"
+                                                placeholder="Concepto del pago">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <label class="label is-medium" for="monto_col">Monto:</label>
+                                </div>
+                                <div class="column">
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor
+                                        escribe un monto válido del Pago</p>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                                        style="padding: 0.5em; margin-top: -1em;">Por
+                                        favor escribe un número mayor a 0.</p>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                                        style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
+                                        exponente.
+                                    </p>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="monto" class="input is-medium" type="number" step="any"
+                                                id="monto_col" placeholder="Monto pagado">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <label class="label is-medium" for="fechapago_col">Fecha de Pago:</label>
+                                </div>
+                                <div class="column">
+                                    <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <label class="label is-medium" for="metodo_col">Método de Pago: </label>
+                                </div>
+                                <div class="column">
+                                    <div class="control has-icons-left">
+                                        <div class="select is-medium" style="width: 110%;">
+                                            <select name="metodo" id="metodo_col" style="width: 110%;">
+                                                <option value="Tarjeta Terminal">
+                                                    Tarjeta Terminal
+                                                </option>
+                                                <option value="Efectivo">
+                                                    Efectivo
+                                                </option>
+                                                <option value="Transferencia">
+                                                    Transferencia
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="icon is-medium is-left">
+                                            <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <label class="label is-medium" for="nota_col">Nota: </label>
+                                </div>
+                                <div class="column">
+                                    <textarea name="nota" id="nota_col" class="input is-medium"
+                                        placeholder="Escribe tu nota aquí."></textarea>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-2"></div>
+                                <div class="column is-8">
+                                    <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                        type="button" style="font-size: large; margin: 8px 2px;"
+                                        id="Boton_registrar_pago_extra_col"
+                                        data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
+                                        <span>Registrar Pago</span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="modal-confirmar-registro_colegiatura" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title" style="text-align: center;">
+                                            <% if (alumno[0].Matricula[0] == 1) { %>
+                                                <strong>Registrar Pago: Colegiatura</strong>
+                                            <% } else if (alumno[0].Matricula[0] == 8) {%>
+                                                <strong>Registrar Pago: Diplomado</strong>
+                                            <% } %>
+                                        </p>
+                                        <button type="button" class="delete" aria-label="delete"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        <p class="is-size-5" style="text-align: center;">
+                                            Los datos del pago del alumno son los siguientes:
+                                        </p>
+                                        <br>
+                                        <div class="columns is-vcentered">
+                                            <div class="column is-7">
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                                                    <%= alumno[0].Apellidos %>
+                                                </p>
+                                            </div>
+                                            <div class=" column is-5">
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    <strong>Matricula: </strong><%= alumno[0].Matricula %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="columns is-vcentered">
+                                            <div class="column is-half">
+                                                <p class="is-size-5" style="text-align: center;" id="motivo_modal_col">
+                                                    <strong>Motivo: </strong> Motivo
+                                                </p>
+                                            </div>
+                                            <div class=" column is-half">
+                                                <p class="is-size-5" style="text-align: center;" id="monto_modal_col">
+                                                    <strong>Monto Pagado: </strong>
+                                                    Monto
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="columns is-vcentered">
+                                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                                <label class="label is-medium">
+                                                    Fecha de Pago:
+                                                </label>
+                                            </div>
+                                            <div class="column">
+                                                <p class="is-size-5" id="fecha_modal_col" name="fecha">
+                                                    Execute Order 66
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="columns is-vcentered">
+                                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                                <label class="label is-medium">
+                                                    Método de Pago:
+                                                </label>
+                                            </div>
+                                            <div class="column">
+                                                <p class="is-size-5" id="metodo_modal_col">
+                                                    Tarjeta Terminal
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="columns is-vcentered">
+                                            <div class="column is-4 is-offset-1" style="text-align: center;">
+                                                <label class="label is-medium">
+                                                    Nota:
+                                                </label>
+                                            </div>
+                                            <div class="column">
+                                                <p class="is-size-5" id="nota_modal_col">
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <footer class="modal-card-foot" style="justify-content: center;">
+                                        <div class="field is-grouped">
+                                            <p class="control">
+                                                <button class="button is-rounded is-medium is-responsive"
+                                                    aria-label="close" style="font-size: large; margin: 8px 2px;"
+                                                    type="button">
+                                                    <span class="icon is-large">
+                                                        <i class="fa-solid fa-circle-chevron-left"
+                                                            style="color: #ffffff;"></i>
+                                                    </span>
+                                                    <span>Regresar</span>
+                                                </button>
+                                            </p>
+                                            <p class="control">
+                                                <button class="button is-rounded is-medium is-responsive"
+                                                    style="font-size: large; margin: 8px 2px; background-color: #000000;"
+                                                    type="submit">
+                                                    <span class="icon is-large">
+                                                        <i class="fa-solid fa-cash-register"
+                                                            style="color: #ffffff;"></i>
+                                                    </span>
+                                                    <span>Registrar Pago</span>
+                                                </button>
+                                            </p>
+                                    </footer>
+                                </div>
+                            </div>
+                        </form>
+                        <% } else if (diplomado.length == 0 && pago_col == false) { %>
+                        <article id="no_cursa_diplomado" class="message"
+                            style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                            <div class="message-header"
+                                style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                                <p>No se puede registrar un pago a este alumno</p>
+                                <button id="btn_cursa_diplomado" class="delete" aria-label="delete"></button>
+                            </div>
+                            <div class="message-body" style="color:#ffffff;">
+                                Este alumno no se encuentra cursando un Diplomado, por lo que no se puede registrar un
+                                pago.
+                            </div>
+                        </article>
+                        <% } else if (colegiatura.length == 0 && pago_col == true) { %>
+                        <article id="no_colegiatura" class="message"
+                            style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                            <div class="message-header"
+                                style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                                <p>No se puede registrar un pago a este alumno</p>
+                                <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
+                            </div>
+                            <div class="message-body" style="color:#ffffff;">
+                                Este alumno no tiene una colegiatura para el periodo <%= periodo[0].Nombre %>, por lo que no se puede
+                                registrar un pago de este tipo.
+                            </div>
+                        </article>
+                        <% } else if (pago_col == true && deuda.length == 0) {%>
+                            <article id="no_colegiatura" class="message"
+                                style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                                <div class="message-header"
+                                    style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                                    <p>No se puede registrar un pago a este alumno</p>
+                                    <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
+                                </div>
+                                <div class="message-body" style="color:#ffffff;">
+                                    Este alumno ya pago todas sus fichas de la colegiatura del periodo
+                                    <%= periodo[0].Nombre %>.
+                                </div>
+                            </article>
+                        <% } %>
+                </div>
+                <div id="pago_extra" class="is-hidden">
+                    <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
+                        <div class="columns is-vcentered">
+                            <div class="column">
+                                <p class="is-size-5" id="monto">
+                                    <strong>Monto: </strong>
+                                    $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
+                                </p>
+                            </div>
+                            <div class="column">
+                                <label class="label is-medium" for="pago">Otros pagos:</label>
+                                <div class="control has-icons-left">
+                                    <div class="select is-medium">
+                                        <select name="pago" id="pago">
+                                            <% for (let pago of pagos_extra) { %>
+                                            <option value="<%= pago.IDPagosExtras %>"
+                                                data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
+                                                <%= pago.motivoPago %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="icon is-medium is-left">
+                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-5">
+                                <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
+                            </div>
+                            <div class="column">
+                                <input name="fecha" id="fechapago" class="input is-medium" type="date">
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-5">
+                                <label class="label is-medium" for="metodo">Método de Pago: </label>
+                            </div>
+                            <div class="column">
+                                <div class="control has-icons-left">
+                                    <div class="select is-medium" style="width: 110%;">
+                                        <select name="metodo" id="metodo" style="width: 110%;">
+                                            <option value="Tarjeta Terminal">
+                                                Tarjeta Terminal
+                                            </option>
+                                            <option value="Efectivo">
+                                                Efectivo
+                                            </option>
+                                            <option value="Transferencia">
+                                                Transferencia
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="icon is-medium is-left">
+                                        <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-5">
+                                <label class="label is-medium" for="nota">Nota: </label>
+                            </div>
+                            <div class="column">
+                                <textarea name="nota" id="nota" class="input is-medium"
+                                    placeholder="Escribe tu nota aquí."></textarea>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-2"></div>
+                            <div class="column is-8">
+                                <button class="js-modal-trigger button is-rounded is-medium is-responsive" type="button"
+                                    style="font-size: large; margin: 8px 2px;" id="Boton_registrar_pago_extra"
+                                    data-target="modal-confirmar-registro_extra" type="button">
+                                    <span>Registrar Pago</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="modal-confirmar-registro_extra" class="modal">
+                            <div class="modal-background"></div>
+                            <div class="modal-card">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title" style="text-align: center;">
+                                        <strong>Registrar Pago: Otros Pagos</strong>
+                                    </p>
+                                    <button type="button" class="delete" aria-label="delete"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <p class="is-size-5" style="text-align: center;">
+                                        Los datos del pago del alumno son los siguientes:
+                                    </p>
+                                    <br>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-7">
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Nombre: </strong><%= alumno[0].Nombre %>
+                                                <%= alumno[0].Apellidos %>
+                                            </p>
+                                        </div>
+                                        <div class=" column is-5">
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Matricula: </strong><%= alumno[0].Matricula %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-half">
+                                            <p class="is-size-5" style="text-align: center;" id="motivo_modal">
+                                                <strong>Motivo: </strong> <%= pagos_extra[0].motivoPago %>
+                                            </p>
+                                        </div>
+                                        <div class=" column is-half">
+                                            <p class="is-size-5" style="text-align: center;" id="monto_modal">
+                                                <strong>Monto Pagado: </strong>
+                                                $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-4 is-offset-1" style="text-align: center;">
+                                            <label class="label is-medium">
+                                                Fecha de Pago:
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <p class="is-size-5" id="fecha_modal" name="fecha">
+                                                Execute Order 66
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-4 is-offset-1" style="text-align: center;">
+                                            <label class="label is-medium">
+                                                Método de Pago:
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <p class="is-size-5" id="metodo_modal">
+                                                Tarjeta en Oficina
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-4 is-offset-1" style="text-align: center;">
+                                            <label class="label is-medium">
+                                                Nota:
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <p class="is-size-5" id="nota_modal">
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <footer class="modal-card-foot" style="justify-content: center;">
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                                style="font-size: large; margin: 8px 2px;" type="button">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-circle-chevron-left"
+                                                        style="color: #ffffff;"></i>
+                                                </span>
+                                                <span>Regresar</span>
+                                            </button>
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-rounded is-medium is-responsive"
+                                                style="font-size: large; margin: 8px 2px; background-color: #000000;"
+                                                type="submit">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-cash-register" style="color: #ffffff;"></i>
+                                                </span>
+                                                <span>Registrar Pago</span>
+                                            </button>
+                                        </p>
+                                </footer>
+                            </div>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div id="pago_normal">
-            <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
-                <div class="columns is-vcentered">
-                    <div class="column is-4"></div>
-                    <div class="column is-5">
-                        <p class="is-size-5">
-                            <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                            <%= alumno[0].Apellidos %>
-                        </p>
-                    </div>
-                    <div class="column is-3">
-                        <p class="is-size-5">
-                            <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
-                        </p>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="motivo_col">Motivo: </label>
-                    </div>
-                    <div class="column is-5">
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
-                            style="padding: 0.5em; margin-top: -1em;">Por favor
-                            escribe un motivo del pago del alumno</p>
-                        <div class="field">
-                            <p class="control has-icons-left">
-                                <input name="motivo" class="input is-medium" type="text" id="motivo_col"
-                                    placeholder="Concepto del pago">
-                                <span class="icon is-small is-left">
-                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="monto_col">Monto:</label>
-                    </div>
-                    <div class="column is-5">
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
-                            style="padding: 0.5em; margin-top: -1em;">
-                            Por favor
-                            escribe un monto válido del Pago</p>
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                            style="padding: 0.5em; margin-top: -1em;">Por
-                            favor escribe un número mayor a 0.</p>
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
-                            style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin exponente.</p>
-                        <div class="field">
-                            <p class="control has-icons-left">
-                                <input name="monto" class="input is-medium" type="number" step="any" id="monto_col"
-                                    placeholder="Monto pagado">
-                                <span class="icon is-small is-left">
-                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="fechapago_col">Fecha de Pago:</label>
-                    </div>
-                    <div class="column is-5">
-                        <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="metodo_col">Método de Pago: </label>
-                    </div>
-                    <div class="column is-5">
-                        <div class="control has-icons-left">
-                            <div class="select is-medium" style="width: 110%;">
-                                <select name="metodo" id="metodo_col" style="width: 110%;">
-                                    <option value="Tarjeta Terminal">
-                                        Tarjeta Terminal
-                                    </option>
-                                    <option value="Efectivo">
-                                        Efectivo
-                                    </option>
-                                    <option value="Transferencia">
-                                        Transferencia
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="icon is-medium is-left">
-                                <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="nota_col">Nota: </label>
-                    </div>
-                    <div class="column is-5">
-                        <textarea name="nota" id="nota_col" class="input is-medium"
-                            placeholder="Escribe tu nota aquí."></textarea>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-5"></div>
-                    <div class="column is-6">
-                        <button class="js-modal-trigger button is-rounded is-medium is-responsive" type="button"
-                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar_pago_extra_col"
-                            data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
-                            <span>Registrar Pago</span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-                <div id="modal-confirmar-registro_colegiatura" class="modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-card">
-                        <header class="modal-card-head">
-                            <p class="modal-card-title" style="text-align: center;">
-                                <strong>Registrar Pago: Colegiatura</strong>
-                            </p>
-                            <button type="button" class="delete" aria-label="delete"></button>
-                        </header>
-                        <section class="modal-card-body">
-                            <p class="is-size-5" style="text-align: center;">
-                                Los datos del pago del alumno son los siguientes:
-                            </p>
-                            <br>
-                            <div class="columns is-vcentered">
-                                <div class="column is-7">
-                                    <p class="is-size-5" style="text-align: center;">
-                                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                                        <%= alumno[0].Apellidos %>
-                                    </p>
-                                </div>
-                                <div class=" column is-5">
-                                    <p class="is-size-5" style="text-align: center;">
-                                        <strong>Matricula: </strong><%= alumno[0].Matricula %>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-half">
-                                    <p class="is-size-5" style="text-align: center;" id="motivo_modal_col">
-                                        <strong>Motivo: </strong> Motivo
-                                    </p>
-                                </div>
-                                <div class=" column is-half">
-                                    <p class="is-size-5" style="text-align: center;" id="monto_modal_col">
-                                        <strong>Monto Pagado: </strong>
-                                        Monto
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Fecha de Pago:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="fecha_modal_col" name="fecha">
-                                        Execute Order 66
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Método de Pago:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="metodo_modal_col">
-                                        Tarjeta Terminal
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Nota:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="nota_modal_col">
-
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-                        <footer class="modal-card-foot" style="justify-content: center;">
-                            <div class="field is-grouped">
-                                <p class="control">
-                                    <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                                        style="font-size: large; margin: 8px 2px;" type="button">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Regresar</span>
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-rounded is-medium is-responsive"
-                                        style="font-size: large; margin: 8px 2px; background-color: #000000;"
-                                        type="submit">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-cash-register" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Registrar Pago</span>
-                                    </button>
-                                </p>
-                        </footer>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div id="pago_extra" class="is-hidden">
-            <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
-                <div class="columns is-vcentered">
-                    <div class="column is-4"></div>
-                    <div class="column is-5">
-                        <p class="is-size-5">
-                            <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                            <%= alumno[0].Apellidos %>
-                        </p>
-                    </div>
-                    <div class="column is-5">
-                        <p class="is-size-5">
-                            <strong>Matrícula: </strong> <%= alumno[0].Matricula %>
-                        </p>
-                    </div>
-                </div>
-                <div class="columns is-vcentered">
-                    <div class="column is-4"></div>
-                    <div class="column is-5">
-                        <label class="label is-medium" for="pago">Pagos Extra:</label>
-                        <div class="control has-icons-left">
-                            <div class="select is-medium">
-                                <select name="pago" id="pago">
-                                    <% for (let pago of pagos_extra) { %>
-                                    <option value="<%= pago.IDPagosExtras %>"
-                                        data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
-                                        <%= pago.motivoPago %></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                            <div class="icon is-medium is-left">
-                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column is-narrow">
-                        <p class="is-size-5" id="monto">
-                            <strong>Monto: </strong>
-                            $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
-                        </p>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
-                    </div>
-                    <div class="column is-5">
-                        <input name="fecha" id="fechapago" class="input is-medium" type="date">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="metodo">Método de Pago: </label>
-                    </div>
-                    <div class="column is-5">
-                        <div class="control has-icons-left">
-                            <div class="select is-medium" style="width: 110%;">
-                                <select name="metodo" id="metodo" style="width: 110%;">
-                                    <option value="Tarjeta Terminal">
-                                        Tarjeta Terminal
-                                    </option>
-                                    <option value="Efectivo">
-                                        Efectivo
-                                    </option>
-                                    <option value="Transferencia">
-                                        Transferencia
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="icon is-medium is-left">
-                                <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-3">
-                        <label class="label is-medium" for="nota">Nota: </label>
-                    </div>
-                    <div class="column is-5">
-                        <textarea name="nota" id="nota" class="input is-medium"
-                            placeholder="Escribe tu nota aquí."></textarea>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-5"></div>
-                    <div class="column is-6">
-                        <button class="js-modal-trigger button is-rounded is-medium is-responsive" type="button"
-                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar_pago_extra"
-                            data-target="modal-confirmar-registro_extra" type="button">
-                            <span>Registrar Pago</span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-                <div id="modal-confirmar-registro_extra" class="modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-card">
-                        <header class="modal-card-head">
-                            <p class="modal-card-title" style="text-align: center;">
-                                <strong>Registrar Pago: Otros Pagos</strong>
-                            </p>
-                            <button type="button" class="delete" aria-label="delete"></button>
-                        </header>
-                        <section class="modal-card-body">
-                            <p class="is-size-5" style="text-align: center;">
-                                Los datos del pago del alumno son los siguientes:
-                            </p>
-                            <br>
-                            <div class="columns is-vcentered">
-                                <div class="column is-7">
-                                    <p class="is-size-5" style="text-align: center;">
-                                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                                        <%= alumno[0].Apellidos %>
-                                    </p>
-                                </div>
-                                <div class=" column is-5">
-                                    <p class="is-size-5" style="text-align: center;">
-                                        <strong>Matricula: </strong><%= alumno[0].Matricula %>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-half">
-                                    <p class="is-size-5" style="text-align: center;" id="motivo_modal">
-                                        <strong>Motivo: </strong> <%= pagos_extra[0].motivoPago %>
-                                    </p>
-                                </div>
-                                <div class=" column is-half">
-                                    <p class="is-size-5" style="text-align: center;" id="monto_modal">
-                                        <strong>Monto Pagado: </strong>
-                                        $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Fecha de Pago:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="fecha_modal" name="fecha">
-                                        Execute Order 66
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Método de Pago:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="metodo_modal">
-                                        Tarjeta en Oficina
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="columns is-vcentered">
-                                <div class="column is-4 is-offset-1" style="text-align: center;">
-                                    <label class="label is-medium">
-                                        Nota:
-                                    </label>
-                                </div>
-                                <div class="column">
-                                    <p class="is-size-5" id="nota_modal">
-
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-                        <footer class="modal-card-foot" style="justify-content: center;">
-                            <div class="field is-grouped">
-                                <p class="control">
-                                    <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                                        style="font-size: large; margin: 8px 2px;" type="button">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Regresar</span>
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-rounded is-medium is-responsive"
-                                        style="font-size: large; margin: 8px 2px; background-color: #000000;"
-                                        type="submit">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-cash-register" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>Registrar Pago</span>
-                                    </button>
-                                </p>
-                        </footer>
-                    </div>
-            </form>
         </div>
     </div>
 </section>
@@ -493,6 +602,13 @@
         // Poner la tabla con solicitudes
         const pago_extra = document.querySelector('#pago_extra');
         pago_extra.classList.remove('is-hidden');
+
+        // Mover la info que se enseña
+        const info_pago_normal = document.querySelector('#info_pago_normal');
+        info_pago_normal.classList.add('is-hidden');
+
+        const info_pago_extra = document.querySelector('#info_pago_extra');
+        info_pago_extra.classList.remove('is-hidden');
     }
 
     function pago_normal() {
@@ -510,6 +626,13 @@
         // Quitar la tabla con solicitudes
         const pago_extra = document.querySelector('#pago_extra');
         pago_extra.classList.add('is-hidden');
+
+        // Mover la info que se enseña
+        const info_pago_normal = document.querySelector('#info_pago_normal');
+        info_pago_normal.classList.remove('is-hidden');
+
+        const info_pago_extra = document.querySelector('#info_pago_extra');
+        info_pago_extra.classList.add('is-hidden');
     }
 
     // Initialize all input of date type.
@@ -565,7 +688,9 @@
 
     // Agregas el event listener de la nota para ponerlo en el modal
     nota.addEventListener('input', cambiar_nota_modal);
-    nota_col.addEventListener('input', cambiar_nota_modal_col);
+    if (nota_col) {
+        nota_col.addEventListener('input', cambiar_nota_modal_col);
+    }
 
 
     // Para modificar la fecha en el modal haces lo siguiente:
@@ -586,8 +711,11 @@
 
     window.addEventListener('load', cambiar_fecha_modal);
     boton_pago_extra.addEventListener('click', cambiar_fecha_modal);
-    window.addEventListener('load', cambiar_fecha_modal_col);
-    boton_pago_extra_col.addEventListener('click', cambiar_fecha_modal_col);
+
+    if (fecha_col) {
+        window.addEventListener('load', cambiar_fecha_modal_col);
+        boton_pago_extra_col.addEventListener('click', cambiar_fecha_modal_col);
+    }
 
     // Crear constantes para acceder a HTML
     const motivo = document.querySelector('#motivo_col');
@@ -599,11 +727,9 @@
 
     function cambiar_motivo_monto_modal() {
         document.querySelector('#motivo_modal_col').innerHTML = '<strong>Motivo: </strong>' + motivo.value;
-        document.querySelector('#monto_modal_col').innerHTML = '<strong>Monto Pagado: </strong> $' + monto.value
+        document.querySelector('#monto_modal_col').innerHTML = '<strong>Monto Pagado: </strong> $' +
+        monto.value;
     };
-
-    monto.addEventListener('input', cambiar_motivo_monto_modal);
-    motivo.addEventListener('input', cambiar_motivo_monto_modal);
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
@@ -642,9 +768,34 @@
             ayuda_monto_exponente.classList.add('is-hidden');
         }
     }
+
     // Detectar si el usuario maneja input y llamar las funciones anteriores
-    motivo.addEventListener('input', checar_contenido);
-    monto.addEventListener('input', checar_contenido);
-    motivo.addEventListener('input', mensaje_motivo);
-    monto.addEventListener('input', mensaje_monto);
+    // Agregar event listener solo si existe el elemento
+    if (monto) {
+        monto.addEventListener('input', cambiar_motivo_monto_modal);
+        monto.addEventListener('input', mensaje_monto);
+        monto.addEventListener('input', checar_contenido);
+    }
+    
+    if (motivo) {
+        motivo.addEventListener('input', cambiar_motivo_monto_modal);
+        motivo.addEventListener('input', checar_contenido);
+        motivo.addEventListener('input', mensaje_motivo);
+    }
+
+    const notificacion_no_colegiatura = document.querySelector('#btn_no_colegiatura');
+
+    if (notificacion_no_colegiatura) {
+        notificacion_no_colegiatura.addEventListener('click', () => {
+            document.getElementById('no_colegiatura').classList.add('is-hidden');
+        });
+    };
+
+    const notificacion_no_diplomado = document.querySelector('#btn_cursa_diplomado');
+
+    if (notificacion_no_diplomado) {
+    notificacion_no_diplomado.addEventListener('click', () => {
+    document.getElementById('no_cursa_diplomado').classList.add('is-hidden');
+    });
+    };
 </script>
