@@ -45,11 +45,13 @@ const fileStorage = multer.diskStorage({
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
         //para que no haya problema si se suben 2 archivos con el mismo nombre concatenamos el timestamp
-        callback(null,Number(new Date()).toString() + file.originalname);
+        callback(null, Number(new Date()).toString() + file.originalname);
     },
 });
 
-app.use(multer({ storage: fileStorage }).single('archivo')); 
+app.use(multer({
+    storage: fileStorage
+}).single('archivo'));
 
 // Para proteger del Cross-Site Request Forgery
 const csrf = require('csurf');
@@ -63,8 +65,7 @@ const helmet = require("helmet");
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'",'code.jquery.com', 'ajax.googleapis.com'
-            ],
+            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com'],
             "script-src-attr": ["'unsafe-inline'"]
         },
     },
