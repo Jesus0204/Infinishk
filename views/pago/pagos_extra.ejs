@@ -155,6 +155,8 @@
             </article>
             <% } %>
 
+            <p class="is-hidden" id="pagosNoAsignados_length"><%= pagosNoAsignados.length %></p>
+
             <% for (let pago of pagosNoAsignados) { %>
             <table class="table is-hoverable is-fullwidth" id="<%= pago.IDPagosExtras %>">
                 <tbody>

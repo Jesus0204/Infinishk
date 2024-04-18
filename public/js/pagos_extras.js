@@ -32,7 +32,9 @@ function sin_solicitudes() {
     tabla_con_solicitudes.classList.add('is-hidden');
 }
 
-for (count = 0; count < '<%= pagosNoAsignados.length %>'; count++) {
+const pagosNoAsignados_length = document.getElementById('pagosNoAsignados_length');
+
+for (let count = 0; count < pagosNoAsignados_length.innerHTML; count++) {
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const motivo = document.querySelector('#motivo' + count);
@@ -44,8 +46,7 @@ for (count = 0; count < '<%= pagosNoAsignados.length %>'; count++) {
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
-            monto.value === '0' || monto.value === '-0';
+        bt_Modificar.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
     }
 
     // Activar mensaje si el motivo no tiene input
@@ -65,9 +66,7 @@ for (count = 0; count < '<%= pagosNoAsignados.length %>'; count++) {
             ayuda_monto_vacio.classList.add('is-hidden');
         }
 
-        if (monto.value < 0) {
-            ayuda_monto_negativo.classList.remove('is-hidden');
-        } else if (monto.value === '0' || monto.value === '-0') {
+        if (parseFloat(monto.value) <= 0) {
             ayuda_monto_negativo.classList.remove('is-hidden');
         } else {
             ayuda_monto_negativo.classList.add('is-hidden');
