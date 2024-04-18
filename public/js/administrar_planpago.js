@@ -19,9 +19,10 @@ $(document).ready(function () {
             data: $(this).serialize(),
             success: function () {
                 // Buscar la notificación relacionada con el formulario enviado
-                var notificacion = $('.notificationPlanPago');
+                var notificacion = $('#notificationPlanPago');
 
                 mostrarNotificacionYRecargar(notificacion);
+                $('html, body').animate({ scrollTop: 0 }, 'slow'); // Desplazarse al inicio de la página
             },
             error: function () {
                 console.log('Error al enviar el formulario');
