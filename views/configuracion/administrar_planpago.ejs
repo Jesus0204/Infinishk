@@ -1,4 +1,20 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<style>
+    input:focus {
+    border: 2px solid #910106 !important
+    }
+
+
+    input:hover {
+    border: 2px solid #5a6581 !important;
+    }
+
+</style>
 
 <section class="section">
     <div class="container">
@@ -24,7 +40,7 @@
         </div>
 
             <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
-            <div id="modificacion_plan_pago" class="notificationPlanPago is-hidden"
+            <div id="notificationPlanPago" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
                 <button id="btn_eliminar_estatus" class="delete"></button>
                 ¡Plan de Pago Modificado! Recargando datos...
@@ -53,14 +69,17 @@
                                             <label class="label">Nombre del Plan: </label>
                                             <div class="control">
                                                 <input class="input" type="text" name="nombrePlan"
-                                                    id="nombre<%= count %>" value="<%= plan.nombrePlan %>" />
+                                                    id="nombre<%= count %>" value="<%= plan.nombrePlan %>"
+                                                    style="border: 2px solid
+                                                    #7c7f80;">
                                             </div>
                                         </div>
                                         <div class="field">
                                             <label class="label">Número de Pagos: </label>
                                             <div class="control">
-                                                <input class="input" type="text" name="numeroPagos"
-                                                    value="<%= plan.numeroPagos %>" readonly />
+                                                <input readonly class="input" type="text" name="numeroPagos"
+                                                    value="<%= plan.numeroPagos %>" style="border: 2px solid
+                                                    #7c7f80;">
                                             </div>
                                         </div>
                                         <div class="field">

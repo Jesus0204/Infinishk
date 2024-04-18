@@ -10,21 +10,9 @@ exports.get_administrar_planpago = (request, response, next) => {
            response.render('configuracion/administrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || []
-           });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-exports.get_modificar_planpago = (request, response, next) => {
-    PlanPago.fetchAll()
-        .then(([planpagos]) => {
-           response.render('configuracion/modificar_planpago',{
-                planpago: planpagos,
-                csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || []
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
            });
         })
         .catch((error) => {
@@ -54,7 +42,9 @@ exports.get_registrar_planpago = (request, response, next) => {
            response.render('configuracion/registrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || []
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
            });
         })
         .catch((error) => {
