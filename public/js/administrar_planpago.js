@@ -34,3 +34,29 @@ $(document).ready(function () {
         $(this).parent().addClass('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
     });
 });
+
+const planPagoLength = document.getElementById('planPagoLength');
+
+for (let count = 0; count < planPagoLength.innerHTML; count++) {
+
+    const bt_Aplicar = document.querySelector('#btn_aplicar_cambios' + count);
+    const nombre = document.querySelector('#nombre' + count);
+    const ayuda_nombre = document.querySelector('#ayuda_nombre' + count);
+
+    // Checar si hay contenido dentro del input, pata desactivar el boton
+    function checar_contenido() {
+        bt_Aplicar.disabled = nombre.value.length === 0;
+    }
+
+    // Activar mensaje si el motivo no tiene input
+    function mensaje_nombre() {
+        if (nombre.value.length === 0) {
+            ayuda_nombre.classList.remove('is-hidden');
+        } else {
+            ayuda_nombre.classList.add('is-hidden');
+        }
+    }
+
+    nombre.addEventListener('input', checar_contenido);
+    nombre.addEventListener('input', mensaje_nombre);
+}
