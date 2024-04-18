@@ -219,12 +219,21 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         await Colegiatura.update_transferencia(importe, idColegiatura)
         await Deuda.update_transferencia(importe_trans, idDeuda[0][0].IDDeuda)
         const deudaNext = await Deuda.fetchIDDeuda(matricula)
-        if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
-            await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
+
+        if (diferencia > 0) {
+
+            if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
+                await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
+            }
+
+            else {
+                await Alumno.update_credito(matricula,diferencia);
+            }
+
         }
     }
     else if (tipoPago === 'Pago de Diplomado') {
-        const idDiplomado = await Cursa.fetchDiplomado(matricula);
+        const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
         PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
     }
     else if (tipoPago === 'Pago a Registrar') {

@@ -13,4 +13,9 @@ module.exports = class Alumno {
         return db.execute('SELECT Nombre,Apellidos FROM alumno WHERE Matricula = ?',
         [matricula]);
     }
+
+    static update_credito(matricula, credito) {
+        return db.execute(`UPDATE alumno SET Credito = Credito + ?
+        WHERE Matricula = ?`, [credito, matricula]);
+    }
 }
