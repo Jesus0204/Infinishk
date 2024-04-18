@@ -65,18 +65,19 @@
                     </table>
                     <% } %>
                     <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
-                        <table class="table is-bordered Pago-de-Diplomado" style="color: #ffffff; margin-left: auto; margin-right: auto;">
-                            <caption class="is-size-5">
-                                <strong>
-                                    Diplomado:
-                                </strong>
-                            </caption>
-                            <tbody>
-                                <td>
-                                    <%= diplomado[0].nombreDiplomado %>
-                                </td>
-                            </tbody>
-                        </table>
+                    <table class="table is-bordered Pago-de-Diplomado"
+                        style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Diplomado:
+                            </strong>
+                        </caption>
+                        <tbody>
+                            <td>
+                                <%= diplomado[0].nombreDiplomado %>
+                            </td>
+                        </tbody>
+                    </table>
                     <% if (pagoDiplomado.length != 0) { %>
                     <table class="table is-bordered Pago-de-Diplomado"
                         style="color: #ffffff;margin-left: auto; margin-right: auto;">
@@ -102,51 +103,51 @@
                                 <%= pago.fechaPago %>
                             </td>
                         </tbody>
-                            <% } %>
+                        <% } %>
                     </table>
                     <% } %>
                     <% } %>
                     <% if (deuda.length == 0 && colegiatura.length != 0) { %>
-                        <div style="text-align: center;">
-                            <span>
-                                <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                            </span>
-                            <span class="is-size-5">
-                                <strong> 
-                                    Pagos Completos
-                                </strong>
-                            </span>
-                        </div>
+                    <div style="text-align: center;">
+                        <span>
+                            <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                        </span>
+                        <span class="is-size-5">
+                            <strong>
+                                Pagos Completos
+                            </strong>
+                        </span>
+                    </div>
                     <% } %>
                 </div>
                 <div id="info_pago_extra" class="is-hidden">
                     <% if (solicitudes.length != 0)  { %>
-                        <table class="table is-bordered Pago-Extra"
-                            style="color: #ffffff; margin-left: auto; margin-right: auto;">
-                            <caption class="is-size-5">
-                                <strong>
-                                    Pendientes:
-                                </strong>
-                            </caption>
-                            <thead>
-                                <th style="color: #ffffff">
-                                    Motivo
-                                </th>
-                                <th style="color: #ffffff">
-                                    Monto
-                                </th>
-                            </thead>
-                            <tbody>
-                                <% for (let solicitud of solicitudes) { %>
-                                    <td>
-                                        <%= solicitud.motivoPago %>
-                                    </td>
-                                    <td>
-                                        $<%= solicitud.montoPagar.toLocaleString('mx') %>
-                                    </td>
-                                <% } %>
-                            </tbody>
-                        </table>
+                    <table class="table is-bordered Pago-Extra"
+                        style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Pendientes:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Motivo
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto
+                            </th>
+                        </thead>
+                        <tbody>
+                            <% for (let solicitud of solicitudes) { %>
+                            <td>
+                                <%= solicitud.motivoPago %>
+                            </td>
+                            <td>
+                                $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                            </td>
+                            <% } %>
+                        </tbody>
+                    </table>
                     <% } %>
                 </div>
             </div>
@@ -175,7 +176,7 @@
                 <div id="pago_normal">
                     <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                     <% if (colegiatura.length != 0) { %>
-                        <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
+                    <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
                         <input type="hidden" name="IDColegiatura" value="<%= colegiatura[0].IDColegiatura %>">
                         <% } else if (diplomado.length != 0) { %>
                         <form action="/pagos/registrar_pago_manual/diplomado" method="POST">
@@ -193,19 +194,19 @@
                                         escribe un motivo del pago del alumno</p>
                                     <div class="field">
                                         <p class="control has-icons-left">
-                                            <% if (pago_col == true) { %> 
-                                                <input name="motivo" class="input is-medium" type="text" id="motivo_col"
-                                                    placeholder="Concepto del pago" value="Colegiatura" readonly>
-                                                <span class="icon is-small is-left">
-                                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                                </span>
+                                            <% if (pago_col == true) { %>
+                                            <input name="motivo" class="input is-medium" type="text" id="motivo_col"
+                                                placeholder="Concepto del pago" value="Colegiatura" readonly>
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                            </span>
                                             <% } else { %>
-                                                <input name="motivo" class="input is-medium" type="text" id="motivo_col"
-                                                    placeholder="Concepto del pago" value="Diplomado" readonly>
-                                                <span class="icon is-small is-left">
-                                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                                </span>
-                                            <% } %> 
+                                            <input name="motivo" class="input is-medium" type="text" id="motivo_col"
+                                                placeholder="Concepto del pago" value="Diplomado" readonly>
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                            </span>
+                                            <% } %>
                                         </p>
                                     </div>
                                 </div>
@@ -242,6 +243,9 @@
                                     <label class="label is-medium" for="fechapago_col">Fecha de Pago:</label>
                                 </div>
                                 <div class="column">
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_col"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor selecciona una fecha. </p>
                                     <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
                                 </div>
                             </div>
@@ -284,7 +288,7 @@
                                 <div class="column is-8">
                                     <button class="js-modal-trigger button is-rounded is-medium is-responsive"
                                         type="button" style="font-size: large; margin: 8px 2px;"
-                                        id="Boton_registrar_pago_extra_col"
+                                        id="boton_pago_col"
                                         data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
                                         <span>Registrar Pago</span>
                                         <span class="icon is-large">
@@ -299,9 +303,9 @@
                                     <header class="modal-card-head">
                                         <p class="modal-card-title" style="text-align: center;">
                                             <% if (alumno[0].Matricula[0] == 1) { %>
-                                                <strong>Registrar Pago: Colegiatura</strong>
+                                            <strong>Registrar Pago: Colegiatura</strong>
                                             <% } else if (alumno[0].Matricula[0] == 8) {%>
-                                                <strong>Registrar Pago: Diplomado</strong>
+                                            <strong>Registrar Pago: Diplomado</strong>
                                             <% } %>
                                         </p>
                                         <button type="button" class="delete" aria-label="delete"></button>
@@ -424,23 +428,24 @@
                                 <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
                             </div>
                             <div class="message-body" style="color:#ffffff;">
-                                Este alumno no tiene una colegiatura para el periodo <%= periodo[0].Nombre %>, por lo que no se puede
+                                Este alumno no tiene una colegiatura para el periodo <%= periodo[0].Nombre %>, por lo
+                                que no se puede
                                 registrar un pago de este tipo.
                             </div>
                         </article>
                         <% } else if (pago_col == true && deuda.length == 0) {%>
-                            <article id="no_colegiatura" class="message"
-                                style="background-color: #5a6581; color:#ffffff; text-align: center;">
-                                <div class="message-header"
-                                    style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                                    <p>No se puede registrar un pago a este alumno</p>
-                                    <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
-                                </div>
-                                <div class="message-body" style="color:#ffffff;">
-                                    Este alumno ya pago todas sus fichas de la colegiatura del periodo
-                                    <%= periodo[0].Nombre %>.
-                                </div>
-                            </article>
+                        <article id="no_colegiatura" class="message"
+                            style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                            <div class="message-header"
+                                style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                                <p>No se puede registrar un pago a este alumno</p>
+                                <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
+                            </div>
+                            <div class="message-body" style="color:#ffffff;">
+                                Este alumno ya pago todas sus fichas de la colegiatura del periodo
+                                <%= periodo[0].Nombre %>.
+                            </div>
+                        </article>
                         <% } %>
                 </div>
                 <div id="pago_extra" class="is-hidden">
@@ -477,6 +482,9 @@
                                 <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
                             </div>
                             <div class="column">
+                                <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_extra"
+                                    style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor selecciona una fecha. </p>
                                 <input name="fecha" id="fechapago" class="input is-medium" type="date">
                             </div>
                         </div>
@@ -587,7 +595,7 @@
                                         </div>
                                         <div class="column">
                                             <p class="is-size-5" id="metodo_modal">
-                                                Tarjeta en Oficina
+                                                Tarjeta Terminal
                                             </p>
                                         </div>
                                     </div>
@@ -756,15 +764,61 @@
 
     // Para modificar la fecha en el modal haces lo siguiente:
     const boton_pago_extra = document.querySelector('#Boton_registrar_pago_extra');
-    const boton_pago_extra_col = document.querySelector('#Boton_registrar_pago_extra_col');
+    const boton_pago_col = document.querySelector('#boton_pago_col');
 
     window.addEventListener('load', cambiar_fecha_modal);
     boton_pago_extra.addEventListener('click', cambiar_fecha_modal);
 
     if (fecha_col) {
         window.addEventListener('load', cambiar_fecha_modal_col);
-        boton_pago_extra_col.addEventListener('click', cambiar_fecha_modal_col);
+        boton_pago_col.addEventListener('click', cambiar_fecha_modal_col);
     }
+
+    function clear_button() {
+        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
+        ayuda_fecha.classList.remove('is-hidden');
+        boton_pago_col.disabled = true;
+    }
+
+    function clear_button_pago_extra() {
+        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_extra');
+        ayuda_fecha.classList.remove('is-hidden');
+        boton_pago_extra.disabled = true;
+    }
+
+    // Sacar los botones de clear para agregar validaciones
+    const clear = document.querySelectorAll('.datetimepicker-clear-button');
+    let count = 0;
+    clear.forEach((button) => {
+        if (count == 0) {
+            button.addEventListener('click', clear_button)
+        } else if (count == 1) {
+            button.addEventListener('click', clear_button_pago_extra)
+        }
+        count++;
+    })
+
+    function activate_clear_button(){
+        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
+        ayuda_fecha.classList.add('is-hidden');
+        boton_pago_col.disabled = false;
+    }
+
+    function activate_clear_button_pago_extra(){
+        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_extra');
+        ayuda_fecha.classList.add('is-hidden');
+        boton_pago_extra.disabled = false;
+    }
+
+    let count_activate = 0;
+    calendars.forEach((calendar) => {
+        if (count_activate == 0){
+            calendar.on('select', activate_clear_button);
+        } else if (count_activate == 1){
+            calendar.on('select', activate_clear_button_pago_extra);
+        }
+        count_activate++;
+    })
 
     // Crear constantes para acceder a HTML
     const motivo = document.querySelector('#motivo_col');
@@ -777,13 +831,13 @@
     function cambiar_motivo_monto_modal() {
         document.querySelector('#motivo_modal_col').innerHTML = '<strong>Motivo: </strong>' + motivo.value;
         document.querySelector('#monto_modal_col').innerHTML = '<strong>Monto Pagado: </strong> $' +
-        monto.value;
+            monto.value;
     };
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
-        boton_pago_extra_col.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
-            monto.value === '0' || monto.value === '-0';
+        boton_pago_col.disabled = motivo.value.length === 0 || monto.value.length === 0 ||
+            parseFloat(monto.value) <= 0 || monto.value.includes('e') || monto.value.includes('E');
     }
 
     // Activar mensaje si el motivo no tiene input
@@ -802,16 +856,13 @@
             ayuda_monto_vacio.classList.add('is-hidden');
         }
 
-        if (monto.value < 0) {
-            ayuda_monto_negativo.classList.remove('is-hidden');
-        } else if (monto.value === '0' || monto.value === '-0') {
+        if (parseFloat(monto.value) <= 0) {
             ayuda_monto_negativo.classList.remove('is-hidden');
         } else {
             ayuda_monto_negativo.classList.add('is-hidden');
         }
 
         if (monto.value.includes('e') || monto.value.includes('E')) {
-            boton_pago_extra_col.disabled = true;
             ayuda_monto_exponente.classList.remove('is-hidden');
         } else {
             ayuda_monto_exponente.classList.add('is-hidden');
@@ -825,7 +876,7 @@
         monto.addEventListener('input', mensaje_monto);
         monto.addEventListener('input', checar_contenido);
     }
-    
+
     if (motivo) {
         motivo.addEventListener('input', cambiar_motivo_monto_modal);
         motivo.addEventListener('input', checar_contenido);
@@ -843,8 +894,8 @@
     const notificacion_no_diplomado = document.querySelector('#btn_cursa_diplomado');
 
     if (notificacion_no_diplomado) {
-    notificacion_no_diplomado.addEventListener('click', () => {
-    document.getElementById('no_cursa_diplomado').classList.add('is-hidden');
-    });
+        notificacion_no_diplomado.addEventListener('click', () => {
+            document.getElementById('no_cursa_diplomado').classList.add('is-hidden');
+        });
     };
 </script>

@@ -93,7 +93,6 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
             Pago_Extra.fetchAll()
                 .then(async ([pagos_extra, fieldData]) => {
                     const [solicitudes_pendientes, fieldData_2] = await Liquida.fetch_Pendientes(matches[0]);
-                    console.log(solicitudes_pendientes);
                     const [periodoActivo, fieldData_3] = await Periodo.fetchActivo();
                     // Si es estudiante de colegiatura sacas la siguiente información
                     if (matches[0][0] == '1') {
