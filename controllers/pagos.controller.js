@@ -245,6 +245,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
     const fecha = request.body.fecha.split("/").reverse().join("-");
     const nota = request.body.nota;
     const metodo = request.body.metodo;
+    const matricula = request.body.matricula;
 
     Deuda.fetchNoPagadas(request.body.IDColegiatura)
     .then(async ([deudas_noPagadas, fieldData]) => {
@@ -256,11 +257,11 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
         for (let deuda of deudas_noPagadas) {
             if (monto_a_usar <= 0) {
                 break;
-            } else if (deuda.montoAPagar < monto_a_usar) {
+            } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
                 // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                await Deuda.update_Deuda(deuda.montoAPagar, deuda.IDDeuda);
-                await Colegiatura.update_Colegiatura(deuda.montoAPagar, request.body.IDColegiatura);
-            } else if (deuda.montoAPagar >= monto_a_usar) {
+                await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
+                await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
+            } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                 // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                 await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                 await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
@@ -268,6 +269,11 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
 
             // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
             monto_a_usar = monto_a_usar - deuda.montoAPagar;
+        }
+
+        // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
+        if (monto_a_usar > 0) {
+            await Alumno.update_credito(matricula, monto_a_usar);
         }
         response.redirect('/pagos/registrar_pago_manual');
     })
