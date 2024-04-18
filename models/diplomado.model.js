@@ -24,7 +24,7 @@ module.exports = class Diplomado{
     }
 
     static fetchAllInProgress() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE now()>fechainicio AND  now()<fechafin')
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)')
     }
 
     static fetchOne(nombre){
