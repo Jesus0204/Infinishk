@@ -36,7 +36,8 @@ router.get('/registrar_pago_manual', isAuth, can_RegistrarPagoManual, pagosContr
 router.get('/fetch_alumno/autocomplete/:valor_busqueda', isAuth, pagosController.get_autocomplete);
 router.get('/fetch_alumno/autocomplete/', isAuth, pagosController.get_autocomplete);
 router.post('/fetch_registrar_pago_manual', isAuth, can_RegistrarPagoManual, pagosController.post_fetch_registrar_pago_manual);
-router.post('/registrar_pago_manual/pago_extra', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_pago_extra)
+router.post('/registrar_pago_manual/pago_extra', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_pago_extra);
+router.post('/registrar_pago_manual/diplomado', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_diplomado);
 router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;

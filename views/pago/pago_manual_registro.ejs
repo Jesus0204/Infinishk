@@ -33,7 +33,8 @@
                 <br>
                 <div id="info_pago_normal">
                     <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
-                    <table class="table is-bordered Pago-de-Diplomado" style="color: #ffffff">
+                    <table class="table is-bordered Pago-de-Diplomado"
+                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
                             <strong>
                                 Ficha de Pago a registrar:
@@ -64,7 +65,19 @@
                     </table>
                     <% } %>
                     <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
-                    <% if (pagoDiplomado.length != 0) { %>
+                        <table class="table is-bordered Pago-de-Diplomado" style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                            <caption class="is-size-5">
+                                <strong>
+                                    Diplomado:
+                                </strong>
+                            </caption>
+                            <tbody>
+                                <td>
+                                    <%= diplomado[0].nombreDiplomado %>
+                                </td>
+                            </tbody>
+                        </table>
+                    <!-- <% if (pagoDiplomado.length != 0) { %>
                     <table class="table is-bordered">
                         <caption>
                             <strong>
@@ -90,7 +103,7 @@
                             <% } %>
                     </table>
                     <% } %>
-                    <% } %>
+                    <% } %> -->
                     <% if (deuda.length == 0 && colegiatura.length != 0) { %>
                         <div style="text-align: center;">
                             <span>

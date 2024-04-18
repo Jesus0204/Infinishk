@@ -1,6 +1,6 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
-const pagoDiplomado = require('../models/pagadiplomado.model');
+const Pago_Diplomado = require('../models/pagadiplomado.model');
 const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
@@ -217,4 +217,23 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
         .catch((error) => {
             console.log(error);
         });
+};
+
+exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
+    // Declaracion de variables a usar del body
+    const matricula = request.body.matricula;
+    const monto = request.body.monto;
+    const motivo = request.body.motivo;
+    const fecha = request.body.fecha.split("/").reverse().join("-");
+    const nota = request.body.nota;
+    const metodo = request.body.metodo;
+    const IDDiplomado = request.body.IDDiplomado;
+
+    Pago_Diplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
+    .then(([rows, fieldData]) => {
+        response.redirect('/pagos/registrar_pago_manual');
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 };
