@@ -120,23 +120,22 @@
             <% } else { %>
             <div class="container" style="display: flex; justify-content: center;">
                 <div class="content" style="width: 70%; margin-top: 50px;">
-                    <h1 class="title is-2 has-text-centered">Planes de Pago</h1>
                     <% planpago.forEach(plan=> { %>
                     <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-content">
-                                    <p class="title is-3 has-text-black">Nombre del Plan:</p>
-                                    <p class="subtitle is-3 has-text-grey">
+                                    <p class="title is-4 has-text-black">Nombre del Plan:</p>
+                                    <p class="subtitle is-4 has-text-grey">
                                         <%= plan.nombrePlan %>
                                     </p>
-                                    <p class="title is-3 has-text-black">Número de Pagos:</p>
-                                    <p class="subtitle is-3 has-text-grey">
+                                    <p class="title is-4 has-text-black">Número de Pagos:</p>
+                                    <p class="subtitle is-4 has-text-grey">
                                         <%= plan.numeroPagos %>
                                     </p>
 
-                                <p class="title is-3 has-text-black">Estado:</p>
-                                <p class="subtitle is-3 has-text-grey">
+                                <p class="title is-4 has-text-black">Estado:</p>
+                                <p class="subtitle is-4 has-text-grey">
                                     <% if (plan.planPagoActivo===1) { %>
                                     Activo
                                     <% } %>
