@@ -16,4 +16,10 @@ module.exports = class PlanPago{
     static fetchAll() {
         return db.execute('Select * from planpago')
     }
+
+    save() {
+        return db.execute(`INSERT INTO planpago (nombrePlan, numeroPagos, planPagoActivo) 
+        VALUES(?, ?, ?)        
+        `, [this.nombrePlan, this.numeroPagos, this.planPagoActivo]);
+    }
 }

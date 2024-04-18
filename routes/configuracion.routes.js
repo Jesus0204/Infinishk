@@ -15,10 +15,13 @@ const can_ModificarPlanPago = require('../util/privileges/admin/otros/can_modifi
 const can_RegistrarRol = require('../util/privileges/admin/registros/can_registrar_Rol');
 const can_ConsultarUsuario = require('../util/privileges/admin/consultas/can_consultar_Usuario');
 const can_RegistrarUsuario = require('../util/privileges/admin/registros/can_registrar_usuario');
+const can_registrar_PlanPago = require('../util/privileges/admin/registros/can_registrar_PlanPago');
 
 router.get('/administrar_planpago',isAuth,can_ConsultarPlanPago,configuracionController.get_administrar_planpago);
 router.get('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.get_modificar_planpago);
 router.post('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.post_modificar_planpago);
+router.get('/registrar_planpago',isAuth,can_registrar_PlanPago,configuracionController.get_registrar_planpago);
+
 
 
 module.exports = router;
