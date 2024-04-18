@@ -31,48 +31,47 @@
                         ¡Plan de Pago Modificado! Recargando datos...
                     </div>
                     <div class="content" style="width: 70%; margin-top: 50px;">
-                        <% planpago.forEach(plan=> { %>
+                        <% planpago.forEach((plan, index)=> { %>
                             <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
                                 <div class="card-content">
                                     <div class="media">
                                         <div class="media-content">
-                                            <form class="formModificarPlanPago" action="/configuracion/modificar_planpago" method="POST">
-                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                                <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
-                                                <div class="field">
-                                                    <label class="label">Nombre del Plan</label>
-                                                    <div class="control">
-                                                        <input required class="input" type="text" name="nombrePlan"
-                                                            value="<%= plan.nombrePlan %>" />
+                                            <form id="formModificarPlanPago<%= index %>" class="formModificarPlanPago"
+                                                action="/configuracion/modificar_planpago" method="POST"></form>
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
+                                            <div class="field">
+                                                <label class="label">Nombre del Plan</label>
+                                                <div class="control">
+                                                    <input required class="input" type="text" name="nombrePlan"
+                                                        id="nombrePlan<%= index %>" value="<%= plan.nombrePlan %>" />
+                                                    <span id="errorNombre<%= index %>" class="help is-danger"
+                                                        style="display: none;">Por favor rellena el nombre</span>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label">Número de Pagos</label>
+                                                <div class="control">
+                                                    <input class="input" type="text" name="numeroPagos"
+                                                        value="<%= plan.numeroPagos %>" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label">Estado</label>
+                                                <div class="control">
+                                                    <div class="select">
+                                                        <select name="planPagoActivo">
+                                                            <option value="1" <% if (plan.planPagoActivo===1) { %>
+                                                                selected <% } %>>Activo</option>
+                                                            <option value="0" <% if (plan.planPagoActivo !==1) { %>
+                                                                selected <% } %>>No Activo</option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="field">
-                                                    <label class="label">Número de Pagos</label>
-                                                    <div class="control">
-                                                        <input class="input" type="text" name="numeroPagos"
-                                                            value="<%= plan.numeroPagos %>" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <label class="label">Estado</label>
-                                                    <div class="control">
-                                                        <div class="select">
-                                                            <select name="planPagoActivo">
-                                                                <option value="1" <% if (plan.planPagoActivo===1) { %>
-                                                                    selected
-                                                                    <% } %>>Activo
-                                                                </option>
-                                                                <option value="0" <% if (plan.planPagoActivo !==1) { %>
-                                                                    selected
-                                                                    <% } %>>No Activo
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button id="btn_aplicar_cambios" type="submit"
-                                                    class="button is-large is-rounded is-responsive">Aplicar
-                                                    cambios</button>
+                                            </div>
+                                            <button id="btn_aplicar_cambios<%= index %>" type="submit"
+                                                class="button is-large is-rounded is-responsive" disabled>Aplicar
+                                                cambios</button>
                                             </form>
                                         </div>
                                     </div>
@@ -121,42 +120,60 @@
                     </div>
                     <% } %>
 
-                    <script>
-                        $(document).ready(function () {
-                            // Función para mostrar la notificación y recargar la página
-                            function mostrarNotificacionYRecargar(notificacion) {
-                                $(notificacion).removeClass('is-hidden'); // Mostrar notificación
-                    
-                                // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
-                                setTimeout(function () {
-                                    window.location.reload(); // Recargar la página
-                                }, 1500);
-                            }
-                    
-                            // Mostrar la notificación y recargar la página después de enviar un formulario
-                            $('.formModificarPlanPago').submit(function (event) {
-                                event.preventDefault(); // Evitar que el formulario se envíe automáticamente
-                    
-                                $.ajax({
-                                    type: 'POST',
-                                    url: $(this).attr('action'), // Obtener la URL del formulario actual
-                                    data: $(this).serialize(),
-                                    success: function () {
-                                        // Buscar la notificación relacionada con el formulario enviado
-                                        var notificacion = $('.notificationPlanPago');
-                    
-                                        mostrarNotificacionYRecargar(notificacion);
-                                    },
-                                    error: function () {
-                                        console.log('Error al enviar el formulario');
+                        <script>
+
+                            $(document).ready(function () {
+                                // Función para verificar el estado del botón al ingresar o borrar texto en el campo de nombre
+                                $('input[name="nombrePlan"]').on('input', function () {
+                                    var form = $(this).closest('form');
+                                    var errorNombre = $(this).siblings('.help.is-danger');
+                                    var submitButton = form.find('button[type="submit"]');
+                                    var nombrePlanValue = $(this).val().trim();
+
+                                    if (nombrePlanValue === '') {
+                                        errorNombre.show(); // Mostrar el mensaje de error
+                                        submitButton.prop('disabled', true); // Desactivar el botón de enviar
+                                    } else {
+                                        errorNombre.hide(); // Ocultar el mensaje de error
+                                        submitButton.prop('disabled', false); // Habilitar el botón de enviar
                                     }
                                 });
                             });
-                    
-                            // Cerrar notificación al hacer clic en el botón eliminar
-                            $('.delete').click(function () {
-                                $(this).parent().addClass('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
+
+                            $(document).ready(function () {
+                                // Función para mostrar la notificación y recargar la página
+                                function mostrarNotificacionYRecargar(notificacion) {
+                                    $(notificacion).removeClass('is-hidden'); // Mostrar notificación
+
+                                    // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
+                                    setTimeout(function () {
+                                        window.location.reload(); // Recargar la página
+                                    }, 1500);
+                                }
+
+                                // Mostrar la notificación y recargar la página después de enviar un formulario
+                                $('.formModificarPlanPago').submit(function (event) {
+                                    event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: $(this).attr('action'), // Obtener la URL del formulario actual
+                                        data: $(this).serialize(),
+                                        success: function () {
+                                            // Buscar la notificación relacionada con el formulario enviado
+                                            var notificacion = $('.notificationPlanPago');
+
+                                            mostrarNotificacionYRecargar(notificacion);
+                                        },
+                                        error: function () {
+                                            console.log('Error al enviar el formulario');
+                                        }
+                                    });
+                                });
+
+                                // Cerrar notificación al hacer clic en el botón eliminar
+                                $('.delete').click(function () {
+                                    $(this).parent().addClass('is-hidden'); // Ocultar notificación al hacer clic en el botón eliminar
+                                });
                             });
-                        });
-                    </script>
-                    
+                        </script>
