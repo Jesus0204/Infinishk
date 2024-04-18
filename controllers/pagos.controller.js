@@ -100,7 +100,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
 
                         // Si existe sacas la información de la deuda
                         if (infoColegiatura.length != 0) {
-                            const [infoDeuda, fieldData_2] = await Colegiatura.fetchNoPagadas(infoColegiatura[0].IDColegiatura);
+                            const [infoDeuda, fieldData_2] = await Deuda.fetchNoPagadas(infoColegiatura[0].IDColegiatura);
 
                             // Conviertes la fecha si existe
                             for (let count = 0; count < infoDeuda.length; count++) {
@@ -236,4 +236,42 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
     .catch((error) => {
         console.log(error);
     });
+};
+
+exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
+    // Declaracion de variables a usar del body
+    const monto = request.body.monto;
+    const motivo = request.body.motivo;
+    const fecha = request.body.fecha.split("/").reverse().join("-");
+    const nota = request.body.nota;
+    const metodo = request.body.metodo;
+
+    Deuda.fetchNoPagadas(request.body.IDColegiatura)
+    .then(async ([deudas_noPagadas, fieldData]) => {
+        // Guardas el pago completo del alumno
+        await Pago.save_pago_manual(deudas_noPagadas[0].IDDeuda, motivo, monto, nota, metodo, fecha)
+        
+        // El monto inicial a usar es lo que el usuario decidió
+        let monto_a_usar = request.body.monto;
+        for (let deuda of deudas_noPagadas) {
+            if (monto_a_usar <= 0) {
+                break;
+            } else if (deuda.montoAPagar < monto_a_usar) {
+                // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                await Deuda.update_Deuda(deuda.montoAPagar, deuda.IDDeuda);
+                await Colegiatura.update_Colegiatura(deuda.montoAPagar, request.body.IDColegiatura);
+            } else if (deuda.montoAPagar >= monto_a_usar) {
+                // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
+                await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
+            }
+
+            // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
+            monto_a_usar = monto_a_usar - deuda.montoAPagar;
+        }
+        response.redirect('/pagos/registrar_pago_manual');
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 };

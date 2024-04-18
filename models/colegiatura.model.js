@@ -15,6 +15,12 @@ module.exports = class Colegiatura{
         [monto, idcolegiatura]);
     }
 
+    static update_Colegiatura(monto_a_usar, idColegiatura){
+        return db.execute(`UPDATE Colegiatura 
+        SET montoPagadoTotal = montoPagadoTotal + ?  
+        WHERE IDColegiatura = ?`, [monto_a_usar, idColegiatura]);
+    }
+
     static fetchColegiaturaActiva(matricula) {
         return db.execute(`SELECT DISTINCT(C.IDColegiatura), P.Nombre
         FROM Colegiatura AS C, Deuda AS D, Periodo AS P
@@ -22,10 +28,5 @@ module.exports = class Colegiatura{
         AND C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = '1'
         AND D.Matricula = ?`, [matricula]);
     }
-
-    static fetchNoPagadas(IDColegiatura){
-        return db.execute(`SELECT IDDeuda, (montoAPagar - Descuento) AS 'montoAPagar', 
-        fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
-        AND IDColegiatura = ? `,[IDColegiatura]);
-    }
+    
 };

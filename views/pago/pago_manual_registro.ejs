@@ -37,7 +37,7 @@
                         style="color: #ffffff;  margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
                             <strong>
-                                Ficha de Pago a registrar:
+                                Ficha de Pago actual:
                             </strong>
                         </caption>
                         <thead>
@@ -77,7 +77,7 @@
                                 </td>
                             </tbody>
                         </table>
-                    <!-- <% if (pagoDiplomado.length != 0) { %>
+                    <% if (pagoDiplomado.length != 0) { %>
                     <table class="table is-bordered">
                         <caption>
                             <strong>
@@ -103,7 +103,7 @@
                             <% } %>
                     </table>
                     <% } %>
-                    <% } %> -->
+                    <% } %>
                     <% if (deuda.length == 0 && colegiatura.length != 0) { %>
                         <div style="text-align: center;">
                             <span>
@@ -148,7 +148,8 @@
                 <div id="pago_normal">
                     <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                     <% if (colegiatura.length != 0) { %>
-                    <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
+                        <form action="/pagos/registrar_pago_manual/colegiatura" method="POST">
+                        <input type="hidden" name="IDColegiatura" value="<%= colegiatura[0].IDColegiatura %>">
                         <% } else if (diplomado.length != 0) { %>
                         <form action="/pagos/registrar_pago_manual/diplomado" method="POST">
                             <input type="hidden" name="IDDiplomado" value="<%= diplomado[0].IDDiplomado %>">
