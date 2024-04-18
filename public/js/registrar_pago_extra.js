@@ -9,8 +9,8 @@ const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
 
 // Checar si hay contenido dentro del input, pata desactivar el boton
 function checar_contenido() {
-    bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 ||
-        monto.value === '0' || monto.value === '-0';
+    bt_Registrar.disabled = motivo.value.length === 0 || monto.value.length === 0 || monto.value < 0 
+    || parseFloat(monto.value) <= 0;
 }
 
 // Activar mensaje si el motivo no tiene input
@@ -29,9 +29,7 @@ function mensaje_monto() {
         ayuda_monto_vacio.classList.add('is-hidden');
     }
 
-    if (monto.value < 0) {
-        ayuda_monto_negativo.classList.remove('is-hidden');
-    } else if (monto.value === '0' || monto.value === '-0') {
+    if (parseFloat(monto.value) <= 0) {
         ayuda_monto_negativo.classList.remove('is-hidden');
     } else {
         ayuda_monto_negativo.classList.add('is-hidden');
