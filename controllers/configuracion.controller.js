@@ -47,7 +47,6 @@ exports.get_consultar_usuario = (request, response, next) => {
 
 exports.get_search_activo = (request, response, next) => {
     const consulta = request.query.q;
-    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
     Usuario.buscar(consulta) // Búsqueda de usuarios
         .then(([usuarios]) => {
             response.json(usuarios);
@@ -59,7 +58,6 @@ exports.get_search_activo = (request, response, next) => {
 
 exports.get_search_noactivo = (request, response, next) => {
     const consulta = request.query.q;
-    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
     Usuario.buscarNoActivos(consulta)// Búsqueda de usuarios
         .then(([usuarios]) => {
             response.json(usuarios);
