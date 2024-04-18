@@ -80,11 +80,10 @@ exports.post_registrar_planpago = (request, response, next) => {
 
     PlanPago.save(nombre,numero,activo)
         .then(([planespago, fieldData]) => {
-            // Aquí puedes enviar una respuesta JSON indicando éxito
-            response.json({ success: true });
+            response.redirect('/configuracion/administrar_planpago');
         })
         .catch((error) => {
             console.log(error);
-            response.status(500).json({ success: false, error: 'Error al modificar el plan de pago' });
+            response.status(500).json({ success: false, error: 'Error al registrar el plan de pago' });
         });
 }
