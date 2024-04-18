@@ -31,45 +31,48 @@
                         ¡Plan de Pago Modificado! Recargando datos...
                     </div>
                     <div class="content" style="width: 70%; margin-top: 50px;">
-                        <% planpago.forEach((plan, index)=> { %>
+                        <% planpago.forEach(plan=> { %>
                             <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
                                 <div class="card-content">
                                     <div class="media">
                                         <div class="media-content">
-                                            <form id="formModificarPlanPago" class="formModificarPlanPago"
-                                                action="/configuracion/modificar_planpago" method="POST"></form>
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
-                                            <div class="field">
-                                                <label class="label">Nombre del Plan</label>
-                                                <div class="control">
-                                                    <input required class="input" type="text" name="nombrePlan"
-                                                        id="nombrePlan" value="<%= plan.nombrePlan %>" />
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label">Número de Pagos</label>
-                                                <div class="control">
-                                                    <input class="input" type="text" name="numeroPagos"
-                                                        value="<%= plan.numeroPagos %>" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label">Estado</label>
-                                                <div class="control">
-                                                    <div class="select">
-                                                        <select name="planPagoActivo">
-                                                            <option value="1" <% if (plan.planPagoActivo===1) { %>
-                                                                selected <% } %>>Activo</option>
-                                                            <option value="0" <% if (plan.planPagoActivo !==1) { %>
-                                                                selected <% } %>>No Activo</option>
-                                                        </select>
+                                            <form class="formModificarPlanPago" action="/configuracion/modificar_planpago" method="POST">
+                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                                <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>" />
+                                                <div class="field">
+                                                    <label class="label">Nombre del Plan</label>
+                                                    <div class="control">
+                                                        <input required class="input" type="text" name="nombrePlan"
+                                                            value="<%= plan.nombrePlan %>" />
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <button id="btn_aplicar_cambios<%= index %>" type="submit"
-                                                class="button is-large is-rounded is-responsive">Aplicar
-                                                cambios</button>
+                                                <div class="field">
+                                                    <label class="label">Número de Pagos</label>
+                                                    <div class="control">
+                                                        <input class="input" type="text" name="numeroPagos"
+                                                            value="<%= plan.numeroPagos %>" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <label class="label">Estado</label>
+                                                    <div class="control">
+                                                        <div class="select">
+                                                            <select name="planPagoActivo">
+                                                                <option value="1" <% if (plan.planPagoActivo===1) { %>
+                                                                    selected
+                                                                    <% } %>>Activo
+                                                                </option>
+                                                                <option value="0" <% if (plan.planPagoActivo !==1) { %>
+                                                                    selected
+                                                                    <% } %>>No Activo
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button id="btn_aplicar_cambios" type="submit"
+                                                    class="button is-large is-rounded is-responsive">Aplicar
+                                                    cambios</button>
                                             </form>
                                         </div>
                                     </div>

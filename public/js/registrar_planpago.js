@@ -35,6 +35,9 @@ function checkPlanExists() {
                 document.getElementById('btn_aplicar_cambios').disabled = true;
                 document.getElementById('numeroPagos').disabled = true;
             }
+            else {
+                document.getElementById('numeroPagos').disabled = false;
+            }
         }
     };
     xmlhttp.open("GET", "/configuracion/check_planpago?nombre=" + encodeURIComponent(nombre), true);
