@@ -790,12 +790,16 @@
     const clear = document.querySelectorAll('.datetimepicker-clear-button');
     let count = 0;
     clear.forEach((button) => {
-        if (count == 0) {
-            button.addEventListener('click', clear_button)
-        } else if (count == 1) {
+        if (clear.length == 2) {
+            if (count == 0) {
+                button.addEventListener('click', clear_button)
+            } else if (count == 1) {
+                button.addEventListener('click', clear_button_pago_extra)
+            }
+            count++;
+        } else if (clear.length == 1) {
             button.addEventListener('click', clear_button_pago_extra)
         }
-        count++;
     })
 
     function activate_clear_button(){
@@ -812,12 +816,16 @@
 
     let count_activate = 0;
     calendars.forEach((calendar) => {
-        if (count_activate == 0){
-            calendar.on('select', activate_clear_button);
-        } else if (count_activate == 1){
+        if (clear.length == 2) {
+            if (count_activate == 0){
+                calendar.on('select', activate_clear_button);
+            } else if (count_activate == 1){
+                calendar.on('select', activate_clear_button_pago_extra);
+            }
+            count_activate++;
+        } else if (clear.length == 1) {
             calendar.on('select', activate_clear_button_pago_extra);
         }
-        count_activate++;
     })
 
     // Crear constantes para acceder a HTML
