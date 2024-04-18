@@ -70,6 +70,21 @@ exports.get_registrar_planpago = (request, response, next) => {
         });
 };
 
+exports.get_check_plan = (request, response, next) => {
+    const nombre = request.query.nombre;
+    PlanPago.fetchOne(nombre)
+        .then(([planpagos]) => {
+            if (planpagos.length > 0) {
+                response.json({ exists: true });
+            } else {
+                response.json({ exists: false });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
 exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;

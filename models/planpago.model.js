@@ -22,4 +22,8 @@ module.exports = class PlanPago{
         VALUES(?, ?, ?)        
         `, [nombrePlan, numeroPagos, planPagoActivo]);
     }
+
+    static fetchOne(nombre){
+        return db.execute('Select * from planpago WHERE nombrePlan = ?',[nombre]);
+    }
 }

@@ -1,76 +1,72 @@
 <%- include('../includes/head.ejs') %>
 
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-6">
-                <h3 class="title is-3" style="margin-bottom: 0;">Registrar Plan de Pago</h3>
-            </div>
-            <div class="column is-offset-2">
-                <p class="control" style="margin-bottom: 0;">
-                    <a class="button is-rounded is-responsive" style="font-size: large;"
-                        href="/configuracion/administrar_planpago">
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </span>
-                        <span>
-                            Volver a Administrar Planes de Pago
-                        </span>
-                    </a>
-                </p>
-            </div>
-        </div>
-
-        <div class="container" style="display: flex; justify-content: center;">
-            <div id="modificacion_plan_pago" class="notificationPlanPago is-hidden"
-                style="background-color: #5a6581; color:#ffffff;">
-                <button id="btn_eliminar_estatus" class="delete"></button>
-                ¡Plan de Pago Registrado! Recargando datos...
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-6">
+                    <h3 class="title is-3" style="margin-bottom: 0;">Registrar Plan de Pago</h3>
+                </div>
+                <div class="column is-offset-2">
+                    <p class="control" style="margin-bottom: 0;">
+                        <a class="button is-rounded is-responsive" style="font-size: large;"
+                            href="/configuracion/administrar_planpago">
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </span>
+                            <span>
+                                Volver a Administrar Planes de Pago
+                            </span>
+                        </a>
+                    </p>
+                </div>
             </div>
 
-            <div class="content" style="width: 70%; margin-top: 50px;">
-                <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <form class="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
-                                    method="POST">
-                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <div class="field">
-                                        <label class="label">Nombre del Plan</label>
-                                        <div class="control">
-                                            <input required class="input" type="text" name="nombrePlan" />
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label class="label">Número de Pagos</label>
-                                        <div class="control">
-                                            <input required class="input" type="number" name="numeroPagos" />
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label class="label">Estado</label>
-                                        <div class="control">
-                                            <div class="select">
-                                                <select name="planPagoActivo">
-                                                    <option value="1">Activo</option>
-                                                    <option value="0">No Activo</option>
-                                                </select>
+            <div class="container" style="display: flex; justify-content: center;">
+                <div class="content" style="width: 70%; margin-top: 50px;">
+                    <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <form id="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
+                                        method="POST">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <div class="field">
+                                            <label class="label">Nombre del Plan</label>
+                                            <div class="control">
+                                                <input required class="input" type="text" id="nombrePlan" name="nombrePlan" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <button id="btn_aplicar_cambios" type="submit"
-                                        class="button is-large is-rounded is-responsive" disabled>Registrar plan</button>
-                                </form>
+                                        <div class="field">
+                                            <label class="label">Número de Pagos</label>
+                                            <div class="control">
+                                                <input class="input" type="number" id="numeroPagos" name="numeroPagos" />
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Estado</label>
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select id="planPagoActivo" name="planPagoActivo">
+                                                        <option value="1">Activo</option>
+                                                        <option value="0">No Activo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="btn_aplicar_cambios" type="submit"
+                                            class="button is-large is-rounded is-responsive">Registrar plan
+                                        </button>
+                                        <p id="errorMessage" style="color: red;"></p>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script type="text/javascript" src="/js/registrar_planpago.js"></script>
+    <script type="text/javascript" src="/js/registrar_planpago.js"></script>
 </body>
 </html>
