@@ -50,5 +50,11 @@ module.exports = class Diplomado{
         );
     }
 
+    static buscar_en_curso(consulta)
+    {
+        return db.execute('SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
+    );
+    }
+
 };
 
