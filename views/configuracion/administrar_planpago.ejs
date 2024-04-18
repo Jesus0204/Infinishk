@@ -70,7 +70,7 @@
                                                 </div>
                                             </div>
                                             <button id="btn_aplicar_cambios<%= index %>" type="submit"
-                                                class="button is-large is-rounded is-responsive" disabled>Aplicar
+                                                class="button is-large is-rounded is-responsive">Aplicar
                                                 cambios</button>
                                             </form>
                                         </div>
@@ -121,24 +121,6 @@
                     <% } %>
 
                         <script>
-
-                            $(document).ready(function () {
-                                // Función para verificar el estado del botón al ingresar o borrar texto en el campo de nombre
-                                $('input[name="nombrePlan"]').on('input', function () {
-                                    var form = $(this).closest('form');
-                                    var errorNombre = $(this).siblings('.help.is-danger');
-                                    var submitButton = form.find('button[type="submit"]');
-                                    var nombrePlanValue = $(this).val().trim();
-
-                                    if (nombrePlanValue === '') {
-                                        errorNombre.show(); // Mostrar el mensaje de error
-                                        submitButton.prop('disabled', true); // Desactivar el botón de enviar
-                                    } else {
-                                        errorNombre.hide(); // Ocultar el mensaje de error
-                                        submitButton.prop('disabled', false); // Habilitar el botón de enviar
-                                    }
-                                });
-                            });
 
                             $(document).ready(function () {
                                 // Función para mostrar la notificación y recargar la página

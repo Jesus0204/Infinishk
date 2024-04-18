@@ -19,7 +19,7 @@ const can_registrar_PlanPago = require('../util/privileges/admin/registros/can_r
 
 router.get('/administrar_planpago',isAuth,can_ConsultarPlanPago,configuracionController.get_administrar_planpago);
 router.get('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.get_modificar_planpago);
-router.post('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionController.post_modificar_planpago);
+router.post('/registrar_planpago',isAuth,can_ModificarPlanPago,configuracionController.post_registrar_planpago);
 router.get('/registrar_planpago',isAuth,can_registrar_PlanPago,configuracionController.get_registrar_planpago);
 
 

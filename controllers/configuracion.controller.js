@@ -74,13 +74,11 @@ exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
     const activo = request.body.planPagoActivo;
-    const IDPlanPago = request.body.IDPlanPago;
     console.log(nombre);
     console.log(numero);
     console.log(activo);
-    console.log(IDPlanPago);
 
-    PlanPago.save()
+    PlanPago.save(nombre,numero,activo)
         .then(([planespago, fieldData]) => {
             // Aquí puedes enviar una respuesta JSON indicando éxito
             response.json({ success: true });

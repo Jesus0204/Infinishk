@@ -17,9 +17,9 @@ module.exports = class PlanPago{
         return db.execute('Select * from planpago')
     }
 
-    save() {
+    static save(nombrePlan,numeroPagos,planPagoActivo) {
         return db.execute(`INSERT INTO planpago (nombrePlan, numeroPagos, planPagoActivo) 
         VALUES(?, ?, ?)        
-        `, [this.nombrePlan, this.numeroPagos, this.planPagoActivo]);
+        `, [nombrePlan, numeroPagos, planPagoActivo]);
     }
 }
