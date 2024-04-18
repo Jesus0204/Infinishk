@@ -105,13 +105,20 @@ exports.get_consultar_diplomado = (request, response, next) => {
         .then(([diplomadosActivos, fieldData]) => {
             Diplomado.fetchAllNoActives()
                 .then(([diplomadosNoActivos, fieldData]) => {
-                    response.render('diplomado/consultar_diplomado', {
-                        diplomadosActivos: diplomadosActivos,
-                        diplomadosNoActivos: diplomadosNoActivos,
-                        username: request.session.username || '',
-                        permisos: request.session.permisos || [],
-                        rol: request.session.rol || "",
-                        csrfToken: request.csrfToken(),
+                    Diplomado.fetchAllInProgress()
+                    .then(([diplomadosProgreso, fieldData]) =>{
+                        response.render('diplomado/consultar_diplomado', {
+                            diplomadosProgreso: diplomadosProgreso,
+                            diplomadosActivos: diplomadosActivos,
+                            diplomadosNoActivos: diplomadosNoActivos,
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken(),
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
                     });
                 })
                 .catch((error) => {

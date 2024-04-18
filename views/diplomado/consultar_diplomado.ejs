@@ -60,6 +60,12 @@
                         <span>Diplomados No Activos</span>
                     </a>
                 </li>
+                <li id="nav_no_activos">
+                    <a onclick="diplomados_en_curso()">
+                        <span class="icon is-small"><i class="fa-regular fa-users-slash"></i></span>
+                        <span>Diplomados en curso</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -172,6 +178,65 @@
                                 <a class="pagination-next" id="next-button-2">Siguiente</a>
                                 <ul class="pagination-list" id="pagination-list-2">
                                     <div id="pagination-numbers-2">
+                
+                                    </div>
+                                </ul>
+                            </nav>
+                        </div>
+                        <% } %>
+        </div>
+
+        <div id="diplomados_en_curso" class="is-hidden">
+            <% let count_en_curso=0 %>
+
+                <% if (diplomadosProgreso.length===0) { %>
+                    <p>No hay diplomados en curso por el momento.</p>
+                    <% } else { %>
+                        <div id="tablaEnCurso" class="table-container">
+                            <table class="table is-bordered is-hoverable is-fullwidth">
+                                <thead>
+                                    <tr>
+                                    <tr>
+                                        <th>
+                                            <p class="is-size-5"><strong>Nombre: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>ID: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Duración: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Precio: </strong></p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let diplomado of diplomadosProgreso) { %>
+                                        <tr id="pagination-content-3">
+                                            <td>
+                                                <%= diplomado.nombreDiplomado %>
+                                            </td>
+                                            <td>
+                                                <%= diplomado.IDDiplomado %>
+                                            </td>
+                                            <td>
+                                                <%= diplomado.Duracion %>
+                                            </td>
+                                            <td>
+                                                <%= diplomado.precioDiplomado.toLocaleString('es-MX', {style: 'decimal'
+                                                    }) %>
+                                            </td>
+                                        </tr>
+                                        <% count_activos++ %>
+                                            <% } %>
+                                </tbody>
+                            </table>
+                            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                <a class="pagination-previous" id="prev-button-3">Anterior</a>
+                                <a class="pagination-next" id="next-button-3">Siguiente</a>
+                                <ul class="pagination-list" id="pagination-list-3">
+                                    <div id="pagination-numbers-3">
                 
                                     </div>
                                 </ul>

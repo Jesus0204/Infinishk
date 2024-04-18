@@ -23,6 +23,10 @@ module.exports = class Diplomado{
         return db.execute('Select * from diplomado WHERE diplomadoActivo = 0')
     }
 
+    static fetchAllInProgress() {
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE now()>fechainicio AND  now()<fechafin')
+    }
+
     static fetchOne(nombre){
         return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
