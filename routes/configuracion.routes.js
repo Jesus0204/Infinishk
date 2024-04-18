@@ -26,6 +26,12 @@ router.get('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionControl
 router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_activo);
 router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
 router.post('/modificar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
+router.get('/registrar_usuario', can_RegistrarUsuario,configuracionController.get_registrar_usuario);
+router.post('/registrar_usuario', can_RegistrarUsuario,configuracionController.post_registrar_usuario);
+router.get('/registrar_usuario_alumno', can_RegistrarUsuario,configuracionController.get_registrar_usuario_alumno);
+router.post('/registrar_usuario_alumno', can_RegistrarUsuario,configuracionController.post_registrar_usuario_alumno);
+router.get('/registrar_usuario_visadmin', can_RegistrarUsuario,configuracionController.get_registrar_usuario_visadmin);
+router.post('/registrar_usuario_visadmin', can_RegistrarUsuario,configuracionController.post_registrar_usuario_visadmin);
 
 router.get('/', configuracionController.get_configuracion);
 

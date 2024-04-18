@@ -1,8 +1,10 @@
 const PlanPago = require('../models/planpago.model');
 const PrecioCredito = require('../models/precio_credito.model');
 const Usuario = require('../models/usuario.model')
+const Rol = require('../models/rol.model')
 
 exports.get_configuracion = (request, response, next) => {
+    console.log("Aquí estoy");
     response.render('configuracion/configuracion');
 };
 
@@ -42,7 +44,51 @@ exports.get_consultar_usuario = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         });
-}
+};
+
+exports.get_registrar_usuario = (request, response, next) => {
+    Rol.fetchAll()
+        .then(([roles_disponibles, fieldData]) => {
+            console.log(roles_disponibles)
+            response.render('configuracion/registrar_usuario', {
+                roles_disponibles: roles_disponibles,
+                csrfToken: request.csrfToken(),
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+    // response.render('configuracion/registrar_usuario', {
+    //     csrfToken: request.csrfToken(),
+    //     username: request.session.username || '',
+    //     permisos: request.session.permisos || [],
+    //     rol: request.session.rol || "",
+    // })
+};
+
+exports.post_registrar_usuario = (request, response, next) => {
+    
+};
+
+exports.get_registrar_usuario_alumno = (request, response, next) => {
+    
+};
+
+exports.post_registrar_usuario_alumno = (request, response, next) => {
+    
+};
+
+exports.get_registrar_usuario_visadmin = (request, response, next) => {
+    
+};
+
+exports.post_registrar_usuario_visadmin = (request, response, next) => {
+    
+};
 
 
 exports.get_search_activo = (request, response, next) => {
@@ -84,7 +130,7 @@ exports.post_modificar_usuario = (request, response, next) => {
             // Manejar el error de alguna forma
             response.redirect('/configuracion/consultar_usuario');
         });
-}
+};
 
 exports.get_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
