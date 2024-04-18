@@ -5,14 +5,12 @@ exports.get_configuracion = (request,response,next) => {
 };
 
 exports.get_administrar_planpago = (request, response, next) => {
-    console.log(request.session.rol);
     PlanPago.fetchAll()
         .then(([planpagos]) => {
            response.render('configuracion/administrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
+                permisos: request.session.permisos || []
            });
         })
         .catch((error) => {
@@ -21,14 +19,12 @@ exports.get_administrar_planpago = (request, response, next) => {
 };
 
 exports.get_modificar_planpago = (request, response, next) => {
-    console.log(request.session.rol);
     PlanPago.fetchAll()
         .then(([planpagos]) => {
            response.render('configuracion/modificar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
+                permisos: request.session.permisos || []
            });
         })
         .catch((error) => {
@@ -40,9 +36,7 @@ exports.post_modificar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const activo = request.body.planPagoActivo;
     const IDPlanPago = request.body.IDPlanPago;
-    console.log(nombre);
-    console.log(activo);
-    console.log(IDPlanPago);
+
     PlanPago.update(nombre, activo, IDPlanPago)
         .then(([planespago, fieldData]) => {
             // Aquí puedes enviar una respuesta JSON indicando éxito
@@ -55,14 +49,12 @@ exports.post_modificar_planpago = (request, response, next) => {
 }
 
 exports.get_registrar_planpago = (request, response, next) => {
-    console.log(request.session.rol);
     PlanPago.fetchAll()
         .then(([planpagos]) => {
            response.render('configuracion/registrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
+                permisos: request.session.permisos || []
            });
         })
         .catch((error) => {
@@ -89,9 +81,6 @@ exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
     const activo = request.body.planPagoActivo;
-    console.log(nombre);
-    console.log(numero);
-    console.log(activo);
 
     PlanPago.save(nombre,numero,activo)
         .then(([planespago, fieldData]) => {
