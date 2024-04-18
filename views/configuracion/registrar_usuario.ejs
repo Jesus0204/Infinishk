@@ -19,9 +19,11 @@
                     <label class="label is-medium" for="pago">Tipo de usuario:</label>
                     <div class="control has-icons-left">
                         <div class="select is-medium">
-                            <select>
+                            <select name="roles" id="roles">
                                 <% for (let roles of roles_disponibles) { %> 
-                                <option><%= roles.nombreRol%></option>
+                                <option data-nombre="<%= roles.nombreRol %>">
+                                    <%= roles.nombreRol%>
+                                </option>
                                 <%}%>
                             </select>
                         </div>
@@ -36,7 +38,7 @@
                 <div class="column is-6">
                     <button class="button is-rounded is-medium is-responsive" type="submit"
                         style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
-                        <span>Registrar Solicitud</span>
+                        <span>Registrar Usuario</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                         </span>
@@ -46,3 +48,4 @@
         </form>
     </div>
 </section>
+<!-- <script type="text/javascript" src="/js/registrar_usuario.js"></script> -->
