@@ -171,14 +171,98 @@ exports.get_actualizar_base = (request, response, next) => {
     });
 };
 
-exports.post_actualizar_base = async (request,response,next) => {
+exports.post_actualizar_base = async (request, response, next) => {
     try {
         // Llama a las funciones necesarias para obtener datos
         const users = await getAllUsers();
-        response.send(users);
+
+        if (!Array.isArray(users)) {
+            throw new Error('La función getAllUsers no ha devuelto un array de usuarios.');
+        }
+
+        const parsedUsers = []; // Array para almacenar los usuarios parseados
+
+        // Parsea los datos de cada usuario y agrégalos al array parsedUsers
+        users.forEach(user => {
+            const {
+                id,
+                uid,
+                name,
+                first_surname,
+                second_surname,
+                email,
+                status,
+                type,
+                semester,
+                regular,
+                graduated,
+                role
+            } = user;
+
+            const {
+                id: roleId,
+                name: roleName,
+                description: roleDescription
+            } = role;
+
+            // Guardar datos específicos de cada usuario en variables separadas
+            const userId = id;
+            const userUid = uid;
+            const fullName = `${name} ${first_surname} ${second_surname}`;
+            const userEmail = email;
+            const userStatus = status;
+            const userType = type;
+            const userSemester = semester;
+            const userRegular = regular;
+            const userGraduated = graduated;
+            const userRoleId = roleId;
+            const userRoleName = roleName;
+            const userRoleDescription = roleDescription;
+
+            // Agregar los datos a parsedUsers si es necesario
+            parsedUsers.push({
+                id: userId,
+                uid: userUid,
+                fullName,
+                email: userEmail,
+                status: userStatus,
+                userType,
+                semester: userSemester,
+                regular: userRegular,
+                graduated: userGraduated,
+                role: {
+                    id: userRoleId,
+                    name: userRoleName,
+                    description: userRoleDescription
+                }
+            });
+
+            // Guardar datos específicos en variables individuales para cada alumno
+            // Aquí puedes realizar cualquier otra operación con los datos individuales de cada alumno
+            console.log(`Datos del alumno ${fullName}:`, {
+                id: userId,
+                uid: userUid,
+                fullName,
+                email: userEmail,
+                status: userStatus,
+                userType,
+                semester: userSemester,
+                regular: userRegular,
+                graduated: userGraduated,
+                roleId: userRoleId,
+                roleName: userRoleName,
+                roleDescription: userRoleDescription
+            });
+        });
+
+        // Envía los datos de los usuarios parseados como respuesta
+        response.send(parsedUsers);
+
         // Muestra los datos en la consola
-        console.log('Usuarios:', users);
+        console.log('Usuarios parseados:', parsedUsers);
     } catch (error) {
         console.error('Error realizando operaciones:', error);
+        // Puedes enviar una respuesta de error si es necesario
+        response.status(500).send('Error obteniendo datos de usuarios');
     }
 }

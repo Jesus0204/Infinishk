@@ -40,8 +40,12 @@ async function getAllUsers() {
   const response = await axiosAdminClient.get('v1/users/all', {
     headers,
   });
+
+  console.log('Respuesta de getAllUsers:', response.data); // Agrega este registro de depuración
+
   return response.data;
 }
+
 
 
 async function getUserGroups(cycle_id, user_ivd_id) {
@@ -49,7 +53,7 @@ async function getUserGroups(cycle_id, user_ivd_id) {
   const headers = getHeaders(token)
 
   const response = await axiosAdminClient.get(
-    'v1/school_cycles/user_groups_index',
+    'v1/school_cycles/index',
     {
       headers,
       params: {
