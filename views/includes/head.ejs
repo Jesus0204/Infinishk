@@ -369,7 +369,8 @@
                        contienePermiso(permisos, 'Consultar Usuario') == true ||
                        contienePermiso(permisos, 'Registrar Rol') == true || 
                        contienePermiso(permisos, 'Registrar Pago Extra') == true ||
-                       contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
+                       contienePermiso(permisos, 'Administrar Pago Extra') == true || 
+                       contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
 
                 <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
@@ -389,6 +390,27 @@
                             Otros Pagos
                         </a>
                         <hr class="navbar-divider">
+                        <% } %>
+                        <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-database"></i>
+                                    </span>
+                                    Actualizar
+                                    <br>
+                                    Base Datos
+                                </a>
+                                <hr class="navbar-divider">
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/actualizarBase">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-database"></i>
+                                    </span>
+                                    Actualizar Base Datos
+                                </a>
+                            </div>
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                         <a class="navbar-item" href="/configuracion/precio_credito">
