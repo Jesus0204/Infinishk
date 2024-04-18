@@ -20,6 +20,12 @@ module.exports = class Liquida {
         return db.execute('SELECT IDLiquida, IDPagosExtras from liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
     }
 
+    static fetch_Pendientes(matricula) {
+        return db.execute(`SELECT motivoPago, montoPagar From Liquida AS L, pagosExtras AS P
+        WHERE L.IDPagosExtras = P.IDPagosExtras AND L.Matricula = ? AND L.Pagado = 0`, 
+        [matricula]);
+    }
+
     static save_pago_manual(matricula, pago, fecha, metodo, nota) {
         return db.execute('INSERT INTO Liquida (Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?, ?, ?, ?, 1, ?)', [matricula, pago, fecha, metodo, nota]);
     }

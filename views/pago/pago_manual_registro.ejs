@@ -33,7 +33,7 @@
                 <br>
                 <div id="info_pago_normal">
                     <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
-                    <table class="table is-bordered Pago-de-Diplomado"
+                    <table class="table is-bordered Pago-de-Colegiatura"
                         style="color: #ffffff;  margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
                             <strong>
@@ -78,17 +78,18 @@
                             </tbody>
                         </table>
                     <% if (pagoDiplomado.length != 0) { %>
-                    <table class="table is-bordered">
-                        <caption>
+                    <table class="table is-bordered Pago-de-Diplomado"
+                        style="color: #ffffff;margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
                             <strong>
                                 Pagos anteriores:
                             </strong>
                         </caption>
                         <thead>
-                            <th>
+                            <th style="color: #ffffff;">
                                 Monto
                             </th>
-                            <th>
+                            <th style="color: #ffffff;">
                                 Fecha de Pago
                             </th>
                         </thead>
@@ -100,6 +101,7 @@
                             <td>
                                 <%= pago.fechaPago %>
                             </td>
+                        </tbody>
                             <% } %>
                     </table>
                     <% } %>
@@ -118,9 +120,34 @@
                     <% } %>
                 </div>
                 <div id="info_pago_extra" class="is-hidden">
-                    <p>
-                        Pago extra info
-                    </p>
+                    <% if (solicitudes.length != 0)  { %>
+                        <table class="table is-bordered Pago-Extra"
+                            style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                            <caption class="is-size-5">
+                                <strong>
+                                    Pendientes:
+                                </strong>
+                            </caption>
+                            <thead>
+                                <th style="color: #ffffff">
+                                    Motivo
+                                </th>
+                                <th style="color: #ffffff">
+                                    Monto
+                                </th>
+                            </thead>
+                            <tbody>
+                                <% for (let solicitud of solicitudes) { %>
+                                    <td>
+                                        <%= solicitud.motivoPago %>
+                                    </td>
+                                    <td>
+                                        $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                                    </td>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    <% } %>
                 </div>
             </div>
             <div class="column is-offset-1">
@@ -166,11 +193,19 @@
                                         escribe un motivo del pago del alumno</p>
                                     <div class="field">
                                         <p class="control has-icons-left">
-                                            <input name="motivo" class="input is-medium" type="text" id="motivo_col"
-                                                placeholder="Concepto del pago">
-                                            <span class="icon is-small is-left">
-                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                            </span>
+                                            <% if (pago_col == true) { %> 
+                                                <input name="motivo" class="input is-medium" type="text" id="motivo_col"
+                                                    placeholder="Concepto del pago" value="Colegiatura" readonly>
+                                                <span class="icon is-small is-left">
+                                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                                </span>
+                                            <% } else { %>
+                                                <input name="motivo" class="input is-medium" type="text" id="motivo_col"
+                                                    placeholder="Concepto del pago" value="Diplomado" readonly>
+                                                <span class="icon is-small is-left">
+                                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                                </span>
+                                            <% } %> 
                                         </p>
                                     </div>
                                 </div>

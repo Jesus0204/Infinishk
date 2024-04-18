@@ -125,7 +125,7 @@ button[disabled] {
 }
 
 .Pago-de-Colegiatura {
-    background-color: #910106;
+     background-color: rgba(145, 1, 6, 0.7);
 }
 
 .Pago-de-Diplomado {
@@ -137,5 +137,5 @@ button[disabled] {
 }
 
 .Pago-Extra {
-    background-color: #16ac37;
+   background-color: rgba(4, 114, 77, 0.7);
 }

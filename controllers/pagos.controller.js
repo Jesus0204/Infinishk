@@ -92,7 +92,9 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
         .then(([alumno, fieldData]) => {
             Pago_Extra.fetchAll()
                 .then(async ([pagos_extra, fieldData]) => {
-                    const [periodoActivo, fieldData_2] = await Periodo.fetchActivo();
+                    const [solicitudes_pendientes, fieldData_2] = await Liquida.fetch_Pendientes(matches[0]);
+                    console.log(solicitudes_pendientes);
+                    const [periodoActivo, fieldData_3] = await Periodo.fetchActivo();
                     // Si es estudiante de colegiatura sacas la siguiente información
                     if (matches[0][0] == '1') {
                         const [infoColegiatura, fieldData] = await Colegiatura.fetchColegiaturaActiva(matches[0]);
@@ -118,6 +120,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                             pago_col: true,
                             diplomado: '',
                             pagoDiplomado: '',
+                            solicitudes: solicitudes_pendientes,
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
@@ -146,6 +149,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                             pago_col: false,
                             diplomado: infoDiplomado,
                             pagoDiplomado: infoPagosDiplomado,
+                            solicitudes: solicitudes_pendientes,
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
