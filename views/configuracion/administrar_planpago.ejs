@@ -118,39 +118,40 @@
             </div>
 
             <% } else { %>
-            <div class="container" style="display: flex; justify-content: center;">
-                <div class="content" style="width: 70%; margin-top: 50px;">
-                    <% planpago.forEach(plan=> { %>
-                    <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4 has-text-black">Nombre del Plan:</p>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-8">
+                        <% planpago.forEach(plan=> { %>
+                        <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-content">
+                                        <p class="title is-4 has-text-black">Nombre del Plan:</p>
+                                        <p class="subtitle is-4 has-text-grey">
+                                            <%= plan.nombrePlan %>
+                                        </p>
+                                        <p class="title is-4 has-text-black">Número de Pagos:</p>
+                                        <p class="subtitle is-4 has-text-grey">
+                                            <%= plan.numeroPagos %>
+                                        </p>
+        
+                                    <p class="title is-4 has-text-black">Estado:</p>
                                     <p class="subtitle is-4 has-text-grey">
-                                        <%= plan.nombrePlan %>
+                                        <% if (plan.planPagoActivo===1) { %>
+                                        Activo
+                                        <% } %>
+        
+                                        <% if (plan.planPagoActivo===0) { %>
+                                        No Activo
+                                        <% } %>
                                     </p>
-                                    <p class="title is-4 has-text-black">Número de Pagos:</p>
-                                    <p class="subtitle is-4 has-text-grey">
-                                        <%= plan.numeroPagos %>
-                                    </p>
-
-                                <p class="title is-4 has-text-black">Estado:</p>
-                                <p class="subtitle is-4 has-text-grey">
-                                    <% if (plan.planPagoActivo===1) { %>
-                                    Activo
-                                    <% } %>
-
-                                    <% if (plan.planPagoActivo===0) { %>
-                                    No Activo
-                                    <% } %>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <% }) %>
+                    </div>
                 </div>
-                <% }) %>
-            </div>
-        </div>
         <% } %>
         <script type="text/javascript" src="/js/administrar_planpago.js"></script>
         </body>
