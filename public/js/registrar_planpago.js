@@ -33,6 +33,7 @@ function checkPlanExists() {
             if (exists) {
                 displayError("Ese plan de pago ya existe.");
                 document.getElementById('btn_aplicar_cambios').disabled = true;
+                document.getElementById('numeroPagos').disabled = true;
             }
         }
     };
