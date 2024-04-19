@@ -203,10 +203,21 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const nota = request.body.nota;
     if (tipoPago === 'Pago de Colegiatura') {
         let diferencia = 0;
+        let montoAPagar = 0;
 
         const deuda = await Deuda.fetchDeuda(matricula);
         const idDeuda = await Deuda.fetchIDDeuda(matricula);
-        const montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+
+        if (deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
+            montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
+        }
+        
+        else{
+            success = false;
+            response.json({ success: success });
+            return;
+        }
+        
         const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
         const idColegiatura = colegiatura[0][0].IDColegiatura;
 
