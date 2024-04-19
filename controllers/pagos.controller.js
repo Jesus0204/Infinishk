@@ -188,6 +188,8 @@ exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
         solicitud_pago: true, 
+        consultar_alumno: false,
+        modificar_fichas: false,
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
