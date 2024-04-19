@@ -15,24 +15,45 @@ module.exports = class Diplomado{
                 [duracion,precio,nombre]);
     }
 
-    static fetchAll() {
-        return db.execute('Select * from diplomado')
+    static fetchAllActives() {
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
+    }
+
+    static fetchAllNoActives() {
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 0')
+    }
+
+    static fetchAllInProgress() {
+        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)')
     }
 
     static fetchOne(nombre){
         return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
-    static update(id,duracion,precio,nombre){
-        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=? WHERE IDDiplomado=?',
-        [duracion,precio,nombre,id]);
+    static update(id,duracion,precio,nombre,status){
+        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=?, diplomadoActivo=? WHERE IDDiplomado=?',
+        [duracion,precio,nombre,status,id]);
     }
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT * FROM diplomado WHERE nombreDiplomado LIKE ?',
+            'SELECT diplomado.* FROM diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
             [`%${consulta}%`]
         );
+    }
+
+    static buscar_noactivo(consulta) {
+        return db.execute(
+            'SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
+            [`%${consulta}%`]
+        );
+    }
+
+    static buscar_en_curso(consulta)
+    {
+        return db.execute('SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
+    );
     }
 
 };
