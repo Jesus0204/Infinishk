@@ -55,10 +55,16 @@
                                 <%= deuda[0].fechaLimitePago %>
                             </td>
                             <td>
-                                $<%= deuda[0].montoAPagar.toLocaleString('mx') %>
+                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </td>
                             <td>
-                                $<%= deuda[0].montoPagado.toLocaleString('mx') %>
+                                $<%= deuda[0].montoPagado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </td>
                         </tbody>
                         </thead>
@@ -88,19 +94,22 @@
                         </caption>
                         <thead>
                             <th style="color: #ffffff;">
-                                Monto
+                                Fecha de Pago
                             </th>
                             <th style="color: #ffffff;">
-                                Fecha de Pago
+                                Monto
                             </th>
                         </thead>
                         <% for (let pago of pagoDiplomado) { %>
                         <tbody>
                             <td>
-                                $<%= pago.montoPagado.toLocaleString('mx') %>
+                                <%= pago.fechaPago %>
                             </td>
                             <td>
-                                <%= pago.fechaPago %>
+                                $<%= pago.montoPagado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </td>
                         </tbody>
                         <% } %>
@@ -143,7 +152,10 @@
                                 <%= solicitud.motivoPago %>
                             </td>
                             <td>
-                                $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                                $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </td>
                             <% } %>
                         </tbody>
@@ -229,11 +241,20 @@
                                     </p>
                                     <div class="field">
                                         <p class="control has-icons-left">
+                                            <% if (pago_col == true) { %>
+                                            <input name="monto" class="input is-medium" type="number" step="any"
+                                                id="monto_col" placeholder="Monto pagado"
+                                                value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                            </span>
+                                            <% } else { %>
                                             <input name="monto" class="input is-medium" type="number" step="any"
                                                 id="monto_col" placeholder="Monto pagado">
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                             </span>
+                                            <% } %>
                                         </p>
                                     </div>
                                 </div>
@@ -286,15 +307,25 @@
                             <div class="columns">
                                 <div class="column is-2"></div>
                                 <div class="column is-8">
-                                    <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                        type="button" style="font-size: large; margin: 8px 2px;"
-                                        id="boton_pago_col"
-                                        data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
-                                        <span>Registrar Pago</span>
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                    </button>
+                                    <% if (pago_col == true) { %>
+                                        <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                            type="button" style="font-size: large; margin: 8px 2px;" id="boton_pago_col"
+                                            data-target="modal-confirmar-registro_colegiatura" type="button">
+                                            <span>Registrar Pago</span>
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                            </span>
+                                        </button>
+                                    <% } else { %>
+                                        <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                            type="button" style="font-size: large; margin: 8px 2px;" id="boton_pago_col"
+                                            data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
+                                            <span>Registrar Pago</span>
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                            </span>
+                                        </button>
+                                    <% } %>
                                 </div>
                             </div>
                             <div id="modal-confirmar-registro_colegiatura" class="modal">
@@ -337,7 +368,7 @@
                                             <div class=" column is-half">
                                                 <p class="is-size-5" style="text-align: center;" id="monto_modal_col">
                                                     <strong>Monto Pagado: </strong>
-                                                    Monto
+                                                    
                                                 </p>
                                             </div>
                                         </div>
@@ -456,7 +487,10 @@
                             <div class="column">
                                 <p class="is-size-5" id="monto">
                                     <strong>Monto: </strong>
-                                    $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
+                                    $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                                 </p>
                             </div>
                             <div class="column">
@@ -571,7 +605,10 @@
                                         <div class=" column is-half">
                                             <p class="is-size-5" style="text-align: center;" id="monto_modal">
                                                 <strong>Monto Pagado: </strong>
-                                                $<%= pagos_extra[0].montoPagar.toLocaleString('mx') %>
+                                                $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                                             </p>
                                         </div>
                                     </div>
@@ -709,9 +746,16 @@
         let motivo = $(this).find(':selected').text();
         // Cambias el DOM para mostrar el precio correcto
         const monto = document.querySelector('#monto');
-        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
         // Cambias el DOM dentro del modal
-        document.querySelector('#monto_modal').innerHTML = '<strong>Monto Pagado: </strong> $' + num_monto;
+        document.querySelector('#monto_modal').innerHTML = '<strong>Monto Pagado: </strong> $' + num_monto
+            .toLocaleString('mx', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         document.querySelector('#motivo_modal').innerHTML = '<strong>Motivo: </strong>' + motivo;
     });
 
@@ -802,13 +846,13 @@
         }
     })
 
-    function activate_clear_button(){
+    function activate_clear_button() {
         const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
         ayuda_fecha.classList.add('is-hidden');
         boton_pago_col.disabled = false;
     }
 
-    function activate_clear_button_pago_extra(){
+    function activate_clear_button_pago_extra() {
         const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_extra');
         ayuda_fecha.classList.add('is-hidden');
         boton_pago_extra.disabled = false;
@@ -817,9 +861,9 @@
     let count_activate = 0;
     calendars.forEach((calendar) => {
         if (clear.length == 2) {
-            if (count_activate == 0){
+            if (count_activate == 0) {
                 calendar.on('select', activate_clear_button);
-            } else if (count_activate == 1){
+            } else if (count_activate == 1) {
                 calendar.on('select', activate_clear_button_pago_extra);
             }
             count_activate++;
@@ -839,8 +883,13 @@
     function cambiar_motivo_monto_modal() {
         document.querySelector('#motivo_modal_col').innerHTML = '<strong>Motivo: </strong>' + motivo.value;
         document.querySelector('#monto_modal_col').innerHTML = '<strong>Monto Pagado: </strong> $' +
-            monto.value;
+            monto.value.toLocaleString('mx', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
     };
+
+    window.addEventListener('load', cambiar_motivo_monto_modal);
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
