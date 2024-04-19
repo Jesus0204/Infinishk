@@ -100,13 +100,6 @@ document.getElementById('statusDiplomado').addEventListener('change', function (
     hiddenInput.value = this.checked ? 'on' : 'off';
 });
 
-function toggleInputs() {
-    var checkbox = document.getElementById('statusDiplomado');
-    var inputs = document.querySelectorAll('#Duracion, #precioDiplomado, #nombreDiplomado');
-    inputs.forEach(function (input) {
-        input.disabled = !checkbox.checked;
-    });
-}
 
 document.querySelector('form').addEventListener('submit', function () {
     var inputs = document.querySelectorAll('#Duracion, #precioDiplomado, #nombreDiplomado');
