@@ -1,10 +1,15 @@
-for (let count = 0; count < '<%= solicitudes.length %>'; count++) {
+const solicitudes_length = document.getElementById('solicitudes_length');
+
+for (let count = 0; count < solicitudes_length.innerHTML; count++) {
     $('#pago' + count).change(function () {
         // Sacas el monto de la opcion con data-monto
         let num_monto = $(this).find(':selected').data('monto');
         // Cambias el DOM para mostrar el precio correcto
         const monto = document.querySelector('#monto' + count);
-        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto;
+        monto.innerHTML = '<strong>Monto: </strong> $' + num_monto.toLocaleString('mx', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
     });
 
 }

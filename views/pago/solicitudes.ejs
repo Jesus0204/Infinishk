@@ -67,6 +67,7 @@
             </div>
         </article>
         <% } %>
+        <p id="solicitudes_length" class="is-hidden"><%= solicitudes.length %></p>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
             <tbody>
