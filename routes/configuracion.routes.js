@@ -28,8 +28,9 @@ router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionControl
 router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
 router.post('/modificar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
 
+
 router.get('/actualizarBase',isAuth,can_ActualizarBase,configuracionController.get_actualizar_base);
-router.post('/actualizarBase',isAuth,can_ActualizarBase,configuracionController.post_actualizar_base);
+router.get('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionController.get_alumnos);
 
 router.get('/', isAuth, can_ActualizarBase, configuracionController.get_configuracion);
 
