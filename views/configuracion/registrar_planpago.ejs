@@ -1,0 +1,61 @@
+<%- include('../includes/head.ejs') %>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-6 is-offset-3" style="text-align: center;">
+                    <h3 class="title is-3" style="margin-bottom: 0;">Registrar Plan de Pago</h3>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-8">
+                    <div class="card" style="margin-bottom: 10px; border: 5px solid #910106;">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <form id="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
+                                        method="POST">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <div class="field">
+                                            <label class="label">Nombre del Plan</label>
+                                            <div class="control">
+                                                <input required class="input" type="text" id="nombrePlan" name="nombrePlan" />
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Número de Pagos</label>
+                                            <div class="control">
+                                                <input class="input" type="number" id="numeroPagos" name="numeroPagos" />
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Estado</label>
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select id="planPagoActivo" name="planPagoActivo">
+                                                        <option value="1">Activo</option>
+                                                        <option value="0">No Activo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="btn_aplicar_cambios" type="submit"
+                                            class="button is-large is-rounded is-responsive">
+                                            Registrar plan
+                                        </button>
+                                        <p id="errorMessage" style="color: red;"></p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="text/javascript" src="/js/registrar_planpago.js"></script>
+</body>
+</html>
