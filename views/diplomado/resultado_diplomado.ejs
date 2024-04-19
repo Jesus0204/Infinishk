@@ -3,8 +3,8 @@
 <body>
     <div class="container" style="display: flex; justify-content: center;">
         <div class="content" style="width: 70%; margin-top: 50px;">
-            <h1 class="title is-2 has-text-centered">Información Actualizada del Diplomado</h1>
             <% if (modificar) { %>
+                <h1 class="title is-2 has-text-centered">Información Actualizada del Diplomado</h1>
                 <div class="card" style="margin-bottom: 20px;">
                     <div class="card-content">
                         <div class="media">
@@ -14,7 +14,7 @@
                                 <p class="title is-4 has-text-black">Duración:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
                                 <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
+                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
                                 <p class="title is-4 has-text-black">Status:</p>
@@ -33,6 +33,7 @@
             <% } %>
 
             <% if (registrar) { %>
+                <h1 class="title is-2 has-text-centered">Diplomado creado con éxito</h1>
                 <div class="card" style="margin-bottom: 20px;">
                     <div class="card-content">
                         <div class="media">
@@ -42,7 +43,7 @@
                                 <p class="title is-4 has-text-black">Duración:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
                                 <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.precioDiplomado %></p>
+                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
                                 <p class="title is-4 has-text-black">Status:</p>

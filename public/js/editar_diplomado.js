@@ -18,21 +18,22 @@ $(document).ready(function () {
         if (!camposCompletos) {
             mensaje = 'Por favor completa todos los campos.';
             $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+            $('button[type="submit"]').prop('disabled', true);
         } else if (parseFloat(precio) <= 0) {
             mensaje = 'El precio debe ser mayor a 0.';
             $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true).addClass('is-light');
-        } else if (valor.includes('e') || valor.includes('E')) {
+            $('button[type="submit"]').prop('disabled', true);
+        } else if (valor.match(/[eE]/)) { // Verificar si hay caracteres de exponente
             mensaje = 'El precio no puede tener exponentes';
             $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+            $('button[type="submit"]').prop('disabled', true);
         } else {
             $('#alerta').hide();
-            $('button[type="submit"]').prop('disabled', false).removeClass('is-light');
+            $('button[type="submit"]').prop('disabled', false);
         }
     }
 });
+
 
 $(function () {
     var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
@@ -78,11 +79,19 @@ $(function () {
             mensaje = 'Por favor ingresa un nombre válido';
         }
         $("#mensajeValidacion").text(mensaje);
+
+        // Validar si el nombre es válido y no está en la lista de nombres válidos
         var esValido = nombresValidos.includes(this.value);
+        var estaEnLista = nombresValidos.includes(this.value.trim());
+        if (!esValido && estaEnLista) {
+            esValido = true; // Permitir el nombre si está en la lista pero no es válido actualmente
+        }
+
         $("#buscarBtn").prop('disabled', !esValido)
             .css('background-color', esValido ? '#910106' : '#ffcccc')
             .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
     });
+
 
 });
 
