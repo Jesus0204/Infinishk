@@ -67,6 +67,11 @@ exports.post_login = (request, response, next) => {
             }
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         })
 
