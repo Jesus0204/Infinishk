@@ -38,51 +38,29 @@ exports.get_registrar_diplomado = (request, response, next) => {
     });
 };
 
-
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
-
-    // Realiza las tres búsquedas simultáneamente
+    // Realiza ambas búsquedas simultáneamente y combina los resultados
     Promise.all([
         Diplomado.buscar(consulta), // Búsqueda de diplomados activos
         Diplomado.buscar_noactivo(consulta), // Búsqueda de diplomados no activos
-        Diplomado.buscar_en_curso(consulta) // Búsqueda de diplomados en curso
+        Diplomado.buscar_en_curso(consulta)
     ]).then(results => {
-        // Combina los resultados de las tres búsquedas
-        const combinedResults = [...results[0][0], ...results[1][0], ...results[2][0]];
+        // Combina los resultados de ambas búsquedas
+        let diplomados = [...results[0][0], ...results[1][0], ...results[2][0]];
 
-        // Filtra resultados duplicados solo si aparecen en dos o más consultas
-        const uniqueDiplomados = [];
-        const diplomadosMostrados = new Set();
-
-        combinedResults.forEach(diplomado => {
-            if (!diplomadosMostrados.has(diplomado.id)) {
-                uniqueDiplomados.push(diplomado);
-                diplomadosMostrados.add(diplomado.id);
-            }
+        // Eliminar duplicados
+        diplomados = diplomados.filter((diplomado, index) => {
+            const firstIndex = diplomados.findIndex(d => d.nombreDiplomado === diplomado.nombreDiplomado);
+            return firstIndex === index; // Mantener solo la primera aparición del nombre
         });
 
-        // Filtra resultados que contengan la parte específica de texto en el nombre
-        const filteredDiplomados = uniqueDiplomados.filter(diplomado =>
-            diplomado.nombre.toLowerCase().includes(consulta.toLowerCase())
-        );
-
-        // Convierte el array filtrado a un conjunto para eliminar duplicados
-        const uniqueFilteredDiplomados = new Set(filteredDiplomados);
-
-        // Convierte el conjunto a un array antes de enviar la respuesta JSON
-        const uniqueFilteredDiplomadosArray = [...uniqueFilteredDiplomados];
-        response.json(uniqueFilteredDiplomadosArray);
+        response.json(diplomados);
     }).catch((error) => {
         console.log(error);
+        response.status(500).json({ error: 'Error en el servidor' });
     });
 };
-
-
-
-
-
-
 
 exports.get_check_diplomado = (request, response, next) => {
     const nombre = request.query.nombre;
@@ -187,9 +165,6 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const precio = request.body.precioDiplomado;
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
-    console.log(precio);
-    console.log(duracion);
-    console.log(nombre);
     Diplomado.save(duracion, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
