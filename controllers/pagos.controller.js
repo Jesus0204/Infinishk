@@ -36,7 +36,27 @@ exports.post_registrar_pago_extra = (request, response, next) => {
 
     pago_extra.save()
         .then(([rows, fieldData]) => {
-            response.redirect('/pagos/pagos_extra');
+            Pago_Extra.fetchAll()
+                .then(([pagosExtra, fieldData]) => {
+                    Pago_Extra.fetchNoAsignados()
+                        .then(([pagosExtraNoAsignados, fieldData]) => {
+                            response.render('pago/pagos_extra', {
+                                pagosNoAsignados: pagosExtraNoAsignados,
+                                pagos: pagosExtra,
+                                registrar: true,
+                                username: request.session.username || '',
+                                permisos: request.session.permisos || [],
+                                rol: request.session.rol || "",
+                                csrfToken: request.csrfToken()
+                            })
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         })
         .catch((error) => {
             console.log(error);
@@ -51,6 +71,7 @@ exports.get_pago_extra = (request, response, next) => {
                     response.render('pago/pagos_extra', {
                         pagosNoAsignados: pagosExtraNoAsignados,
                         pagos: pagosExtra,
+                        registrar: false,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
