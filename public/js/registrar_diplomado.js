@@ -17,7 +17,7 @@ function validateForm() {
     } else if (valor.includes('e') || valor.includes('E')) {
         mensaje = 'El precio no puede tener exponentes';
         $('#alerta').text(mensaje).show();
-        $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+        $('button[type="submit"]').prop('disabled', true);
     } else {
         clearError();
     }
