@@ -241,10 +241,10 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     }
     else if (tipoPago === 'Pago Extra') {
         const idLiquida = await Liquida.fetchID(matricula);
+
         if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
             const idPagoExtra = await Pago_Extra.fetchID(importe);
             if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                console.log('Aqui ando')
                 Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
             }
             else {
@@ -254,7 +254,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         else {
             const idPagoExtra = await Pago_Extra.fetchID(importe);
             if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                console.log('Aqui ando')
                 Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
             }
             else {

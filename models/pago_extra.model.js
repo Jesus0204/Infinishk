@@ -13,7 +13,7 @@ module.exports = class PagoExtra {
     }
 
     static fetchID(importe){
-        return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ? AND pagoExtraActivo = 1',[importe]);
+        return db.execute('SELECT IDPagosExtras FROM pagosextras WHERE CAST(montoPagar AS DECIMAL(10,2)) = CAST(? AS DECIMAL(10,2)) AND pagoExtraActivo = 1',[importe]);
     }
 
 };
