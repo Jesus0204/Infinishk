@@ -51,14 +51,29 @@ exports.post_registrar_pago_extra = (request, response, next) => {
                             })
                         })
                         .catch((error) => {
+                            response.status(500).render('500', {
+                                username: request.session.username || '',
+                                permisos: request.session.permisos || [],
+                                rol: request.session.rol || "",
+                            });
                             console.log(error)
                         })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 })
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -79,10 +94,20 @@ exports.get_pago_extra = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 })
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         })
 };
@@ -93,6 +118,11 @@ exports.post_pago_extra_modify = (request, response, next) => {
             response.redirect('/pagos/pagos_extra');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         })
 };
@@ -136,10 +166,20 @@ exports.get_solicitudes = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 };
@@ -161,6 +201,11 @@ exports.post_solicitudes_modify = (request, response, next) => {
             response.redirect('/pagos/solicitudes');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         })
 };
@@ -194,10 +239,20 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error);
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 };
@@ -210,6 +265,11 @@ exports.post_registrar_solicitud = (request, response, next) => {
             response.redirect('/pagos/solicitudes');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
