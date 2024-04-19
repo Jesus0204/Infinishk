@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 
 // Configuramos a EJS como motor de templates con express
+// Configuramos a EJS como motor de templates con express
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -52,6 +53,9 @@ const fileStorage = multer.diskStorage({
 app.use(multer({
     storage: fileStorage
 }).single('archivo'));
+app.use(multer({
+    storage: fileStorage
+}).single('archivo'));
 
 // Para proteger del Cross-Site Request Forgery
 const csrf = require('csurf');
@@ -80,6 +84,8 @@ app.use('/auth', rutasSession);
 
 app.use(bodyParser.json());
 
+app.use(bodyParser.json());
+
 const rutasDiplomado = require('./routes/diplomado.routes');
 app.use('/diplomado', rutasDiplomado);
 
@@ -88,6 +94,9 @@ app.use('/configuracion', rutasConfiguracion);
 
 const rutasPago = require('./routes/pagos.routes');
 app.use('/pagos', rutasPago);
+
+const rutasAlumnos = require('./routes/alumnos.routes');
+app.use('/alumnos', rutasAlumnos);
 
 const rutasAlumnos = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumnos);
@@ -110,7 +119,15 @@ app.use((request, response, next) => {
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
     });
+app.use((request, response, next) => {
+    response.status(404);
+    response.render('404', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
 });
 
 // Para que el servidor este activo
+app.listen(process.env.PORT || 4000);
 app.listen(process.env.PORT || 4000);
