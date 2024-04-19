@@ -14,16 +14,18 @@ function validateForm() {
     } else if (parseFloat(precio) <= 0) {
         displayError("El precio debe ser mayor a 0.");
         formValid = false;
-    } else if (valor.includes('e') || valor.includes('E')) {
+    } else if (valor.match(/[eE]/)) { // Verificar si hay caracteres de exponente
         mensaje = 'El precio no puede tener exponentes';
         $('#alerta').text(mensaje).show();
         $('button[type="submit"]').prop('disabled', true);
+        formValid = false; // Marcar el formulario como no válido
     } else {
         clearError();
     }
 
     document.getElementById('btnSubmit').disabled = !formValid;
 }
+
 
 function checkDiplomadoExists() {
     var nombre = document.getElementById("nombreDiplomado").value;
