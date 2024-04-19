@@ -34,7 +34,6 @@ exports.post_modificar_planpago = (request, response, next) => {
         })
         .catch((error) => {
             console.log(error);
-            response.status(500).json({ success: false, error: 'Error al modificar el plan de pago' });
         });
 }
 
@@ -205,7 +204,6 @@ exports.post_registrar_planpago = (request, response, next) => {
         })
         .catch((error) => {
             console.log(error);
-            response.status(500).json({ success: false, error: 'Error al registrar el plan de pago' });
         });
 }
 
