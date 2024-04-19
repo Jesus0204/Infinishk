@@ -30,7 +30,7 @@ const updatePrecioCredito = (anio) => {
             data.precio_anio.forEach((precio) => {
                 const tr = document.createElement('tr');
                 const td1 = document.createElement('td');
-                td1.innerHTML = `$ ${precio.precioPesos.toFixed(2).toLocaleString('es-MX')}`;
+                td1.innerHTML = `$ ${precio.precioPesos.toLocaleString('mx', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
                 const td2 = document.createElement('td');
                 const fechaModificacion = precio.fechaModificacion;
                 td2.innerHTML = fechaModificacion;
