@@ -73,7 +73,7 @@
                     <tbody>
                         <td>
                             <div class="column">
-                                $ <%= precio_actual[0].precioPesos.toFixed(2).toLocaleString('es-MX') %>
+                                $ <%= precio_actual[0].precioPesos.toLocaleString('mx', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
                             </div>
                         </td>
                         <td>
