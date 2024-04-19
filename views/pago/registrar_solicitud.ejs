@@ -51,7 +51,10 @@
                 <div class="column is-narrow">
                     <p class="is-size-5" id="monto">
                         <strong>Monto: </strong>
-                        $<%= pagos_extra[0].montoPagar.toFixed(2) %>
+                        $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) %>
                     </p>
                 </div>
             </div>

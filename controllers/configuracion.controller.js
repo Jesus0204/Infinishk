@@ -17,6 +17,11 @@ exports.get_administrar_planpago = (request, response, next) => {
             });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -36,10 +41,20 @@ exports.get_consultar_usuario = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 }
@@ -99,10 +114,20 @@ exports.get_precio_credito = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error);
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 };
@@ -145,6 +170,11 @@ exports.get_registrar_precio_credito = (request, response, next) => {
             });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -155,6 +185,11 @@ exports.post_registrar_precio_credito = (request, response, next) => {
             response.redirect('/configuracion/precio_credito');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };

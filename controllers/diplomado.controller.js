@@ -102,6 +102,11 @@ exports.post_fetch_diplomado = (request, response, next) => {
             }
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 };
@@ -124,14 +129,29 @@ exports.get_consultar_diplomado = (request, response, next) => {
                         });
                     })
                     .catch((error) => {
+                        response.status(500).render('500', {
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                        });
                         console.log(error)
                     });
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 };
@@ -157,6 +177,11 @@ exports.post_modificar_diplomado = (request, response, next) => {
             });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 }
@@ -180,6 +205,11 @@ exports.post_registrar_diplomado = (request, response, next) => {
             });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error)
         });
 }

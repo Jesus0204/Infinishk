@@ -102,7 +102,7 @@ app.locals.contienePermiso = (permisos, casoUso) => {
     return contains;
 };
 
-//Para error 404
+// Para error 404
 app.use((request, response, next) => {
     response.status(404);
     response.render('404', {
