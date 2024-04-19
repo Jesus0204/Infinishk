@@ -194,7 +194,7 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
                     })
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error);
                 });
         })
         .catch((error) => {
@@ -210,7 +210,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
             response.redirect('/pagos/solicitudes');
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         });
 };
 
