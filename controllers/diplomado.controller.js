@@ -38,22 +38,29 @@ exports.get_registrar_diplomado = (request, response, next) => {
     });
 };
 
-
 exports.get_autocomplete = (request, response, next) => {
     const consulta = request.query.q;
     // Realiza ambas búsquedas simultáneamente y combina los resultados
     Promise.all([
         Diplomado.buscar(consulta), // Búsqueda de diplomados activos
-        Diplomado.buscar_noactivo(consulta) // Búsqueda de diplomados no activos
+        Diplomado.buscar_noactivo(consulta), // Búsqueda de diplomados no activos
+        Diplomado.buscar_en_curso(consulta)
     ]).then(results => {
         // Combina los resultados de ambas búsquedas
-        const diplomados = [...results[0][0], ...results[1][0]];
+        let diplomados = [...results[0][0], ...results[1][0], ...results[2][0]];
+
+        // Eliminar duplicados
+        diplomados = diplomados.filter((diplomado, index) => {
+            const firstIndex = diplomados.findIndex(d => d.nombreDiplomado === diplomado.nombreDiplomado);
+            return firstIndex === index; // Mantener solo la primera aparición del nombre
+        });
+
         response.json(diplomados);
     }).catch((error) => {
         console.log(error);
+        response.status(500).json({ error: 'Error en el servidor' });
     });
 };
-
 
 exports.get_check_diplomado = (request, response, next) => {
     const nombre = request.query.nombre;
@@ -69,8 +76,6 @@ exports.get_check_diplomado = (request, response, next) => {
             console.log(error);
         });
 };
-
-
 
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
@@ -101,6 +106,35 @@ exports.post_fetch_diplomado = (request, response, next) => {
         });
 };
 
+exports.get_consultar_diplomado = (request, response, next) => {
+    Diplomado.fetchAllActives()
+        .then(([diplomadosActivos, fieldData]) => {
+            Diplomado.fetchAllNoActives()
+                .then(([diplomadosNoActivos, fieldData]) => {
+                    Diplomado.fetchAllInProgress()
+                    .then(([diplomadosProgreso, fieldData]) =>{
+                        response.render('diplomado/consultar_diplomado', {
+                            diplomadosProgreso: diplomadosProgreso,
+                            diplomadosActivos: diplomadosActivos,
+                            diplomadosNoActivos: diplomadosNoActivos,
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken(),
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+};
 
 exports.post_modificar_diplomado = (request, response, next) => {
     const id = request.body.IDDiplomado;
