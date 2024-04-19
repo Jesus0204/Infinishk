@@ -14,16 +14,16 @@ module.exports = class PlanPago{
     }
 
     static fetchAll() {
-        return db.execute('Select * from planpago')
+        return db.execute('Select * from planPago')
     }
 
     static save(nombrePlan,numeroPagos,planPagoActivo) {
-        return db.execute(`INSERT INTO planpago (nombrePlan, numeroPagos, planPagoActivo) 
+        return db.execute(`INSERT INTO planPago (nombrePlan, numeroPagos, planPagoActivo) 
         VALUES(?, ?, ?)        
         `, [nombrePlan, numeroPagos, planPagoActivo]);
     }
 
     static fetchOne(nombre){
-        return db.execute('Select * from planpago WHERE nombrePlan = ?',[nombre]);
+        return db.execute('Select * from planPago WHERE nombrePlan = ?',[nombre]);
     }
 }
