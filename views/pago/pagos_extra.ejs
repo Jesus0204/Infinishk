@@ -41,6 +41,12 @@
             </div>
             <% } %>
         </div>
+        <% if (registrar == true) { %>
+        <div id="registrar_estatus" class="notification" style="background-color: #5a6581; color:#ffffff;">
+            <button id="btn_registrar_estatus" class="delete"></button>
+            ¡El pago extra ha sido registrado!
+        </div>
+        <% } %>
         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
         <div class="tabs is-boxed">
             <ul>
@@ -102,7 +108,10 @@
                         </td>
                         <td>
                             <div class="column">
-                                $ <%= pago.montoPagar.toLocaleString('mx') %>
+                                $ <%= pago.montoPagar.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
                             </div>
                         </td>
                         <td>
@@ -287,7 +296,10 @@
                         </div>
                         <div class=" column is-half">
                             <p class="is-size-5" style="text-align: center;">
-                                <strong>Monto a Pagar: </strong>$ <%= pago.montoPagar.toLocaleString('mx')%>
+                                <strong>Monto a Pagar: </strong>$ <%= pago.montoPagar.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
                             </p>
                         </div>
                     </div>

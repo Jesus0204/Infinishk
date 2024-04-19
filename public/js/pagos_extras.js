@@ -187,3 +187,11 @@ if (mensaje) {
         document.getElementById('inexistente').classList.add('is-hidden');
     })
 };
+
+const mensaje_registrar = document.querySelector('#btn_registrar_estatus');
+
+if (mensaje_registrar) {
+    mensaje_registrar.addEventListener('click', () => {
+        document.getElementById('registrar_estatus').classList.add('is-hidden');
+    })
+};

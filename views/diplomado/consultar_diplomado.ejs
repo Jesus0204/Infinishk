@@ -62,7 +62,7 @@
                 </li>
                 <li id="nav_en_curso">
                     <a onclick="diplomados_en_curso()">
-                        <span class="icon is-small"><i class="fa-regular fa-users-slash"></i></span>
+                        <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                         <span>Diplomados en curso</span>
                     </a>
                 </li>
@@ -107,8 +107,10 @@
                                                 <%= diplomado.Duracion %>
                                             </td>
                                             <td>
-                                                <%= diplomado.precioDiplomado.toLocaleString('es-MX', {style: 'decimal'
-                                                    }) %>
+                                                $<%= diplomado.precioDiplomado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                                             </td>
                                         </tr>
                                         <% count_activos++ %>
@@ -165,8 +167,10 @@
                                                 <%= diplomado.Duracion %>
                                             </td>
                                             <td>
-                                                <%= diplomado.precioDiplomado.toLocaleString('es-MX', {style: 'decimal'
-                                                    }) %>
+                                                $<%= diplomado.precioDiplomado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                                             </td>
                                         </tr>
                                         <% count_activos++ %>
@@ -224,8 +228,10 @@
                                                 <%= diplomado.Duracion %>
                                             </td>
                                             <td>
-                                                <%= diplomado.precioDiplomado.toLocaleString('es-MX', {style: 'decimal'
-                                                    }) %>
+                                                $<%= diplomado.precioDiplomado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                                             </td>
                                         </tr>
                                         <% count_activos++ %>

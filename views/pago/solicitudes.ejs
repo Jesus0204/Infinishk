@@ -67,6 +67,7 @@
             </div>
         </article>
         <% } %>
+        <p id="solicitudes_length" class="is-hidden"><%= solicitudes.length %></p>
         <% for (let solicitud of solicitudes) { %>
         <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
             <tbody>
@@ -103,7 +104,10 @@
                                             <div class="column is-narrow">
                                                 <p class="is-size-5">
                                                     <strong>Monto actual: </strong>
-                                                    $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                                                    $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                                         minimumFractionDigits: 2,
+                                                         maximumFractionDigits: 2
+                                                        }) %>
                                                 </p>
                                             </div>
                                         </div>
@@ -215,7 +219,10 @@
                     <div class="column is-half">
                         <p class="is-size-5" style="text-align: center;" id="monto_modal<%= count %>">
                             <strong>Monto Pago: </strong>
-                            $<%= solicitud.montoPagar.toLocaleString('mx') %>
+                            $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
                         </p>
                     </div>
                 </div>
