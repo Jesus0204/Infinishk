@@ -43,6 +43,8 @@ for (let count = 0; count < planPagoLength.innerHTML; count++) {
     const bt_Aplicar = document.querySelector('#btn_aplicar_cambios' + count);
     const nombre = document.querySelector('#nombre' + count);
     const ayuda_nombre = document.querySelector('#ayuda_nombre' + count);
+    const monto = document.querySelector('#monto');
+
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
@@ -57,6 +59,17 @@ for (let count = 0; count < planPagoLength.innerHTML; count++) {
             ayuda_nombre.classList.add('is-hidden');
         }
     }
+
+    function mensaje_monto() {
+
+        if (monto.value.includes('e') || monto.value.includes('E')) {
+            bt_Registrar.disabled = true;
+            ayuda_monto_exponente.classList.remove('is-hidden');
+        } else {
+            ayuda_monto_exponente.classList.add('is-hidden');
+        }
+    }
+    
 
     nombre.addEventListener('input', checar_contenido);
     nombre.addEventListener('input', mensaje_nombre);
