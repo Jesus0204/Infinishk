@@ -16,15 +16,15 @@ module.exports = class Diplomado{
     }
 
     static fetchAllActives() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
+        return db.execute('Select * from Diplomado WHERE diplomadoActivo = 1')
     }
 
     static fetchAllNoActives() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 0')
+        return db.execute('Select * from Diplomado WHERE diplomadoActivo = 0')
     }
 
     static fetchAllInProgress() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)')
+        return db.execute('Select * from Diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)')
     }
 
     static fetchOne(nombre){
@@ -52,7 +52,7 @@ module.exports = class Diplomado{
 
     static buscar_en_curso(consulta)
     {
-        return db.execute('SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
+        return db.execute('SELECT diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
     );
     }
 
