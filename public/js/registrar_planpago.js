@@ -5,7 +5,6 @@ function validateForm() {
     var numPagos = document.getElementById("numeroPagos").value;
     var nombre = document.getElementById("nombrePlan").value;
     var formValid = true;
-    var valor = document.getElementById('numeroPagos').value;
 
     if ( !numPagos || !nombre) {
         displayError("Por favor rellena todos los datos.");
@@ -13,10 +12,9 @@ function validateForm() {
     } else if (parseFloat(numPagos) <= 0) {
         displayError("El numero de pagos debe ser mayor a 0.");
         formValid = false;
-    } else if (valor.includes('e') || valor.includes('E')) {
-        mensaje = 'El numero de pagos no puede tener exponentes';
-        $('#alerta').text(mensaje).show();
-        $('button[type="submit"]').prop('disabled', true).addClass('is-light');
+    } else if (numPagos.includes('e') || numPagos.includes('E')) {
+        displayError("El numero de pagos no puede tener exponentes");
+        formValid = false;
     } else {
         clearError();
     }
