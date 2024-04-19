@@ -52,9 +52,4 @@ module.exports = class Deuda {
         [matricula]);
     }
     
-    static update_transferencia(importe,id){
-        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
-        [importe,id]);
-    }
-    
 }
