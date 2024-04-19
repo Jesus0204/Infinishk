@@ -43,7 +43,7 @@ module.exports = class Deuda {
     }
 
     static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 0',
+        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
         [matricula]);
     }
 

@@ -118,3 +118,32 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
     });
 });
 
+document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
+    select.addEventListener('change', (event) => {
+        // Obtener el elemento tr ancestro más cercano del select
+        const fila = select.closest('tr');
+        // Asegurarse de que se encontró una fila
+        if (fila) {
+            // Actualizar la clase de la fila basada en el valor seleccionado
+            fila.className = event.target.value.replace(/\s/g, '-');
+            
+            // Obtener el botón dentro de la fila
+            const boton = fila.querySelector('button[type="submit"]');
+            // Asegurarse de que se encontró el botón
+            if (boton) {
+                // Cambiar el texto del botón según el tipo de pago seleccionado
+                if (event.target.value === 'Pago a Registrar') {
+                    boton.textContent = 'Posponer';
+                } else {
+                    boton.textContent = 'Enviar datos';
+                }
+            } else {
+                console.error('No se encontró el botón correspondiente a la fila.');
+            }
+        } else {
+            console.error('No se encontró la fila correspondiente al select.');
+        }
+    });
+});
+
+
