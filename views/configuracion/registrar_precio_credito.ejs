@@ -24,7 +24,10 @@
                     <div class="columns is-vcentered">
                         <div class="column is-two-fifths is-offset-1">
                             <p class="is-size-5" style="text-align: center;">
-                                <strong>Precio: </strong>$<%= precio_actual[0].precioPesos.toLocaleString('mx') %>
+                                <strong>Precio: </strong>$<%= precio_actual[0].precioPesos.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </p>
                         </div>
                     <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
