@@ -13,6 +13,10 @@ const upload = multer({
     dest: 'uploads/'
 });
 
+// Configuras a moment con el locale. 
+const moment = require('moment');
+moment.locale('es-mx');
+
 exports.get_pago = (request,response,next) => {
     response.render('pago/pago', {
         username: request.session.username || '',
@@ -32,7 +36,9 @@ exports.get_registrar_pago_extra = (request, response, next) => {
 };
 
 exports.post_registrar_pago_extra = (request, response, next) => {
-    const pago_extra = new Pago_Extra(request.body.motivo, request.body.monto);
+
+    let fecha_actual = moment().format('YYYY-MM-DD HH:mm:ss');
+    const pago_extra = new Pago_Extra(request.body.motivo, request.body.monto, fecha_actual);
 
     pago_extra.save()
         .then(([rows, fieldData]) => {
