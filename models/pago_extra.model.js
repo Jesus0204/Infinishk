@@ -5,7 +5,6 @@ module.exports = class PagoExtra {
     constructor(mi_motivoPago, mi_montoPagar, mi_fecha) {
         this.motivoPago = mi_motivoPago;
         this.montoPagar = mi_montoPagar;
-        this.fecha = mi_fecha;
     }
 
     static fetchAll() {
@@ -29,7 +28,7 @@ module.exports = class PagoExtra {
     save() {
         return db.execute(`INSERT INTO pagosExtras (motivoPago, montoPagar, pagoExtraActivo, createdAt) 
         VALUES(?, ?, 1, ?)
-        `, [this.motivoPago, this.montoPagar, this.fecha]);
+        `, [this.motivoPago, this.montoPagar]);
     }
 
     static update(id, motivo, monto) {
