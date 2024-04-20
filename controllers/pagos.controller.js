@@ -44,14 +44,14 @@ exports.post_registrar_pago_extra = (request, response, next) => {
                 .then(([pagosExtra, fieldData]) => {
                     // Conviertes las fechas a tu zona horaria con moment
                     for (let count = 0; count < pagosExtra.length; count++) {
-                        pagosExtra[count].createdAt = moment(new Date(pagosExtra[count].createdAt)).local().format('LL');
+                        pagosExtra[count].createdAt = moment(new Date(pagosExtra[count].createdAt)).format('LL');
                     };
 
                     Pago_Extra.fetchNoAsignados()
                         .then(([pagosExtraNoAsignados, fieldData]) => {
                              // Conviertes las fechas a tu zona horaria con moment
                              for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
-                                 pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).local().format('LL');
+                                 pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).format('LL');
                              };
 
                             response.render('pago/pagos_extra', {
@@ -98,7 +98,7 @@ exports.get_pago_extra = (request, response, next) => {
             console.log(pagosExtra)
             // Conviertes las fechas a tu zona horaria con moment
             for (let count = 0; count < pagosExtra.length; count++) {
-                pagosExtra[count].createdAt = moment.utc(new Date(pagosExtra[count].createdAt)).local().format('LL');
+                pagosExtra[count].createdAt = moment(new Date(pagosExtra[count].createdAt)).format('LL');
             };
 
             console.log(pagosExtra)
@@ -107,7 +107,7 @@ exports.get_pago_extra = (request, response, next) => {
                 .then(([pagosExtraNoAsignados, fieldData]) => {
                         // Conviertes las fechas a tu zona horaria con moment
                         for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
-                            pagosExtraNoAsignados[count].createdAt = moment.utc(new Date(pagosExtraNoAsignados[count].createdAt)).local().format('LL');
+                            pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).format('LL');
                         };
                         
                     response.render('pago/pagos_extra', {
