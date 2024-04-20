@@ -93,7 +93,7 @@ exports.get_pago_extra = (request, response, next) => {
             Pago_Extra.fetchNoAsignados()
                 .then(([pagosExtraNoAsignados, fieldData]) => {
                         // Conviertes las fechas a tu zona horaria con moment
-                        for (let count = 0; count < pagosExtra.length; count++) {
+                        for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
                             pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).format('LL');
                         };
                         
