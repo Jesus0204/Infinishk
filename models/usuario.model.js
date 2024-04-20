@@ -77,4 +77,8 @@ module.exports = class Usuario{
             [`%${consulta}%`]
         );
     }
+
+    static updateUsuario(id,correo){
+        return db.execute('UPDATE usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
+    }
 }

@@ -8,7 +8,10 @@
         <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Alumnos</button>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     </form>
-    <button onclick="actualizarMaterias()" type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Materias</button>
+    <form action="/configuracion/actualizarMaterias" method="GET">
+        <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Materias</button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    </form>
     <button onclick="actualizarGrupos()" type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Grupos</button>
     <script type="text/javascript" src="/js/actualizarBase.js"></script>
 </body>

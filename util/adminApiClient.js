@@ -41,29 +41,21 @@ async function getAllUsers() {
     headers,
   });
 
-  console.log('Respuesta de getAllUsers:', response.data); // Agrega este registro de depuración
-
   return response.data;
 }
 
 
 
-async function getUserGroups(cycle_id, user_ivd_id) {
-  const token = await getToken()
-  const headers = getHeaders(token)
+async function getAllCourses() {
 
   const response = await axiosAdminClient.get(
-    'v1/school_cycles/index',
+    'v1/courses/all',
     {
       headers,
-      params: {
-        id: cycle_id,
-        user_ivd_id,
-      },
-    },
-  )
+    });
+    
   return response.data
 }
 
 
-module.exports = {getAllUsers, getUserGroups}
+module.exports = {getAllUsers, getAllCourses}
