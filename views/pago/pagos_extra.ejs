@@ -66,7 +66,6 @@
         </div>
         <div id="con_solicitudes">
             <% let count_con = 0 %>
-            <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
 
             <div id="modificacion_estatus" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
@@ -116,7 +115,7 @@
                         </td>
                         <td>
                             <div class="column">
-                                <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
+                                <%= pago.createdAt %>
                             </div>
                         </td>
                         <td>
@@ -230,7 +229,7 @@
                                     </div>
                                     <div class="column" style="text-align: center;">
                                         <p class="is-size-5">
-                                            <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
+                                            <%= pago.createdAt %>
                                         </p>
                                     </div>
                                 </div>
@@ -311,7 +310,7 @@
                         </div>
                         <div class="column">
                             <p class="is-size-5">
-                                <%= pago.createdAt.toLocaleDateString("es-MX", options) %>
+                                <%= pago.createdAt %>
                             </p>
                         </div>
                     </div>
