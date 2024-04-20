@@ -42,8 +42,18 @@ exports.post_registrar_pago_extra = (request, response, next) => {
         .then(([rows, fieldData]) => {
             Pago_Extra.fetchAll()
                 .then(([pagosExtra, fieldData]) => {
+                    // Conviertes las fechas a tu zona horaria con moment
+                    for (let count = 0; count < pagosExtra.length; count++) {
+                        pagosExtra[count].createdAt = moment(new Date(pagosExtra[count].createdAt)).format('LL');
+                    };
+
                     Pago_Extra.fetchNoAsignados()
                         .then(([pagosExtraNoAsignados, fieldData]) => {
+                             // Conviertes las fechas a tu zona horaria con moment
+                             for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
+                                 pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).format('LL');
+                             };
+
                             response.render('pago/pagos_extra', {
                                 pagosNoAsignados: pagosExtraNoAsignados,
                                 pagos: pagosExtra,
@@ -85,10 +95,13 @@ exports.post_registrar_pago_extra = (request, response, next) => {
 exports.get_pago_extra = (request, response, next) => {
     Pago_Extra.fetchAll()
         .then(([pagosExtra, fieldData]) => {
+            console.log(pagosExtra)
             // Conviertes las fechas a tu zona horaria con moment
             for (let count = 0; count < pagosExtra.length; count++) {
                 pagosExtra[count].createdAt = moment(new Date(pagosExtra[count].createdAt)).format('LL');
             };
+
+            console.log(pagosExtra)
 
             Pago_Extra.fetchNoAsignados()
                 .then(([pagosExtraNoAsignados, fieldData]) => {
