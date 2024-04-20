@@ -26,8 +26,8 @@ module.exports = class PagoExtra {
     }
 
     save() {
-        return db.execute(`INSERT INTO pagosExtras (motivoPago, montoPagar, pagoExtraActivo, createdAt) 
-        VALUES(?, ?, 1, ?)
+        return db.execute(`INSERT INTO pagosExtras (motivoPago, montoPagar, pagoExtraActivo) 
+        VALUES(?, ?, 1)
         `, [this.motivoPago, this.montoPagar]);
     }
 
