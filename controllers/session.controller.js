@@ -103,3 +103,27 @@ exports.post_signup = (request, response, next) => {
             response.redirect('/auth/signup');
         })
 }
+
+exports.get_set_password = (request,response,next) =>{
+    const matricula = request.query.matricula; // Obtiene la matrícula de la URL
+    response.render('set_password', { 
+        matricula,
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    }); // Renderiza la página para establecer la contraseña con la matrícula
+}
+
+exports.post_set_password = async (request,response,next) => {
+    const new_user = new Usuario(request.body.matricula, request.body.newPassword);
+    // Verifica la matrícula y actualiza la contraseña del usuario en la base de datos
+    new_user.updateContra()
+        .then(([rows, fieldData]) => {
+            response.redirect('/auth/login');
+        })
+        .catch((error) => {
+            request.session.error = 'Nombre de usuario invalido.';
+            console.log(error)
+            response.redirect('/auth/set_password');
+        })
+}
