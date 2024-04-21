@@ -3,6 +3,7 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Usuario = require('../models/usuario.model');
 const Alumno = require('../models/alumno.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const Materia = require('../models/materia.model');
 const { getAllUsers, getAllCourses } = require('../util/adminApiClient');
 
 exports.get_configuracion = (request, response, next) => {
@@ -212,18 +213,10 @@ exports.get_alumnos = async (request, response, next) => {
         for (const user of filteredUsers) {
             const usuarioExistente = await Alumno.fetchOne(user.ivd_id);
             if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
-                console.log('Usuario encontrado:', usuarioExistente[0]);
                 // Si la comparación devuelve resultados, actualiza el usuario
-                if (user.ivd_id.toString().startsWith('1')) {
-                    await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
-                    await Usuario.updateUsuario(user.ivd_id, user.email);
-                    await EstudianteProfesional.update_alumno_profesional(user.ivd_id,user.semester,user.planEstudio)
-                }
-
-                else if (user.ivd_id.toString().startsWith('8')) {
-                    await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
-                    await Usuario.updateUsuario(user.ivd_id, user.email);
-                }
+                await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
+                await Usuario.updateUsuario(user.ivd_id, user.email);
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
                 updatedUsers.push({ ...user, updated: true });
             } else {
                 updatedUsers.push({ ...user, updated: false });
@@ -253,7 +246,7 @@ exports.get_materias = async (request, response, next) => {
 
     try {
         // Llama a las funciones necesarias para obtener datos
-        const courses = await getAllUsers();
+        const courses = await getAllCourses();
 
         const parsedCourses = courses.data.map(course => {
 
@@ -262,12 +255,10 @@ exports.get_materias = async (request, response, next) => {
                 name,
                 credits,
                 sep_id,
-                plans = {},
             } = course;
 
-            const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
-            const carrera = course.plans?.[0]?.name || "Desconocido";
-
+            const semestre = course.plans_courses?.[0]?.semester;
+            const carrera = course.plans?.[0]?.degree?.name;
             return {
                 id: id,
                 name: name,
@@ -278,8 +269,23 @@ exports.get_materias = async (request, response, next) => {
             };
         });
 
+        const updatedCourses = [];
+        for (const course of parsedCourses) {
+            const courseExistente = await Materia.fetchOne(course.id)
+            if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Materia.updateMateria(course.sep_id,course.name,course.carrera,course.semestre,course.credits,course.id)
+                updatedCourses.push({ ...course, updated: true });
+            } else {
+                updatedCourses.push({ ...course, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const coursesSinActualizar = updatedCourses.filter(course => !course.updated);
+
         response.render('configuracion/actualizarMaterias', {
-            materias: parsedCourses,
+            materias: coursesSinActualizar,
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
@@ -291,4 +297,38 @@ exports.get_materias = async (request, response, next) => {
         console.error('Error realizando operaciones:', error);
     }
 };
+
+exports.post_alumnos = async (request,response,next) => {
+    let success = true;
+    const matricula = request.body.matricula;
+    const nombre = request.body.nombre;
+    const apellidos = request.body.apellidos;
+    const email = request.body.email;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.planEstudio;
+    const referencia = request.body.referenciaBancaria;
+
+    await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio)
+    await Usuario.saveUsuario(matricula,email);
+
+    response.json({success:success})
+    
+}
+
+exports.post_materias = async (request,response,next) => {
+    let success = true;
+    const idMateria= request.body.id;
+    const idSep = request.body.idsep;
+    const nombre = request.body.nombre;
+    const creditos = request.body.creditos;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.carrera;
+
+    await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
+    
+
+    response.json({success:success})
+    
+}
 

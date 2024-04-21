@@ -1,94 +1,151 @@
 <%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
 
-<style>
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 8%;
-        max-width: 50%;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-    }
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 8%;
+            max-width: 50%;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-    table {
-        width: 100%;
-    }
+        table {
+            width: 100%;
+        }
 
-    td {
-        border: 5px solid rgb(255, 255, 255);
-        padding: 10px;
-        font-size: 19px;
-        color: black; /* Cambiado de blanco a negro para mejor legibilidad */
-    }
+        td {
+            border: 5px solid rgb(255, 255, 255);
+            /* Líneas más oscuras para la tabla */
+            padding: 10px;
+            font-size: 19px;
+            color: white;
+        }
 
-    th {
-        border: 5px solid rgb(255, 255, 255);
-        padding: 10px;
-        font-size: 19px;
-        background-color: rgb(0, 0, 0);
-        color: white;
-    }
+        th {
+            border: 5px solid rgb(255, 255, 255);
+            padding: 10px;
+            font-size: 19px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
 
-    thead {
-        background-color: black;
-        font-style: italic;
-    }
+        thead {
+            background-color: black;
+            font-style: italic;
+        }
 
-    .form-enviar-datos select {
-        margin-left: 50%;
-        margin-right: 50%;
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
+        .form-enviar-datos select {
+            margin-left: 50%;
+            margin-right: 50%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
 
-    .my-button {
-        background-color: #000000;
-        color: white;
-        width: 85%;
-    }
+        .my-button {
+            background-color: #000000;
+            /* El color del fondo */
+            color: white;
+            /* El color del texto */
+            width: auto;
+        }
 
-    .my-button:hover {
-        background-color: #910106;
-        color: #ffffff;
-        border: solid #000000;
-    }
-</style>
+        .my-button:hover {
+            background-color: #910106;
+            color: #ffffff;
+            border: solid #000000;
+        }
 
-<body>
-    <!-- Verifica si hay materias para mostrar -->
-    <% if (materias.length > 0) { %>
-        <section class="section">
-            <h3 class="title is-3">Revisión de datos de Materias para actualizar</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="has-text-white">ID</th>
-                        <th class="has-text-white">Nombre</th>
-                        <th class="has-text-white">Créditos</th>
-                        <th class="has-text-white">ID SEP</th>
-                        <th class="has-text-white">Semestre</th>
-                        <th class="has-text-white">Carrera</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% materias.forEach(materia => { %>
-                        <tr>
-                            <td class="has-text-black"><%= materia.id %></td>
-                            <td class="has-text-black"><%= materia.name %></td>
-                            <td class="has-text-black"><%= materia.credits %></td>
-                            <td class="has-text-black"><%= materia.sep_id %></td>
-                            <td class="has-text-black"><%= materia.semestre %></td>
-                            <td class="has-text-black"><%= materia.carrera %></td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </section>
-    <% } else { %>
-        <p>No hay materias para mostrar.</p>
-    <% } %>
-</body>
-</html>
+        .fa-solid {
+            margin-left: 20px;
+            /* Añade un margen a la izquierda del ícono */
+        }
+    </style>
 
+    <body>
+        <% if (materias.length> 0) { %>
+            <section class="section">
+                <div class="table-container">
+                    <h3 class="title is-3">Revisión de datos de Cursos para ingresar</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="has-text-white">ID</th>
+                                <th class="has-text-white">SEP ID</th>
+                                <th class="has-text-white">Nombre</th>
+                                <th class="has-text-white">Créditos</th>
+                                <th class="has-text-white">Semestre</th>
+                                <th class="has-text-white">Carrera</th>
+                                <th class="has-text-white">Registrar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% materias.forEach((materia, index)=> { %>
+                                <tr id="fila<%= index %>">
+                                    <td class="has-text-black">
+                                        <%= materia.id %>
+                                    </td>
+                                    <td class="has-text-black">
+                                        <%= materia.sep_id %>
+                                    </td>
+                                    <td class="has-text-black">
+                                        <%= materia.name %>
+                                    </td>
+                                    <td class="has-text-black">
+                                        <%= materia.credits %>
+                                    </td>
+                                    <td class="has-text-black">
+                                        <%= materia.semestre %>
+                                    </td>
+                                    <td class="has-text-black">
+                                        <%= materia.carrera %>
+                                    </td>
+                                    <td class="text-center">
+                                        <form action="/configuracion/actualizarMaterias" method="POST"
+                                            id="form<%= index %>" class="form-enviar-datos">
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" name="id" value="<%= materia.id %>">
+                                            <input type="hidden" name="idsep" value="<%= materia.sep_id %>">
+                                            <input type="hidden" name="nombre" value="<%= materia.name %>">
+                                            <input type="hidden" name="creditos" value="<%= materia.credits %>">
+                                            <input type="hidden" name="semestre" value="<%= materia.semestre %>">
+                                            <input type="hidden" name="carrera" value="<%= materia.carrera %>">
+                                            <button type="submit"
+                                                class="button my-button is-medium is-rounded is-responsive">
+                                                Registrar Materia
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-circle-chevron-right"
+                                                        style="color: #ffffff;"></i>
+                                                </span>
+                                            </button>
+
+                                    </td>
+
+                                    </form>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                    <br>
+                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                        <ul class="pagination-list" id="pagination-list-2">
+                            <div id="pagination-numbers-2">
+
+                            </div>
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+            <% } else { %>
+                <p>No hay cursos para mostrar.</p>
+                <% } %>
+                    <script type="text/javascript" src="/js/pagination_datos.js"></script>
+                    <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
+    </body>
+
+    </html>

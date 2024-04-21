@@ -47,10 +47,10 @@ async function getAllUsers() {
 
 
 async function getAllCourses() {
+  const token = await getToken();
+  const headers = getHeaders(token);
 
-  const response = await axiosAdminClient.get(
-    'v1/courses/all',
-    {
+  const response = await axiosAdminClient.get('v1/courses/all',{
       headers,
     });
     

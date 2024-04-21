@@ -69,71 +69,97 @@
         <!-- Verifica si hay usuarios para mostrar -->
         <% if (usuarios.length> 0) { %>
             <section class="section">
-                <h3 class="title is-3">Revisión de datos de Alumnos para ingresar</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="has-text-white">ID</th>
-                            <th class="has-text-white">Nombre</th>
-                            <th class="has-text-white">Apellidos</th>
-                            <th class="has-text-white">Email</th>
-                            <th class="has-text-white">Semestre</th>
-                            <th class="has-text-white">Plan de Estudios</th>
-                            <th class="has-text-white">Referencia Bancaria</th>
-                            <th class="has-text-white">Registrar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% usuarios.forEach((usuario,index)=> { %>
+                <div class="table-container">
+                    <h3 class="title is-3">Revisión de datos de Alumnos para ingresar</h3>
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="has-text-black">
-                                    <%= usuario.ivd_id %>
-                                </td>
-                                <td class="has-text-black">
-                                    <%= usuario.name %>
-                                </td>
-                                <td class="has-text-black">
-                                    <%= usuario.apellidos %>
-                                </td>
-                                <td class="has-text-black">
-                                    <%= usuario.email %>
-                                </td>
-                                <td class="has-text-black">
-                                    <%= usuario.semester %>
-                                </td>
-                                <td class="has-text-black">
-                                    <%= usuario.planEstudio %>
-                                </td>
-                                <td>
-                                    <form action="configuracion/actualizarAlumnos" method="POST" id="form<%=index %>"
-                                        class="form-enviar-datos">
-                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                        <input type="text" name="referenciaBancaria"
-                                            placeholder="Escribe la referencia bancaria aquí">
-                                </td>
-                                <td>
-                                    <input type="hidden" name="matricula" value="<%= usuario.name %>">
-                                    <input type="hidden" name="nombre" value="<%= usuario.name %>">
-                                    <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
-                                    <input type="hidden" name="email" value="<%= usuario.email %>">
-                                    <input type="hidden" name="semestre" value="<%= usuario.semester %>">
-                                    <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
-                                    <button type="submit" class="button my-button is-medium is-rounded is-responsive">
-                                        Registrar Usuario
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                    </button>
-                                    </form>
-                                </td>
+                                <th class="has-text-white">ID</th>
+                                <th class="has-text-white">Nombre</th>
+                                <th class="has-text-white">Apellidos</th>
+                                <th class="has-text-white">Email</th>
+                                <th class="has-text-white">Semestre</th>
+                                <th class="has-text-white">Plan de Estudios</th>
+                                <th class="has-text-white">Referencia Bancaria</th>
+                                <th class="has-text-white">Registrar</th>
                             </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            <% usuarios.forEach((usuario,index)=> { %>
+                                <tr id="fila<%=index %>">
+
+                                    <td class="has-text-black">
+                                        <%= usuario.ivd_id %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.name %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.apellidos %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.email %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.semester %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.planEstudio %>
+                                    </td>
+
+                                    <td>
+                                        <form action="/configuracion/actualizarAlumnos" method="POST"
+                                            id="form<%=index %>" class="form-enviar-datos">
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                            <input required class="input" type="text" name="referenciaBancaria"
+                                                style="width:100%; display:block; padding:0;"
+                                                placeholder="Escribe la referencia bancaria aquí">
+                                    </td>
+
+                                    <td>
+                                        <input type="hidden" name="matricula" value="<%= usuario.ivd_id %>">
+                                        <input type="hidden" name="nombre" value="<%= usuario.name %>">
+                                        <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
+                                        <input type="hidden" name="email" value="<%= usuario.email %>">
+                                        <input type="hidden" name="semestre" value="<%= usuario.semester %>">
+                                        <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
+                                        <button type="submit"
+                                            class="button my-button is-medium is-rounded is-responsive">
+                                            Registrar Usuario
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+
+                                    </form>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                    <br>
+                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                        <ul class="pagination-list" id="pagination-list-2">
+                            <div id="pagination-numbers-2">
+
+                            </div>
+                        </ul>
+                    </nav>
             </section>
             <% } else { %>
                 <p>No hay usuarios para mostrar.</p>
                 <% } %>
+                    </div>
+                    <script type="text/javascript" src="/js/pagination_datos.js"></script>
+                    <script type="text/javascript" src="/js/actualizarAlumnos.js"></script>
     </body>
 
     </html>

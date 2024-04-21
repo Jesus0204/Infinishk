@@ -2,7 +2,7 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const formData = new FormData(form);
-        fetch('/configuracion/actualizarAlumnos', {
+        fetch('/configuracion/actualizarMaterias', {
             method: 'POST',
             body: formData,
         })
