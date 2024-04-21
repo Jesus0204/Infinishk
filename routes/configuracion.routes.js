@@ -37,6 +37,8 @@ router.post('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionControll
 router.get('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.get_materias);
 router.post('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.post_materias);
 
+router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.get_periodos);
+
 router.get('/', isAuth, can_ActualizarBase, configuracionController.get_configuracion);
 
 module.exports = router;

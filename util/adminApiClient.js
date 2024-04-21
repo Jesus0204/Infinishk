@@ -44,8 +44,6 @@ async function getAllUsers() {
   return response.data;
 }
 
-
-
 async function getAllCourses() {
   const token = await getToken();
   const headers = getHeaders(token);
@@ -58,4 +56,17 @@ async function getAllCourses() {
 }
 
 
-module.exports = {getAllUsers, getAllCourses}
+async function getAllPeriods() {
+  const token = await getToken();
+  const headers = getHeaders(token);
+
+  const response = await axiosAdminClient.get('v1/school_cycles/index',{
+      headers,
+    });
+    
+  return response.data
+}
+
+
+
+module.exports = {getAllUsers, getAllCourses,getAllPeriods}

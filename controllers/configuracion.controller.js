@@ -4,7 +4,8 @@ const Usuario = require('../models/usuario.model');
 const Alumno = require('../models/alumno.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const Materia = require('../models/materia.model');
-const { getAllUsers, getAllCourses } = require('../util/adminApiClient');
+const Periodo = require('../models/periodo.model');
+const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -297,6 +298,65 @@ exports.get_materias = async (request, response, next) => {
         console.error('Error realizando operaciones:', error);
     }
 };
+
+
+exports.get_periodos = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const periods = await getAllPeriods();
+
+        const parsedPeriods = periods.data.map(period => {
+
+            const {
+                id,
+                code,
+                start_date,
+                end_date,
+                active,
+            } = period;
+
+            const status = active ? 1 : 0;
+
+            return {
+                id: id,
+                code: code,
+                start: start_date,
+                end: end_date,
+                status: status,
+            };
+        });
+
+        const updatedPeriods = [];
+        for (const period of parsedPeriods) {
+            const periodoExistente = await Periodo.fetchOne(period.id);
+            if (periodoExistente && periodoExistente.length > 0 && periodoExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Periodo.updatePeriodo(period.id,period.start_date,period.end_date,period.code,period.status)
+                updatedPeriods.push({ ...period, updated: true });
+            } else {
+                updatedPeriods.push({ ...period, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
+
+        response.render('configuracion/actualizarPeriodos', {
+            periodos: periodosSinActualizar,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
 
 exports.post_alumnos = async (request,response,next) => {
     let success = true;

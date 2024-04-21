@@ -13,6 +13,10 @@
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     </form>
     <button onclick="actualizarGrupos()" type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Grupos</button>
+    <form action="/configuracion/actualizarPeriodos" method="GET">
+        <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener Periodos</button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    </form>
     <script type="text/javascript" src="/js/actualizarBase.js"></script>
 </body>
 </html>
