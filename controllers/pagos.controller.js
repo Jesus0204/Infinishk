@@ -350,3 +350,12 @@ exports.get_autocomplete = (request, response, next) => {
         }
     }
 };
+
+exports.get_pago_alumno = (request, response, next) => {
+    response.render('pago/realizar_pago', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    })
+};

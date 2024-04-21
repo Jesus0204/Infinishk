@@ -48,6 +48,7 @@
     "node-cache": "^5.1.2",
     "nodemon": "^3.1.0",
     "postcss": "^8.4.35",
+    "xml-writer": "^1.7.0",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
