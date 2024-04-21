@@ -11,7 +11,7 @@ module.exports = class Periodo {
     }
 
     static fetchOne(id) {
-        return db.execute(`SELECT IDPeriodo, fechaInicio, fechaFin, Nombre, periodoActivo, IDExterno
+        return db.execute(`SELECT IDPeriodo, fechaInicio, fechaFin, Nombre, periodoActivo
         FROM periodo WHERE IDPeriodo = ?`, [id]);
     }
 

@@ -316,13 +316,23 @@ exports.get_periodos = async (request, response, next) => {
                 active,
             } = period;
 
+            const startDate = new Date(start_date);
+            const endDate = new Date(end_date);
             const status = active ? 1 : 0;
+
+            const yearStart = startDate.getFullYear();
+            const monthStart = startDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayStart = startDate.getDate();
+
+            const yearEnd = endDate.getFullYear();
+            const monthEnd = endDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayEnd = endDate.getDate();
 
             return {
                 id: id,
-                code: code,
-                start: start_date,
-                end: end_date,
+                name: code,
+                start: `${yearStart}-${monthStart}-${dayStart}`,
+                end: `${yearEnd}-${monthEnd}-${dayEnd}`,
                 status: status,
             };
         });
@@ -332,7 +342,7 @@ exports.get_periodos = async (request, response, next) => {
             const periodoExistente = await Periodo.fetchOne(period.id);
             if (periodoExistente && periodoExistente.length > 0 && periodoExistente[0].length > 0) {
                 // Si la comparación devuelve resultados, actualiza el usuario
-                await Periodo.updatePeriodo(period.id,period.start_date,period.end_date,period.code,period.status)
+                await Periodo.updatePeriodo(period.id,period.start,period.end,period.name,period.status)
                 updatedPeriods.push({ ...period, updated: true });
             } else {
                 updatedPeriods.push({ ...period, updated: false });
@@ -388,6 +398,20 @@ exports.post_materias = async (request,response,next) => {
     await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
     
 
+    response.json({success:success})
+    
+}
+
+exports.post_periodos = async (request,response,next) => {
+    let success = true;
+    const idPeriodo= request.body.id;
+    const nombre = request.body.nombre;
+    const inicio = request.body.inicio;
+    const fin = request.body.fin;
+    const status = request.body.status;
+
+    await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+    
     response.json({success:success})
     
 }

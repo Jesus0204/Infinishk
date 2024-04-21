@@ -38,6 +38,7 @@ router.get('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionControll
 router.post('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.post_materias);
 
 router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.get_periodos);
+router.post('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.post_periodos);
 
 router.get('/', isAuth, can_ActualizarBase, configuracionController.get_configuracion);
 
