@@ -8,6 +8,10 @@ const Periodo = require('../models/periodo.model');
 const Posee = require('../models/posee.model');
 const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
 };
@@ -383,6 +387,23 @@ exports.post_alumnos = async (request,response,next) => {
     await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio)
     await Usuario.saveUsuario(matricula,email);
     await Posee.savePosee(matricula,1);
+
+    const msg = {
+        to: 'samirbaidonpardo@hotmail.com',
+        from: {
+            name: 'VIA PAGO',
+            email: '27miguelb11@gmail.com',
+        },
+        subject: 'Bienvenido a nuestro sitio',
+        html: '<p>Hola,</p><p>Haz clic en el siguiente enlace para ingresar tu contraseña: <a href="https://tu-sitio.com/ingresar-contrasena">Ingresar Contraseña</a></p>'
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log('Correo electrónico enviado correctamente');
+    } catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
 
     response.json({success:success})
     
