@@ -6,7 +6,6 @@ const router = express.Router();
 const estadocuentaController = require('../controllers/estadocuenta.controller');
 
 const isAuth = require('../util/is-Auth');
-const can_ConsultarPropuestaHorario = require('../util/privileges/alumno/can_consultar_propuestaHorario');
 const can_ConsultarEstadoCuenta = require('../util/privileges/can_consultar_EstadoCuenta');
 
 // Estado cuenta
