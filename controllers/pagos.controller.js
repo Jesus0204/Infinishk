@@ -359,3 +359,64 @@ exports.get_pago_alumno = (request, response, next) => {
         csrfToken: request.csrfToken()
     })
 };
+
+exports.post_mandar_pago = (request, response, next) => {
+    let monto = Number(request.body.monto);
+    monto = monto.toFixed(2);
+
+    // Usar el paquete para facilidad y poner true para que este indentado
+    var XMLWriter = require('xml-writer');
+    xml = new XMLWriter(true);
+    // Empiezas el documento y el objeto padre
+    xml.startDocument();
+    xml.startElement('P');
+        xml.startElement('business');
+            xml.startElement('id_company');
+                xml.text('SNBX');
+            xml.endElement('id_company');
+            xml.startElement('id_branch');
+                xml.text('01SNBXBRNCH');
+            xml.endElement('id_branch');
+            xml.startElement('user');
+                xml.text('SNBXUSR0123');
+            xml.endElement('user');
+            xml.startElement('pwd');
+                xml.text('SECRETO');
+            xml.endElement('pwd');
+        xml.endElement('business');
+        xml.startElement('nb_fpago');
+            xml.text('TCD');
+        xml.endElement('nb_fpago');
+        xml.startElement('url');
+            xml.startElement('reference');
+                xml.text('FACTURA999');
+            xml.endElement('reference');
+            xml.startElement('amount');
+                xml.text(monto);
+            xml.endElement('amount');
+            xml.startElement('moneda');
+                xml.text('MXN');
+            xml.endElement('moneda');
+            xml.startElement('canal');
+                xml.text('W');
+            xml.endElement('canal');
+            xml.startElement('omitir_notif_default');
+                xml.text('1');
+            xml.endElement('omitir_notif_default');
+            xml.startElement('version');
+                xml.text('IntegraWPP');
+            xml.endElement('version');
+        xml.endElement('url');
+    xml.endElement('P');
+    xml.endDocument();
+    console.log(xml.toString());
+
+    let CryptoJS = require("crypto-js");
+    let originalString = xml.toString();
+    let key = '5DCC67393750523CD165F17E1EFADD21';
+    let ciphertext = CryptoJS.AES.encrypt(originalString, key).toString();
+    console.log("ciphertext: " + ciphertext);
+
+    // Para que la aplicación no se quede cargando
+    response.redirect('/pagos/pagar');
+};

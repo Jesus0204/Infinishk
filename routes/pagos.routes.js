@@ -51,6 +51,7 @@ router.get('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosControll
 router.post('/fetch_registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.post_fetch_registrar_solicitud);
 router.post('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.post_registrar_solicitud);
 router.get('/pagar', isAuth, can_RealizarPago, pagosController.get_pago_alumno);
+router.post('/mandar_pago', isAuth, can_RealizarPago, pagosController.post_mandar_pago);
 
 router.get('/', isAuth, pagosController.get_pago);
 
