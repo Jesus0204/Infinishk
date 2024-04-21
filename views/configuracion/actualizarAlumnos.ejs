@@ -107,16 +107,23 @@
 
                                     <td class="has-text-black">
                                         <%= usuario.semester %>
-                                    </td>
-
-                                    <td class="has-text-black">
-                                        <%= usuario.planEstudio %>
-                                    </td>
-
-                                    <td>
                                         <form action="/configuracion/actualizarAlumnos" method="POST"
                                             id="form<%=index %>" class="form-enviar-datos">
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    </td>
+
+                                    <% if(usuario.planEstudio !== null) { %>
+                                    <td class="has-text-black">
+                                        <%= usuario.planEstudio %>
+                                        <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
+                                    </td>
+                                <% } else { %>
+                                    <td class="has-text-black">
+                                        <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudio"></textarea>
+                                    </td>
+                                <% } %>
+
+                                    <td>
                                             <input required class="input" type="text" name="referenciaBancaria"
                                                 style="width:100%; display:block; padding:0;"
                                                 placeholder="Escribe la referencia bancaria aquí">
@@ -128,7 +135,6 @@
                                         <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
                                         <input type="hidden" name="email" value="<%= usuario.email %>">
                                         <input type="hidden" name="semestre" value="<%= usuario.semester %>">
-                                        <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
                                         <button type="submit"
                                             class="button my-button is-medium is-rounded is-responsive">
                                             Registrar Usuario

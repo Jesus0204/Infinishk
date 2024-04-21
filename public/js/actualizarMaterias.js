@@ -12,7 +12,7 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
                     // Manejar el caso en que success no es true
                     console.error('La operación no fue exitosa:', data);
                     // Aquí puedes agregar código para mostrar un mensaje de error al usuario
-                    alert('Por favor verifica tu tipo de pago');
+                    alert('Hubo un error en la consulta, por favor intenta de nuevo');
                 } else {
                     // Si la respuesta fue exitosa, eliminar la fila de la tabla
                     const filaId = form.parentElement.parentElement.id;
@@ -26,7 +26,7 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
             })
             .catch(error => {
                 console.error('Error en la petición fetch:', error);
-                alert('Por favor verifica tu tipo de pago.');
+                alert('Hubo un error en la consulta, por favor intenta de nuevo');
             });
     });
 });

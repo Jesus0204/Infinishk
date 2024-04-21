@@ -5,6 +5,7 @@ const Alumno = require('../models/alumno.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const Materia = require('../models/materia.model');
 const Periodo = require('../models/periodo.model');
+const Posee = require('../models/posee.model');
 const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
 
 exports.get_configuracion = (request, response, next) => {
@@ -381,6 +382,7 @@ exports.post_alumnos = async (request,response,next) => {
     await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
     await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio)
     await Usuario.saveUsuario(matricula,email);
+    await Posee.savePosee(matricula,1);
 
     response.json({success:success})
     
