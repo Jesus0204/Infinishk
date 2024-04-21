@@ -386,7 +386,7 @@ exports.post_alumnos = async (request,response,next) => {
     await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
     await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio)
     await Usuario.saveUsuario(matricula,email);
-    await Posee.savePosee(matricula,1);
+    await Posee.savePosee(matricula,3);
 
     const msg = {
         to: 'samirbaidonpardo@hotmail.com',
@@ -395,7 +395,7 @@ exports.post_alumnos = async (request,response,next) => {
             email: '27miguelb11@gmail.com',
         },
         subject: 'Bienvenido a nuestro sitio',
-        html: '<p>Hola,</p><p>Haz clic en el siguiente enlace para ingresar tu contraseña: <a href="https://tu-sitio.com/ingresar-contrasena">Ingresar Contraseña</a></p>'
+        html: `<p>Hola,</p><p>Haz clic en el siguiente enlace para ingresar tu contraseña, asegúrate de usar esta matrícula (${matricula}) para registrarte correctamente: <a href="http://localhost:4000/auth/signup">Ingresar Contraseña</a></p>`
     };
 
     try {

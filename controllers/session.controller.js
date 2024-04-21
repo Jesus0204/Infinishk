@@ -93,7 +93,7 @@ exports.get_signup = (request, response, next) => {
 
 exports.post_signup = (request, response, next) => {
     const new_user = new Usuario(request.body.IDUsuario, request.body.password);
-    new_user.save()
+    new_user.updateContra()
         .then(([rows, fieldData]) => {
             response.redirect('/auth/login');
         })
