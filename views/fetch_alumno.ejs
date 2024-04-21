@@ -12,13 +12,13 @@
                 <h3 class="title is-3">Registrar Solicitud de Pago</h3>
                 <% } else if (pago_manual == true) { %>
                 <h3 class="title is-3">Registrar Pago Manual</h3>
-                <% } else if (modificar_fichas == true) { %>
+                <% } else if (fichas_pago == true) { %>
                     <h3 class="title is-3">Modificar Fichas de Pago</h3>
                 <% } %>
             </div>
         </div>
+        <% if (fichas_pago != true) { %>
         <form action="/pagos/fetch_registrar_<% if (solicitud_pago) { %>solicitud <% } else { %>pago_manual <% } %>" method="POST">
-            <% if (modificar_fichas != true) { %>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="columns">
                 <div class="column is-3"></div>
@@ -62,10 +62,8 @@
             </div>
         </form>
     </div>
-    <% } %>
-
-    <form action="/alumnos/fetch_registrar_<% if (modificar_fichas) { %>solicitud <% } %>" method="POST">
-        <% if (solicitud_pago || pago_manual != true) { %>
+    <%  } else if (solicitud_pago != true && pago_manual != true) { %> %>
+    <form action="/alumnos/fetch_<% if (fichas_pago) { %>fichas <% } %>" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="columns">
             <div class="column is-3"></div>
@@ -95,7 +93,7 @@
             <div class="column is-6">
                 <button class="button is-rounded is-medium is-responsive" type="submit"
                     style="font-size: large; margin: 8px 2px;" id="Boton_buscar" disabled>
-                    <% if (modificar_fichas == true) { %>
+                    <% if (fichas_pago == true) { %>
                     <span>Modificar Fichas de Pago</span>
                     <% } %>
                     <span class="icon is-large">

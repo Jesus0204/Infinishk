@@ -1,0 +1,132 @@
+<% } else { %>
+    <tr>
+        <% console.log("Debug: current ficha: ", fichas[count]) %>
+        <td>
+            <div class="columns is-vcentered">
+                <div class="column is-full" style="text-align: center;">
+                    <strong>Pago #<%= count + 1 %></strong>
+                </div>
+            </div>
+            <div class="columns is-vcentered">
+                <% if (fichas[count].Pagado == 1) { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                </div>
+                <% } else if (currentDate < fichas[count].fechaLimitePago) { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
+                </div>
+                <% } else { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
+                </div>
+                <% } %>
+                <div class="column" style="text-align: center;">
+                    <strong>Total: </strong>
+                    $<%- fichas[count].montoAPagar.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <br>
+                    <strong>Pagado:</strong>
+                    $<%- fichas[count].montoPagado.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <br>
+                    <strong>Fecha Limite Pago:</strong>
+                    <br>
+                    <%= fichas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
+                </div>
+                <div class="column" style="text-align: center;">
+                    <strong>Descuento:</strong>
+                    <br>
+                    <%- fichas[count].Descuento.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <strong>Fecha de Modificación:</strong>
+                    <br>
+                    <% if (fichas[count].modificado_At !== null) { %>
+                        <%= fichas[count].modificado_At.toLocaleDateString("es-MX", options) %>
+                    <% } else { %>
+                        <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
+                    <% } %> 
+                    <br>
+                    <strong>Nota:</strong>
+                    <br>
+                    <%= fichas[count].notaModificacion %>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="columns is-vcentered">
+                <div class="column is-full" style="text-align: center;">
+                    <strong>Pago #<%= count + 2 %></strong>
+                </div>
+            </div>
+            <div class="columns is-vcentered">
+                <% if (fichas[count + 1].Pagado == 1) { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                </div>
+                <% } else if (currentDate < fichas[count + 1].fechaLimitePago) { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
+                </div>
+                <% } else { %>
+                    <% console.log("Debug: ficha Pagado:", ficha.Pagado); %>
+                <div class="column is-narrow" style="text-align: center;">
+                    <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
+                </div>
+                <% } %>
+                <div class="column" style="text-align: center;">
+                    <strong>Total: </strong>
+                    $<%- fichas[count].montoAPagar.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <br>
+                    <strong>Pagado:</strong>
+                    $<%- fichas[count].montoPagado.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <br>
+                    <strong>Fecha Limite Pago:</strong>
+                    <br>
+                    <%= fichas[count].fechaLimitePago.toLocaleDateString("es-MX", options) %>
+                </div>
+                <div class="column" style="text-align: center;">
+                    <strong>Descuento:</strong>
+                    <br>
+                    <%- fichas[count].Descuento.toLocaleString('mx', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                        }) %>
+                    <strong>Fecha de Modificación:</strong>
+                    <br>
+                    <% if (fichas[count].modificado_At !== null) { %>
+                        <%= fichas[count].modificado_At.toLocaleDateString("es-MX", options) %>
+                    <% } else { %>
+                        <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
+                    <% } %>
+                    <br> 
+                    <strong>Nota:</strong>
+                    <br>
+                    <%= fichas[count].notaModificacion %>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <% } %>
+    <% } %>
+</tbody>
+</table>
+<% } %>
+</div>
