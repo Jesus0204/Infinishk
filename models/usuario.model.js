@@ -48,6 +48,7 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
+
     static getPermisos(IDUsuario) {
         return db.execute(
             `SELECT funcion
@@ -101,6 +102,10 @@ module.exports = class Usuario{
 
     static saveUsuario(id,correo){
         return db.execute('INSERT INTO usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
+    }
+
+    static fetchUser(correo){
+        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?',[correo]);
     }
 
     

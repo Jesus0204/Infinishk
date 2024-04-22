@@ -142,12 +142,18 @@ exports.get_reset_password = (request,response,next) => {
 }
 
 exports.post_reset_password = async (request,response,next) => {
-    const matricula = request.body.matricula;
+    const correo = request.body.correo;
 
-    const setPasswordLink = `http://localhost:4000/auth/set_password?matricula=${matricula}`;
+    const matricula = await Usuario.fetchUser(correo); 
+
+    const user = matricula[0][0].IDUsuario;
+
+    console.log(user);
+
+    const setPasswordLink = `http://localhost:4000/auth/set_password?matricula=${user}`;
 
     const msg = {
-        to: 'samirbaidonpardo@hotmail.com',
+        to: correo,
         from: {
             name: 'VIA PAGO',
             email: '27miguelb11@gmail.com',
