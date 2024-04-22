@@ -63,6 +63,7 @@
                             </div>
                             <div class="column" style="text-align: center;">
                                 <form action="/alumnos/modificar_fichas" method="POST" class="form-modificar">
+                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                     <input type="hidden" id="id" name="id" value="<%= ficha.IDDeuda %>">
                                     <strong>Total: </strong>
                                     $<%- ficha.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -180,7 +181,7 @@
                                         <p class="help is-hidden has-text-danger-dark" id="ayuda_descuento_vacio<%= count %>"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             Por favor escribe un descuento. Si no deseas aplicar un descuento, escribe 0.</p>
-                                        <p class="help is-hidden has-text-danger-dark" id="ayuda_decuento_negativo<%= count %>"
+                                        <p class="help is-hidden has-text-danger-dark" id="ayuda_descuento_negativo<%= count %>"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El descuento no puede ser negativo.</p>
                                         <p class="help is-hidden has-text-danger-dark" id="ayuda_descuento_exponente<%= count %>"
