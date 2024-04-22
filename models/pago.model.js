@@ -17,6 +17,12 @@ module.exports = class Pago {
             `CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
                 [id, monto, nota,fecha]);
     }
+
+    static save_pago_manual(idDeuda, motivo, monto, nota, metodo, fecha) {
+        return db.execute(
+            `CALL insertar_Pago(?, ?, ?, ?, ?, ?);`,
+            [idDeuda, motivo, monto, nota, metodo, fecha]);
+    }
     
     
 }

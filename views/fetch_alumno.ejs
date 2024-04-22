@@ -3,6 +3,7 @@
     permisos: permisos,
     rol: rol
 }) %>
+
 <section class="section">
     <div class="container">
         <div class="columns">
@@ -15,7 +16,8 @@
                 <% } %>
             </div>
         </div>
-        <form action="/pagos/fetch_registrar_<% if (solicitud_pago) { %>solicitud <% } else { %>pago_manual <% } %>" method="POST">
+        <form action="/pagos/fetch_registrar_<% if (solicitud_pago) { %>solicitud <% } else { %>pago_manual <% } %>"
+            method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="columns">
                 <div class="column is-3"></div>
@@ -48,7 +50,7 @@
                         <% if (solicitud_pago == true) { %>
                         <span>Registrar Solicitud al Alumno</span>
                         <% } else if (pago_manual == true) { %>
-                        </span>Registrar Pago Manual al Alumno</span>
+                        <span>Registrar Pago Manual</span>
                         <% } %>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
