@@ -363,10 +363,7 @@ exports.get_autocomplete = (request, response, next) => {
     }
 };
 
-// Configuras a moment con el locale. 
-const moment = require('moment');
 const Colegiatura = require('../models/colegiatura.model');
-moment.locale('es-mx');
 
 exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
@@ -388,7 +385,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
 
                             // Conviertes la fecha si existe
                             for (let count = 0; count < infoDeuda.length; count++) {
-                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).format('LL');
+                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).tz('America/Mexico_City').format('LL');
                             }
                             info_Deuda = infoDeuda;
                         };
@@ -418,7 +415,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                             const [infoPagosDipl, fieldData_2] = await Cursa.fetchPagosHechos(matches[0], infoDiplomado[0].IDDiplomado);
                             // Conviertes la fecha si existe
                             for (let count = 0; count < infoPagosDipl.length; count++) {
-                                infoPagosDipl[count].fechaPago = moment(new Date(infoPagosDipl[count].fechaPago)).format('LL');
+                                infoPagosDipl[count].fechaPago = moment(new Date(infoPagosDipl[count].fechaPago)).tz('America/Mexico_City').format('LL');
                             }
                             infoPagosDiplomado = infoPagosDipl;
                         }
