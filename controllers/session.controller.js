@@ -1,6 +1,11 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
@@ -126,4 +131,38 @@ exports.post_set_password = async (request,response,next) => {
             console.log(error)
             response.redirect('/auth/set_password');
         })
+}
+
+exports.get_reset_password = (request,response,next) => {
+    response.render('reset_password', { 
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
+}
+
+exports.post_reset_password = async (request,response,next) => {
+    const matricula = request.body.matricula;
+
+    const setPasswordLink = `http://localhost:4000/auth/set_password?matricula=${matricula}`;
+
+    const msg = {
+        to: 'samirbaidonpardo@hotmail.com',
+        from: {
+            name: 'VIA PAGO',
+            email: '27miguelb11@gmail.com',
+        },
+        subject: 'Reestabecer contraseña de VIA Pago',
+        html: `<p>Hola,</p><p>Haz clic en el siguiente enlace para reestablecer tu contraseña: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log('Correo electrónico enviado correctamente');
+    } 
+    catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
+
+    response.redirect('/auth/login');
 }
