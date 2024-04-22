@@ -1,3 +1,14 @@
+// Initialize all input of date type.
+const calendars = bulmaCalendar.attach('[type="date"]', {
+    startDate: new Date(),
+    displayMode: 'dialog',
+    dateFormat: 'dd/MM/yyyy',
+    maxDate: new Date(),
+    weekStart: 1,
+    lang: 'es',
+    showFooter: false
+});
+
 for (count = 0; count < '<%= fichas.length %>'; count++) {
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
@@ -14,7 +25,6 @@ for (count = 0; count < '<%= fichas.length %>'; count++) {
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        console.log("Checar contenido called");
         bt_Modificar.disabled = fecha_lim.value.length === 0 || fecha_mod.value.length === 0 || descuento.value.length === 0 || nota.value.length === 0;
     }
 
