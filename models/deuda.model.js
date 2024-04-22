@@ -36,5 +36,16 @@ module.exports = class Deuda {
         return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
+
+    static fetchNoPagadas(IDColegiatura) {
+        return db.execute(`SELECT IDDeuda, (montoAPagar - Descuento) AS 'montoAPagar', 
+        fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
+        AND IDColegiatura = ? `, [IDColegiatura]);
+    }
+
+    static update_Deuda(monto_a_usar, id_deuda) {
+        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?', 
+        [monto_a_usar, id_deuda]);
+    }
     
 }

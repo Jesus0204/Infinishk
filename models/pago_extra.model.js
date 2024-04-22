@@ -21,7 +21,7 @@ module.exports = class PagoExtra {
         return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras NOT IN (SELECT IDPagosExtras FROM Liquida)');
     }
 
-    static fetchOne(id){
+    static fetchOne(id) {
         return db.execute('SELECT * FROM pagosExtras WHERE IDPagosExtras = ?', [id]);
     }
 
@@ -45,8 +45,8 @@ module.exports = class PagoExtra {
         return db.execute(`DELETE FROM pagosExtras WHERE IDPagosExtras = ?`, [id]);
     }
 
-    static fetchID(importe){
-        return db.execute('Select IDPagosExtras from pagosExtras WHERE montoPagar = ?',[importe]);
+    static fetchID(importe) {
+        return db.execute('Select IDPagosExtras from pagosExtras WHERE montoPagar = ?', [importe]);
     }
 
 };

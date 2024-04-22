@@ -86,6 +86,12 @@ $navbar-dropdown-item-hover-background-color: $rojo;
 @import "../../node_modules/bulma/sass/layout/section.sass";
 @import "../../node_modules/bulma/bulma.sass";
 
+@import "../../node_modules/bulma/sass/utilities/functions.sass";
+@import "../../node_modules/bulma/sass/form/shared.sass";
+
+/* Bulma Calendar */
+@import "bulma-calendar.sass";
+
 $switch-focus: none;
 /* Bulma Switch Control */
 @import "../../node_modules/bulma-switch/src/sass/index.sass";
