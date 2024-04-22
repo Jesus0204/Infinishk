@@ -18,7 +18,7 @@ module.exports = class Liquida {
     }
 
     static fetchID_Pendientes(matricula) {
-        return db.execute('SELECT IDLiquida, IDPagosExtras from liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
+        return db.execute('SELECT IDLiquida, IDPagosExtras from Liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
     }
 
     static fetch_Pendientes(matricula) {
