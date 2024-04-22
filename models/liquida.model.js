@@ -14,11 +14,11 @@ module.exports = class Liquida {
     }
 
     static fetchID(matricula){
-        return db.execute('Select IDLiquida from liquida WHERE Matricula = ?',[matricula]);
+        return db.execute('Select IDLiquida from Liquida WHERE Matricula = ?',[matricula]);
     }
 
     static fetchID_Pendientes(matricula) {
-        return db.execute('SELECT IDLiquida, IDPagosExtras from liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
+        return db.execute('SELECT IDLiquida, IDPagosExtras from Liquida WHERE Matricula = ? AND Pagado = 0', [matricula]);
     }
 
     static fetch_Pendientes(matricula) {
