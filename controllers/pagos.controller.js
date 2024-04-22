@@ -431,18 +431,18 @@ exports.post_mandar_pago = (request, response, next) => {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         withCredentials: true
-    }).then(function (response) {
+    }).then(function (xml_response) {
         // Esperas la respuesta cifrada
-        let responseText = response.data;
+        let responseText = xml_response.data;
         let decipherText = cipher.decifrarAES(responseText, key);
 
-        console.log(decipherText);
+        return response.status(200).json({
+            success: true,
+            respuestaXML: decipherText
+        });
     }).catch((error) => {
         console.log(error);
     })
 
-    return response.status(200).json({
-        success: true
-    });
 
 };
