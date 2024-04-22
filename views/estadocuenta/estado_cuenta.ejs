@@ -1,27 +1,15 @@
 <%- include('../includes/head.ejs') %>
 
-<section class="section">
-    <div class="container">
-        <h3 class="title is-3">Estado de cuenta</h3>
-        <table class="table is-bordered is-hoverable is-fullwidth">
-            <thead>
-                <tr>
-                    <th colspan="2">
-                        <div class="columns is-vcentered">
-                            <div class="column is-narrow">
-                            </div>
-                            <div class="column is-1">
-                                salaberga
-                            </div>
-                            <div class="column is-4">
-                                
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+<div class="notification">
+  <div class="columns is-vcentered">
+    <div class="column">
+      <label class="block font-semibold">Semestre:</label>
+      <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.semestreActual %></div>
     </div>
-</section>
+    <div class="column">
+      <label class="block font-semibold">Porcentaje de Beca:</label>
+      <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.porcBeca %>%</div>
+    </div>
+  </div>
+</div>
+</html>
