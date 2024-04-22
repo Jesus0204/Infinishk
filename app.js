@@ -1,3 +1,26 @@
+// const sgMail = require('@sendgrid/mail')
+
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+// const message = {
+//     to: 'mikebarrsan@gmail.com',
+//     from: {
+//         name: 'VIA PAGO',
+//         email: '27miguelb11@gmail.com',
+//     },
+//     subject: 'Hello from sendgrid',
+//     text: 'Hello from sendgrid',
+//     html: '<h1>Hello from sendgrid</h1>',
+// };
+
+// try{
+//     await sgMail.send(message);
+//     console.log('Email sent')
+// }
+// catch(error){
+//     console.log('Email sent')
+// }
+
 // Para usar express en vez de http
 const express = require('express');
 

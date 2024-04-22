@@ -62,12 +62,6 @@ exports.get_registrar_usuario = (request, response, next) => {
             console.log(error)
         })
 
-    // response.render('configuracion/registrar_usuario', {
-    //     csrfToken: request.csrfToken(),
-    //     username: request.session.username || '',
-    //     permisos: request.session.permisos || [],
-    //     rol: request.session.rol || "",
-    // })
 };
 
 exports.post_registrar_usuario = (request, response, next) => {
