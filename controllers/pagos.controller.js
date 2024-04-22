@@ -324,15 +324,8 @@ exports.post_ingresos = async (request, response, next) => {
     const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
     const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
 
-    const fechaInicioParsed = new Date(fechaInicio[0][0].fechaInicio);
-    const fechaFinParsed = fechaFin[0][0].fechaFin;
-
-    const yearInicio = fecha.getFullYear(); // Obtener el año (ejemplo: 2016)
-    const month = fecha.getMonth() + 1; // Obtener el mes (1-12)
-    const day = fecha.getDate(); // Obtener el día del mes (1-31)
-
-    console.log(fechaInicioParsed);
-    console.log(fechaFinParsed);
+    console.log(fechaInicio);
+    console.log(fechaFin);
     // .then(([ingresos_periodo, fieldData]) => {
     //     response.status(200).json({
     //         success: true,

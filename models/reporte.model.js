@@ -10,15 +10,15 @@ module.exports = class Reporte {
         return db.execute(`SELECT * FROM Periodo WHERE periodoActivo = 0 ORDER BY IDPeriodo DESC`);
     }
 
-    static fetchIngresosPeriodo() {
-        return db.execute(`SELECT * FROM Periodo WHERE periodoActivo = 0 ORDER BY IDPeriodo DESC`);
+    static async fetchFechaInicio(id){
+        const [rows] = await db.execute(`SELECT fechaInicio from Periodo WHERE nombre= ?`,[id]);
+        const fechaInicio = rows[0].fechaInicio;
+        return fechaInicio;
     }
 
-    static fetchFechaInicio(id){
-        return db.execute(`SELECT fechaInicio from Periodo WHERE nombre= ?`,[id])
-    }
-
-    static fetchFechaFin(id){
-        return db.execute(`SELECT fechaFin from Periodo WHERE nombre= ?`,[id])
+    static async fetchFechaFin(id){
+        const [rows] = await db.execute(`SELECT fechaFin from Periodo WHERE nombre= ?`,[id]);
+        const fechaFin = rows[0].fechaFin;
+        return fechaFin;
     }
 }
