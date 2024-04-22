@@ -148,15 +148,17 @@
                         </thead>
                         <tbody>
                             <% for (let solicitud of solicitudes) { %>
-                            <td>
-                                <%= solicitud.motivoPago %>
-                            </td>
-                            <td>
-                                $<%= solicitud.montoPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
-                            </td>
+                                <tr>
+                                    <td>
+                                        <%= solicitud.motivoPago %>
+                                    </td>
+                                    <td>
+                                        $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                         }) %>
+                                    </td>
+                                </tr>
                             <% } %>
                         </tbody>
                     </table>
