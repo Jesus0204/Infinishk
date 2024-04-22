@@ -326,16 +326,6 @@ exports.post_ingresos = async (request, response, next) => {
 
     console.log(fechaInicio);
     console.log(fechaFin);
-    // .then(([ingresos_periodo, fieldData]) => {
-    //     response.status(200).json({
-    //         success: true,
-    //         ingresos_periodo: ingresos_periodo
-    //     });
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    //     response.status(500).json({success: false, error: 'Error cargando reporte'});
-    // });
 };
 
 exports.get_autocomplete = (request, response, next) => {

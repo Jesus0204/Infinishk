@@ -21,4 +21,12 @@ module.exports = class Reporte {
         const fechaFin = rows[0].fechaFin;
         return fechaFin;
     }
+
+    static async fetchIngresosColegiatura(fechaInicio,fechaFin){
+        const [rows] = await db.execute(`SELECT SUM(pago.montoPagado) AS totalColegiatura
+        FROM pago
+        WHERE fechaPago >= ? AND fechaPago <= ?`,[fechaInicio,fechaFin]);
+        const montoColegiatura = rows[0].montoColegiatura;
+        return montoColegiatura;
+    }
 }
