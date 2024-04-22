@@ -437,10 +437,20 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                     };
                 })
                 .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
                     console.log(error)
                 });
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -462,6 +472,11 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                         response.redirect('/pagos/registrar_pago_manual')
                     })
                     .catch((error) => {
+                        response.status(500).render('500', {
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                        });
                         console.log(error);
                     })
             } else {
@@ -480,6 +495,11 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                                     response.redirect('/pagos/registrar_pago_manual');
                                 })
                                 .catch((error) => {
+                                    response.status(500).render('500', {
+                                        username: request.session.username || '',
+                                        permisos: request.session.permisos || [],
+                                        rol: request.session.rol || "",
+                                    });
                                     console.log(error);
                                 })
                         }
@@ -492,12 +512,22 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                             response.redirect('/pagos/registrar_pago_manual');
                         })
                         .catch((error) => {
+                            response.status(500).render('500', {
+                                username: request.session.username || '',
+                                permisos: request.session.permisos || [],
+                                rol: request.session.rol || "",
+                            });
                             console.log(error);
                         })
                 }
             }
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -517,6 +547,11 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
             response.redirect('/pagos/registrar_pago_manual');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         });
 };
@@ -561,6 +596,11 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
             response.redirect('/pagos/registrar_pago_manual');
         })
         .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
             console.log(error);
         })
 };
