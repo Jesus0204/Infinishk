@@ -40,20 +40,24 @@
 
             let originalString = 'xml=<pgs><data0>SNDBX123</data0><data>' + data.cipher + '</data></pgs>';
             let data_xml = encodeURIComponent(originalString);
-        
-            let xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-        
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    console.log(this.responseText);
-                }
+
+            // Haces la petición tipo fetch con el API de santander
+            fetch('https://sandboxpo.mit.com.mx/gen', {
+                method: 'POST', 
+                headers: {
+                    // Le pasas que tipo de content es
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }, 
+                body: JSON.stringify({
+                    // Le pasas los datos cifrados
+                    data: data_xml
+                })
+            }).then((result) => {
+                return result.json();
+            }).then((data) => {
+                // Imprimes la respuesta del servidor
+                console.log(data)
             });
-        
-            xhr.open("POST", "https://sandboxpo.mit.com.mx/gen");
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        
-            xhr.send(data_xml);
         }).catch(err => {
             console.log(err);
         });
