@@ -23,4 +23,8 @@ module.exports = class Periodo {
         return db.execute('INSERT INTO `periodo`(`IDPeriodo`, `fechaInicio`, `fechaFin`, `Nombre`, `periodoActivo`) VALUES (?,?,?,?,?)',[id,inicio,fin,nombre,status])
     }
 
+    static fetchActivo(){
+        return db.execute('SELECT IDPeriodo where periodoActivo = 1');
+    }
+
 }
