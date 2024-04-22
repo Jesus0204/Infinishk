@@ -138,11 +138,18 @@ exports.post_modificar_usuario = (request, response, next) => {
         });
 }
 
+// Configuras a moment con el locale. 
+const moment = require('moment-timezone');
+moment.locale('es-mx');
+
 exports.get_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
         .then((precio_actual) => {
             PrecioCredito.fetchAnios()
                 .then(([anios, fieldData]) => {
+                    // Conviertes las fechas a tu zona horaria con moment
+                    precio_actual[0][0].fechaModificacion = moment(new Date(precio_actual[0][0].fechaModificacion)).tz('America/Mexico_City').format('LL');
+
                     response.render('configuracion/precio_credito', {
                         precio_actual: precio_actual[0],
                         anios: anios,
@@ -170,10 +177,6 @@ exports.get_precio_credito = (request, response, next) => {
             console.log(error)
         });
 };
-
-// Configuras a moment con el locale. 
-const moment = require('moment-timezone');
-moment.locale('es-mx');
 
 exports.post_precio_credito = (request, response, next) => {
     const anioSelect = request.body.anio;

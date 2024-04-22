@@ -77,9 +77,8 @@
                             </div>
                         </td>
                         <td>
-                            <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
                             <div class="column">
-                                <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
+                                <%= precio_actual[0].fechaModificacion %>
                             </div>
                         </td>
                     </tbody>
