@@ -360,13 +360,17 @@ exports.get_pago_alumno = (request, response, next) => {
     })
 };
 
+// Importar el archivo con las funciones de cifrado
+const cipher = require('../util/cipher');
+const axios = require('axios');
+
 exports.post_mandar_pago = (request, response, next) => {
     let monto = Number(request.body.monto);
     monto = monto.toFixed(2);
 
     // Usar el paquete para facilidad y poner true para que este indentado
     var XMLWriter = require('xml-writer');
-    xml = new XMLWriter();
+    xml = new XMLWriter(true);
     // Empiezas el documento y el objeto padre
     xml.startDocument();
     xml.startElement('P');
@@ -385,7 +389,7 @@ exports.post_mandar_pago = (request, response, next) => {
             xml.endElement('pwd');
         xml.endElement('business');
         xml.startElement('nb_fpago');
-            xml.text('TCD');
+            xml.text('COD');
         xml.endElement('nb_fpago');
         xml.startElement('url');
             xml.startElement('reference');
@@ -409,16 +413,36 @@ exports.post_mandar_pago = (request, response, next) => {
         xml.endElement('url');
     xml.endElement('P');
     xml.endDocument();
-    console.log(xml.toString());
 
-    let CryptoJS = require("crypto-js");
+    // Pones todo el xml en un string
     let originalString = xml.toString();
     let key = '5DCC67393750523CD165F17E1EFADD21';
-    let ciphertext = CryptoJS.AES.encrypt(originalString, key).toString();
-    console.log("ciphertext: " + ciphertext);
+
+    // Lo cifras con las funciones del github de documentación
+    let cipherText = cipher.cifrarAES(originalString, key);
+
+    // Creas otro xml para hacer el post con el texto cifrado
+    let originalString_post = "xml=<pgs><data0>SNDBX123</data0><data>" + cipherText + "</data></pgs>";
+    let data_xml = encodeURIComponent(originalString_post);
+
+    // Haces el post del xml generado
+    axios.post('https://sandboxpo.mit.com.mx/gen', data_xml, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        withCredentials: true
+    }).then(function (response) {
+        // Esperas la respuesta cifrada
+        let responseText = response.data;
+        let decipherText = cipher.decifrarAES(responseText, key);
+
+        console.log(decipherText);
+    }).catch((error) => {
+        console.log(error);
+    })
 
     return response.status(200).json({
-        cipher: ciphertext
+        success: true
     });
 
 };
