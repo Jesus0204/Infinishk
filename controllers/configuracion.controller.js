@@ -9,6 +9,7 @@ const Posee = require('../models/posee.model');
 const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
@@ -403,7 +404,8 @@ exports.post_alumnos = async (request,response,next) => {
     try {
         await sgMail.send(msg);
         console.log('Correo electrónico enviado correctamente');
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error al enviar el correo electrónico:', error.toString());
     }
 
