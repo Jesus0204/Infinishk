@@ -366,7 +366,7 @@ exports.post_mandar_pago = (request, response, next) => {
 
     // Usar el paquete para facilidad y poner true para que este indentado
     var XMLWriter = require('xml-writer');
-    xml = new XMLWriter(true);
+    xml = new XMLWriter();
     // Empiezas el documento y el objeto padre
     xml.startDocument();
     xml.startElement('P');
@@ -417,6 +417,8 @@ exports.post_mandar_pago = (request, response, next) => {
     let ciphertext = CryptoJS.AES.encrypt(originalString, key).toString();
     console.log("ciphertext: " + ciphertext);
 
-    // Para que la aplicación no se quede cargando
-    response.redirect('/pagos/pagar');
+    return response.status(200).json({
+        cipher: ciphertext
+    });
+
 };

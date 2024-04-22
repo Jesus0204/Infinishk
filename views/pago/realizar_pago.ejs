@@ -7,20 +7,62 @@
 <section class="section">
     <div class="container">
         <h1 class="title"> Realizar Pago</h1>
-        <form action="/pagos/mandar_pago" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input class="input" type="number" name="monto" id="monto" step="any">
-            <button class="button is-rounded is-medium is-responsive" type="submit"
-                style="font-size: large; margin: 8px 2px;" id="Boton_pagarr">
-                <span>Realizar Pago</span>
-                <span class="icon is-large">
-                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                </span>
-            </button>
-        </form>
+        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+        <input class="input" type="number" name="monto" id="monto" step="any">
+        <button class="button is-rounded is-medium is-responsive" type="submit"
+            style="font-size: large; margin: 8px 2px;" id="Boton_pagar">
+            <span>Realizar Pago</span>
+            <span class="icon is-large">
+                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+            </span>
+        </button>
     </div>
 </section>
 
 <script>
+    function pagar(monto) {
+        //El token de protección CSRF
+        const csrf = document.getElementById('_csrf').value;
+
+        fetch('/pagos/mandar_pago', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'csrf-token': csrf
+            },
+            body: JSON.stringify({
+                monto: monto.value
+            })
+        }).then((result) => {
+            return result.json(); //Regresa otra promesa
+        }).then((data) => {
+            console.log(data.cipher);
+
+            let originalString = 'xml=<pgs><data0>SNDBX123</data0><data>' + data.cipher + '</data></pgs>';
+            let data_xml = encodeURIComponent(originalString);
+        
+            let xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+        
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                }
+            });
+        
+            xhr.open("POST", "https://sandboxpo.mit.com.mx/gen");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        
+            xhr.send(data_xml);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    const boton_pagar = document.getElementById('Boton_pagar');
+    const monto = document.getElementById('monto');
+    boton_pagar.addEventListener('click', function () {
+        pagar(monto);
+    });
 
 </script>

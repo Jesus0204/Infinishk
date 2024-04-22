@@ -87,10 +87,14 @@ if (window.matchMedia("(max-width: 1023px)").matches) {
 window.addEventListener('resize', () => {
     const configuracion = document.getElementById('configuracion');
     if (window.innerWidth >= 1024) {
-        configuracion.style.width = '115%';
+        if (configuracion){
+            configuracion.style.width = '115%';
+        }
         navbar_desktop();
     } else {
-        configuracion.style.width = '100%';
+        if (configuracion) {
+            configuracion.style.width = '100%';
+        }
         navbar_movil();
     }
 });
