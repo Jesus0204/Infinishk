@@ -266,7 +266,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
-            Pago_Extra.fetchAll()
+            Pago_Extra.fetchActivos()
                 .then(async ([pagos_extra, fieldData]) => {
                     const [solicitudes_pendientes, fieldData_2] = await Liquida.fetch_Pendientes(matches[0]);
                     const [periodoActivo, fieldData_3] = await Periodo.fetchActivo();
