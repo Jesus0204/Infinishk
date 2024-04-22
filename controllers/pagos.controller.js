@@ -5,6 +5,7 @@ const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
+const Reporte = require('../models/reporte.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -298,6 +299,37 @@ exports.post_registrar_solicitud = (request, response, next) => {
             });
             console.log(error);
         });
+};
+
+exports.get_ingresos = (request, response, next) => {
+    Reporte.fetchPeriodos()
+        .then(([periodos, fieldData]) => {
+            response.render('pago/reporte_ingresos', {
+                periodos: periodos,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+exports.post_ingresos = (request, response, next) => {
+    const periodoSelect = request.body.periodo;
+    Reporte.fetchIngresosPeriodo(periodoSelect)
+    .then(([ingresos_periodo, fieldData]) => {
+        response.status(200).json({
+            success: true,
+            ingresos_periodo: ingresos_periodo
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+        response.status(500).json({success: false, error: 'Error cargando reporte'});
+    });
 };
 
 exports.get_autocomplete = (request, response, next) => {

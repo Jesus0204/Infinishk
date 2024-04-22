@@ -75,6 +75,9 @@ const compression = require("compression");
 
 app.use(compression());
 
+// Para utilizar chartist para la generación de gráficos
+const chartist = require("chartist");
+
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
 

@@ -51,4 +51,7 @@ router.post('/fetch_registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosC
 router.post('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosController.post_registrar_solicitud);
 router.get('/', isAuth, pagosController.get_pago);
 
+// Reportes
+router.get('/reporte_ingresos', isAuth, can_ReportesIngresos, pagosController.get_ingresos);
+
 module.exports = router;

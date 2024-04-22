@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<style>
+    .select:hover {
+        border: 2px solid #5a6581 !important;
+    }
+    
+    .select:focus {
+        border: 2px solid #910106 !important;
+    }
+</style>
+
+<section class="section">
+    <div class="container">
+        <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+        <h3 class="title is-3">Reporte Ingresos</h3>
+        <div class="columns is-vcentered">
+            <div class="column is-4">
+                <label class="label is-size-5" for="periodo">Periodo:</label>
+            </div>
+            <div class="column is-8">
+                <div class="select is-fullwidth">
+                    <select class="periodo" name="periodo" id="periodo">
+                        <% periodos.forEach(periodo => { %>
+                        <option value="<%= periodo['Nombre'] %>"
+                            selected><%= periodo['Nombre'] %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-vcentered">
+            <div class="column is-4">
+                <label class="label is-size-5" for="tipo">Tipo de Pago:</label>
+            </div>
+            <div class="column is-8">
+                <div class="select is-fullwidth">
+                    <select class="tipo" name="tipo" id="tipo">
+                        <option value="colegiatura" selected>Colegiatura</option>
+                        <option value="diplomado" selected>Diplomado</option>
+                        <option value="pagos_extra" selected>Pagos Extra</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" src="/js/reporte_ingresos.js"></script>
