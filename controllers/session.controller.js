@@ -146,6 +146,9 @@ exports.post_reset_password = async (request,response,next) => {
 
     const matricula = await Usuario.fetchUser(correo); 
 
+
+    if (matricula && matricula[0] && matricula[0][0] && typeof matricula[0][0].IDUsuario !== 'undefined'){
+
     const user = matricula[0][0].IDUsuario;
 
     console.log(user);
@@ -171,4 +174,10 @@ exports.post_reset_password = async (request,response,next) => {
     }
 
     response.redirect('/auth/login');
+
+    }
+
+    else{
+        response.redirect('/auth/login');
+    }
 }
