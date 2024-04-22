@@ -458,7 +458,8 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
 exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
     // Declaracion de variables a usar del body
     const matricula = request.body.matricula;
-    const fecha = request.body.fecha.split("/").reverse().join("-");
+    const fecha_body = request.body.fecha.split("/").reverse().join("-");
+    const fecha = fecha_body + ' 08:00:00';
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const pago = request.body.pago;
@@ -537,7 +538,8 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
     const matricula = request.body.matricula;
     const monto = request.body.monto;
     const motivo = request.body.motivo;
-    const fecha = request.body.fecha.split("/").reverse().join("-");
+    let fecha_body = request.body.fecha.split("/").reverse().join("-");
+    const fecha = fecha_body + ' 08:00:00';
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const IDDiplomado = request.body.IDDiplomado;
@@ -560,7 +562,8 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
     // Declaracion de variables a usar del body
     const monto = request.body.monto;
     const motivo = request.body.motivo;
-    const fecha = request.body.fecha.split("/").reverse().join("-");
+    let fecha_body = request.body.fecha.split("/").reverse().join("-");
+    const fecha = fecha_body + ' 08:00:00';
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const matricula = request.body.matricula;
