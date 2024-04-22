@@ -13,4 +13,12 @@ module.exports = class Reporte {
     static fetchIngresosPeriodo() {
         return db.execute(`SELECT * FROM Periodo WHERE periodoActivo = 0 ORDER BY IDPeriodo DESC`);
     }
+
+    static fetchFechaInicio(id){
+        return db.execute(`SELECT fechaInicio from Periodo WHERE nombre= ?`,[id])
+    }
+
+    static fetchFechaFin(id){
+        return db.execute(`SELECT fechaFin from Periodo WHERE nombre= ?`,[id])
+    }
 }

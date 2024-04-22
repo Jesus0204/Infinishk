@@ -317,19 +317,32 @@ exports.get_ingresos = (request, response, next) => {
         });
 };
 
-exports.post_ingresos = (request, response, next) => {
+exports.post_ingresos = async (request, response, next) => {
+    console.log(request.body.periodo);
+    console.log(request.body.tipo);
     const periodoSelect = request.body.periodo;
-    Reporte.fetchIngresosPeriodo(periodoSelect)
-    .then(([ingresos_periodo, fieldData]) => {
-        response.status(200).json({
-            success: true,
-            ingresos_periodo: ingresos_periodo
-        });
-    })
-    .catch((error) => {
-        console.log(error);
-        response.status(500).json({success: false, error: 'Error cargando reporte'});
-    });
+    const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
+    const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
+
+    const fechaInicioParsed = new Date(fechaInicio[0][0].fechaInicio);
+    const fechaFinParsed = fechaFin[0][0].fechaFin;
+
+    const yearInicio = fecha.getFullYear(); // Obtener el año (ejemplo: 2016)
+    const month = fecha.getMonth() + 1; // Obtener el mes (1-12)
+    const day = fecha.getDate(); // Obtener el día del mes (1-31)
+
+    console.log(fechaInicioParsed);
+    console.log(fechaFinParsed);
+    // .then(([ingresos_periodo, fieldData]) => {
+    //     response.status(200).json({
+    //         success: true,
+    //         ingresos_periodo: ingresos_periodo
+    //     });
+    // })
+    // .catch((error) => {
+    //     console.log(error);
+    //     response.status(500).json({success: false, error: 'Error cargando reporte'});
+    // });
 };
 
 exports.get_autocomplete = (request, response, next) => {

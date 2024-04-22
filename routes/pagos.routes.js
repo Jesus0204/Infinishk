@@ -53,5 +53,6 @@ router.get('/', isAuth, pagosController.get_pago);
 
 // Reportes
 router.get('/reporte_ingresos', isAuth, can_ReportesIngresos, pagosController.get_ingresos);
+router.post('/reporte_ingresos', isAuth, can_ReportesIngresos, pagosController.post_ingresos);
 
 module.exports = router;
