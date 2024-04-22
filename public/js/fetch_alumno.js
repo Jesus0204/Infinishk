@@ -15,8 +15,8 @@ function checar_alumno() {
     }
 
     if (buscar.value.length === 0) {
-        ayuda_alumno.classList.add('is-hidden');
         bt_buscar.disabled = true;
+        ayuda_alumno.classList.add('is-hidden');
     }
 }
 
