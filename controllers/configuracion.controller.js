@@ -65,7 +65,44 @@ exports.get_registrar_usuario = (request, response, next) => {
 };
 
 exports.post_registrar_usuario = (request, response, next) => {
+    const rol = request.body.roles;
+    console.log(rol);  
     
+    if(rol === 'Administrador'){
+        response.render('configuracion/activar_usuario', {
+            admin:true,
+            alumno:false,
+            vis:false,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
+    }
+
+    if(rol === 'Alumno'){
+        response.render('configuracion/activar_usuario', {
+            admin:false,
+            alumno:true,
+            vis:false,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
+    }
+
+    if(rol === 'Visualizador'){
+        response.render('configuracion/activar_usuario', {
+            admin:false,
+            alumno:false,
+            vis:true,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
+    }
 };
 
 exports.get_registrar_usuario_alumno = (request, response, next) => {
