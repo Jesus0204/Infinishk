@@ -104,11 +104,11 @@
 
                                     <td class="has-text-black">
                                         <%= periodo.status %>
-                                    </td>
-
-                                    <td>
                                         <form action="/configuracion/actualizarPeriodos" method="POST"
                                             id="form<%= index %>" class="form-enviar-datos">
+                                    </td>
+
+                                    <td style="width:auto">
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" name="id" value="<%= periodo.id %>">
                                             <input type="hidden" name="nombre" value="<%= periodo.name %>">
