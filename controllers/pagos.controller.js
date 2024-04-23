@@ -1,6 +1,6 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
-const Pago_Diplomado = require('../models/pagadiplomado.model');
+const PagoDiplomado = require('../models/pagadiplomado.model');
 const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
@@ -10,10 +10,6 @@ const Colegiatura = require('../models/colegiatura.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
-const multer = require('multer');
-const upload = multer({
-    dest: 'uploads/'
-});
 
 exports.get_pago = (request, response, next) => {
     response.render('pago/pago', {
@@ -408,7 +404,7 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
     const metodo = request.body.metodo;
     const IDDiplomado = request.body.IDDiplomado;
 
-    Pago_Diplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
+    PagoDiplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
         .then(([rows, fieldData]) => {
             response.redirect('/pagos/registrar_pago_manual');
         })
