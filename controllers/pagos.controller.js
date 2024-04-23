@@ -301,35 +301,51 @@ exports.post_registrar_solicitud = (request, response, next) => {
         });
 };
 
-exports.get_ingresos = (request, response, next) => {
-    Reporte.fetchPeriodos()
-        .then(([periodos, fieldData]) => {
-            response.render('pago/reporte_ingresos', {
-                periodos: periodos,
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken()
-            })
-        })
-        .catch((error) => {
-            console.log(error);
+exports.get_ingresos = async (request, response, next) => {
+    try {
+        const [periodos, fieldData] = await Reporte.fetchPeriodos();
+        
+        let ingresosData = {};
+
+        response.render('pago/reporte_ingresos', {
+            periodos: periodos,
+            ingresosData: ingresosData,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
         });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 exports.post_ingresos = async (request, response, next) => {
-    console.log(request.body.periodo);
-    console.log(request.body.tipo);
     const periodoSelect = request.body.periodo;
     const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
     const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
-    const ingresosPeriodo = await Reporte.fetchIngresosPeriodo(fechaInicio, fechaFin);
-    const ingresosEnero = await Reporte.fetchIngresosEnero(fechaInicio, fechaFin);
+    
+    let ingresosData = {};
 
-    console.log(fechaInicio);
-    console.log(fechaFin);
-    console.log(ingresosPeriodo);
-    console.log("enero: ", ingresosEnero);
+    if (fechaInicio.getMonth() >= 0 && fechaInicio.getMonth() <= 5) {
+        // Para periodos Enero-Junio
+        ingresosData.enero = await Reporte.fetchIngresosEnero(fechaInicio, fechaFin);
+        ingresosData.feb = await Reporte.fetchIngresosFeb(fechaInicio, fechaFin);
+        ingresosData.marzo = await Reporte.fetchIngresosMarzo(fechaInicio, fechaFin);
+        ingresosData.abril = await Reporte.fetchIngresosAbril(fechaInicio, fechaFin);
+        ingresosData.mayo = await Reporte.fetchIngresosMayo(fechaInicio, fechaFin);
+        ingresosData.jun = await Reporte.fetchIngresosJun(fechaInicio, fechaFin);
+    } else {
+        // Para periodos Julio-Diciembre
+        ingresosData.jul = await Reporte.fetchIngresosJul(fechaInicio, fechaFin);
+        ingresosData.ago = await Reporte.fetchIngresosAgo(fechaInicio, fechaFin);
+        ingresosData.sept = await Reporte.fetchIngresosSept(fechaInicio, fechaFin);
+        ingresosData.oct = await Reporte.fetchIngresosOct(fechaInicio, fechaFin);
+        ingresosData.nov = await Reporte.fetchIngresosNov(fechaInicio, fechaFin);
+        ingresosData.dic = await Reporte.fetchIngresosDic(fechaInicio, fechaFin);
+    }
+    
+    response.send({ingresosData});
 };
 
 exports.get_autocomplete = (request, response, next) => {
