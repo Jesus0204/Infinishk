@@ -81,6 +81,7 @@
                                 <th class="has-text-white">Semestre</th>
                                 <th class="has-text-white">Plan de Estudios</th>
                                 <th class="has-text-white">Referencia Bancaria</th>
+                                <th class="has-text-white">Porcentaje de Beca</th>
                                 <th class="has-text-white">Registrar</th>
                             </tr>
                         </thead>
@@ -128,6 +129,11 @@
                                                 style="width:100%; display:block; padding:0;"
                                                 placeholder="Escribe la referencia bancaria aquí">
                                     </td>
+
+                                    <td>
+                                        <input required class="input" type="numer" name="beca"
+                                            style="width:100%; display:block; padding:0;">
+                                </td>
 
                                     <td>
                                         <input type="hidden" name="matricula" value="<%= usuario.ivd_id %>">

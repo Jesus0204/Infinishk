@@ -12,6 +12,13 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
+
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -383,11 +390,15 @@ exports.post_alumnos = async (request,response,next) => {
     const semestre = request.body.semestre;
     const planEstudio = request.body.planEstudio;
     const referencia = request.body.referenciaBancaria;
+    const beca = request.body.beca;
 
-    const setPasswordLink = `http://localhost:4000/auth/set_password?matricula=${matricula}`;
+    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '1h' });
+        
+        // Enlace con el token incluido
+    const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
 
     await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
-    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio)
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca)
     await Usuario.saveUsuario(matricula,email);
     await Posee.savePosee(matricula,3);
 

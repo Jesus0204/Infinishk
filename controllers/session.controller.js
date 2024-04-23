@@ -1,6 +1,18 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
 
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
+
+
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
@@ -105,8 +117,10 @@ exports.post_signup = (request, response, next) => {
 }
 
 exports.get_set_password = (request,response,next) =>{
+    const token = request.query.token;
     const matricula = request.query.matricula; // Obtiene la matrícula de la URL
     response.render('set_password', { 
+        token,
         matricula,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
@@ -114,16 +128,71 @@ exports.get_set_password = (request,response,next) =>{
     }); // Renderiza la página para establecer la contraseña con la matrícula
 }
 
-exports.post_set_password = async (request,response,next) => {
-    const new_user = new Usuario(request.body.matricula, request.body.newPassword);
-    // Verifica la matrícula y actualiza la contraseña del usuario en la base de datos
-    new_user.updateContra()
-        .then(([rows, fieldData]) => {
+exports.post_set_password = async (request, response, next) => {
+    const token = request.body.token;
+    const newPassword = request.body.newPassword;
+
+    // Verificar el token JWT
+    jwt.verify(token, config.jwtSecret, async (err, decoded) => {
+        if (err) {
+            console.error('Error al verificar el token JWT:', err);
+            response.redirect('/auth/login'); // Redirigir a la página de inicio de sesión en caso de error
+        } else {
+            // Token válido, proceder con la actualización de la contraseña
+            try {
+                const matricula = decoded.matricula; // Obtener la matrícula del token decodificado
+                const new_user = new Usuario(matricula, newPassword);
+                await new_user.updateContra();
+                response.redirect('/auth/login'); // Redirigir al inicio de sesión después de actualizar la contraseña
+            } catch (error) {
+                console.error('Error al actualizar la contraseña:', error);
+                response.redirect('/auth/login'); // Redirigir a la página de configuración de contraseña en caso de error
+            }
+        }
+    });
+}
+
+exports.get_reset_password = (request,response,next) => {
+    response.render('reset_password', { 
+        csrfToken: request.csrfToken(),
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    });
+}
+
+exports.post_reset_password = async (request, response, next) => {
+    const correo = request.body.correo;
+    const matricula = await Usuario.fetchUser(correo);
+
+    if (matricula && matricula[0] && matricula[0][0] && typeof matricula[0][0].IDUsuario !== 'undefined') {
+        const user = matricula[0][0].IDUsuario;
+        console.log(user);
+
+        // Generar token JWT con la matrícula del usuario
+        const token = jwt.sign({ matricula: user }, secretKey, { expiresIn: '1h' });
+        
+        // Enlace con el token incluido
+        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+        const msg = {
+            to: correo,
+            from: {
+                name: 'VIA PAGO',
+                email: '27miguelb11@gmail.com',
+            },
+            subject: 'Reestablecer contraseña de VIA Pago',
+            html: `<p>Hola,</p><p>Haz clic en el siguiente enlace para reestablecer tu contraseña: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
+        };
+
+        try {
+            await sgMail.send(msg);
+            console.log('Correo electrónico enviado correctamente');
             response.redirect('/auth/login');
-        })
-        .catch((error) => {
-            request.session.error = 'Nombre de usuario invalido.';
-            console.log(error)
-            response.redirect('/auth/set_password');
-        })
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+            response.redirect('/auth/login');
+        }
+    } else {
+        response.redirect('/auth/login');
+    }
 }
