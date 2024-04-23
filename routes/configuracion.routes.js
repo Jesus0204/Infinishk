@@ -7,6 +7,7 @@ const configuracionController = require('../controllers/configuracion.controller
 
 // Incluyes el archivo para verificar si esta autenticado y los permisos
 const isAuth = require('../util/is-Auth');
+const can_ActualizarBase = require('../util/privileges/admin/otros/can_actualizar_Base');
 const can_ConsultarCostoCredito = require('../util/privileges/can_consultar_precioCredito');
 const can_ConsultarPlanPago = require('../util/privileges/can_consultar_planPago');
 const can_RegistrarCostoCredito = require('../util/privileges/admin/registros/can_registrar_PrecioCredito');

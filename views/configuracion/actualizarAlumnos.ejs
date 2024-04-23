@@ -1,0 +1,171 @@
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 8%;
+            max-width: 50%;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            border: 5px solid rgb(255, 255, 255);
+            /* Líneas más oscuras para la tabla */
+            padding: 10px;
+            font-size: 19px;
+            color: white;
+        }
+
+        th {
+            border: 5px solid rgb(255, 255, 255);
+            padding: 10px;
+            font-size: 19px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+
+        thead {
+            background-color: black;
+            font-style: italic;
+        }
+
+        .form-enviar-datos select {
+            margin-left: 50%;
+            margin-right: 50%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .my-button {
+            background-color: #000000;
+            /* El color del fondo */
+            color: white;
+            /* El color del texto */
+            width: 100%;
+        }
+
+        .my-button:hover {
+            background-color: #910106;
+            color: #ffffff;
+            border: solid #000000;
+        }
+
+        .fa-solid {
+            margin-left: 20px;
+            /* Añade un margen a la izquierda del ícono */
+        }
+    </style>
+
+    <body>
+        <!-- Verifica si hay usuarios para mostrar -->
+        <% if (usuarios.length> 0) { %>
+            <section class="section">
+                <div class="table-container">
+                    <h3 class="title is-3">Revisión de datos de Alumnos para ingresar</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="has-text-white">ID</th>
+                                <th class="has-text-white">Nombre</th>
+                                <th class="has-text-white">Apellidos</th>
+                                <th class="has-text-white">Email</th>
+                                <th class="has-text-white">Semestre</th>
+                                <th class="has-text-white">Plan de Estudios</th>
+                                <th class="has-text-white">Referencia Bancaria</th>
+                                <th class="has-text-white">Registrar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% usuarios.forEach((usuario,index)=> { %>
+                                <tr id="fila<%=index %>">
+
+                                    <td class="has-text-black">
+                                        <%= usuario.ivd_id %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.name %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.apellidos %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.email %>
+                                    </td>
+
+                                    <td class="has-text-black">
+                                        <%= usuario.semester %>
+                                        <form action="/configuracion/actualizarAlumnos" method="POST"
+                                            id="form<%=index %>" class="form-enviar-datos">
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    </td>
+
+                                    <% if(usuario.planEstudio !== null) { %>
+                                    <td class="has-text-black">
+                                        <%= usuario.planEstudio %>
+                                        <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
+                                    </td>
+                                <% } else { %>
+                                    <td class="has-text-black">
+                                        <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudio"></textarea>
+                                    </td>
+                                <% } %>
+
+                                    <td>
+                                            <input required class="input" type="text" name="referenciaBancaria"
+                                                style="width:100%; display:block; padding:0;"
+                                                placeholder="Escribe la referencia bancaria aquí">
+                                    </td>
+
+                                    <td>
+                                        <input type="hidden" name="matricula" value="<%= usuario.ivd_id %>">
+                                        <input type="hidden" name="nombre" value="<%= usuario.name %>">
+                                        <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
+                                        <input type="hidden" name="email" value="<%= usuario.email %>">
+                                        <input type="hidden" name="semestre" value="<%= usuario.semester %>">
+                                        <button type="submit"
+                                            class="button my-button is-medium is-rounded is-responsive">
+                                            Registrar Usuario
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+
+                                    </form>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                    <br>
+                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                        <ul class="pagination-list" id="pagination-list-2">
+                            <div id="pagination-numbers-2">
+
+                            </div>
+                        </ul>
+                    </nav>
+            </section>
+            <% } else { %>
+                <p>No hay usuarios para mostrar.</p>
+                <% } %>
+                    </div>
+                    <script type="text/javascript" src="/js/pagination_datos.js"></script>
+                    <script type="text/javascript" src="/js/actualizarAlumnos.js"></script>
+    </body>
+
+    </html>
