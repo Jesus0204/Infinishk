@@ -60,6 +60,14 @@
         color: #ffffff;
         border: solid #000000;
     }
+
+    input:focus {
+    border: 2px solid #910106 !important
+    }
+
+    input:hover {
+    border: 2px solid #5a6581 !important;
+    }
 </style>
 
 <body>
@@ -124,14 +132,39 @@
                         <% } %>
 
                         <td>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark" id="ayuda_referencia_vacio<%= count %>">
+                                Por favor escribe una referencia del alumno.
+                            </p>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                id="ayuda_referencia_negativo<%= count %>">
+                                Por favor escribe solo números positivos.
+                            </p>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                id="ayuda_referencia_exponente<%= count %>">
+                                Por favor no escribas números con exponentes.
+                            </p>
                             <input id="referencia<%= count %>" class="input" type="text" name="referenciaBancaria"
-                                style="width:100%; display:block; padding:0;"
-                                placeholder="Escribe la referencia bancaria aquí">
+                                style="width:100%; display:block; padding:0; border: 2px solid
+                                #7c7f80;"
+                                placeholder=" Referencia">
                         </td>
 
                         <td>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                id="ayuda_beca_vacio<%= count %>">
+                                Por favor escribe una beca del alumno.
+                            </p>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                id="ayuda_beca_negativo<%= count %>">
+                                Por favor escribe solo números positivos.
+                            </p>
+                            <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                id="ayuda_beca_exponente<%= count %>">
+                                Por favor no escribas números con exponentes.
+                            </p>
                             <input id="beca<%= count %>" class="input" type="number" name="beca"
-                                style="width:100%; display:block; padding:0;">
+                                style="width:100%; display:block; padding:0; border: 2px solid
+                                #7c7f80;" placeholder=" % de Beca">
                         </td>
 
                         <td>
@@ -140,7 +173,7 @@
                             <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
                             <input type="hidden" name="email" value="<%= usuario.email %>">
                             <input type="hidden" name="semestre" value="<%= usuario.semester %>">
-                            <button id="btn_Subir<%= count %>" type="submit" class="button my-button is-medium is-rounded is-responsive">
+                            <button id="btn_Subir<%= count %>" type="submit" class="button my-button is-medium is-rounded is-responsive" disabled>
                                 Registrar
                                 <br>
                                 Usuario
