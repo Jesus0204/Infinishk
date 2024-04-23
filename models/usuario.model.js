@@ -10,6 +10,23 @@ module.exports = class Usuario{
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
+    updateContra() {
+        //Dentro del método del modelo que crea el usuario
+        //El segundo argumento es el número de veces que se aplica el algoritmo, actualmente 12 se considera un valor seguro
+        //El código es asíncrono, por lo que hay que regresar la promesa
+        return bcrypt.hash(this.password, 12)
+            .then((password_cifrado) => {
+                return db.execute(
+                    'UPDATE usuario SET `Contraseña`=?,`usuarioActivo`=1 WHERE IDUsuario=?',
+                    [password_cifrado,this.IDUsuario]
+                );
+            })
+            .catch((error) => {
+                console.log(error)
+                throw Error('Nombre de usuario duplicado. Ya existe un usuario con ese nombre.')
+            });
+    }
+
     save() {
         //Dentro del método del modelo que crea el usuario
         //El segundo argumento es el número de veces que se aplica el algoritmo, actualmente 12 se considera un valor seguro
@@ -31,6 +48,7 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
+
     static getPermisos(IDUsuario) {
         return db.execute(
             `SELECT funcion
@@ -77,4 +95,22 @@ module.exports = class Usuario{
             [`%${consulta}%`]
         );
     }
+
+    static updateUsuario(id,correo){
+        return db.execute('UPDATE usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
+    }
+
+    static saveUsuario(id,correo){
+        return db.execute('INSERT INTO usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
+    }
+
+    static fetchUser(correo){
+        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?',[correo]);
+    }
+
+    static updateToken(token,id){
+        return db.execute('UPDATE usuario SET token=? WHERE IDUsuario=?',[token,id])
+    }
+
+    
 }

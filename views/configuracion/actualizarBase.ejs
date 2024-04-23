@@ -1,0 +1,34 @@
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+
+    <meta name="_csrf" content="<%= csrfToken %>">
+
+    <body>
+        <section class="section">
+            <div class="container">
+                <h3 id="title" class="title"> Actualizar Base de Datos</h3>
+                <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
+                        Alumnos</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+                <form action="/configuracion/actualizarMaterias" method="GET" class="form-button">
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
+                        Materias</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+                <form action="/configuracion/actualizarPeriodos" method="GET" class="form-button">
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
+                        Periodos</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+                <style>
+                    .form-button {
+                        margin-bottom: 20px;
+                        /* Ajusta este valor según la separación que desees */
+                    }
+                </style>
+            </div>
+        </section>
+    </body>
+
+    </html>

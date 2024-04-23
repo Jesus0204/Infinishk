@@ -1,6 +1,17 @@
 const PlanPago = require('../models/planpago.model');
 const PrecioCredito = require('../models/precio_credito.model');
-const Usuario = require('../models/usuario.model')
+const Usuario = require('../models/usuario.model');
+const Alumno = require('../models/alumno.model');
+const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const Materia = require('../models/materia.model');
+const Periodo = require('../models/periodo.model');
+const Posee = require('../models/posee.model');
+const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
+
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
