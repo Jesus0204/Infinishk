@@ -16,6 +16,13 @@ module.exports = class Liquida {
     static fetchID(matricula){
         return db.execute('Select IDLiquida from liquida WHERE Matricula = ?',[matricula]);
     }
+
+    static fetch_Pendientes(matricula) {
+        return db.execute(`SELECT motivoPago, montoPagar From Liquida AS L, pagosExtras AS P
+        WHERE L.IDPagosExtras = P.IDPagosExtras AND L.Matricula = ? AND L.Pagado = 0`,
+            [matricula]);
+    }
+    
     static fetchNoPagados() {
         return db.execute(`SELECT L.IDLiquida, A.Nombre, A.Apellidos, 
         L.Matricula, P.IDPagosExtras, P.motivoPago, P.montoPagar

@@ -1,10 +1,12 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
-const pagoDiplomado = require('../models/pagadiplomado.model');
+const PagoDiplomado = require('../models/pagadiplomado.model');
 const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
+const Periodo = require('../models/periodo.model');
+const Colegiatura = require('../models/colegiatura.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -352,6 +354,94 @@ exports.get_autocomplete = (request, response, next) => {
 };
 
 exports.get_pago_alumno = (request, response, next) => {
+
+    // Del input del usuario sacas solo la matricula con el regular expression
+    let username = request.session.username;
+    Alumno.fetchOne(username)
+        .then(([alumno, fieldData]) => {
+             Liquida.fetch_Pendientes(username)
+                .then(async ([solicitud_otro_pago, fieldData]) => {
+                    const [periodoActivo, fieldData_2] = await Periodo.fetchActivo();
+                    // Si es estudiante de colegiatura sacas la siguiente información
+                    if (username[0] == '1') {
+                        const [infoColegiatura, fieldData] = await Colegiatura.fetchColegiaturaActiva(username);
+                        let info_Deuda = '';
+
+                        // Si existe sacas la información de la deuda
+                        if (infoColegiatura.length != 0) {
+                            const [infoDeuda, fieldData_3] = await Deuda.fetchNoPagadas(infoColegiatura[0].IDColegiatura);
+
+                            // Conviertes la fecha si existe
+                            for (let count = 0; count < infoDeuda.length; count++) {
+                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).tz('America/Mexico_City').format('LL');
+                            }
+                            info_Deuda = infoDeuda;
+                        };
+
+                        response.render('pago/pago_manual_registro', {
+                            alumno: alumno,
+                            periodo: periodoActivo,
+                            solicitudes: solicitud_otro_pago,
+                            colegiatura: infoColegiatura,
+                            deuda: info_Deuda,
+                            pago_col: true,
+                            diplomado: '',
+                            pagoDiplomado: '',
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken()
+                        })
+                        // Si no, es alumno de diplomado
+                    } else if (username[0] == '8') {
+                        // Sacas información del diplomado que estan cursando
+                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(username);
+                        let infoPagosDiplomado = '';
+                        if (infoDiplomado.length != 0) {
+                            // Sacas información de algún pago si es que existe
+                            const [infoPagosDipl, fieldData_2] = await Cursa.fetchPagosHechos(username, infoDiplomado[0].IDDiplomado);
+                            // Conviertes la fecha si existe
+                            for (let count = 0; count < infoPagosDipl.length; count++) {
+                                infoPagosDipl[count].fechaPago = moment(new Date(infoPagosDipl[count].fechaPago)).tz('America/Mexico_City').format('LL');
+                            }
+                            infoPagosDiplomado = infoPagosDipl;
+                        }
+                        response.render('pago/pago_manual_registro', {
+                            alumno: alumno,
+                            periodo: periodoActivo,
+                            solicitudes: solicitud_otro_pago,
+                            colegiatura: '',
+                            deuda: '',
+                            pago_col: false,
+                            diplomado: infoDiplomado,
+                            pagoDiplomado: infoPagosDiplomado,
+                            username: request.session.username || '',
+                            permisos: request.session.permisos || [],
+                            rol: request.session.rol || "",
+                            csrfToken: request.csrfToken()
+                        })
+                    };
+                })
+                .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                    });
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
+            console.log(error);
+        });
+
+
+    
     response.render('pago/realizar_pago', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],

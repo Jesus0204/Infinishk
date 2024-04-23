@@ -19,8 +19,8 @@ module.exports = class Alumno {
          WHERE CONCAT_WS(' ', Nombre, Apellidos) LIKE ? AND Matricula LIKE ? `, ['%' + nombre + '%', '%' + matricula + '%']);
     }
 
-    static fetchOne(matricula){
-        return db.execute(`SELECT Matricula, Nombre, Apellidos 
+    static fetchOne(matricula) {
+        return db.execute(`SELECT Matricula, Nombre, Apellidos
         FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 
