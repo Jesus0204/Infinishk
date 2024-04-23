@@ -108,5 +108,9 @@ module.exports = class Usuario{
         return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?',[correo]);
     }
 
+    static updateToken(token,id){
+        return db.execute('UPDATE usuario SET token=? WHERE IDUsuario=?',[token,id])
+    }
+
     
 }
