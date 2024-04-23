@@ -12,4 +12,23 @@
     </div>
   </div>
 </div>
+
+<div class="notification">
+  <h2 class="title">Estado de Cuenta</h2>
+  <% estadoCuenta.forEach(deuda => { %>
+    <div class="box">
+      <p><strong>Monto a Pagar:</strong> <%= deuda.montoAPagar %> </p>
+      <p><strong>Monto Pagado:</strong> <%= deuda.montoPagado %> </p>
+      <p><strong>Fecha Límite de Pago:</strong> <%= deuda.fechaLimitePago %> </p>
+      <p><strong>Descuento:</strong> <%= deuda.descuento %> </p>
+      <p><strong>Pagado:</strong> <%= deuda.pagado ? 'Sí' : 'No' %> </p>
+      <p><strong>Motivo de Pago:</strong> <%= deuda.motivo %> </p>
+      <p><strong>Método de Pago:</strong> <%= deuda.metodoPago %> </p>
+      <p><strong>Fecha de Pago:</strong> <%= deuda.fechaPago %> </p>
+      <p><strong>Nota:</strong> <%= deuda.nota %> </p>
+    </div>
+  <% }); %>
+</div>
+
 </html>
+

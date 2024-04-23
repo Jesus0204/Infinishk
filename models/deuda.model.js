@@ -17,6 +17,17 @@ module.exports = class Deuda {
         [matricula]);
     }
 
+    static fetchEstadoDeCuenta(matricula){
+        return db.execute(`SELECT D.montoAPagar, D.montoPagado, D.fechaLimitePago, D.descuento, D.pagado, P.motivo, 
+        P.montoPagado, P.nota, P.metodoPago, P.fechaPago
+        FROM Deuda AS D, Pago AS P, Alumno AS A, Colegiatura AS C, Periodo AS Pe
+        WHERE D.matricula = A.matricula AND D.IDDeuda = P.IDDeuda AND   
+        C.IDPeriodo = Pe.IDPeriodo AND D.IDColegiatura = C.IDColegiatura AND Pe.periodoActivo = True   
+        AND D.matricula = ?
+        LIMIT 0, 1000`, [matricula]);
+    }
+
+
     static fetchEstado(matricula){
         return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
         [matricula]);

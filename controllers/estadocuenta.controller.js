@@ -9,14 +9,15 @@ const EstudianteProfesional = require('../models/estudianteprofesional.model');
 exports.get_estado_cuenta = async (request, response, next) => {
     try {
         const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username); 
-        console.log('hola', estudianteProfesional)
         const matricula = request.session.username;
+        const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
 
         response.render('estadocuenta/estado_cuenta', {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             csrfToken: request.csrfToken(),
-            estudianteProfesional: estudianteProfesional[0][0]
+            estudianteProfesional: estudianteProfesional[0][0],
+            estadoCuenta: estadoCuenta
         });
     } catch (error) {
         response.status(500).send("Error en la obtención del estado de cuenta: " + error);
