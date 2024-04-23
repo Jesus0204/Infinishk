@@ -1,18 +1,24 @@
-const calendars = bulmaCalendar.attach('[type="date"]', {
-    startDate: new Date(),
-    displayMode: 'dialog',
-    dateFormat: 'dd/MM/yyyy',
-    weekStart: 1,
-    lang: 'es',
-    showFooter: false
-});
-
 
 // Obtener la longitud de fichas para el bucle
 const fichas_length = document.getElementById('fichas_length');
 
 // Iterar sobre los elementos de la tabla
 for (count = 1; count <= fichas_length.innerHTML; count++) {
+
+    const placeholderDate = document.getElementById('fecha_lim').getAttribute('placeholder');
+
+    const startDate = new Date(placeholderDate);
+
+    const calendars = bulmaCalendar.attach('[type="date"]', {
+        startDate: startDate,
+        minDate: startDate,
+        displayMode: 'dialog',
+        dateFormat: 'dd/MM/yyyy',
+        weekStart: 1,
+        lang: 'es',
+        showFooter: false
+    });
+
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
@@ -26,7 +32,7 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled =  descuento.value.length === 0 || nota.value.length === 0;
+        bt_Modificar.disabled = descuento.value.length === 0 || nota.value.length === 0;
     }
 
     // Activar mensaje si el motivo no tiene input
