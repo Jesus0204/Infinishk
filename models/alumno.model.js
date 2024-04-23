@@ -9,6 +9,11 @@ module.exports = class Alumno {
         this.referenciaBancaria = mi_referenciaBancaria;
     }
 
+    static fetchNombre(matricula) {
+        return db.execute('SELECT Nombre,Apellidos FROM alumno WHERE Matricula = ?',
+            [matricula]);
+    }
+
     static fetch(valor_busqueda) {
         return db.execute(`SELECT Matricula, Nombre, Apellidos FROM Alumno
          WHERE CONCAT_WS(' ', Nombre, Apellidos) LIKE ? OR Matricula LIKE ? `, ['%' + valor_busqueda + '%', '%' + valor_busqueda + '%']);

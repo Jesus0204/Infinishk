@@ -60,4 +60,9 @@ router.post('/registrar_pago_manual/diplomado', isAuth, can_RegistrarPagoManual,
 router.post('/registrar_pago_manual/colegiatura', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_colegiatura);
 router.get('/', isAuth, pagosController.get_pago);
 
+// Archivo Transferencia
+router.get('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.get_registro_transferencias);
+router.post('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_subir_archivo);
+router.post('/resultadoTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_registrar_transferencia);
+
 module.exports = router;

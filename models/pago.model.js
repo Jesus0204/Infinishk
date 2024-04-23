@@ -12,15 +12,18 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    static save_transferencia(id,monto,nota,fecha) {
-        return db.execute(
-            `CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
+    static fetch_fecha_pago(fecha){
+        return db.execute('SELECT fechaPago,montoPagado FROM pago WHERE fechaPago = ?',
+        [fecha]);
+    }
+
+    static static save_transferencia(id,monto,nota,fechaid,monto,nota,fecha) {
+        return db.execute(`CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
                 [id, monto, nota,fecha]);
     }
 
     static save_pago_manual(idDeuda, motivo, monto, nota, metodo, fecha) {
-        return db.execute(
-            `CALL insertar_Pago(?, ?, ?, ?, ?, ?);`,
+        return db.execute(`CALL insertar_Pago(?, ?, ?, ?, ?, ?);`,
             [idDeuda, motivo, monto, nota, metodo, fecha]);
     }
     

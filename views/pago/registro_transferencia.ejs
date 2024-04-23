@@ -1,0 +1,372 @@
+<%- include('../includes/head.ejs') %>
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 8%;
+            max-width: 50%;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .Pago-de-Colegiatura {
+            color: white;
+            background-color: rgba(145, 1, 6, 0.7);
+            /* Menos intenso con opacidad del 70% */
+        }
+
+        .Pago-de-Diplomado {
+            color: white;
+            background-color: rgba(76, 117, 161, 0.7);
+            /* Menos intenso con opacidad del 70% */
+        }
+
+        .Pago-a-Registrar {
+            color: white;
+            background-color: rgba(75, 74, 75, 0.7);
+            /* Menos intenso con opacidad del 70% */
+        }
+
+        .Pago-Extra {
+            color: white;
+            background-color: rgba(4, 114, 77, 0.7);
+            /* Menos intenso con opacidad del 70% */
+        }
+
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            border: 5px solid rgb(255, 255, 255);
+            /* Líneas más oscuras para la tabla */
+            padding: 10px;
+            font-size: 19px;
+            color: white;
+        }
+
+        th {
+            border: 5px solid rgb(255, 255, 255);
+            padding: 10px;
+            font-size: 19px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+
+        thead {
+            background-color: black;
+            font-style: italic;
+        }
+
+        .form-enviar-datos select {
+            margin-left: 50%;
+            margin-right: 50%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .my-button {
+            background-color: #000000;
+            /* El color del fondo */
+            color: white;
+            /* El color del texto */
+            width: 85%;
+        }
+
+        .my-button:hover {
+            background-color: #910106;
+            color: #ffffff;
+            border: solid #000000;
+        }
+    </style>
+    <section class="section">
+
+        <body>
+            <% if (subir) { %>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-7">
+                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <p>Por favor ingresa un archivo csv del banco para registrar las transferencias recibidas a la
+                            base de
+                            datos.</p>
+                    </div>
+                </div>
+                <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
+                    onsubmit="return validateFile()">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                    <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;"
+                        onchange="updateLabel()">
+                    <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i
+                            class="fas fa-upload"></i> Elegir archivo</label>
+                    <button type="submit" class="button is-large is-rounded is-responsive">Subir archivo</button>
+                    <div id="error"></div>
+                </form>
+
+                <% } else if (revisar) { %>
+                    <% if (datos.some(fila=> fila.tipoPago === 'Pago Completo')) { %>
+                        <div class="table-container">
+                            <div id="tablaCompleta">
+                                <p class="title is-4 mt-5">Pagos ya Realizados</p>
+                                <table class="ta">
+                                    <thead>
+                                        <tr class="has-text-white">
+                                            <th class="has-text-white">Nombre</th>
+                                            <th class="has-text-white">Matricula</th>
+                                            <th class="has-text-white">Referencia</th>
+                                            <th class="has-text-white">Fecha y Hora</th>
+                                            <th class="has-text-white">Importe</th>
+                                            <th class="has-text-white">Deuda</th>
+                                            <th class="has-text-white">Tipo de Pago</th>
+                                        </tr>
+                                    </thead>
+                                    <% datos.forEach((fila,index)=> { %>
+                                        <tbody>
+                                            <% if (fila.tipoPago==='Pago Completo' ) { %>
+                                                <tr id="pagination-content">
+                                                    <td class="has-text-black">
+                                                        <%= fila.nombre %>
+                                                            <%= fila.apellidos %>
+                                                    </td>
+                                                    <td class="has-text-black">
+                                                        <%= fila.Matricula %>
+                                                    </td>
+                                                    <td class="has-text-black">
+                                                        <%= fila.Referencia %>
+                                                    </td>
+                                                    <td class="has-text-black">
+                                                        <%= fila.fechaFormato %>
+                                                    </td>
+                                                    <td class="has-text-black">
+                                                        <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                    </td>
+                                                    <td class="has-text-black">
+                                                        <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                    </td>                                                    
+                                                    <td class="has-text-black">
+                                                        <%= fila.tipoPago %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                    <% }); %>
+                            </div>
+                            </tbody>
+                            </table>
+                            <br>
+                            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                <a class="pagination-previous" id="prev-button">Anterior</a>
+                                <a class="pagination-next" id="next-button">Siguiente</a>
+                                <ul class="pagination-list" id="pagination-list">
+                                    <div id="pagination-numbers">
+
+                                    </div>
+                                </ul>
+                            </nav>
+                            <button id="toggleButton" class="button is-large is-rounded is-responsive">
+                                <span>Revisar No Completos</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                            <% } else { %>
+                                <div class="columns">
+                                    <div class="column is-3"></div>
+                                    <div class="column is-7">
+                                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                                    </div>
+                                </div>
+                                <div id="tablaCompleta" class="has-text-centered mt-5">
+                                    <div class="alert alert-info is-size-4">No hay pagos completos en este archivo.
+                                    </div>
+                                    <button id="toggleButton" class="button is-large is-rounded is-responsive">Revisar
+                                        No
+                                        Completos</button>
+                                </div>
+                                <% } %>
+                        </div>
+
+
+                        <% if (!datos.some(fila=> ['Pago Colegiatura', 'Pago a Registrar', 'Pago de Diplomado'].includes(fila.tipoPago))) { %>
+                            <div id="tablaNoCompleta" class="has-text-centered mt-5">
+                                <div class="alert alert-info is-size-4">No hay pagos para registrar en este
+                                    archivo.</div>
+                                <button id="toggleButtonActivo" class="button is-large is-rounded is-responsive">Revisar
+                                    Completos</button>
+                            </div>
+                            <% } else { %>
+                                <div class="table-container">
+                                    <div id="tablaNoCompleta">
+                                        <p class="title is-4 mt-5">Pagos Faltantes</p>
+                                        <table class="ta">
+                                            <thead>
+                                                <tr class="has-text-white">
+                                                    <th class="has-text-white">Nombre</th>
+                                                    <th class="has-text-white">Matricula</th>
+                                                    <th class="has-text-white">Referencia</th>
+                                                    <th class="has-text-white">Fecha y Hora</th>
+                                                    <th class="has-text-white">Importe</th>
+                                                    <th class="has-text-white">Deuda</th>
+                                                    <th class="has-text-white">Tipo de Pago</th>
+                                                    <th class="has-text-white">Nota</th>
+                                                    <th class="has-text-white">Acciones</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <% datos.forEach((fila,index)=> { %>
+                                                    <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' || fila.tipoPago==='Pago de Diplomado' ) { %>
+                                                        <tr id="fila<%= index %>"
+                                                            class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
+                                                            <td>
+                                                                <%= fila.nombre %>
+                                                                    <%= fila.apellidos %>
+                                                            </td>
+                                                            <td>
+                                                                <%= fila.Matricula %>
+                                                            </td>
+                                                            <td>
+                                                                <%= fila.Referencia %>
+                                                            </td>
+                                                            <td>
+                                                                <%= fila.fechaFormato %>
+                                                            </td>
+                                                            <td>
+                                                                <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                            </td>                                                            
+                                                            <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' ) { %>
+                                                                <td>
+                                                                    <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                                </td>                                                                
+                                                                <% } 
+                                                                else { %>
+                                                                    <td>N/A</td>
+                                                                    <% } %>
+                                                                        <td>
+                                                                            <form action="/pagos/resultadoTransferencia"
+                                                                                method="POST" id="form<%= index %>"
+                                                                                class="form-enviar-datos">
+                                                                                <input type="hidden" name="_csrf"
+                                                                                    id="_csrf" value="<%= csrfToken %>">
+                                                                                <select name="tipoPago">
+                                                                                    <% if(fila.Matricula.charAt(0)==='1'){ %>
+                                                                                        <option
+                                                                                            value="Pago de Colegiatura"
+                                                                                            <%=fila.tipoPago==='Pago de Colegiatura'
+                                                                                            ? 'selected' : '' %>>Pago de
+                                                                                            Colegiatura
+                                                                                        </option>
+                                                                                        <option value="Pago a Registrar"
+                                                                                            <%=fila.tipoPago==='Pago a Registrar'
+                                                                                            ? 'selected' : '' %>>Pago a
+                                                                                            Registrar
+                                                                                        </option>
+                                                                                        <option value="Pago Extra"
+                                                                                            <%=fila.tipoPago==='Pago Extra'
+                                                                                            ? 'selected' : '' %>>Pago
+                                                                                            Extra
+                                                                                        </option>
+                                                                                        <% } %>
+
+                                                                                            <% if (fila.Matricula.charAt(0)==='8'){ %>
+                                                                                                <option
+                                                                                                    value="Pago a Registrar"
+                                                                                                    <%=fila.tipoPago==='Pago a Registrar'
+                                                                                                    ? 'selected' : '' %>
+                                                                                                    >Pago a
+                                                                                                    Registrar</option>
+                                                                                                <option
+                                                                                                    value="Pago de Diplomado"
+                                                                                                    <%=fila.tipoPago==='Pago de Diplomado'
+                                                                                                    ? 'selected' : '' %>
+                                                                                                    >Pago de
+                                                                                                    Diplomado</option>
+                                                                                                <option
+                                                                                                    value="Pago Extra"
+                                                                                                    <%=fila.tipoPago==='Pago Extra'
+                                                                                                    ? 'selected' : '' %>
+                                                                                                    >Pago
+                                                                                                    Extra
+                                                                                                </option>
+                                                                                                <% } %>
+                                                                                </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <textarea name="nota"
+                                                                                placeholder="Escribe tu nota aquí"></textarea>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="hidden" name="nombre"
+                                                                                value="<%= fila.nombre %> <%= fila.apellidos %>">
+                                                                            <input type="hidden" name="matricula"
+                                                                                value="<%= fila.Matricula %>">
+                                                                            <input type="hidden" name="referencia"
+                                                                                value="<%= fila.Referencia %>">
+                                                                            <input type="hidden" name="fecha"
+                                                                                value="<%= fila.fechaFormato %>">
+                                                                            <input type="hidden" name="importe"
+                                                                                value="<%= fila.Importe %>">
+                                                                            <input type="hidden" name="deuda"
+                                                                                value="<%= fila.deudaEstudiante %>">
+                                                                            <% if (fila.tipoPago==='Pago a Registrar' ) { %>
+                                                                                <button type="submit"
+                                                                                    class="button my-button is-medium is-rounded is-responsive">
+                                                                                    Postponer
+                                                                                    <span class="icon is-large">
+                                                                                        <i class="fa-solid fa-circle-chevron-right"
+                                                                                            style="color: #ffffff;"></i>
+                                                                                    </span>
+                                                                                </button>
+                                                                                <% } else { %>
+                                                                                    <button type="submit"
+                                                                                        class="button my-button is-medium is-rounded is-responsive">
+                                                                                        Enviar datos
+                                                                                        <span class="icon is-large">
+                                                                                            <i class="fa-solid fa-circle-chevron-right"
+                                                                                                style="color: #ffffff;"></i>
+                                                                                        </span>
+                                                                                    </button>
+                                                                                <% } %>
+                                                                             </form>
+                                                                        </td>
+                                                                    </tr>
+                                                            <% } %>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                            <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                                            <a class="pagination-next" id="next-button-2">Siguiente</a>
+                                            <ul class="pagination-list" id="pagination-list-2">
+                                                <div id="pagination-numbers-2">
+
+                                                </div>
+                                            </ul>
+                                        </nav>
+                                        <button id="toggleButtonActivo"
+                                            class="button is-large is-rounded is-responsive">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                            </span>
+                                            <span>Revisar Completos</span>
+                                        </button>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <script type="text/javascript" src="/js/pagination.js"></script>
+                                    <script type="text/javascript" src="/js/pagination_activos.js"></script>
+                                    <script type="text/javascript" src="/js/registro_transferencia.js"></script>
+        </body>
+    </section>
+
+    </html>
