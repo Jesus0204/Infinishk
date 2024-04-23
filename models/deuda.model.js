@@ -13,7 +13,12 @@ module.exports = class Deuda {
     }
 
     static fetchDeuda(matricula){
-        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT (montoAPagar-Descuento-montoPagado) AS "montoAPagar" FROM deuda WHERE Matricula = ? AND Pagado = 0',
+        [matricula]);
+    }
+
+    static fetchDeudaPagada(matricula){
+        return db.execute('SELECT (montoAPagar-Descuento-montoPagado) AS "montoAPagar" FROM deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
     }
 
@@ -22,18 +27,28 @@ module.exports = class Deuda {
         [matricula]);
     }
 
+    static fetchColegiatura(id){
+        return db.execute('SELECT IDColegiatura FROM deuda WHERE IDDeuda = ?',
+        [id]);
+    }
+
+    static statusDeuda(id){
+        return db.execute('SELECT Pagado FROM deuda WHERE IDDeuda = ?',
+        [id]);
+    }
+
     static update_transferencia(monto,id_deuda){
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);
     }
 
     static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
         [matricula]);
     }
-    
-    static fetchIDColegiatura(matricula){
-        return db.execute('SELECT IDColegiatura FROM deuda WHERE Matricula = ?',
+
+    static fetchIDDeudaPagada(matricula){
+        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
     }
 

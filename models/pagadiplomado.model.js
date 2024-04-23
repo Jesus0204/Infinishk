@@ -22,4 +22,9 @@ module.exports = class pagoDiplomado {
         return db.execute(`CALL insertarPagoDiplomado (?, ?, ?, ?, ?, ?, ?)`,
         [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago]);
     };   
+
+    static fetch_fecha_pago(fecha) {
+        return db.execute('SELECT fechaPago,montoPagado FROM pagadiplomado WHERE fechaPago = ?',
+            [fecha]);
+    }
 }
