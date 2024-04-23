@@ -323,9 +323,13 @@ exports.post_ingresos = async (request, response, next) => {
     const periodoSelect = request.body.periodo;
     const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
     const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
+    const ingresosPeriodo = await Reporte.fetchIngresosPeriodo(fechaInicio, fechaFin);
+    const ingresosEnero = await Reporte.fetchIngresosEnero(fechaInicio, fechaFin);
 
     console.log(fechaInicio);
     console.log(fechaFin);
+    console.log(ingresosPeriodo);
+    console.log("enero: ", ingresosEnero);
 };
 
 exports.get_autocomplete = (request, response, next) => {
