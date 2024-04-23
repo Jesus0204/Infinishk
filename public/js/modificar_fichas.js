@@ -27,6 +27,7 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const ayuda_descuento_negativo = document.querySelector('#ayuda_descuento_negativo' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
     const ayuda_nota = document.querySelector('#ayuda_nota' + count);
+    const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
@@ -79,20 +80,16 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     nota.addEventListener('input', mensaje_nota);
 
     function clear_button() {
-        const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
-        console.log(ayuda_fecha);
-        // ayuda_fecha.classList.remove('is-hidden');
+        ayuda_fecha.classList.remove('is-hidden');
         bt_Modificar.disabled = true;
     }
 
     function activate_clear_button() {
-        //const ayuda_fecha = document.getElementById('ayuda_fecha_vacia');
-        //ayuda_fecha.classList.add('is-hidden');
+        ayuda_fecha.classList.add('is-hidden');
         bt_Modificar.disabled = false;
     }
 
     const clear_fecha_lim = document.querySelectorAll('.datetimepicker-clear-button');
-    console.log(clear_fecha_lim[count - 1]);
     clear_fecha_lim[count - 1].addEventListener('click', clear_button);
 
     calendars.forEach((calendar) => { 
