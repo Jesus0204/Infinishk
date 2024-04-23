@@ -17,7 +17,7 @@ module.exports = class Pago {
         [fecha]);
     }
 
-    static static save_transferencia(id,monto,nota,fechaid,monto,nota,fecha) {
+    static save_transferencia(id,monto,nota,fecha) {
         return db.execute(`CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
                 [id, monto, nota,fecha]);
     }

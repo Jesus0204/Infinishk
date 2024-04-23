@@ -259,7 +259,6 @@ exports.get_autocomplete = (request, response, next) => {
 
 // Configuras a moment con el locale. 
 const moment = require('moment');
-const Colegiatura = require('../models/colegiatura.model');
 moment.locale('es-mx');
 
 exports.post_fetch_registrar_pago_manual = (request, response, next) => {
