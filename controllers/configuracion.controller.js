@@ -6,6 +6,9 @@ const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const Materia = require('../models/materia.model');
 const Periodo = require('../models/periodo.model');
 const Posee = require('../models/posee.model');
+const Colegiatura = require('../models/colegiatura.model');
+const PagoDiplomado = require('../models/pagadiplomado.model');
+const PagoExtra = require('../models/liquida.model');
 const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
@@ -283,3 +286,50 @@ exports.post_registrar_precio_credito = (request, response, next) => {
             console.log(error);
         });
 };
+
+exports.get_exportar_datos = (request,response,next) => {
+    response.render('configuracion/exportarDatos', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
+}
+
+
+exports.post_exportar_datos = async (request,response,next) => {
+    const colegiatura = request.body.colegiatura;
+    const diplomado = request.body.diplomado;
+    const extra = request.body.extra;
+    const fechaInicio = request.body.fecha_inicio;
+    const fechaFin = request.body.fecha_fin;
+
+    console.log(colegiatura);
+    console.log(diplomado);
+    console.log(extra);
+    console.log(fechaInicio);
+    console.log(fechaFin);
+
+    if (colegiatura === 'on'){
+        console.log('Se prendio colegiatura')
+        const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio,fechaFin);
+        console.log(datosColegiatura);
+    }
+
+    else if (diplomado === 'on'){
+        console.log('Se prendio diplomado')
+        const datosDiplomado = await PagoDiplomado.fetchDatosDiplomado(fechaInicio,fechaFin);
+        console.log(datosDiplomado);
+    }
+
+    else if (extra === 'on'){
+        console.log('Se prendio extra')
+        const datosExtra = await PagoExtra.fetchDatosLiquida(fechaInicio,fechaFin);
+        console.log(datosExtra);
+    }
+
+    if (colegiatura === 'on' && diplomado === 'on' && extra === 'on'){
+        console.log('Se prendieron todos')
+    }
+
+}

@@ -1,0 +1,55 @@
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+
+<body>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <h3 class="title is-centered is-3">Exportar Datos de Pagos</h3>
+            </div>
+        </div>
+        <div class="container">
+            <form action="/configuracion/exportarDatos" method="post">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <style>
+                    label {
+                        display: block;
+                        text-align: center;
+                        font-size: 1.5em;
+                    }
+                    button {
+                        font-size: 1.5em;
+                    }
+                    input[type="date"] {
+                        font-size: 1.2em;
+                    }
+                </style>
+                <label>
+                    <input type="checkbox" name="colegiatura" checked>
+                    Pagos Colegiatura
+                </label>
+                <label>
+                    <input type="checkbox" name="diplomado" checked>
+                    Pagos Diplomado
+                </label>
+                <label>
+                    <input type="checkbox" name="extra" checked>
+                    Pagos Extra
+                </label>
+                <div>
+                    <label for="fecha_inicio">Fecha inicio:</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="datepicker">
+                </div>
+                <div>
+                    <label for="fecha_fin">Fecha fin:</label>
+                    <input type="date" id="fecha_fin" name="fecha_fin" class="datepicker">
+                </div>
+                <button type="submit" class="button is-large is-rounded is-responsive">Descargar Datos</button>
+            </form>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/exportarDatos.js"></script>
+</body>
+
+</html>
+
