@@ -23,7 +23,6 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const fecha_lim = document.querySelector('#fecha_lim' + count);
     const descuento = document.querySelector('#descuento' + count);
     const nota = document.querySelector('#nota' + count);
-    const ayuda_fecha_lim = document.querySelector('#ayuda_fecha_lim' + count);
     const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
     const ayuda_descuento_negativo = document.querySelector('#ayuda_descuento_negativo' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
@@ -80,14 +79,23 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     nota.addEventListener('input', mensaje_nota);
 
     function clear_button() {
-        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia' + count);
-        ayuda_fecha.classList.remove('is-hidden');
+        const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
+        console.log(ayuda_fecha);
+        // ayuda_fecha.classList.remove('is-hidden');
         bt_Modificar.disabled = true;
     }
 
-    // Sacar los botones de clear para agregar validaciones
-    const clear = document.querySelectorAll('#fecha_lim' + count + '.datetimepicker-clear-button');
-    clear.forEach((button) => {
-            button.addEventListener('click', clear_button);
+    function activate_clear_button() {
+        //const ayuda_fecha = document.getElementById('ayuda_fecha_vacia');
+        //ayuda_fecha.classList.add('is-hidden');
+        bt_Modificar.disabled = false;
+    }
+
+    const clear_fecha_lim = document.querySelectorAll('.datetimepicker-clear-button');
+    console.log(clear_fecha_lim[count - 1]);
+    clear_fecha_lim[count - 1].addEventListener('click', clear_button);
+
+    calendars.forEach((calendar) => { 
+        calendar.on('select', activate_clear_button);
     })
 }
