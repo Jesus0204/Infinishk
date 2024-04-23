@@ -17,7 +17,7 @@ module.exports = class Usuario{
         return bcrypt.hash(this.password, 12)
             .then((password_cifrado) => {
                 return db.execute(
-                    'UPDATE usuario SET `Contraseña`=?,`usuarioActivo`=1 WHERE IDUsuario=?',
+                    'UPDATE Usuario SET `Contraseña`=?,`usuarioActivo`=1 WHERE IDUsuario=?',
                     [password_cifrado,this.IDUsuario]
                 );
             })
