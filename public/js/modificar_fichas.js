@@ -1,15 +1,14 @@
-
 // Obtener la longitud de fichas para el bucle
 const fichas_length = document.getElementById('fichas_length');
 
 // Iterar sobre los elementos de la tabla
 for (count = 1; count <= fichas_length.innerHTML; count++) {
 
-    const placeholderDate = document.getElementById('fecha_lim').getAttribute('placeholder');
+    const placeholderDate = document.getElementById('fecha_lim' + count).getAttribute('placeholder');
 
     const startDate = new Date(placeholderDate);
 
-    const calendars = bulmaCalendar.attach('[type="date"]', {
+    const calendars = bulmaCalendar.attach('[id=fecha_lim' + count + ']', {
         startDate: startDate,
         minDate: startDate,
         displayMode: 'dialog',
@@ -79,4 +78,16 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     nota.addEventListener('input', checar_contenido);
     descuento.addEventListener('input', mensaje_descuento);
     nota.addEventListener('input', mensaje_nota);
+
+    function clear_button() {
+        const ayuda_fecha = document.getElementById('ayuda_fecha_vacia' + count);
+        ayuda_fecha.classList.remove('is-hidden');
+        bt_Modificar.disabled = true;
+    }
+
+    // Sacar los botones de clear para agregar validaciones
+    const clear = document.querySelectorAll('#fecha_lim' + count + '.datetimepicker-clear-button');
+    clear.forEach((button) => {
+            button.addEventListener('click', clear_button);
+    })
 }

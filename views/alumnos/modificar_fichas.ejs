@@ -71,9 +71,13 @@
                                     <br>
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-fecha" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_fecha_vacia<%=display1%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-fecha"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escoge una fecha límite.</p>
-                                        <input id="fecha_lim" name="fecha_lim" class="fecha-limite input is-medium" type="date" placeholder="<%= ficha1.fechaLimitePago %>">
+                                        <input id="fecha_lim<%=display1%>" name="fecha_lim"
+                                            class="fecha-limite input is-medium" type="date"
+                                            placeholder="<%= ficha1.fechaLimitePago %>">
                                     <br>
                                     <strong>Descuento:</strong>
                                     <input
@@ -140,9 +144,13 @@
                                     <br>
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-fecha" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_fecha_vacia<%=display2%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-fecha"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escoge una fecha límite.</p>
-                                        <input name="fecha_lim" id="fecha_lim_2" class="fecha-limite input is-medium" type="date" placeholder="<%= ficha2.fechaLimitePago %>"
+                                        <input name="fecha_lim" id="fecha_lim<%=display2%>"
+                                            class="fecha-limite input is-medium" type="date"
+                                            placeholder="<%= ficha2.fechaLimitePago %>">
                                     <br>
                                     <strong>Descuento:</strong>
                                     <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
