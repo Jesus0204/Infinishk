@@ -14,6 +14,8 @@
                 </div>
             </div>
 
+            <p id="fichas_length" class="is-hidden"><%=fichas.length %></p>
+
             <table class="table is-bordered is-hoverable is-fullwidth">
                 <% if (fichas.length > 0) { %>
                 <thead>
@@ -71,7 +73,8 @@
                                     <br>
                                     <p class="help is-hidden has-text-danger-dark ayuda-fecha" style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escoge una fecha límite.</p>
-                                        <input name="fecha_lim" class="fecha-limite input is-medium" type="date" placeholder="<%= ficha1.fechaLimitePago %>">
+                                        <input name="fecha_lim" class="fecha-limite input is-medium"
+                                            type="date" placeholder="<%= ficha1.fechaLimitePago %>">
                                     <br>
                                     <strong>Descuento:</strong>
                                     <input name="descuento" class="input is-medium" type="number" step="any" placeholder="Descuento">

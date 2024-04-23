@@ -10,9 +10,10 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
 
 
 // Obtener la longitud de fichas para el bucle
+const fichas_length = document.getElementById('fichas_length');
 
 // Iterar sobre los elementos de la tabla
-for (count = 0; count < '<%= fichas.length %>'; count++) {
+for (count = 0; count < fichas_length.innerHTML; count++) {
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
