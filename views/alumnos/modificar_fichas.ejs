@@ -103,17 +103,6 @@
                                         <input name="descuento" class="input is-medium" type="number" step="any"
                                             id="descuento<%= count %>" placeholder="Descuento">
                                     <% } %>
-                                    <strong>Fecha de Modificación:</strong>
-                                    <br>
-                                    <% if (ficha.modificado_At !== null) { %>
-                                        <input name="fecha_mod" id="fecha_mod<%= count %>" class="input is-medium" type="date">
-                                    <% } else { %>
-                                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_mod"
-                                            style="padding: 0.5em; margin-top: -1em;">
-                                            Por favor selecciona una fecha de modificación. </p>
-                                        <input name="fecha_mod" id="fecha_mod<%= count %>" class="input is-medium" type="date">
-                                    <% } %> 
-                                    <br>
                                     <strong>Nota:</strong>
                                     <br>
                                     <p class="help is-hidden has-text-danger-dark" id="ayuda_nota"
@@ -202,17 +191,6 @@
                                         <input name="descuento" class="input is-medium" type="number" step="any"
                                             id="descuento<%= count+1 %>" placeholder="Descuento">
                                         <% } %>
-                                        <strong>Fecha de Modificación:</strong>
-                                        <br>
-                                        <% if (ficha.modificado_At !== null) { %>
-                                            <%= ficha.modificado_At.toLocaleDateString("es-MX", options) %>
-                                        <% } else { %>
-                                            <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_mod"
-                                                style="padding: 0.5em; margin-top: -1em;">
-                                                Por favor selecciona una fecha. </p>
-                                            <input name="fecha_mod" id="fecha_mod<%= count+1 %>" class="input is-medium" type="date">
-                                        <% } %> 
-                                        <br>
                                         <strong>Nota:</strong>
                                         <br>
                                         <p class="help is-hidden has-text-danger-dark" id="ayuda_nota"
