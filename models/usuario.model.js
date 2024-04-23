@@ -97,11 +97,11 @@ module.exports = class Usuario{
     }
 
     static updateUsuario(id,correo){
-        return db.execute('UPDATE usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
+        return db.execute('UPDATE Usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
     }
 
     static saveUsuario(id,correo){
-        return db.execute('INSERT INTO usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
+        return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
     }
 
     static fetchUser(correo){
@@ -109,7 +109,7 @@ module.exports = class Usuario{
     }
 
     static updateToken(token,id){
-        return db.execute('UPDATE usuario SET token=? WHERE IDUsuario=?',[token,id])
+        return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?',[token,id])
     }
 
     
