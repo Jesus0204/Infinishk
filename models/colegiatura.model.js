@@ -11,7 +11,7 @@ module.exports = class Colegiatura{
     }
 
     static update_transferencia(monto,idcolegiatura){
-        return db.execute('UPDATE Colegiatura SET montoPagadoTotal = montoPagadoTotal + ? \n WHERE IDColegiatura = ?',
+        return db.execute('UPDATE Colegiatura SET montoPagadoTotal = montoPagadoTotal + ? WHERE IDColegiatura = ?',
         [monto, idcolegiatura]);
     }
 

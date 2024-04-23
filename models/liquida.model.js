@@ -27,6 +27,25 @@ module.exports = class Liquida {
         [matricula]);
     }
 
+    static fetchIDPagado(matricula, fecha) {
+        return db.execute('Select fechaPago, IDLiquida from liquida WHERE Matricula = ? AND Pagado = 1 AND fechaPago = ?', [matricula, fecha]);
+    }
+
+    static fetchStatus(matricula) {
+        return db.execute('Select Pagado from liquida WHERE Matricula = ?', [matricula]);
+    }
+
+    static save_transferencia(matricula, id, fecha, nota) {
+        return db.execute(
+            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`,
+            [matricula, id, fecha, nota]);
+    }
+
+    static update_transferencia(nota, fecha, id) {
+        return db.execute('UPDATE liquida SET Pagado = 1, metodoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+            [fecha, nota, id]);
+    }
+
     static save_pago_manual(matricula, pago, fecha, metodo, nota) {
         return db.execute('INSERT INTO Liquida (Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?, ?, ?, ?, 1, ?)', [matricula, pago, fecha, metodo, nota]);
     }

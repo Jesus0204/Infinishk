@@ -46,7 +46,7 @@ module.exports = class PagoExtra {
     }
 
     static fetchID(importe) {
-        return db.execute('Select IDPagosExtras from pagosExtras WHERE montoPagar = ?', [importe]);
+        return db.execute('SELECT IDPagosExtras FROM pagosExtras WHERE CAST(montoPagar AS DECIMAL(10,2)) = CAST(? AS DECIMAL(10,2)) AND pagoExtraActivo = 1', [importe]);
     }
 
 };
