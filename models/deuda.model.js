@@ -13,9 +13,9 @@ module.exports = class Deuda {
     }
 
     static fetchNoPagados() {
-        return db.execute(`SELECT DISTINCT(matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P
+        return db.execute(`SELECT DISTINCT (matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P
         WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
-        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1;`);
+        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1`);
     }
 
     static fetchDeuda(matricula) {
@@ -25,7 +25,20 @@ module.exports = class Deuda {
         D.montoPagado, D.fechaLimitePago, D.pagado
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
-        C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?;`, 
+        C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`, 
         [matricula]);
+    }
+
+    static fetchAlumnos_DeudaActual(){
+        return db.execute(`SELECT COUNT(DISTINCT (Matricula)) AS "alumnosTotales" 
+        FROM Deuda AS D, Colegiatura AS C, Periodo As P 
+        WHERE D.IDColegiatura = C.IDColegiatura AND 
+        C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = 1`);
+    }
+
+    static fetchAlumnos_Atrasados(){
+        return db.execute(`SELECT COUNT(DISTINCT(Matricula)) AS 'alumnosAtrasados' FROM Deuda AS D, Colegiatura AS C, Periodo As P
+        WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
+        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1`);
     }
 }

@@ -4,10 +4,40 @@
     rol: rol
 }) %>
 
+<style>
+    .ct-series-a .ct-area,
+    .ct-series-a .ct-slice-pie {
+        fill: #910106;
+        stroke: #910106;
+        fill-opacity: 0.6;
+    }
+
+    .ct-series-b .ct-area,
+    .ct-series-b .ct-slice-pie {
+        fill: #5a6581;
+        stroke: #5a6581;
+        fill-opacity: 0.9;
+    }
+
+    .ct-label {
+        font-size: 15px;
+        font-weight: bold;
+    }
+</style>
+
 <section class="section">
     <div class="container">
-        <h3 class="title is-3">Alumnos atrasados en pagos</h3>
-        <% for (let deudas_atrasadas of pagos_atrasados) { %> 
+        <div class="columns">
+            <div class="column is-7">
+                <h3 class="title is-3">Alumnos atrasados en pagos</h3>
+            </div>
+            <div class="column is-5">
+                <div class="ct-chart ct-golden-section ct-slice-pie ct-series-x" id="bar-chart"></div>
+            </div>
+        </div>
+        <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
+        <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
+        <% for (let deudas_atrasadas of pagos_atrasados) { %>
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
                 <tr>
@@ -35,7 +65,8 @@
                             </div>
                             <div class="column">
                                 <form action="/plantilla_correo" method="POST">
-                                    <input type="hidden" name="matricula" id="matricula" value="<% deudas_atrasadas[0].matricula %>">
+                                    <input type="hidden" name="matricula" id="matricula"
+                                        value="<% deudas_atrasadas[0].matricula %>">
                                     <button type="submit" class="button is-rounded is-medium is-responsive"
                                         style="font-size: medium;">
                                         <span>Enviar Correo</span>
@@ -190,3 +221,4 @@
         </div>
     </div>
 </section>
+<script type="text/javascript" src="/js/alumnos_atrasados.js"></script>
