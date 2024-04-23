@@ -73,23 +73,34 @@
                                     <br>
                                     <p class="help is-hidden has-text-danger-dark ayuda-fecha" style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escoge una fecha límite.</p>
-                                        <input name="fecha_lim" class="fecha-limite input is-medium"
-                                            type="date" placeholder="<%= ficha1.fechaLimitePago %>">
+                                        <input id="fecha_lim" name="fecha_lim" class="fecha-limite input is-medium" type="date" placeholder="<%= ficha1.fechaLimitePago %>">
                                     <br>
                                     <strong>Descuento:</strong>
-                                    <input name="descuento" class="input is-medium" type="number" step="any" placeholder="Descuento">
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-vacio" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <input
+                                        id="descuento<%=display1%>" name="descuento" class="input is-medium" type="number"
+                                        step="any" placeholder="Descuento">
+                                    <p id="ayuda_descuento_vacio<%=display1%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escribe un descuento. Si no deseas aplicar un descuento, escribe 0.</p>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-negativo" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_descuento_negativo<%=display1%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         El descuento no puede ser negativo.</p>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-exponente" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_descuento_exponente<%=display1%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         El descuento no puede tener exponentes.</p>
                                     <br>
                                     <strong>Nota:</strong>
-                                    <textarea name="nota" class="input is-medium" placeholder="Escribe tu nota"></textarea>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-nota" style="padding: 0.5em; margin-top: -1em;">
+                                    <textarea id="nota<%=display1%>" name="nota" class="input is-medium"
+                                        placeholder="Escribe tu nota"></textarea>
+                                    <p id="ayuda_nota<%=display1%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-nota"
+                                        style="padding: 0.5em;margin-bottom: -2em; padding-bottom: 2em;">
                                         Por favor escribe una nota.</p>
-                                    <button type="submit" class="button is-rounded is-medium is-responsive" style="font-size: medium;">
+                                    <button id="Boton_modificar<%=display1%>" type="submit"
+                                        class="button is-rounded is-medium is-responsive" style="font-size: medium;" disabled>
                                         <span>Modificar</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -134,19 +145,31 @@
                                         <input name="fecha_lim" class="fecha-limite input is-medium" type="date" placeholder="<%= ficha2.fechaLimitePago %>">
                                     <br>
                                     <strong>Descuento:</strong>
-                                    <input name="descuento" class="input is-medium" type="number" step="any" placeholder="Descuento">
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-vacio" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
+                                        type="number"
+                                        step="any" placeholder="Descuento">
+                                    <p id="ayuda_descuento_vacio<%=display2%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         Por favor escribe un descuento. Si no deseas aplicar un descuento, escribe 0.</p>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-negativo" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_descuento_negativo<%=display2%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         El descuento no puede ser negativo.</p>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-descuento-exponente" style="padding: 0.5em; margin-bottom: -2em;">
+                                    <p id="ayuda_descuento_exponente<%=display2%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
+                                        style="padding: 0.5em; margin-bottom: -2em;">
                                         El descuento no puede tener exponentes.</p>
                                     <br>
                                     <strong>Nota:</strong>
-                                    <textarea name="nota" class="input is-medium" placeholder="Escribe tu nota"></textarea>
-                                    <p class="help is-hidden has-text-danger-dark ayuda-nota" style="padding: 0.5em; margin-top: -1em;">
+                                    <textarea id="nota<%=display2%>" name="nota" class="input is-medium"
+                                        placeholder="Escribe tu nota"></textarea>
+                                    <p id="ayuda_nota<%=display2%>"
+                                        class="help is-hidden has-text-danger-dark ayuda-nota"
+                                        style="padding: 0.5em; margin-bottom: -2em; padding-bottom: 2em;">
                                         Por favor escribe una nota.</p>
-                                    <button type="submit" class="button is-rounded is-medium is-responsive" style="font-size: medium;">
+                                    <button id="Boton_modificar<%=display2%>" type="submit"
+                                        class="button is-rounded is-medium is-responsive" style="font-size: medium;" disabled>
                                         <span>Modificar</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>

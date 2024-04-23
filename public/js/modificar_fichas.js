@@ -1,4 +1,3 @@
-
 const calendars = bulmaCalendar.attach('[type="date"]', {
     startDate: new Date(),
     displayMode: 'dialog',
@@ -13,7 +12,7 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
 const fichas_length = document.getElementById('fichas_length');
 
 // Iterar sobre los elementos de la tabla
-for (count = 0; count < fichas_length.innerHTML; count++) {
+for (count = 1; count <= fichas_length.innerHTML; count++) {
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
@@ -27,7 +26,7 @@ for (count = 0; count < fichas_length.innerHTML; count++) {
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled = fecha_lim.value.length === 0 || descuento.value.length === 0 || nota.value.length === 0;
+        bt_Modificar.disabled =  descuento.value.length === 0 || nota.value.length === 0;
     }
 
     // Activar mensaje si el motivo no tiene input
@@ -70,10 +69,8 @@ for (count = 0; count < fichas_length.innerHTML; count++) {
     }
 
     // Detectar si el usuario maneja input y llamar las funciones anteriores
-    fecha_lim.addEventListener('input', checar_contenido);
     descuento.addEventListener('input', checar_contenido);
     nota.addEventListener('input', checar_contenido);
-    fecha_lim.addEventListener('input', mensaje_fecha_lim);
     descuento.addEventListener('input', mensaje_descuento);
     nota.addEventListener('input', mensaje_nota);
 }
