@@ -356,8 +356,6 @@ exports.get_autocomplete = (request, response, next) => {
     }
 };
 
-const Colegiatura = require('../models/colegiatura.model');
-
 exports.post_fetch_registrar_pago_manual = (request, response, next) => {
     // Del input del usuario sacas solo la matricula con el regular expression
     let matches = request.body.buscar.match(/(\d+)/);
