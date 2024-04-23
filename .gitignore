@@ -11,3 +11,5 @@ uploads/
 .env*
 
 config.js
+
+yarn.lock
