@@ -11,6 +11,10 @@ const Colegiatura = require('../models/colegiatura.model');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 
+// Configuras a moment con el locale. 
+const moment = require('moment-timezone');
+moment.locale('es-mx');
+
 exports.get_pago = (request, response, next) => {
     response.render('pago/pago', {
         username: request.session.username || '',
