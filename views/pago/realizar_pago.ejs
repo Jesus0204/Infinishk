@@ -14,7 +14,11 @@
                     <div class="select is-medium" style="width: 110%;">
                         <select name="tipo" id="tipo" style="width: 110%;">
                             <option value="Normal">
+                                <% if (alumno[0].Matricula[0] == '1') { %>
                                 Colegiatura
+                                <% } else if (alumno[0].Matricula[0] == '8') { %>
+                                Diplomado
+                                <% } %>
                             </option>
                             <option value="Otro">
                                 Otro Pago
@@ -27,6 +31,7 @@
                 </div>
                 <br>
                 <div id="info_pago_normal">
+                    <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
                     <% let porPagar = 0 %>
                     <% for (let deudas of totales) { %>
                     <% porPagar += deudas.montoAPagar %>
@@ -34,12 +39,11 @@
                     <p class="is-size-5" style="text-align: center;">
                         <strong>Saldo Pendiente: </strong>
                         $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                     }) %>
                     </p>
                     <br>
-                    <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
                     <table class="table is-bordered Pago-de-Colegiatura"
                         style="color: #ffffff;  margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
@@ -82,12 +86,26 @@
                         style="color: #ffffff; margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
                             <strong>
-                                Diplomado:
+                                Cursando:
                             </strong>
                         </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Diplomado
+                            </th>
+                            <th style="color: #ffffff">
+                                Precio
+                            </th>
+                        </thead>
                         <tbody>
                             <td>
                                 <%= diplomado[0].nombreDiplomado %>
+                            </td>
+                            <td>
+                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
                             </td>
                         </tbody>
                     </table>
@@ -109,50 +127,112 @@
             <div class="column is-offset-1">
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                 <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
-                <div class="columns">
-                    <div class="column is-5">
-                        <label class="label is-medium" for="motivo">Motivo: </label>
+                <div id="pago_colegiatura">
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="motivo">Motivo: </label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
+                                style="padding: 0.5em; margin-top: -1em;">Por favor
+                                escribe un motivo del pago del alumno</p>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                        placeholder="Concepto del pago">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="column">
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
-                            style="padding: 0.5em; margin-top: -1em;">Por favor
-                            escribe un motivo del pago del alumno</p>
-                        <div class="field">
-                            <p class="control has-icons-left">
-                                <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                    placeholder="Concepto del pago">
-                                <span class="icon is-small is-left">
-                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                </span>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="monto">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor
+                                escribe un monto válido del Pago</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                                style="padding: 0.5em; margin-top: -1em;">Por
+                                favor escribe un número mayor a 0.</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                                style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
+                                exponente.
                             </p>
+                            <div class="field">
+                                <% if (pago_col == true) { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                        placeholder="Monto pagado"
+                                        value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } else { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                        placeholder="Monto pagado"
+                                        value="<%= diplomado[0].precioDiplomado.toFixed(2) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="columns">
-                    <div class="column is-5">
-                        <label class="label is-medium" for="monto">Monto:</label>
+                <br>
+                <div class="is-hidden" id="pago_extra">
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="motivo_no_usar">Motivo: </label>
+                        </div>
                     </div>
-                    <div class="column">
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
-                            style="padding: 0.5em; margin-top: -1em;">
-                            Por favor
-                            escribe un monto válido del Pago</p>
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                            style="padding: 0.5em; margin-top: -1em;">Por
-                            favor escribe un número mayor a 0.</p>
-                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
-                            style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
-                            exponente.
-                        </p>
-                        <div class="field">
-                            <p class="control has-icons-left">
-                                <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                    placeholder="Monto pagado"
-                                    value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
-                                <span class="icon is-small is-left">
-                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                                </span>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="monto_no_usar">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor
+                                escribe un monto válido del Pago</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                                style="padding: 0.5em; margin-top: -1em;">Por
+                                favor escribe un número mayor a 0.</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                                style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
+                                exponente.
                             </p>
+                            <div class="field">
+                                <% if (pago_col == true) { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any"
+                                        id="monto_no_usar"
+                                        placeholder="Monto pagado"
+                                        value="300">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } else { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any"
+                                        id="monto_no_usar"
+                                        placeholder="Monto pagado"
+                                        value="">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,7 +256,7 @@
                                 </select>
                             </div>
                             <div class="icon is-medium is-left">
-                                <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                                <i class="fa-solid fa-credit-card" style="color: #95404c;"></i>
                             </div>
                         </div>
                     </div>
@@ -208,10 +288,9 @@
                     style="background-color: #5a6581; color:#ffffff; text-align: center;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
                         <p>No se puede realizar un pago</p>
-                        <button id="btn_cursa_diplomado" class="delete" aria-label="delete"></button>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
-                        No te encuentras cursando un diplomado actualmente, por lo que no puedes pagar ningún diplomado,.
+                        No te encuentras cursando un diplomado actualmente, por lo que no puedes pagar ningún diplomado.
                     </div>
                 </article>
                 <% } else if (colegiatura.length == 0 && pago_col == true) { %>
@@ -219,10 +298,9 @@
                     style="background-color: #5a6581; color:#ffffff; text-align: center;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
                         <p>No se puede realizar un pago</p>
-                        <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
-                        No cuentas con una colegiatura para el periodo <%= periodo[0].Nombre %>. 
+                        No cuentas con una colegiatura para el periodo <%= periodo[0].Nombre %>.
                     </div>
                 </article>
                 <% } else if (pago_col == true && deuda.length == 0) {%>
@@ -290,7 +368,7 @@
     const boton_pagar = document.getElementById('Boton_pagar');
     const monto = document.getElementById('monto');
 
-    if (boton_pagar){
+    if (boton_pagar) {
         boton_pagar.addEventListener('click', function () {
             pagar(monto);
         });
@@ -309,12 +387,4 @@
     }
 
     tipo.addEventListener('change', hideNormal);
-
-    const notificacion_no_diplomado = document.querySelector('#btn_cursa_diplomado');
-
-    if (notificacion_no_diplomado) {
-        notificacion_no_diplomado.addEventListener('click', () => {
-            document.getElementById('no_cursa_diplomado').classList.add('is-hidden');
-        });
-    };
 </script>
