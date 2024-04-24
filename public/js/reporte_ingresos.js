@@ -51,10 +51,53 @@ function prepareChartData(ingresosData) {
     };
 }
 
+function getColorByCategoria(categoria) {
+    switch (categoria) {
+        case 'Colegiatura':
+            return '#95404c';
+        case 'Diplomado':
+            return '#5a6581';
+        case 'PagosExtras':
+            return '#7c7f80';
+        default:
+            return '#000000';
+    }
+}
+
 function renderChart(chartData) {
-    var options = {
-        seriesBarDistance: 10
+    var categories = ['Colegiatura', 'Diplomado', 'PagosExtras'];
+    var labels = chartData.labels;
+    var datasets = [];
+
+    categories.forEach((category, index) => {
+        var data = chartData.series.map(series => series.data[index]);
+        var color = getColorByCategoria(category);
+
+        datasets.push({
+            label: category,
+            backgroundColor: color,
+            data: data
+        });
+    });
+
+    var chartConfig = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            } 
+        }
     };
 
-    var chart = new Chartist.Bar('#bar-chart', chartData, options);
+    var ctx = document.getElementById('bar-chart').getContext('2d');
+    var chart = new Chart(ctx, chartConfig);
 }
