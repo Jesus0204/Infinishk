@@ -9,12 +9,17 @@ const Posee = require('../models/posee.model');
 const Colegiatura = require('../models/colegiatura.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/liquida.model');
-const { getAllUsers, getAllCourses,getAllPeriods } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods } = require('../util/adminApiClient');
+
+const { createObjectCsvWriter } = require('csv-writer');
 
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const path = require('path');
+
+const fs = require('fs');
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -29,7 +34,7 @@ exports.get_administrar_planpago = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
-           });
+            });
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -59,7 +64,7 @@ exports.post_modificar_planpago = (request, response, next) => {
 exports.get_registrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
-           response.render('configuracion/registrar_planpago',{
+            response.render('configuracion/registrar_planpago', {
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
@@ -258,7 +263,7 @@ exports.post_registrar_planpago = (request, response, next) => {
     const numero = request.body.numeroPagos;
     const activo = request.body.planPagoActivo;
 
-    PlanPago.save(nombre,numero,activo)
+    PlanPago.save(nombre, numero, activo)
         .then(([planespago, fieldData]) => {
             response.redirect('/configuracion/administrar_planpago');
         })
@@ -287,7 +292,7 @@ exports.post_registrar_precio_credito = (request, response, next) => {
         });
 };
 
-exports.get_exportar_datos = (request,response,next) => {
+exports.get_exportar_datos = (request, response, next) => {
     response.render('configuracion/exportarDatos', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -296,40 +301,140 @@ exports.get_exportar_datos = (request,response,next) => {
     });
 }
 
-
-exports.post_exportar_datos = async (request,response,next) => {
-    const colegiatura = request.body.colegiatura;
-    const diplomado = request.body.diplomado;
-    const extra = request.body.extra;
+exports.post_exportar_datos = async (request, response, next) => {
+    const colegiatura = request.body.colegiatura === 'on';
+    const diplomado = request.body.diplomado === 'on';
+    const extra = request.body.extra === 'on';
     const fechaInicio = request.body.fecha_inicio;
     const fechaFin = request.body.fecha_fin;
 
-    console.log(colegiatura);
-    console.log(diplomado);
-    console.log(extra);
-    console.log(fechaInicio);
-    console.log(fechaFin);
-
-    if (colegiatura === 'on'){
-        console.log('Se prendio colegiatura')
-        const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio,fechaFin);
-        console.log(datosColegiatura);
+    const uploadsDir = path.join(__dirname, '../', 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir);
     }
 
-    else if (diplomado === 'on'){
-        console.log('Se prendio diplomado')
-        const datosDiplomado = await PagoDiplomado.fetchDatosDiplomado(fechaInicio,fechaFin);
-        console.log(datosDiplomado);
+    // Función para eliminar acentos
+    function eliminarAcentos(texto) {
+        return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    else if (extra === 'on'){
-        console.log('Se prendio extra')
-        const datosExtra = await PagoExtra.fetchDatosLiquida(fechaInicio,fechaFin);
-        console.log(datosExtra);
+    let csvContent = '';
+
+    if (colegiatura) {
+        const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio, fechaFin);
+        if (datosColegiatura.length === 0) {
+            return response.status(404).json({ error: 'No se encontraron datos de colegiatura para exportar' });
+        }
+        csvContent += 'Colegiatura\n';
+        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDPago,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
+        datosColegiatura.forEach((dato) => {
+            dato.forEach((valor) => {
+                let fechaFormateada = '';
+                if (!isNaN(valor.fechaPago)) {
+                    let fecha = new Date(valor.fechaPago);
+                    let anio = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let hora = fecha.getHours();
+                    let minutos = fecha.getMinutes();
+
+                    if (mes < 10) mes = '0' + mes;
+                    if (dia < 10) dia = '0' + dia;
+
+                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                }
+
+                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDPago || ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
+            });
+            csvContent += '\f';
+        });
     }
 
-    if (colegiatura === 'on' && diplomado === 'on' && extra === 'on'){
-        console.log('Se prendieron todos')
+    if (diplomado) {
+        const datosDiplomado = await PagoDiplomado.fetchDatosDiplomado(fechaInicio, fechaFin);
+        if (datosDiplomado.length === 0) {
+            return response.status(404).json({ error: 'No se encontraron datos de diplomado para exportar' });
+        }
+        csvContent += '\nDiplomado\n';
+        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDDiplomado,nombreDiplomado,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
+        datosDiplomado.forEach((dato) => {
+            dato.forEach((valor) => {
+                let fechaFormateada = '';
+                if (!isNaN(valor.fechaPago)) {
+                    let fecha = new Date(valor.fechaPago);
+                    let anio = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let hora = fecha.getHours();
+                    let minutos = fecha.getMinutes();
+
+                    if (mes < 10) mes = '0' + mes;
+                    if (dia < 10) dia = '0' + dia;
+
+                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                }
+
+                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDDiplomado || ''},${valor.nombreDiplomado ? eliminarAcentos(valor.nombreDiplomado) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
+            });
+            csvContent += '\f';
+        });
     }
 
+    if (extra) {
+        const datosExtra = await PagoExtra.fetchDatosLiquida(fechaInicio, fechaFin);
+        if (datosExtra.length === 0) {
+            return response.status(404).json({ error: 'No se encontraron datos extra para exportar' });
+        }
+        csvContent += '\nExtra\n';
+        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDLiquida,metodoPago,fechaPago,Nota,Pagado,IDPagosExtras,motivoPago\n';
+        datosExtra.forEach((dato) => {
+            dato.forEach((valor) => {
+                let fechaFormateada = '';
+                if (!isNaN(valor.fechaPago)) {
+                    let fecha = new Date(valor.fechaPago);
+                    let anio = fecha.getFullYear();
+                    let mes = fecha.getMonth() + 1;
+                    let dia = fecha.getDate();
+                    let hora = fecha.getHours();
+                    let minutos = fecha.getMinutes();
+
+                    if (mes < 10) mes = '0' + mes;
+                    if (dia < 10) dia = '0' + dia;
+
+                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                }
+
+                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDLiquida || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.IDPagosExtras || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
+            });
+            csvContent += '\f';
+        });
+    }
+
+    const fechaActual = new Date().toISOString().replace(/:/g, '-');
+    let nombreArchivo = '';
+
+    const opcionesSeleccionadas = [colegiatura, diplomado, extra].filter(Boolean).length;
+    if (opcionesSeleccionadas === 3) {
+        nombreArchivo = `datos_exportados_${fechaActual}.csv`;
+    } else if (opcionesSeleccionadas === 2) {
+        nombreArchivo = `datos_exportados_${fechaActual}.csv`;
+    } else if (colegiatura) {
+        nombreArchivo = `datos_colegiatura_${fechaActual}.csv`;
+    } else if (diplomado) {
+        nombreArchivo = `datos_diplomado_${fechaActual}.csv`;
+    } else if (extra) {
+        nombreArchivo = `datos_extra_${fechaActual}.csv`;
+    }
+
+    const filePath = path.join(uploadsDir, nombreArchivo);
+
+    fs.writeFile(filePath, csvContent, (err) => {
+        if (err) {
+            console.error('Error al escribir en el archivo CSV:', error);
+            return response.status(500).json({ error: 'Error al escribir en el archivo CSV' });
+        } else {
+            console.log('Datos exportados a datos_extra.csv');
+            response.download(filePath, nombreArchivo);
+        }
+    });
 }
