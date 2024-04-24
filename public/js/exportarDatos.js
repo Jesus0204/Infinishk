@@ -66,11 +66,31 @@ calendars.forEach((calendar) => {
     count_activate++;
 })
 
+const check_colegiatura = document.querySelector('#colegiatura');
+const check_diplomado = document.querySelector('#pag_dipl');
+const check_extra = document.querySelector('#extra');
+
+function check_checkbox(){
+    if ($('#colegiatura').is(":checked") == true ||
+        $('#pag_dipl').is(":checked") == true ||
+        $('#extra').is(":checked") == true) {
+        btn_exportar.disabled = false;
+    } else {
+        btn_exportar.disabled = true;
+    }
+}
+
+check_colegiatura.addEventListener('click', check_checkbox);
+check_diplomado.addEventListener('click', check_checkbox);
+check_extra.addEventListener('click', check_checkbox);
+
 document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('closeNotification');
     const errorNotification = document.getElementById('errorNotification');
 
-    closeBtn.addEventListener('click', () => {
-        errorNotification.style.display = 'none';
-    });
+    if (closeBtn){
+        closeBtn.addEventListener('click', () => {
+            errorNotification.style.display = 'none';
+        });
+    }
 });

@@ -323,7 +323,6 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     if (colegiatura) {
         const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio, fechaFin);
-        console.log(datosColegiatura);
         if (datosColegiatura.length === 0 || datosColegiatura[0].length === 0) {
             return response.render('configuracion/exportarDatos', {
                 error: true,
