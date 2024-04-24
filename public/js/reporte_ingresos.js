@@ -111,11 +111,6 @@ function renderChart(chartData) {
 
     console.log("chartData: ", chartData);
 
-    // Debug statements for table rendering
-    console.log("Labels for Table:", labels);
-    console.log("Chart Series Data:", chartData.series);
-
-    // Render table
     const tabla = document.getElementById('tabla').getElementsByTagName('tbody')[0];
     tabla.innerHTML = '';
     chartData.series.forEach((serie, index) => {

@@ -51,21 +51,9 @@
                         </div>
                     </div>
                 </form>
-                <button id="btnSubmit" class="button is-large is-rounded is-responsive" style="margin-top: 20px;" onclick="generateReport()">Generar Reporte</button>
+                <button id="btnSubmit" class="button is-large is-rounded is-responsive" style="margin-top: 40px;" onclick="generateReport()">Generar Reporte</button>
             </div>
-            <div class="column is-half">
-                <canvas id="bar-chart"></canvas>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script type="text/javascript" src="/js/reporte_ingresos.js"></script>
-
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-half">
+            <div class="column is-3">
                 <div class="table is-fullwidth">
                     <table id="tabla" style="display: none;">
                         <thead>
@@ -74,19 +62,7 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <td id="mes1"></td>
-                            <td id="mes1-total"></td>
-                            <td id="mes2"></td>
-                            <td id="mes2-total"></td>
-                            <td id="mes3"></td>
-                            <td id="mes3-total"></td>
-                            <td id="mes4"></td>
-                            <td id="mes4-total"></td>
-                            <td id="mes5"></td>
-                            <td id="mes5-total"></td>
-                            <td id="mes6"></td>
-                            <td id="mes6-total"></td>
+                        <tbody> 
                         </tbody>
                     </table>
                 </div>
@@ -94,3 +70,13 @@
         </div>
     </div>
 </section>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="/js/reporte_ingresos.js"></script>
