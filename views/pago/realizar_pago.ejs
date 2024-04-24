@@ -187,11 +187,24 @@
                         </div>
                     </div>
                 </div>
-                <br>
                 <div class="is-hidden" id="pago_extra">
                     <div class="columns">
                         <div class="column is-5">
                             <label class="label is-medium" for="motivo_no_usar">Motivo: </label>
+                        </div>
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <div class="select is-medium" style="width: 110%;">
+                                    <select name="motivo" id="motivo_no_usar" style="width: 110%;">
+                                        <option value="Web Tarjeta">
+                                            Pago extra
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="icon is-medium is-left">
+                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="columns">
@@ -214,9 +227,7 @@
                                 <% if (pago_col == true) { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any"
-                                        id="monto_no_usar"
-                                        placeholder="Monto pagado"
-                                        value="300">
+                                        id="monto_no_usar" placeholder="Monto pagado" value="300" readonly>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                     </span>
@@ -224,9 +235,7 @@
                                 <% } else { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any"
-                                        id="monto_no_usar"
-                                        placeholder="Monto pagado"
-                                        value="">
+                                        id="monto_no_usar" placeholder="Monto pagado" value="">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                     </span>
@@ -236,6 +245,7 @@
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="columns">
                     <div class="column is-5">
                         <label class="label is-medium" for="metodo">Método de Pago: </label>
@@ -260,6 +270,7 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                 </div>
                 <div class="columns">
                     <div class="column is-5">
@@ -336,7 +347,68 @@
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 
 <script>
-    function pagar(monto) {
+    const tipo = document.getElementById("tipo");
+
+    const info_pago_normal = document.querySelector('#info_pago_normal');
+    const pago_extra = document.querySelector('#pago_extra');
+    const pago_colegiatura = document.querySelector('#pago_colegiatura');
+
+    function hideNormal() {
+        if (tipo.value == 'Normal') {
+            info_pago_normal.classList.remove('is-hidden');
+        } else if (tipo.value == 'Otro') {
+            info_pago_normal.classList.add('is-hidden');
+        }
+    }
+
+    function change_input() {
+        if (tipo.value == 'Normal') {
+            // Sacas los antiguos ids
+            const motivo_old = document.querySelector('#motivo');
+            const monto_old = document.querySelector('#monto');
+
+            // Sacas los que van a ser nuevos ids
+            const motivo_new = document.querySelector('#motivo_no_usar');
+            const monto_new = document.querySelector('#monto_no_usar');
+
+            pago_colegiatura.classList.remove('is-hidden');
+            pago_extra.classList.add('is-hidden');
+
+            // Cambias los old a los que no se van a usar
+            motivo_old.id = 'motivo_no_usar';
+            monto_old.id = 'monto_no_usar';
+
+            // Cambias los new a los que se van a usar
+            motivo_new.id = 'motivo';
+            monto_new.id = 'monto';
+        } else if (tipo.value == 'Otro') {
+            // Sacas los antiguos ids
+            const motivo_old = document.querySelector('#motivo');
+            const monto_old = document.querySelector('#monto');
+
+            // Sacas los que van a ser nuevos ids
+            const motivo_new = document.querySelector('#motivo_no_usar');
+            const monto_new = document.querySelector('#monto_no_usar');
+
+            pago_colegiatura.classList.add('is-hidden');
+            pago_extra.classList.remove('is-hidden');
+
+            // Cambias los old a los que no se van a usar
+            motivo_old.id = 'motivo_no_usar';
+            monto_old.id = 'monto_no_usar';
+
+            // Cambias los new a los que se van a usar
+            motivo_new.id = 'motivo';
+            monto_new.id = 'monto';
+        }
+    }
+
+    tipo.addEventListener('change', hideNormal);
+    tipo.addEventListener('change', change_input);
+
+    function pagar() {
+        // Sacas el que tiene el monto actual
+        const monto = document.getElementById('monto');
         //El token de protección CSRF
         const csrf = document.getElementById('_csrf').value;
 
@@ -366,25 +438,10 @@
     }
 
     const boton_pagar = document.getElementById('Boton_pagar');
-    const monto = document.getElementById('monto');
 
     if (boton_pagar) {
         boton_pagar.addEventListener('click', function () {
-            pagar(monto);
+            pagar();
         });
     }
-
-    const tipo = document.getElementById("tipo");
-
-    const info_pago_normal = document.querySelector('#info_pago_normal');
-
-    function hideNormal() {
-        if (tipo.value == 'Normal') {
-            info_pago_normal.classList.remove('is-hidden');
-        } else if (tipo.value == 'Otro') {
-            info_pago_normal.classList.add('is-hidden');
-        }
-    }
-
-    tipo.addEventListener('change', hideNormal);
 </script>
