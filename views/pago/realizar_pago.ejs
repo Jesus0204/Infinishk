@@ -8,8 +8,90 @@
     <div class="container">
         <h1 class="title"> Realizar Pago</h1>
         <div class="columns">
-            <div class="column is-4"></div>
+            <div class="column is-4">
+                <div class="control has-icons-left">
+                    <div class="select is-medium" style="width: 110%;">
+                        <select name="tipo" id="tipo" style="width: 110%;">
+                            <option value="Normal">
+                                Colegiatura
+                            </option>
+                            <option value="Otro">
+                                Otro Pago
+                            </option>
+                        </select>
+                    </div>
+                    <div class="icon is-medium is-left">
+                        <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                    </div>
+                </div>
+                <br>
+                <div id="info_pago_normal">
+                    <% let porPagar = 0 %>
+                    <% for (let deudas of totales) { %>
+                    <% porPagar += deudas.montoAPagar %>
+                    <% } %>
+                    <p class="is-size-5" style="text-align: center;">
+                        <strong>Saldo Pendiente: </strong>
+                        $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                    </p>
+                    <br>
+                    <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
+                    <table class="table is-bordered Pago-de-Colegiatura"
+                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Ficha Actual a Pagar:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Fecha Límite
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto a Pagar
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto Pagado
+                            </th>
+                        <tbody>
+                            <td>
+                                <%= deuda[0].fechaLimitePago %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoPagado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                            </td>
+                        </tbody>
+                        </thead>
+                    </table>
+                    <% } %>
+                    <% if (deuda.length == 0 && colegiatura.length != 0) { %>
+                    <div style="text-align: center;">
+                        <span>
+                            <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                        </span>
+                        <span class="is-size-5">
+                            <strong>
+                                Pagos Completos
+                            </strong>
+                        </span>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
             <div class="column is-offset-1">
+                <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                 <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
                 <div class="columns">
                     <div class="column is-5">
@@ -49,7 +131,8 @@
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                    placeholder="Monto pagado" value="">
+                                    placeholder="Monto pagado"
+                                    value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
                                 <span class="icon is-small is-left">
                                     <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                 </span>
@@ -104,6 +187,41 @@
                         </button>
                     </div>
                 </div>
+                <% } else if (diplomado.length == 0 && pago_col == false) { %>
+                <article id="no_cursa_diplomado" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                        <button id="btn_cursa_diplomado" class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        No te encuentras cursando un diplomado actualmente, por lo que no puedes pagar ningún diplomado,.
+                    </div>
+                </article>
+                <% } else if (colegiatura.length == 0 && pago_col == true) { %>
+                <article id="no_colegiatura" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                        <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        No cuentas con una colegiatura para el periodo <%= periodo[0].Nombre %>. 
+                    </div>
+                </article>
+                <% } else if (pago_col == true && deuda.length == 0) {%>
+                <article id="no_colegiatura" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                        <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        ¡Ya pagaste todos los meses de la colegiatura del periodo
+                        <%= periodo[0].Nombre %>!
+                    </div>
+                </article>
+                <% } %>
             </div>
         </div>
         <div id="modal-pago-tarjeta" class="modal">
@@ -156,8 +274,40 @@
 
     const boton_pagar = document.getElementById('Boton_pagar');
     const monto = document.getElementById('monto');
-    boton_pagar.addEventListener('click', function () {
-        pagar(monto);
-    });
 
+    if (boton_pagar){
+        boton_pagar.addEventListener('click', function () {
+            pagar(monto);
+        });
+    }
+
+    const tipo = document.getElementById("tipo");
+
+    const info_pago_normal = document.querySelector('#info_pago_normal');
+
+    function hideNormal() {
+        if (tipo.value == 'Normal') {
+            info_pago_normal.classList.remove('is-hidden');
+        } else if (tipo.value == 'Otro') {
+            info_pago_normal.classList.add('is-hidden');
+        }
+    }
+
+    tipo.addEventListener('change', hideNormal);
+
+    const notificacion_no_colegiatura = document.querySelector('#btn_no_colegiatura');
+
+    if (notificacion_no_colegiatura) {
+        notificacion_no_colegiatura.addEventListener('click', () => {
+            document.getElementById('no_colegiatura').classList.add('is-hidden');
+        });
+    };
+
+    const notificacion_no_diplomado = document.querySelector('#btn_cursa_diplomado');
+
+    if (notificacion_no_diplomado) {
+        notificacion_no_diplomado.addEventListener('click', () => {
+            document.getElementById('no_cursa_diplomado').classList.add('is-hidden');
+        });
+    };
 </script>

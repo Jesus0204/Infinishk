@@ -377,13 +377,15 @@ exports.get_pago_alumno = (request, response, next) => {
                             }
                             info_Deuda = infoDeuda;
                         };
+                        const [totalDeuda, fieldData_4] = await Deuda.fetchDeuda(username);
 
-                        response.render('pago/pago_manual_registro', {
+                        response.render('pago/realizar_pago', {
                             alumno: alumno,
                             periodo: periodoActivo,
                             solicitudes: solicitud_otro_pago,
                             colegiatura: infoColegiatura,
                             deuda: info_Deuda,
+                            totales: totalDeuda,
                             pago_col: true,
                             diplomado: '',
                             pagoDiplomado: '',
@@ -406,12 +408,13 @@ exports.get_pago_alumno = (request, response, next) => {
                             }
                             infoPagosDiplomado = infoPagosDipl;
                         }
-                        response.render('pago/pago_manual_registro', {
+                        response.render('pago/realizar_pago', {
                             alumno: alumno,
                             periodo: periodoActivo,
                             solicitudes: solicitud_otro_pago,
                             colegiatura: '',
-                            deuda: '',
+                            deuda: '', 
+                            totales: '',
                             pago_col: false,
                             diplomado: infoDiplomado,
                             pagoDiplomado: infoPagosDiplomado,
@@ -439,15 +442,6 @@ exports.get_pago_alumno = (request, response, next) => {
             });
             console.log(error);
         });
-
-
-    
-    response.render('pago/realizar_pago', {
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-        csrfToken: request.csrfToken()
-    })
 };
 
 // Importar el archivo con las funciones de cifrado
