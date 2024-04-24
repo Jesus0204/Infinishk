@@ -294,6 +294,7 @@ exports.post_registrar_precio_credito = (request, response, next) => {
 
 exports.get_exportar_datos = (request, response, next) => {
     response.render('configuracion/exportarDatos', {
+        error: false,
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
@@ -322,8 +323,15 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     if (colegiatura) {
         const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio, fechaFin);
-        if (datosColegiatura.length === 0) {
-            return response.status(404).json({ error: 'No se encontraron datos de colegiatura para exportar' });
+        console.log(datosColegiatura);
+        if (datosColegiatura.length === 0 || datosColegiatura[0].length === 0) {
+            return response.render('configuracion/exportarDatos', {
+                error: true,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            });
         }
         csvContent += 'Colegiatura\n';
         csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDPago,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
@@ -352,8 +360,14 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     if (diplomado) {
         const datosDiplomado = await PagoDiplomado.fetchDatosDiplomado(fechaInicio, fechaFin);
-        if (datosDiplomado.length === 0) {
-            return response.status(404).json({ error: 'No se encontraron datos de diplomado para exportar' });
+        if (datosDiplomado.length === 0 || datosDiplomado[0].length === 0) {
+            return response.render('configuracion/exportarDatos', {
+                error: true,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            });
         }
         csvContent += '\nDiplomado\n';
         csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDDiplomado,nombreDiplomado,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
@@ -382,8 +396,14 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     if (extra) {
         const datosExtra = await PagoExtra.fetchDatosLiquida(fechaInicio, fechaFin);
-        if (datosExtra.length === 0) {
-            return response.status(404).json({ error: 'No se encontraron datos extra para exportar' });
+        if (datosExtra.length === 0 || datosExtra[0].length === 0) {
+            return response.render('configuracion/exportarDatos', {
+                error: true,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            });
         }
         csvContent += '\nExtra\n';
         csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDLiquida,metodoPago,fechaPago,Nota,Pagado,IDPagosExtras,motivoPago\n';

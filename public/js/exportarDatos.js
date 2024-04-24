@@ -65,3 +65,12 @@ calendars.forEach((calendar) => {
     }
     count_activate++;
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    const closeBtn = document.getElementById('closeNotification');
+    const errorNotification = document.getElementById('errorNotification');
+
+    closeBtn.addEventListener('click', () => {
+        errorNotification.style.display = 'none';
+    });
+});

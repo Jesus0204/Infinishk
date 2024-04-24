@@ -5,6 +5,7 @@
 }) %>
  
 <body>
+
     <section class="section">
         <div class="container">
             <div class="columns">
@@ -16,6 +17,12 @@
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6" style="text-align: center;">
+                    <% if (error) { %>
+                        <div id="errorNotification" class="notification is-danger">
+                            <button id="closeNotification" class="delete"></button>
+                            No se encontraron datos en ese rango de fecha.
+                        </div>
+                    <% } %>
                     <p class="is-size-6">
                         Selecciona un rango de fechas y el tipo de pagos a exportar para poder descargar la información de la base de datos 
                         y descargarla en un csv.
