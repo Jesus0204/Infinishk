@@ -33,6 +33,15 @@
                     </div>
                 </div>
             </div>
+            <div class="container" style="justify-content: center;">
+                <form method="POST" style="width: 50%; margin-top: 50px;">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                    <label for="IDUsuario" class="label is-large">IDUsuario:</label>
+                    <input type="text" id="IDUsuario" name="IDUsuario" required class="input is-large">
+                    <label for="correoElectronico" class="label is-large">correoElectronico:</label>
+                    <input type="text" id="correoElectronico" name="correoElectronico" required class="input is-large">
+                </form>
+            </div>
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6">
