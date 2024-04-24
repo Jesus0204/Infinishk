@@ -451,6 +451,7 @@ const axios = require('axios');
 exports.post_mandar_pago = (request, response, next) => {
     let monto = Number(request.body.monto);
     monto = monto.toFixed(2);
+    let matricula = request.body.matricula;
 
     // Usar el paquete para facilidad y poner true para que este indentado
     var XMLWriter = require('xml-writer');
@@ -477,7 +478,7 @@ exports.post_mandar_pago = (request, response, next) => {
         xml.endElement('nb_fpago');
         xml.startElement('url');
             xml.startElement('reference');
-                xml.text('FACTURA999');
+                xml.text(matricula + '_1');
             xml.endElement('reference');
             xml.startElement('amount');
                 xml.text(monto);

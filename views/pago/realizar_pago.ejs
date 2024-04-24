@@ -24,10 +24,10 @@
                                 Diplomado
                                 <% } %>
                             </option>
-                            <% if (solicitudes.length != 0){ %> 
-                                <option value="Otro">
-                                    Otro Pago
-                                </option>
+                            <% if (solicitudes.length != 0){ %>
+                            <option value="Otro">
+                                Otro Pago
+                            </option>
                             <% } %>
                         </select>
                     </div>
@@ -132,7 +132,8 @@
             </div>
             <div class="column is-offset-1">
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
-                <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
                 <div id="pago_colegiatura">
                     <div class="columns">
                         <div class="column is-5">
@@ -173,7 +174,7 @@
                                 <% if (pago_col == true) { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                        placeholder="Monto pagado"
+                                        placeholder="Monto a Pagar"
                                         value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
@@ -182,7 +183,7 @@
                                 <% } else { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                        placeholder="Monto pagado"
+                                        placeholder="Monto a Pagar"
                                         value="<%= diplomado[0].precioDiplomado.toFixed(2) %>">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
@@ -201,10 +202,13 @@
                         <div class="column">
                             <div class="control has-icons-left">
                                 <div class="select is-medium" style="width: 110%;">
-                                    <select name="motivo" id="motivo_no_usar" style="width: 110%;">
-                                        <option value="Web Tarjeta">
-                                            Pago extra
+                                    <select class="motivo_extra" name="motivo" id="motivo_no_usar" style="width: 110%;">
+                                        <% for (let solicitud of solicitudes) { %>
+                                        <option value="<%= solicitud.motivoPago %>"
+                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>">
+                                            <%= solicitud.motivoPago %>
                                         </option>
+                                        <% } %>
                                     </select>
                                 </div>
                                 <div class="icon is-medium is-left">
@@ -230,23 +234,13 @@
                                 exponente.
                             </p>
                             <div class="field">
-                                <% if (pago_col == true) { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any"
-                                        id="monto_no_usar" placeholder="Monto pagado" value="300" readonly>
+                                        id="monto_no_usar" placeholder="Monto pagado" value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                     </span>
                                 </p>
-                                <% } else { %>
-                                <p class="control has-icons-left">
-                                    <input name="monto" class="input is-medium" type="number" step="any"
-                                        id="monto_no_usar" placeholder="Monto pagado" value="">
-                                    <span class="icon is-small is-left">
-                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                                    </span>
-                                </p>
-                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -338,8 +332,12 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title" style="text-align: center;">
-                        <strong>Pago de Colegiatura</strong>
+                    <p id="modal_title" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                            <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                            <strong>Pago de Diplomado</strong>
+                        <% } %>
                     </p>
                     <button type="button" class="delete" aria-label="delete"></button>
                 </header>
@@ -358,6 +356,9 @@
     const info_pago_normal = document.querySelector('#info_pago_normal');
     const pago_extra = document.querySelector('#pago_extra');
     const pago_colegiatura = document.querySelector('#pago_colegiatura');
+
+    const modal_title = document.querySelector('#modal_title');
+    const alumno = document.querySelector('#matricula');
 
     function hideNormal() {
         if (tipo.value == 'Normal') {
@@ -387,6 +388,12 @@
             // Cambias los new a los que se van a usar
             motivo_new.id = 'motivo';
             monto_new.id = 'monto';
+
+            if (alumno.value[0] == '1'){
+                modal_title.innerHTML = '<strong>Pago de Colegiatura</strong>';
+            } else if (alumno.value[0] == '8'){
+                modal_title.innerHTML = '<strong>Pago de Diplomado</strong>';
+            }
         } else if (tipo.value == 'Otro') {
             // Sacas los antiguos ids
             const motivo_old = document.querySelector('#motivo');
@@ -406,17 +413,34 @@
             // Cambias los new a los que se van a usar
             motivo_new.id = 'motivo';
             monto_new.id = 'monto';
+
+            // Cambias el titulo del modal
+            let motivo = $('.motivo_extra').find(':selected').val();
+            modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
         }
     }
 
     tipo.addEventListener('change', hideNormal);
     tipo.addEventListener('change', change_input);
 
+    // Haces que cambie el monto del dropdown
+    $('.motivo_extra').change(function () {
+        // Sacas el monto de la opcion con data-monto
+        let num_monto = $(this).find(':selected').data('monto');
+        const monto = document.querySelector('#monto');
+        monto.value = num_monto;
+
+        // Cambias el titulo del modal
+        let motivo = $(this).find(':selected').val();
+        modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+    });
+
     function pagar() {
         // Sacas el que tiene el monto actual
         const monto = document.getElementById('monto');
         //El token de protección CSRF
         const csrf = document.getElementById('_csrf').value;
+        const matricula = document.getElementById('matricula').value;
 
         fetch('/pagos/mandar_pago', {
             method: 'POST',
@@ -425,7 +449,8 @@
                 'csrf-token': csrf
             },
             body: JSON.stringify({
-                monto: monto.value
+                monto: monto.value,
+                matricula: matricula
             })
         }).then((result) => {
             return result.json(); //Regresa otra promesa
