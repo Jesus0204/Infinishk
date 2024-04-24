@@ -16,7 +16,7 @@
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6" style="text-align: center;">
-                    <p>
+                    <p class="is-size-6">
                         Selecciona un rango de fechas y el tipo de pagos a exportar para poder descargar la información de la base de datos 
                         y descargarla en un csv.
                     </p>
@@ -29,23 +29,36 @@
                     <div class="column is-2"></div>
                     <div class="column">
                         <div class="field">
-                            <input class="is-checkradio has-background-color is-info" id="colegiatura"
+                            <input class="is-checkradio is-medium has-background-color is-info" id="colegiatura"
                                 type="checkbox" name="colegiatura" checked>
-                            <label for="colegiatura">Pagos Colegiatura</label>
+                            <label for="colegiatura">
+                                <strong>
+                                    Pagos Colegiatura
+                                </strong>
+                            </label>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <input class="is-checkradio has-background-color is-info" id="pag_dipl" type="checkbox"
+                            <input class="is-checkradio is-medium has-background-color is-info" id="pag_dipl" type="checkbox"
                                 name="pag_dipl" checked>
-                            <label for="pag_dipl">Pagos Diplomado</label>
+                            <label for="pag_dipl">
+                                <strong>
+                                    Pagos Diplomado
+                                </strong>
+                            </label>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <input class="is-checkradio has-background-color is-info" id="extra" type="checkbox"
+                            <input class="is-checkradio is-medium has-background-color is-info" id="extra"
+                                type="checkbox"
                                 name="extra" checked>
-                            <label for="extra">Pagos Extra</label>
+                            <label for="extra">
+                                <strong>
+                                    Pagos Extra
+                                </strong>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -53,6 +66,10 @@
                 <div class="columns">
                     <div class="column is-2"></div>
                     <div class="column is-4">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_1"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor selecciona una fecha. 
+                        </p>
                         <label for="fecha_inicio">
                             <strong>
                                 Fecha inicio:
@@ -61,6 +78,10 @@
                         <input type="date" id="fecha_inicio" name="fecha_inicio" class="datepicker">
                     </div>
                     <div class="column is-4">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_2"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor selecciona una fecha.
+                        </p>
                         <label for="fecha_fin">
                             <strong>
                                 Fecha fin:
@@ -72,7 +93,7 @@
                 <div class="columns">
                     <div class="column is-3"></div>
                     <div class="column is-6">
-                        <button type="submit" class="button is-medium is-rounded is-responsive">
+                        <button type="submit" class="button is-medium is-rounded is-responsive" id="btn_exportar">
                             <span>
                                 Descargar Datos
                             </span>
