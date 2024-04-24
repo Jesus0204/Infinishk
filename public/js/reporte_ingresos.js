@@ -15,7 +15,6 @@ function generateReport() {
     .then(response => response.json())
     .then(ingresosData => {
         if (typeof ingresosData !== 'undefined') {
-            console.log(ingresosData);
             var initialChartData = prepareChartData(ingresosData);
             renderChart(initialChartData);
         } else {
@@ -96,7 +95,7 @@ function renderChart(chartData) {
                 y: {
                     stacked: true
                 }
-            } 
+            }
         }
     };
 
@@ -109,4 +108,28 @@ function renderChart(chartData) {
     } else {
         myChart = new Chart(ctx, chartConfig);
     }
+
+    console.log("chartData: ", chartData);
+
+    // Debug statements for table rendering
+    console.log("Labels for Table:", labels);
+    console.log("Chart Series Data:", chartData.series);
+
+    // Render table
+    const tabla = document.getElementById('tabla').getElementsByTagName('tbody')[0];
+    tabla.innerHTML = '';
+    chartData.series.forEach((serie, index) => {
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td');
+        td1.textContent = serie.name;
+        const td2 = document.createElement('td');
+        td2.textContent = serie.data.reduce((acc, value) => acc + value, 0).toFixed(2);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tabla.appendChild(tr);
+    });
+
+    document.getElementById('tabla').style.display = 'table';
+    
+    // probably also calculate and display the periodo total
 }
