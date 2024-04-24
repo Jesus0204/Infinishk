@@ -10,6 +10,10 @@
         <br>
         <div class="columns">
             <div class="column is-4">
+                <p>
+                    Selecciona el tipo de pago que vas a realizar:
+                </p>
+                <br>
                 <div class="control has-icons-left">
                     <div class="select is-medium" style="width: 110%;">
                         <select name="tipo" id="tipo" style="width: 110%;">
@@ -20,9 +24,11 @@
                                 Diplomado
                                 <% } %>
                             </option>
-                            <option value="Otro">
-                                Otro Pago
-                            </option>
+                            <% if (solicitudes.length != 0){ %> 
+                                <option value="Otro">
+                                    Otro Pago
+                                </option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="icon is-medium is-left">
