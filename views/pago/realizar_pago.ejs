@@ -7,6 +7,7 @@
 <section class="section">
     <div class="container">
         <h1 class="title"> Realizar Pago</h1>
+        <br>
         <div class="columns">
             <div class="column is-4">
                 <div class="control has-icons-left">
@@ -74,6 +75,21 @@
                             </td>
                         </tbody>
                         </thead>
+                    </table>
+                    <% } %>
+                    <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
+                    <table class="table is-bordered Pago-de-Diplomado"
+                        style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Diplomado:
+                            </strong>
+                        </caption>
+                        <tbody>
+                            <td>
+                                <%= diplomado[0].nombreDiplomado %>
+                            </td>
+                        </tbody>
                     </table>
                     <% } %>
                     <% if (deuda.length == 0 && colegiatura.length != 0) { %>
@@ -214,7 +230,6 @@
                     style="background-color: #5a6581; color:#ffffff; text-align: center;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
                         <p>No se puede realizar un pago</p>
-                        <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
                         ¡Ya pagaste todos los meses de la colegiatura del periodo
@@ -294,14 +309,6 @@
     }
 
     tipo.addEventListener('change', hideNormal);
-
-    const notificacion_no_colegiatura = document.querySelector('#btn_no_colegiatura');
-
-    if (notificacion_no_colegiatura) {
-        notificacion_no_colegiatura.addEventListener('click', () => {
-            document.getElementById('no_colegiatura').classList.add('is-hidden');
-        });
-    };
 
     const notificacion_no_diplomado = document.querySelector('#btn_cursa_diplomado');
 
