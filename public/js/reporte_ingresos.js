@@ -64,6 +64,8 @@ function getColorByCategoria(categoria) {
     }
 }
 
+var myChart;
+
 function renderChart(chartData) {
     var categories = ['Colegiatura', 'Diplomado', 'PagosExtras'];
     var labels = chartData.labels;
@@ -99,5 +101,12 @@ function renderChart(chartData) {
     };
 
     var ctx = document.getElementById('bar-chart').getContext('2d');
-    var chart = new Chart(ctx, chartConfig);
+    
+    if (myChart) {
+        myChart.data = chartConfig.data;
+        myChart.options = chartConfig.options;
+        myChart.update();
+    } else {
+        myChart = new Chart(ctx, chartConfig);
+    }
 }
