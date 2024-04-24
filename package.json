@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "css-build": "node-sass --omit-source-map-url public/sass/mystyles.scss public/css/mystyles.css",
+    "css-build": "sass --no-source-map public/sass/mystyles.scss public/css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
     "minify-css": "postcss public/css/mystyles.css > public/css/mystyles.min.css"
   },
@@ -54,14 +54,13 @@
     "nodemon": "^3.1.0",
     "path": "^0.12.7",
     "postcss": "^8.4.35",
+    "sass": "^1.75.0",
     "writer": "^1.0.0",
-    "xlsx": "^0.18.5",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
     "bulma": "^0.9.4",
     "cssnano": "^6.1.0",
-    "node-sass": "^9.0.0",
     "postcss-cli": "^11.0.0"
   }
 }
