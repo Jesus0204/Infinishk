@@ -30,7 +30,7 @@ module.exports = class Colegiatura {
     }
 
     static fetchDatosColegiatura(fechaInicio, fechaFin) {
-        return db.execute('SELECT D.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria, P.IDPago, P.Motivo, P.montoPagado, P.metodoPago, P.fechaPago, P.Nota FROM Deuda AS D JOIN Pago AS P ON D.IDDeuda = P.IDDeuda JOIN Alumno AS A ON D.Matricula = A.Matricula JOIN Colegiatura AS C ON D.IDColegiatura = C.IDColegiatura JOIN Periodo AS Per ON C.IDPeriodo = Per.IDPeriodo WHERE ?>= Per.fechaInicio AND ?<= Per.fechaFin ORDER BY D.Matricula ASC', [fechaInicio, fechaFin]);
+        return db.execute('SELECT D.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria, P.IDPago, P.Motivo, P.montoPagado, P.metodoPago, P.fechaPago, P.Nota FROM Deuda AS D JOIN Pago AS P ON D.IDDeuda = P.IDDeuda JOIN Alumno AS A ON D.Matricula = A.Matricula JOIN Colegiatura AS C ON D.IDColegiatura = C.IDColegiatura JOIN Periodo AS Per ON C.IDPeriodo = Per.IDPeriodo WHERE P.fechaPago BETWEEN ? AND ? ORDER BY D.Matricula ASC;', [fechaInicio, fechaFin]);
     }
 
 };

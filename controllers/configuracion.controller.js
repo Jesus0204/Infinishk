@@ -303,7 +303,7 @@ exports.get_exportar_datos = (request, response, next) => {
 
 exports.post_exportar_datos = async (request, response, next) => {
     const colegiatura = request.body.colegiatura === 'on';
-    const diplomado = request.body.diplomado === 'on';
+    const diplomado = request.body.pag_dipl === 'on';
     const extra = request.body.extra === 'on';
     const fechaInicio = request.body.fecha_inicio;
     const fechaFin = request.body.fecha_fin;
@@ -430,7 +430,7 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     fs.writeFile(filePath, csvContent, (err) => {
         if (err) {
-            console.error('Error al escribir en el archivo CSV:', error);
+            console.error('Error al escribir en el archivo CSV:', err);
             return response.status(500).json({ error: 'Error al escribir en el archivo CSV' });
         } else {
             console.log('Datos exportados a datos_extra.csv');
