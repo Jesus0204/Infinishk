@@ -258,7 +258,7 @@
                                         Tarjeta
                                     </option>
                                     <option value="Efectivo">
-                                        Efectivo
+                                        Efectivo o TPV
                                     </option>
                                     <option value="Transferencia">
                                         Transferencia
@@ -346,6 +346,35 @@
                 </section>
             </div>
         </div>
+        <div id="modal-pago-efectivo" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal_title_2" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                        <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                        <strong>Pago de Diplomado</strong>
+                        <% } %>
+                    </p>
+                    <button type="button" class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p> 
+                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina de:
+                    </p>
+                    <br>
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        <p>
+                            - Lunes a viernes (a excepción de días festivos).
+                        </p>
+                        <p>
+                             - Horario 8:00 a 15:00 hrs.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
 </section>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
@@ -358,6 +387,7 @@
     const pago_colegiatura = document.querySelector('#pago_colegiatura');
 
     const modal_title = document.querySelector('#modal_title');
+    const modal_title_2 = document.querySelector('#modal_title_2');
     const alumno = document.querySelector('#matricula');
 
     function hideNormal() {
@@ -391,8 +421,10 @@
 
             if (alumno.value[0] == '1'){
                 modal_title.innerHTML = '<strong>Pago de Colegiatura</strong>';
+                modal_title_2.innerHTML = '<strong>Pago de Colegiatura</strong>';
             } else if (alumno.value[0] == '8'){
                 modal_title.innerHTML = '<strong>Pago de Diplomado</strong>';
+                modal_title_2.innerHTML = '<strong>Pago de Diplomado</strong>';
             }
         } else if (tipo.value == 'Otro') {
             // Sacas los antiguos ids
@@ -417,6 +449,7 @@
             // Cambias el titulo del modal
             let motivo = $('.motivo_extra').find(':selected').val();
             modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+            modal_title_2.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
         }
     }
 
@@ -433,6 +466,7 @@
         // Cambias el titulo del modal
         let motivo = $(this).find(':selected').val();
         modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+        modal_title_2.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
     });
 
     function pagar() {
