@@ -18,9 +18,8 @@ function generateReport() {
     .then(ingresosData => {
         if (typeof ingresosData !== 'undefined') {
             console.log(ingresosData);
-            console.log(tipo);
             var initialChartData = prepareChartData(ingresosData, tipo);
-            renderChart(initialChartData);
+            renderChart(initialChartData, tipo);
         } else {
             console.log("javascript: ingresosData no está definido.");
         }
@@ -72,21 +71,40 @@ function getColorByCategoria(categoria) {
 
 var myChart;
 
-function renderChart(chartData) {
+function renderChart(chartData, tipo) {
     var categories = ['Colegiatura', 'Diplomado', 'PagosExtras'];
     var labels = chartData.labels;
     var datasets = [];
 
-    categories.forEach((category, index) => {
-        var data = chartData.series.map(series => series.data[index]);
-        var color = getColorByCategoria(category);
+    console.log('ChartData:', chartData);
 
-        datasets.push({
-            label: category,
-            backgroundColor: color,
-            data: data
+    if (tipo.toLowerCase() === 'todos') {
+        categories.forEach((category, index) => {
+            var data = chartData.series.map(series => series.data[index]);
+            var color = getColorByCategoria(category);
+
+            datasets.push({
+                label: category,
+                backgroundColor: color,
+                data: data
+            });
         });
-    });
+    } else {
+        var index = categories.findIndex(cat => cat.toLowerCase() === tipo.toLowerCase());
+        if (index !== -1) {
+            var data = labels.map(month => {
+                var monthData = chartData.series.find(item => item.name === month);
+                return monthData && monthData.data ? monthData.data : null;
+            });
+            var color = getColorByCategoria(categories[index]);
+            
+            datasets.push({
+                label: categories[index],
+                backgroundColor: color,
+                data: data
+            });
+        }
+    }
 
     var chartConfig = {
         type: 'bar',
@@ -115,8 +133,6 @@ function renderChart(chartData) {
     } else {
         myChart = new Chart(ctx, chartConfig);
     }
-
-    console.log("chartData: ", chartData);
 
     const tabla = document.getElementById('tabla').getElementsByTagName('tbody')[0];
     tabla.innerHTML = '';
