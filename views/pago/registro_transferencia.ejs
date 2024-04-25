@@ -74,7 +74,7 @@
             /* El color del fondo */
             color: white;
             /* El color del texto */
-            width: 100%;
+            width: 85%;
         }
 
         .my-button:hover {
@@ -99,7 +99,15 @@
                         <p>Por favor ingresa un archivo csv del banco para registrar las transferencias recibidas a la
                             base de
                             datos.</p>
+                            
+                            <% if (error) { %>
+                                <div id="errorNotification" class="notification is-danger">
+                                    <button id="closeNotification" class="delete" type="button"></button>
+                                    Por favor verifica los datos en tu archivo.
+                                </div>
+                            <% } %>
                     </div>
+
                 </div>
                 <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
                     onsubmit="return validateFile()">
@@ -320,11 +328,19 @@
                                                                                 <button type="submit"
                                                                                     class="button my-button is-medium is-rounded is-responsive">
                                                                                     Postponer
+                                                                                    <span class="icon is-large">
+                                                                                        <i class="fa-solid fa-circle-chevron-right"
+                                                                                            style="color: #ffffff;"></i>
+                                                                                    </span>
                                                                                 </button>
                                                                                 <% } else { %>
                                                                                     <button type="submit"
                                                                                         class="button my-button is-medium is-rounded is-responsive">
                                                                                         Enviar datos
+                                                                                        <span class="icon is-large">
+                                                                                            <i class="fa-solid fa-circle-chevron-right"
+                                                                                                style="color: #ffffff;"></i>
+                                                                                        </span>
                                                                                     </button>
                                                                                 <% } %>
                                                                              </form>
