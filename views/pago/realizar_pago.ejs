@@ -161,14 +161,15 @@
                         <div class="column">
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
                                 style="padding: 0.5em; margin-top: -1em;">
-                                Por favor
-                                escribe un monto válido del Pago</p>
+                                Por favor escribe un monto válido del Pago.
+                            </p>
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                                style="padding: 0.5em; margin-top: -1em;">Por
-                                favor escribe un número mayor a 0.</p>
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor escribe un número mayor a 0.
+                            </p>
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
-                                style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
-                                exponente.
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor escribe un monto sin exponente.
                             </p>
                             <div class="field">
                                 <% if (pago_col == true) { %>
@@ -222,17 +223,6 @@
                             <label class="label is-medium" for="monto_no_usar">Monto:</label>
                         </div>
                         <div class="column">
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
-                                style="padding: 0.5em; margin-top: -1em;">
-                                Por favor
-                                escribe un monto válido del Pago</p>
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                                style="padding: 0.5em; margin-top: -1em;">Por
-                                favor escribe un número mayor a 0.</p>
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
-                                style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
-                                exponente.
-                            </p>
                             <div class="field">
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any"
@@ -287,7 +277,7 @@
                         <div id="boton_tarjeta">
                             <button class="js-modal-trigger button is-rounded is-medium is-responsive"
                                 style="font-size: large; margin: 8px 2px;" id="Boton_pagar_1"
-                                data-target="modal-pago-tarjeta">
+                                data-target="modal-pago-tarjeta" disabled>
                                 <span>Realizar Pago</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -297,7 +287,7 @@
                         <div id="boton_efectivo" class="is-hidden">
                             <button class="js-modal-trigger button is-rounded is-medium is-responsive"
                                 style="font-size: large; margin: 8px 2px;" id="Boton_pagar_2"
-                                data-target="modal-pago-efectivo">
+                                data-target="modal-pago-efectivo" disabled>
                                 <span>Realizar Pago</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -307,7 +297,7 @@
                         <div id="boton_transferencia" class="is-hidden">
                             <button class="js-modal-trigger button is-rounded is-medium is-responsive"
                                 style="font-size: large; margin: 8px 2px;" id="Boton_pagar_3"
-                                data-target="modal-pago-transferencia">
+                                data-target="modal-pago-transferencia" disabled>
                                 <span>Realizar Pago</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -432,6 +422,10 @@
     const modal_title_3 = document.querySelector('#modal_title_3');
     const alumno = document.querySelector('#matricula');
 
+    const boton_pagar = document.getElementById('Boton_pagar_1');
+    const boton_pagar_2 = document.getElementById('Boton_pagar_2');
+    const boton_pagar_3 = document.getElementById('Boton_pagar_3');
+
     function hideNormal() {
         if (tipo.value == 'Normal') {
             info_pago_normal.classList.remove('is-hidden');
@@ -495,6 +489,10 @@
             modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
             modal_title_2.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
             modal_title_3.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+
+            boton_pagar.disabled = false;
+            boton_pagar_2.disabled = false;
+            boton_pagar_3.disabled = false;
         }
     }
 
@@ -548,8 +546,6 @@
         });
     }
 
-    const boton_pagar = document.getElementById('Boton_pagar_1');
-
     if (boton_pagar) {
         boton_pagar.addEventListener('click', function () {
             pagar();
@@ -578,4 +574,62 @@
 
     const metodo = document.getElementById("metodo");
     metodo.addEventListener('change', change_modal);
+
+    const motivo = document.querySelector('#motivo');
+    const monto = document.querySelector('#monto');
+
+    const ayuda_motivo = document.querySelector('#ayuda_motivo');
+    const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
+    const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+    const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
+
+     // Checar si hay contenido dentro del input, pata desactivar el boton
+    function checar_contenido() {
+        boton_pagar.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
+        boton_pagar_2.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
+        boton_pagar_3.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
+    }
+
+    // Activar mensaje si el motivo no tiene input
+    function mensaje_motivo() {
+        if (motivo.value.length === 0) {
+            ayuda_motivo.classList.remove('is-hidden');
+        } else {
+            ayuda_motivo.classList.add('is-hidden');
+        }
+    }
+
+    function mensaje_monto() {
+        ayuda_monto_negativo.style.marginBottom = '0em';
+        if (monto.value.length === 0) {
+            ayuda_monto_vacio.classList.remove('is-hidden');
+        } else {
+            ayuda_monto_vacio.classList.add('is-hidden');
+        }
+
+        if (parseFloat(monto.value) <= 0) {
+            ayuda_monto_negativo.classList.remove('is-hidden');
+        } else {
+            ayuda_monto_negativo.classList.add('is-hidden');
+        }
+
+        if (monto.value.includes('e') || monto.value.includes('E')) {
+            boton_pagar.disabled = true;
+            boton_pagar_2.disabled = true;
+            boton_pagar_3.disabled = true;
+            ayuda_monto_exponente.classList.remove('is-hidden');
+
+            if (monto.value < 0) {
+                ayuda_monto_negativo.style.marginBottom = '-1em';
+            }
+        } else {
+            ayuda_monto_exponente.classList.add('is-hidden');
+        }
+    };
+
+    // Detectar si el usuario maneja input y llamar las funciones anteriores
+    motivo.addEventListener('input', checar_contenido);
+    monto.addEventListener('input', checar_contenido);
+    motivo.addEventListener('input', mensaje_motivo);
+    monto.addEventListener('input', mensaje_monto);
 </script>
