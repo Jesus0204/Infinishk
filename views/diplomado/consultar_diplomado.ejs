@@ -11,24 +11,6 @@
             border: 2px solid #5a6581 !important;
         }
 
-        .button:hover {
-            background-color: #5a6581 !important;
-            border-color: #910106 !important;
-        }
-
-        .search-bar {
-            margin-bottom: 20px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
         .table-container {
             position: relative;
         }
@@ -44,6 +26,26 @@
 
     <section class="section">
 
+        <div class="columns">
+            <div class="column is-6">
+                <h3 class="title is-3">Diplomados</h3>
+            </div>
+            <% if (contienePermiso(permisos, 'Registrar diplomado') == true) { %>
+            <div class="column is-offset-2">
+                <p class="control">
+                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                        href="/diplomado/registrar_diplomado">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                        <span>
+                            Registrar Diplomado
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+        <% } %>
         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
         <div class="tabs is-boxed">

@@ -17,10 +17,10 @@ module.exports = class PlanPago{
         return db.execute('Select * from planPago')
     }
 
-    static save(nombrePlan,numeroPagos,planPagoActivo) {
+    static save(nombrePlan,numeroPagos) {
         return db.execute(`INSERT INTO planPago (nombrePlan, numeroPagos, planPagoActivo) 
-        VALUES(?, ?, ?)        
-        `, [nombrePlan, numeroPagos, planPagoActivo]);
+        VALUES(?, ?, 1)        
+        `, [nombrePlan, numeroPagos]);
     }
 
     static fetchOne(nombre){

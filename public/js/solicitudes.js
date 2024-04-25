@@ -1,7 +1,10 @@
 const solicitudes_length = document.getElementById('solicitudes_length');
 
 for (let count = 0; count < solicitudes_length.innerHTML; count++) {
+    const modificar = document.getElementById('modificar' + count);
+
     $('#pago' + count).change(function () {
+        modificar.classList.remove('is-hidden');
         // Sacas el monto de la opcion con data-monto
         let num_monto = $(this).find(':selected').data('monto');
         // Cambias el DOM para mostrar el precio correcto
