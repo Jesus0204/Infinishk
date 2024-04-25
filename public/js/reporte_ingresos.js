@@ -1,5 +1,6 @@
 function generateReport() {
     const periodo = document.getElementById('periodo').value;
+    const tipo = document.getElementById('tipo').value;
     const csrf = document.getElementById('_csrf').value;
 
     fetch('/pagos/reporte_ingresos', {
@@ -9,13 +10,15 @@ function generateReport() {
             'csrf-token': csrf
         },
         body: JSON.stringify({
-            periodo
+            periodo,
+            tipo
         })
     })
     .then(response => response.json())
     .then(ingresosData => {
         if (typeof ingresosData !== 'undefined') {
-            var initialChartData = prepareChartData(ingresosData);
+            console.log(ingresosData);
+            var initialChartData = prepareChartData(ingresosData, tipo);
             renderChart(initialChartData);
         } else {
             console.log("javascript: ingresosData no está definido.");
@@ -23,25 +26,28 @@ function generateReport() {
     });
 }
 
-function prepareChartData(ingresosData) {
+function prepareChartData(ingresosData, tipo) {
     let labels = Object.keys(ingresosData.ingresosData);
     let data = Object.values(ingresosData.ingresosData);
-    
+
+    let categories = ['Colegiatura', 'Diplomado', 'PagosExtras'];
+
     let series = [];
 
-    data.forEach((month, index) => {
+    data.forEach(month => {
         let monthData = [];
 
-        Object.keys(month).forEach(category => {
-            monthData.push(month[category]);
+        categories.forEach(category => {
+            let categoryKey = Object.keys(month).find(key => key.toLowerCase().includes(category.toLowerCase()));
+            if (categoryKey && (!tipo || tipo === 'todos' || category.toLowerCase() === tipo.toLowerCase())) {
+                monthData.push(month[categoryKey]);
+            }
         });
 
-        let monthSeries = {
-            name: labels[index],
+        series.push({
+            name: labels[data.indexOf(month)],
             data: monthData
-        };
-
-        series.push(monthSeries);
+        });
     });
 
     return {

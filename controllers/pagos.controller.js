@@ -322,6 +322,7 @@ exports.get_ingresos = async (request, response, next) => {
 
 exports.post_ingresos = async (request, response, next) => {
     const periodoSelect = request.body.periodo;
+    const tipoSelect = request.body.tipo;
     const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
     const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
     
