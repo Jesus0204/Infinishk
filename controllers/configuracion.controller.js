@@ -320,112 +320,125 @@ exports.post_exportar_datos = async (request, response, next) => {
     }
 
     let csvContent = '';
+    let errorMensaje = '';
+    let errorColegiatura = false;
+    let errorDiplomado = false;
+    let errorExtra = false;
 
     if (colegiatura) {
         const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio, fechaFin);
         if (datosColegiatura.length === 0 || datosColegiatura[0].length === 0) {
-            return response.render('configuracion/exportarDatos', {
-                error: true,
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken()
+            errorColegiatura = true;
+        } else {
+            datosEncontrados = true;
+            csvContent += 'Colegiatura\n';
+            csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
+            datosColegiatura.forEach((dato) => {
+                dato.forEach((valor) => {
+                    let fechaFormateada = '';
+                    if (!isNaN(valor.fechaPago)) {
+                        let fecha = new Date(valor.fechaPago);
+                        let anio = fecha.getFullYear();
+                        let mes = fecha.getMonth() + 1;
+                        let dia = fecha.getDate();
+                        let hora = fecha.getHours();
+                        let minutos = fecha.getMinutes();
+
+                        if (mes < 10) mes = '0' + mes;
+                        if (dia < 10) dia = '0' + dia;
+
+                        fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                    }
+
+                    csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
+                });
+                csvContent += '\f';
             });
         }
-        csvContent += 'Colegiatura\n';
-        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
-        datosColegiatura.forEach((dato) => {
-            dato.forEach((valor) => {
-                let fechaFormateada = '';
-                if (!isNaN(valor.fechaPago)) {
-                    let fecha = new Date(valor.fechaPago);
-                    let anio = fecha.getFullYear();
-                    let mes = fecha.getMonth() + 1;
-                    let dia = fecha.getDate();
-                    let hora = fecha.getHours();
-                    let minutos = fecha.getMinutes();
-
-                    if (mes < 10) mes = '0' + mes;
-                    if (dia < 10) dia = '0' + dia;
-
-                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
-                }
-
-                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
-            });
-            csvContent += '\f';
-        });
     }
 
     if (diplomado) {
         const datosDiplomado = await PagoDiplomado.fetchDatosDiplomado(fechaInicio, fechaFin);
         if (datosDiplomado.length === 0 || datosDiplomado[0].length === 0) {
-            return response.render('configuracion/exportarDatos', {
-                error: true,
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken()
+            errorDiplomado = true;
+        } else {
+            datosEncontrados = true;
+            csvContent += '\nDiplomado\n';
+            csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDDiplomado,nombreDiplomado,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
+            datosDiplomado.forEach((dato) => {
+                dato.forEach((valor) => {
+                    let fechaFormateada = '';
+                    if (!isNaN(valor.fechaPago)) {
+                        let fecha = new Date(valor.fechaPago);
+                        let anio = fecha.getFullYear();
+                        let mes = fecha.getMonth() + 1;
+                        let dia = fecha.getDate();
+                        let hora = fecha.getHours();
+                        let minutos = fecha.getMinutes();
+
+                        if (mes < 10) mes = '0' + mes;
+                        if (dia < 10) dia = '0' + dia;
+
+                        fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                    }
+
+                    csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDDiplomado || ''},${valor.nombreDiplomado ? eliminarAcentos(valor.nombreDiplomado) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
+                });
+                csvContent += '\f';
             });
         }
-        csvContent += '\nDiplomado\n';
-        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDDiplomado,nombreDiplomado,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
-        datosDiplomado.forEach((dato) => {
-            dato.forEach((valor) => {
-                let fechaFormateada = '';
-                if (!isNaN(valor.fechaPago)) {
-                    let fecha = new Date(valor.fechaPago);
-                    let anio = fecha.getFullYear();
-                    let mes = fecha.getMonth() + 1;
-                    let dia = fecha.getDate();
-                    let hora = fecha.getHours();
-                    let minutos = fecha.getMinutes();
-
-                    if (mes < 10) mes = '0' + mes;
-                    if (dia < 10) dia = '0' + dia;
-
-                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
-                }
-
-                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDDiplomado || ''},${valor.nombreDiplomado ? eliminarAcentos(valor.nombreDiplomado) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
-            });
-            csvContent += '\f';
-        });
     }
 
     if (extra) {
         const datosExtra = await PagoExtra.fetchDatosLiquida(fechaInicio, fechaFin);
         if (datosExtra.length === 0 || datosExtra[0].length === 0) {
-            return response.render('configuracion/exportarDatos', {
-                error: true,
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken()
+            errorExtra = true;
+        } else {
+            datosEncontrados = true;
+            csvContent += '\nExtra\n';
+            csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,metodoPago,fechaPago,Nota,Pagado,motivoPago\n';
+            datosExtra.forEach((dato) => {
+                dato.forEach((valor) => {
+                    let fechaFormateada = '';
+                    if (!isNaN(valor.fechaPago)) {
+                        let fecha = new Date(valor.fechaPago);
+                        let anio = fecha.getFullYear();
+                        let mes = fecha.getMonth() + 1;
+                        let dia = fecha.getDate();
+                        let hora = fecha.getHours();
+                        let minutos = fecha.getMinutes();
+
+                        if (mes < 10) mes = '0' + mes;
+                        if (dia < 10) dia = '0' + dia;
+
+                        fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                    }
+
+                    csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
+                });
+                csvContent += '\f';
             });
         }
-        csvContent += '\nExtra\n';
-        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,metodoPago,fechaPago,Nota,Pagado,motivoPago\n';
-        datosExtra.forEach((dato) => {
-            dato.forEach((valor) => {
-                let fechaFormateada = '';
-                if (!isNaN(valor.fechaPago)) {
-                    let fecha = new Date(valor.fechaPago);
-                    let anio = fecha.getFullYear();
-                    let mes = fecha.getMonth() + 1;
-                    let dia = fecha.getDate();
-                    let hora = fecha.getHours();
-                    let minutos = fecha.getMinutes();
+    }
 
-                    if (mes < 10) mes = '0' + mes;
-                    if (dia < 10) dia = '0' + dia;
+    if (errorColegiatura && !errorDiplomado && !errorExtra) {
+        errorMensaje = 'No se encontraron datos de colegiatura en ese rango de fecha.';
+    } else if (!errorColegiatura && errorDiplomado && !errorExtra) {
+        errorMensaje = 'No se encontraron datos de diplomado en ese rango de fecha.';
+    } else if (!errorColegiatura && !errorDiplomado && errorExtra) {
+        errorMensaje = 'No se encontraron datos de pago extra en ese rango de fecha.';
+    } else if (errorColegiatura || errorDiplomado || errorExtra) {
+        errorMensaje = 'No se encontraron datos en el rango de fechas.';
+    }
 
-                    fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
-                }
-
-                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
-            });
-            csvContent += '\f';
+    if (errorMensaje !== '') {
+        return response.render('configuracion/exportarDatos', {
+            error: true,
+            errorMensaje: errorMensaje,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
         });
     }
 
@@ -433,9 +446,7 @@ exports.post_exportar_datos = async (request, response, next) => {
     let nombreArchivo = '';
 
     const opcionesSeleccionadas = [colegiatura, diplomado, extra].filter(Boolean).length;
-    if (opcionesSeleccionadas === 3) {
-        nombreArchivo = `datos_exportados_${fechaActual}.csv`;
-    } else if (opcionesSeleccionadas === 2) {
+    if (opcionesSeleccionadas === 3 || opcionesSeleccionadas === 2) {
         nombreArchivo = `datos_exportados_${fechaActual}.csv`;
     } else if (colegiatura) {
         nombreArchivo = `datos_colegiatura_${fechaActual}.csv`;
