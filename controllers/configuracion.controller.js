@@ -323,7 +323,6 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     if (colegiatura) {
         const datosColegiatura = await Colegiatura.fetchDatosColegiatura(fechaInicio, fechaFin);
-        console.log(datosColegiatura);
         if (datosColegiatura.length === 0 || datosColegiatura[0].length === 0) {
             return response.render('configuracion/exportarDatos', {
                 error: true,
@@ -446,15 +445,6 @@ exports.post_exportar_datos = async (request, response, next) => {
         nombreArchivo = `datos_extra_${fechaActual}.csv`;
     }
 
-    const filePath = path.join(uploadsDir, nombreArchivo);
-
-    fs.writeFile(filePath, csvContent, (err) => {
-        if (err) {
-            console.error('Error al escribir en el archivo CSV:', err);
-            return response.status(500).json({ error: 'Error al escribir en el archivo CSV' });
-        } else {
-            console.log('Datos exportados a datos_extra.csv');
-            response.download(filePath, nombreArchivo);
-        }
-    });
+    response.attachment(nombreArchivo);
+    response.send(csvContent);
 }
