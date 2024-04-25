@@ -32,7 +32,6 @@ function validateFile() {
 }
 
 function csvContentIsValid(csvContent) {
-    console.log('CSV Content:', csvContent); 
     // Implementa la lógica para validar el contenido del CSV aquí
     // Esta es solo una estructura básica, necesitarás adaptarla a tus necesidades
     var lines = csvContent.split('\n');
@@ -52,30 +51,36 @@ function csvContentIsValid(csvContent) {
     return false;
 }
 
-
+const tablaNoCompleta = document.getElementById('tablaNoCompleta');
 // Inicialmente ocultar la tabla de Pagos No Completos
-document.getElementById('tablaNoCompleta').style.display = 'none';
+if (tablaNoCompleta){
+    tablaNoCompleta.style.display = 'none';
+}
 
-// Agregar un evento de click al botón
-document.getElementById('toggleButton').addEventListener('click', function () {
-    // Comprobar si la tabla de Pago Completo está visible
-    var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
-    console.log(isTablaCompletaVisible);
-    // Cambiar la visibilidad de las tablas
-    document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
-    document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
-});
+const toggleButton = document.getElementById('toggleButton');
 
-document.getElementById('toggleButtonActivo').addEventListener('click', function () {
-    // Comprobar si la tabla de Pago Completo está visible
-    var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
-    console.log(isTablaCompletaVisible);
-    // Cambiar la visibilidad de las tablas
-    document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
-    document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
-});
+if (toggleButton) {
+    // Agregar un evento de click al botón
+    toggleButton.addEventListener('click', function () {
+        // Comprobar si la tabla de Pago Completo está visible
+        var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
+        // Cambiar la visibilidad de las tablas
+        document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
+        document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
+    });
+}
 
+const toggleButtonActivo = document.getElementById('toggleButtonActivo');
 
+if (toggleButtonActivo){
+    toggleButtonActivo.addEventListener('click', function () {
+        // Comprobar si la tabla de Pago Completo está visible
+        var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
+        // Cambiar la visibilidad de las tablas
+        document.getElementById('tablaCompleta').style.display = isTablaCompletaVisible ? 'none' : 'block';
+        document.getElementById('tablaNoCompleta').style.display = isTablaCompletaVisible ? 'block' : 'none';
+    });
+}
 
 document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
     select.addEventListener('change', (event) => {
@@ -156,12 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (closeNotificationButton) {
         closeNotificationButton.addEventListener('click', () => {
-            const notification = document.getElementById('errorNotification');
-            if (notification) {
-                notification.style.display = 'none';
-            }
-        });
-    }
+            document.getElementById('errorNotification').classList.add('is-hidden');
+        })
+    };
+
 });
 
 
