@@ -225,8 +225,14 @@
                         <div class="column">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input name="monto" class="input is-medium" type="number" step="any"
-                                        id="monto_no_usar" placeholder="Monto pagado" value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
+                                    <% if (solicitudes.length) { %> 
+                                        <input name="monto" class="input is-medium" type="number" step="any"
+                                            id="monto_no_usar" placeholder="Monto pagado" value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
+                                    <% } else { %>
+                                        <input name="monto" class="input is-medium" type="number" step="any"
+                                            id="monto_no_usar" placeholder="Monto pagado"
+                                            value="" readonly>
+                                    <% } %>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                     </span>
