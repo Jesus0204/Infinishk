@@ -333,7 +333,7 @@ exports.post_exportar_datos = async (request, response, next) => {
             });
         }
         csvContent += 'Colegiatura\n';
-        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDPago,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
+        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,Motivo,montoPagado,metodoPago,fechaPago,Nota\n';
         datosColegiatura.forEach((dato) => {
             dato.forEach((valor) => {
                 let fechaFormateada = '';
@@ -351,7 +351,7 @@ exports.post_exportar_datos = async (request, response, next) => {
                     fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
                 }
 
-                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDPago || ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
+                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
             });
             csvContent += '\f';
         });
@@ -405,7 +405,7 @@ exports.post_exportar_datos = async (request, response, next) => {
             });
         }
         csvContent += '\nExtra\n';
-        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,IDLiquida,metodoPago,fechaPago,Nota,Pagado,IDPagosExtras,motivoPago\n';
+        csvContent += 'Matricula,Nombre,Apellidos,referenciaBancaria,metodoPago,fechaPago,Nota,Pagado,motivoPago\n';
         datosExtra.forEach((dato) => {
             dato.forEach((valor) => {
                 let fechaFormateada = '';
@@ -423,7 +423,7 @@ exports.post_exportar_datos = async (request, response, next) => {
                     fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
                 }
 
-                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDLiquida || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.IDPagosExtras || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
+                csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
             });
             csvContent += '\f';
         });
