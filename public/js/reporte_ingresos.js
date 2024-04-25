@@ -17,7 +17,6 @@ function generateReport() {
     .then(response => response.json())
     .then(ingresosData => {
         if (typeof ingresosData !== 'undefined') {
-            console.log(ingresosData);
             var initialChartData = prepareChartData(ingresosData, tipo);
             renderChart(initialChartData, tipo);
         } else {
@@ -76,8 +75,6 @@ function renderChart(chartData, tipo) {
     var labels = chartData.labels;
     var datasets = [];
 
-    console.log('ChartData:', chartData);
-
     if (tipo.toLowerCase() === 'todos') {
         categories.forEach((category, index) => {
             var data = chartData.series.map(series => series.data[index]);
@@ -94,9 +91,11 @@ function renderChart(chartData, tipo) {
         if (index !== -1) {
             var data = labels.map(month => {
                 var monthData = chartData.series.find(item => item.name === month);
-                return monthData && monthData.data ? monthData.data : null;
+                return monthData && monthData.data && monthData.data !== undefined ? monthData.data : null;
             });
             var color = getColorByCategoria(categories[index]);
+
+            data = data.filter(value => value !== null);
             
             datasets.push({
                 label: categories[index],
@@ -148,6 +147,4 @@ function renderChart(chartData, tipo) {
     });
 
     document.getElementById('tabla').style.display = 'table';
-    
-    // probably also calculate and display the periodo total
 }
