@@ -24,7 +24,7 @@ module.exports = class pagoDiplomado {
     };   
 
     static fetch_fecha_pago(fecha) {
-        return db.execute('SELECT fechaPago,montoPagado FROM pagadiplomado WHERE fechaPago = ?',
+        return db.execute('SELECT fechaPago,montoPagado FROM pagaDiplomado WHERE fechaPago = ?',
             [fecha]);
     }
 }
