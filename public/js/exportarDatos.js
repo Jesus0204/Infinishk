@@ -1,6 +1,8 @@
+let twoMonthsAgo = moment().subtract(2, 'months');
+
 // Initialize all input of date type.
 const calendars = bulmaCalendar.attach('[type="date"]', {
-    startDate: new Date(),
+    startDate: new Date(twoMonthsAgo.format()),
     endDate: new Date(),
     displayMode: 'dialog',
     dateFormat: 'yyyy/MM/dd',
