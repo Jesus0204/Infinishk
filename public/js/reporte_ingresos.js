@@ -140,7 +140,8 @@ function renderChart(chartData, tipo) {
         const td1 = document.createElement('td');
         td1.textContent = serie.name;
         const td2 = document.createElement('td');
-        td2.textContent = serie.data.reduce((acc, value) => acc + value, 0).toFixed(2);
+        const totalValue = serie.data.reduce((acc, value) => acc + value, 0);
+        td2.textContent = totalValue.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
         tr.appendChild(td1);
         tr.appendChild(td2);
         tabla.appendChild(tr);
