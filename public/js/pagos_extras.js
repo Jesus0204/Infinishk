@@ -43,6 +43,7 @@ for (let count = 0; count < pagosNoAsignados_length.innerHTML; count++) {
     const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio' + count);
     const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo' + count);
     const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente' + count);
+    const modificar = document.querySelector('#modificar' + count);
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
     function checar_contenido() {
@@ -84,16 +85,17 @@ for (let count = 0; count < pagosNoAsignados_length.innerHTML; count++) {
         }
     }
 
-    const pago = document.querySelector('#pago' + count)
-
-    const boton_eliminar = document.querySelector('#Boton_eliminar' + count);
+    function show_modificar(){
+        modificar.classList.remove('is-hidden');
+    }
 
     // Detectar si el usuario maneja input y llamar las funciones anteriores
     motivo.addEventListener('input', checar_contenido);
     monto.addEventListener('input', checar_contenido);
     motivo.addEventListener('input', mensaje_motivo);
     monto.addEventListener('input', mensaje_monto);
-
+    motivo.addEventListener('input', show_modificar);
+    monto.addEventListener('input', show_modificar);
 }
 
 const modify_status = (id, estatus) => {

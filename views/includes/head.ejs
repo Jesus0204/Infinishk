@@ -77,15 +77,6 @@
                         Diplomado
                     </a>
                     <div class="navbar-dropdown" style="width: 100%;" id="diplomado">
-                        <% if (contienePermiso(permisos, 'Registrar diplomado') == true) { %>
-                        <a class="navbar-item" href="/diplomado/registrar_diplomado">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-chalkboard-user"></i>
-                            </span>
-                            Registrar
-                        </a>
-                        <hr class="navbar-divider">
-                        <% } %>
                         <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <a class="navbar-item" href="/diplomado/editar_diplomado">
                             <span class="icon is-large">
@@ -495,7 +486,7 @@
                 <% } %>
                 <% if (permisos.length != 0) { %>
                 <div class="navbar-end">
-                    <p class="control" style="margin-top: 1.5em; padding-right: 1em;">
+                    <p class="control" style="margin-top: 1.5em; padding-right: 2em;">
                         <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
                             <span>
                                 Cerrar Sesión
