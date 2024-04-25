@@ -14822,7 +14822,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: hsl(0, 0%, 4%) !important;
-  color: hsl(0, 0%, 4%) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: hsl(0, 0%, 4%);
@@ -14859,7 +14859,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: hsl(0, 0%, 100%) !important;
-  color: hsl(0, 0%, 100%) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: hsl(0, 0%, 100%);
@@ -14896,7 +14896,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);
@@ -14933,7 +14933,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -14970,7 +14970,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15007,7 +15007,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15044,7 +15044,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15081,7 +15081,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15118,7 +15118,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);
@@ -15155,7 +15155,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15192,7 +15192,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15229,7 +15229,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15266,7 +15266,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15303,7 +15303,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15340,7 +15340,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: #fff !important;
-  color: #fff !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: #fff;
@@ -15377,7 +15377,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);
@@ -15414,7 +15414,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);
@@ -15451,7 +15451,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);
@@ -15488,7 +15488,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
   border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  color: #95404c !important;
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
   background: rgba(0, 0, 0, 0.7);

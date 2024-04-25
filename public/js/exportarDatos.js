@@ -1,69 +1,55 @@
+let twoMonthsAgo = moment().subtract(2, 'months');
+
 // Initialize all input of date type.
 const calendars = bulmaCalendar.attach('[type="date"]', {
-    startDate: new Date(),
+    startDate: new Date(twoMonthsAgo.format()),
+    endDate: new Date(),
     displayMode: 'dialog',
     dateFormat: 'yyyy/MM/dd',
     maxDate: new Date(),
     weekStart: 1,
     lang: 'es',
-    showFooter: false
+    showFooter: false, 
+    isRange: true
 });
 
 const btn_exportar = document.querySelector('#btn_exportar');
 
-function clear_button_1() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_1');
-    ayuda_fecha.classList.remove('is-hidden');
-    btn_exportar.disabled = true;
-}
-
-function clear_button_2() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_2');
-    ayuda_fecha.classList.remove('is-hidden');
-    btn_exportar.disabled = true;
-}
-
-function activate_clear_button_1() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_1');
-    ayuda_fecha.classList.add('is-hidden');
-}
-
-function activate_clear_button_2() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_2');
-    ayuda_fecha.classList.add('is-hidden');
-}
-
-const fecha_fin = document.querySelector('#fecha_fin');
-const fecha_inicio = document.querySelector('#fecha_inicio');
-
 function activate_button(){
-    if (fecha_fin.value.length != 0 && fecha_inicio.value.length != 0) {
-        btn_exportar.disabled = false;
-    }
+    btn_exportar.disabled = false;
 }
+
+function deactivate_button(){
+    btn_exportar.disabled = true;
+}
+
+function clear_message() {
+    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_1');
+    ayuda_fecha.classList.remove('is-hidden');
+    deactivate_button();
+}
+
+function activate_message() {
+    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_1');
+    ayuda_fecha.classList.add('is-hidden');
+
+     if ($('#colegiatura').is(":checked") == true ||
+         $('#pag_dipl').is(":checked") == true ||
+         $('#extra').is(":checked") == true) {
+             activate_button();
+         }
+}
+
+const fecha = document.querySelector('#fecha');
 
 // Sacar los botones de clear para agregar validaciones
 const clear = document.querySelectorAll('.datetimepicker-clear-button');
-let count = 0;
 clear.forEach((button) => {
-    if (count == 0) {
-        button.addEventListener('click', clear_button_1)
-    } else if (count == 1) {
-        button.addEventListener('click', clear_button_2)
-    }
-    count++;
+    button.addEventListener('click', clear_message)
 })
 
-let count_activate = 0;
 calendars.forEach((calendar) => {
-    if (count_activate == 0) {
-        calendar.on('select', activate_clear_button_1);
-        calendar.on('hide', activate_button);
-    } else if (count_activate == 1) {
-        calendar.on('select', activate_clear_button_2);
-        calendar.on('hide', activate_button);
-    }
-    count_activate++;
+    calendar.on('select', activate_message);
 })
 
 const check_colegiatura = document.querySelector('#colegiatura');
@@ -74,9 +60,12 @@ function check_checkbox(){
     if ($('#colegiatura').is(":checked") == true ||
         $('#pag_dipl').is(":checked") == true ||
         $('#extra').is(":checked") == true) {
-        btn_exportar.disabled = false;
+        
+        if (fecha.value.length > 0){
+            activate_button();
+        }
     } else {
-        btn_exportar.disabled = true;
+        deactivate_button();
     }
 }
 
