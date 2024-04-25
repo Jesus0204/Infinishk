@@ -306,8 +306,11 @@ exports.post_exportar_datos = async (request, response, next) => {
     const colegiatura = request.body.colegiatura === 'on';
     const diplomado = request.body.pag_dipl === 'on';
     const extra = request.body.extra === 'on';
-    const fechaInicio = request.body.fecha_inicio;
-    const fechaFin = request.body.fecha_fin;
+    const fechas = request.body.fecha.split("-");
+
+    const fechaInicio = fechas[0];
+    const fechaFin_temp = fechas[1];
+    const fechaFin = fechaFin_temp.replace(/\s/g, '')
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
