@@ -33,25 +33,35 @@
                                 <form id="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
                                     method="POST">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    <label class="label is-medium">Nombre del Plan:</label>
                                     <div class="field">
-                                        <label class="label">Nombre del Plan</label>
-                                        <div class="control">
-                                            <input required class="input" type="text" id="nombrePlan"
+                                        <div class="control has-icons-left">
+                                            <input class="input is-medium" type="text" id="nombrePlan"
                                                 name="nombrePlan" style="border: 2px solid
-                                                #7c7f80;">
+                                                #7c7f80;" placeholder="Nombre del nuevo plan">
+                                                 <span class="icon is-small is-left">
+                                                    <i class="fa-solid fa-layer-group" style="color: #95404c;"></i>
+                                                 </span>
                                         </div>
                                     </div>
+                                    <label class="label is-medium">Número de Pagos:</label>
                                     <div class="field">
-                                        <label class="label">Número de Pagos</label>
-                                        <div class="control">
-                                            <input class="input" type="number" id="numeroPagos" name="numeroPagos"
+                                        <div class="control has-icons-left">
+                                            <input class="input is-medium" type="number" id="numeroPagos"
+                                                name="numeroPagos"
                                                 style="border: 2px solid
-                                                    #7c7f80;">
+                                                    #7c7f80;" placeholder="Número de pagos del nuevo plan">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     <button id="btn_aplicar_cambios" type="submit"
-                                        class="button is-large is-rounded is-responsive">
-                                        Registrar plan
+                                        class="button is-large is-rounded is-responsive" disabled>
+                                        <span>Registrar Plan</span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
                                     </button>
                                     <p id="errorMessage" style="color: red;"></p>
                                 </form>
