@@ -17,12 +17,6 @@
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6" style="text-align: center;">
-                    <% if (error) { %>
-                        <div id="errorNotification" class="notification is-danger">
-                            <button id="closeNotification" class="delete"></button>
-                            No se encontraron datos en ese rango de fecha.
-                        </div>
-                    <% } %>
                     <p class="is-size-6">
                         Selecciona un rango de fechas y el tipo de pagos a exportar para poder descargar la información de la base de datos 
                         y descargarla en un csv.
@@ -69,7 +63,17 @@
                         </div>
                     </div>
                 </div>
-                <br>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <% if (error) { %>
+                        <div id="errorNotification" class="notification is-danger">
+                            <button id="closeNotification" class="delete" type="button"></button>
+                            No se encontraron datos en ese rango de fecha.
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
                 <div class="columns">
                     <div class="column is-2"></div>
                     <div class="column is-4">
