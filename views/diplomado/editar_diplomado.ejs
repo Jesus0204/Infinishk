@@ -42,21 +42,29 @@
                                         <input type="text" id="nombreDiplomado" name="nombreDiplomado"
                                             value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
 
-                                        <label for="statusDiplomado" class="label is-large">Status:</label>
+                                        <label for="statusDiplomado" class="label is-large">Estatus:</label>
                                         <label class="checkbox">
                                             <% if (diplomado.diplomadoActivo===0) { %>
-                                                <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
-                                                    onclick="toggleInputs()">
-                                                <span class="checkmark"></span>
-                                                <% } else { %>
-                                                    <input type="checkbox" id="statusDiplomado" name="statusDiplomado"
-                                                        onclick="toggleInputs()" checked>
-                                                    <span class="checkmark"></span>
-                                                    <% } %>
+                                            <div class="field">
+                                                <input id="statusDiplomado" type="checkbox" name="statusDiplomado"
+                                                    class="switch is-rounded">
+                                                <label for="statusDiplomado"></label>
+                                            </div>
+                                            <% } else { %>
+                                            <div class="field">
+                                                <input id="statusDiplomado" type="checkbox" name="statusDiplomado"
+                                                    class="switch is-rounded" checked>
+                                                <label for="statusDiplomado"></label>
+                                            </div>
+                                            <% } %>
                                         </label>
                                         <br>
-                                        <button type="submit" class="button is-rounded is-large is-responsive">Registrar
-                                            Cambios</button>
+                                        <button type="submit" class="button is-rounded is-large is-responsive">
+                                           <span>Registrar Cambios</span>
+                                           <span class="icon is-large">
+                                               <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                           </span>
+                                        </button>
                                         <p id="alerta" class="help is-danger" style="display: none;"></p>
                                     </form>
                                     <% } %>
