@@ -207,6 +207,10 @@ exports.post_precio_credito = (request, response, next) => {
 exports.get_registrar_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
         .then((precio_actual) => {
+            // Conviertes las fechas a tu zona horaria con moment
+            for (let count = 0; count < precio_actual.length; count++) {
+                precio_actual[count].fechaModificacion = moment(new Date(precio_actual[count].fechaModificacion)).tz('America/Mexico_City').format('LL');
+            };
             response.render('configuracion/registrar_precio_credito', {
                 precio_actual: precio_actual[0],
                 username: request.session.username || '',

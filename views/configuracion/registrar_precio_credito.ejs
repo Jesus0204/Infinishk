@@ -30,14 +30,13 @@
                                                  }) %>
                             </p>
                         </div>
-                    <% let options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
                     <div class="columns is-vcentered">
                         <div class="column">
                             <p class="is-size-5" style="text-align: center;">
                                 <strong>Fecha de Registro:
                                 </strong>
                                 <br>
-                                <%= new Date(precio_actual[0].fechaModificacion).toLocaleDateString("es-MX", options) %>
+                                <%= precio_actual[0].fechaModificacion %>
                             </p>
                         </div>
                     </div>
