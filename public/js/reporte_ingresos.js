@@ -18,6 +18,7 @@ function generateReport() {
     .then(ingresosData => {
         if (typeof ingresosData !== 'undefined') {
             console.log(ingresosData);
+            console.log(tipo);
             var initialChartData = prepareChartData(ingresosData, tipo);
             renderChart(initialChartData);
         } else {
