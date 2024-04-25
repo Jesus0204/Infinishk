@@ -284,14 +284,36 @@
                 <div class="columns">
                     <div class="column is-2"></div>
                     <div class="column is-8">
-                        <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                            style="font-size: large; margin: 8px 2px;" id="Boton_pagar"
-                            data-target="modal-pago-tarjeta">
-                            <span>Realizar Pago</span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
+                        <div id="boton_tarjeta">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_1"
+                                data-target="modal-pago-tarjeta">
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="boton_efectivo" class="is-hidden">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_2"
+                                data-target="modal-pago-efectivo">
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="boton_transferencia" class="is-hidden">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_3"
+                                data-target="modal-pago-transferencia">
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <% } else if (diplomado.length == 0 && pago_col == false) { %>
@@ -375,6 +397,25 @@
                 </section>
             </div>
         </div>
+        <div id="modal-pago-transferencia" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal_title_3" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                        <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                        <strong>Pago de Diplomado</strong>
+                        <% } %>
+                    </p>
+                    <button type="button" class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p>
+                        Test
+                    </p>
+                </section>
+            </div>
     </div>
 </section>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
@@ -388,6 +429,7 @@
 
     const modal_title = document.querySelector('#modal_title');
     const modal_title_2 = document.querySelector('#modal_title_2');
+    const modal_title_3 = document.querySelector('#modal_title_3');
     const alumno = document.querySelector('#matricula');
 
     function hideNormal() {
@@ -422,9 +464,11 @@
             if (alumno.value[0] == '1'){
                 modal_title.innerHTML = '<strong>Pago de Colegiatura</strong>';
                 modal_title_2.innerHTML = '<strong>Pago de Colegiatura</strong>';
+                modal_title_3.innerHTML = '<strong>Pago de Colegiatura</strong>';
             } else if (alumno.value[0] == '8'){
                 modal_title.innerHTML = '<strong>Pago de Diplomado</strong>';
                 modal_title_2.innerHTML = '<strong>Pago de Diplomado</strong>';
+                modal_title_3.innerHTML = '<strong>Pago de Diplomado</strong>';
             }
         } else if (tipo.value == 'Otro') {
             // Sacas los antiguos ids
@@ -450,6 +494,7 @@
             let motivo = $('.motivo_extra').find(':selected').val();
             modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
             modal_title_2.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+            modal_title_3.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
         }
     }
 
@@ -467,6 +512,7 @@
         let motivo = $(this).find(':selected').val();
         modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
         modal_title_2.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
+        modal_title_3.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
     });
 
     function pagar() {
@@ -502,11 +548,34 @@
         });
     }
 
-    const boton_pagar = document.getElementById('Boton_pagar');
+    const boton_pagar = document.getElementById('Boton_pagar_1');
 
     if (boton_pagar) {
         boton_pagar.addEventListener('click', function () {
             pagar();
         });
     }
+
+    const boton_tarjeta = document.querySelector('#boton_tarjeta');
+    const boton_efectivo = document.querySelector('#boton_efectivo');
+    const boton_transferencia = document.querySelector('#boton_transferencia');
+
+    function change_modal(){
+        if (metodo.value == 'Web Tarjeta') {
+            boton_tarjeta.classList.remove('is-hidden');
+            boton_efectivo.classList.add('is-hidden');
+            boton_transferencia.classList.add('is-hidden');
+        } else if (metodo.value == 'Efectivo') {
+            boton_tarjeta.classList.add('is-hidden');
+            boton_efectivo.classList.remove('is-hidden');
+            boton_transferencia.classList.add('is-hidden');
+        } else if (metodo.value == 'Transferencia') {
+            boton_tarjeta.classList.add('is-hidden');
+            boton_efectivo.classList.add('is-hidden');
+            boton_transferencia.classList.remove('is-hidden');
+        }
+    }
+
+    const metodo = document.getElementById("metodo");
+    metodo.addEventListener('change', change_modal);
 </script>
