@@ -91,7 +91,6 @@
                         </td>
                             <td style="display: block;">
                                 <div class="columns is-vcentered">
-                                    <div class="column is-5">
                                         <div class="column is-vcentered" style="text-align: center;">
                                             <div class="column">
                                                 <p class="is-size-5" id="motivo<%= count %>"
@@ -110,7 +109,6 @@
                                                         }) %>
                                                 </p>
                                             </div>
-                                        </div>
                                     </div>
                                     <div class="column">
                                         <div class=" columns is-vcentered" style="text-align: center;">
@@ -146,14 +144,14 @@
                                 </div>
                             </td>
                 </tr>
-                <tr style="display: table-cell;">
-                    <td style="display: block;">
+                <tr style="display: table-cell; width:130px;">
+                    <td style="display: block;" class="is-hidden" id="modificar<%= count %>">
                         <div class="columns is-vcentered">
                             <div class="column is-full" style="text-align: center;">
                                 <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
                                 <button type="submit" class="button is-rounded is-medium is-responsive"
                                     style="font-size: medium;">
-                                    <span>Modificar</span>
+                                    <span>Guardar</span>
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                     </span>
