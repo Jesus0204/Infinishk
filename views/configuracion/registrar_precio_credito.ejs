@@ -24,7 +24,7 @@
                     <div class="columns is-vcentered">
                         <div class="column is-two-fifths is-offset-1">
                             <p class="is-size-5" style="text-align: center;">
-                                <strong>Precio: </strong>$<%= precio_actual[0].precioPesos.toLocaleString('mx', {
+                                <strong>Precio: </strong>$<%= precio_actual.precioPesos.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
                                                  }) %>
@@ -36,7 +36,7 @@
                                 <strong>Fecha de Registro:
                                 </strong>
                                 <br>
-                                <%= precio_actual[0].fechaModificacion %>
+                                <%= precio_actual.fechaModificacion %>
                             </p>
                         </div>
                     </div>
