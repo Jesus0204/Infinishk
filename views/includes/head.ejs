@@ -15,6 +15,7 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="/js/bulma-calendar.min.js"></script>
 </head>
 
 <style>
@@ -76,15 +77,6 @@
                         Diplomado
                     </a>
                     <div class="navbar-dropdown" style="width: 100%;" id="diplomado">
-                        <% if (contienePermiso(permisos, 'Registrar diplomado') == true) { %>
-                        <a class="navbar-item" href="/diplomado/registrar_diplomado">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-chalkboard-user"></i>
-                            </span>
-                            Registrar
-                        </a>
-                        <hr class="navbar-divider">
-                        <% } %>
                         <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <a class="navbar-item" href="/diplomado/editar_diplomado">
                             <span class="icon is-large">
@@ -95,7 +87,7 @@
                         <hr class="navbar-divider">
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                        <a class="navbar-item" href="/">
+                        <a class="navbar-item" href="/diplomado/consultar_diplomado">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-clipboard"></i>
                             </span>
@@ -243,9 +235,7 @@
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-file-csv"></i>
                                         </span>
-                                        Archivo
-                                        <br>
-                                        transferencia
+                                        Transferencia
                                     </a>
                                 </div>
                             </div>
@@ -271,8 +261,7 @@
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-file-csv"></i>
                                         </span>
-                                        Archivo
-                                        transferencia
+                                        Transferencia
                                     </a>
                                 </div>
                             </div>
@@ -370,7 +359,8 @@
                        contienePermiso(permisos, 'Registrar Rol') == true || 
                        contienePermiso(permisos, 'Registrar Pago Extra') == true ||
                        contienePermiso(permisos, 'Administrar Pago Extra') == true || 
-                       contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
+                       contienePermiso(permisos, 'Actualizar Base de Datos') == true || 
+                       contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
 
                 <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
@@ -378,7 +368,7 @@
                         <span class="icon is-large" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        Configuracion
+                        Configuración
                     </a>
                     <div class="navbar-dropdown" id="configuracion" style="width: 110%">
                         <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
@@ -391,27 +381,68 @@
                         </a>
                         <hr class="navbar-divider">
                         <% } %>
-                        <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
-                            <div class="desktop">
-                                <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-database"></i>
-                                    </span>
-                                    Actualizar
-                                    <br>
-                                    Base Datos
-                                </a>
-                                <hr class="navbar-divider">
+                        <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
+                                contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
+                        <div class="nested dropdown has-dropdown is-hoverable">
+                            <a class="navbar-item" style="padding-right: 3.9em;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-globe"></i>
+                                </span>
+                                Datos
+                                <span class="icon is-large ">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-database"></i>
+                                        </span>
+                                        Sincronizar
+                                        <br>
+                                        Base Datos
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" href="/configuracion/exportarDatos">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </span>
+                                        Exportar
+                                        <br>
+                                        Datos a CSV
+                                    </a>
+                                </div>
                             </div>
-                            <div class="mobile">
-                                <a class="navbar-item" href="/actualizarBase">
+                        </div>
+                        <hr class="navbar-divider">
+                        <div class="mobile">
+                            <div data-target="datos" class="navbar-item has-dropdown">
+                                <a class="navbar-link" onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
-                                        <i class="fa-solid fa-database"></i>
+                                        <i class="fa-solid fa-globe"></i>
                                     </span>
-                                    Actualizar Base Datos
+                                    Datos
                                 </a>
+                                <div class="navbar-dropdown" id="datos">
+                                    <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-database"></i>
+                                        </span>
+                                        Sincronizar Base Datos
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" href="/configuracion/exportarDatos">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </span>
+                                        Exportar datos a CSV
+                                    </a>
+                                </div>
                             </div>
+                        </div>
                         <% } %>
+
                         <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                         <a class="navbar-item" href="/configuracion/precio_credito">
                             <span class="icon is-large">
@@ -452,7 +483,7 @@
                 <% } %>
                 <% if (permisos.length != 0) { %>
                 <div class="navbar-end">
-                    <p class="control" style="margin-top: 1.5em; padding-right: 1em;">
+                    <p class="control" style="margin-top: 1.5em; padding-right: 2em;">
                         <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
                             <span>
                                 Cerrar Sesión
@@ -468,5 +499,4 @@
         </div>
     </nav>
     <script type="text/javascript" src="/js/head.js"></script>
-
 </body>
