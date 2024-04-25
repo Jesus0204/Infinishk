@@ -107,7 +107,3 @@ document.querySelector('form').addEventListener('submit', function () {
         input.disabled = false;
     });
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    toggleInputs(); // Llamar a la función al cargar la página para establecer el estado inicial correcto
-});
