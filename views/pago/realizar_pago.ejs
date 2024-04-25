@@ -373,7 +373,7 @@
                 </header>
                 <section class="modal-card-body">
                     <p> 
-                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina de:
+                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina:
                     </p>
                     <br>
                     <div class="notification" style="background-color: #5a6581; color:#ffffff;">
@@ -381,7 +381,7 @@
                             - Lunes a viernes (a excepción de días festivos).
                         </p>
                         <p>
-                             - Horario 8:00 a 15:00 hrs.
+                            - Horario 8:00 a 15:00 hrs.
                         </p>
                     </div>
                 </section>
@@ -401,9 +401,38 @@
                     <button type="button" class="delete" aria-label="delete"></button>
                 </header>
                 <section class="modal-card-body">
-                    <p>
-                        Test
-                    </p>
+                    <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                        <div class="message-header"
+                            style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                            <p>Datos a usar</p>
+                        </div>
+                        <div class="message-body" style="color:#ffffff;">
+                            <p>
+                                - Número de cuenta: 65508892112
+                            </p>
+                            <p>
+                                - CLABE: 0146 8065 5088 9211 24
+                            </p>
+                            <p>
+                                - Nombre del Beneficiario: VIA VESTIRE SC
+                            </p>
+                            <p>
+                                - Banco: SANTANDER
+                            </p>
+                            <p class="is-size-5">
+                                - <strong>
+                                    Referencia: <%= alumno[0].referenciaBancaria %>
+                                </strong>
+                            </p>
+                        </div>
+                    </article>
+                    <div id="errorNotification" class="notification is-danger">
+                        <p>
+                            * Es muy importante colocar correctamente el CONCEPTO y la REFERENCIA, utilizando la
+                            REFERENCIA ALFANUMÉRICA, ya que de ser incorrectos se genera un reembolso automático, sin
+                            realizarse el pago.
+                        </p>
+                    </div>
                 </section>
             </div>
     </div>
