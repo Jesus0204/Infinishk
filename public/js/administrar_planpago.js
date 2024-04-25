@@ -44,6 +44,7 @@ for (let count = 0; count < planPagoLength.innerHTML; count++) {
     const nombre = document.querySelector('#nombre' + count);
     const ayuda_nombre = document.querySelector('#ayuda_nombre' + count);
     const monto = document.querySelector('#monto');
+    const div_aplicar = document.querySelector('#boton_aplicar' + count)
 
 
     // Checar si hay contenido dentro del input, pata desactivar el boton
@@ -69,8 +70,13 @@ for (let count = 0; count < planPagoLength.innerHTML; count++) {
             ayuda_monto_exponente.classList.add('is-hidden');
         }
     }
+
+    function btn_aplicar(){
+        div_aplicar.classList.remove('is-hidden');
+    }
     
 
     nombre.addEventListener('input', checar_contenido);
     nombre.addEventListener('input', mensaje_nombre);
+    nombre.addEventListener('input', btn_aplicar);
 }
