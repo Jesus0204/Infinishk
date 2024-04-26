@@ -372,17 +372,7 @@ exports.post_exportar_datos = async (request, response, next) => {
                 dato.forEach((valor) => {
                     let fechaFormateada = '';
                     if (!isNaN(valor.fechaPago)) {
-                        let fecha = new Date(valor.fechaPago);
-                        let anio = fecha.getFullYear();
-                        let mes = fecha.getMonth() + 1;
-                        let dia = fecha.getDate();
-                        let hora = fecha.getHours();
-                        let minutos = fecha.getMinutes();
-
-                        if (mes < 10) mes = '0' + mes;
-                        if (dia < 10) dia = '0' + dia;
-
-                        fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                        fechaFormateada = moment(valor.fechaPago).tz('America/Mexico_City').format('YYYY-MM-DD HH:mm:ss');
                     }
 
                     csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.IDDiplomado || ''},${valor.nombreDiplomado ? eliminarAcentos(valor.nombreDiplomado) : ''},${valor.Motivo ? eliminarAcentos(valor.Motivo) : ''},${valor.montoPagado || ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''}\n`;
@@ -404,17 +394,7 @@ exports.post_exportar_datos = async (request, response, next) => {
                 dato.forEach((valor) => {
                     let fechaFormateada = '';
                     if (!isNaN(valor.fechaPago)) {
-                        let fecha = new Date(valor.fechaPago);
-                        let anio = fecha.getFullYear();
-                        let mes = fecha.getMonth() + 1;
-                        let dia = fecha.getDate();
-                        let hora = fecha.getHours();
-                        let minutos = fecha.getMinutes();
-
-                        if (mes < 10) mes = '0' + mes;
-                        if (dia < 10) dia = '0' + dia;
-
-                        fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}`;
+                        fechaFormateada = moment(valor.fechaPago).tz('America/Mexico_City').format('YYYY-MM-DD HH:mm:ss');
                     }
 
                     csvContent += `${valor.Matricula ? eliminarAcentos(valor.Matricula) : ''},${valor.Nombre ? eliminarAcentos(valor.Nombre) : ''},${valor.Apellidos ? eliminarAcentos(valor.Apellidos) : ''},${valor.referenciaBancaria ? eliminarAcentos(valor.referenciaBancaria) : ''},${valor.metodoPago ? eliminarAcentos(valor.metodoPago) : ''},${fechaFormateada || ''},${valor.Nota ? eliminarAcentos(valor.Nota) : ''},${valor.Pagado || ''},${valor.motivoPago ? eliminarAcentos(valor.motivoPago) : ''}\n`;
