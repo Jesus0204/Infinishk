@@ -83,6 +83,14 @@ module.exports = class Deuda {
         AND D.fechaLimitePago > ?`, [fecha_actual]);
     };
 
+    static fetchDeudasCorreoAtrasado(fecha_actual) {
+        return db.execute(`SELECT fechaLimitePago, U.correoElectronico
+        FROM Deuda AS D, Colegiatura AS C, Periodo AS P, Usuario AS U
+        WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo 
+        AND U.IDUsuario = D.Matricula AND P.periodoActivo = '1' AND D.Pagado = 0 
+        AND D.fechaLimitePago < ?`, [fecha_actual]);
+    }
+
     static setRecargosDeuda(IDDeuda, montoRecargo){
         return db.execute(`UPDATE Deuda SET montoAPagar = ?, Recargos = 1
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
