@@ -122,7 +122,6 @@ exports.get_consultar_usuario = (request, response, next) => {
 
 exports.get_search_activo = (request, response, next) => {
     const consulta = request.query.q;
-    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
     Usuario.buscar(consulta) // Búsqueda de usuarios
         .then(([usuarios]) => {
             response.json(usuarios);
@@ -134,8 +133,7 @@ exports.get_search_activo = (request, response, next) => {
 
 exports.get_search_noactivo = (request, response, next) => {
     const consulta = request.query.q;
-    console.log('Consulta recibida:', consulta); // Verifica si la consulta se está recibiendo correctamente
-    Usuario.buscarNoActivos(consulta) // Búsqueda de usuarios
+    Usuario.buscarNoActivos(consulta)// Búsqueda de usuarios
         .then(([usuarios]) => {
             response.json(usuarios);
         })
@@ -321,8 +319,8 @@ exports.post_exportar_datos = async (request, response, next) => {
     const fechaFin_temp = fechas[1];
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '') + ' 23:59:59';
 
-    const fechaInicio = moment(fechaInicio_utc).add(7, 'hours').format();
-    const fechaFin = moment(fechaFin_utc).add(7, 'hours').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(7, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(7, 'hours').format();
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
