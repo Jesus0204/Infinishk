@@ -425,11 +425,17 @@ exports.post_exportar_datos = async (request, response, next) => {
     }
 
     if (errorColegiatura && !errorDiplomado && !errorExtra) {
-        errorMensaje = 'No se encontraron datos de colegiatura en ese rango de fecha.';
+        errorMensaje = 'No se encontraron datos de Colegiatura en ese rango de fecha.';
     } else if (!errorColegiatura && errorDiplomado && !errorExtra) {
-        errorMensaje = 'No se encontraron datos de diplomado en ese rango de fecha.';
+        errorMensaje = 'No se encontraron datos de Diplomado en ese rango de fecha.';
     } else if (!errorColegiatura && !errorDiplomado && errorExtra) {
-        errorMensaje = 'No se encontraron datos de pago extra en ese rango de fecha.';
+        errorMensaje = 'No se encontraron datos de Pago Extra en ese rango de fecha.';
+    } else if (!errorColegiatura && errorDiplomado && errorExtra) {
+        errorMensaje = 'No se encontraron datos para Diplomado y Pago Extra.';
+    } else if (errorColegiatura && !errorDiplomado && errorExtra) {
+        errorMensaje = 'No se encontraron datos para Colegiatura y Pago Extra.';
+    } else if (errorColegiatura && errorDiplomado && !errorExtra) {
+        errorMensaje = 'No se encontraron datos para Colegiatura y Diplomado.';
     } else if (errorColegiatura || errorDiplomado || errorExtra) {
         errorMensaje = 'No se encontraron datos en el rango de fechas.';
     }
