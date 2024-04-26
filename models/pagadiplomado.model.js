@@ -27,4 +27,12 @@ module.exports = class pagoDiplomado {
         return db.execute('SELECT fechaPago,montoPagado FROM pagadiplomado WHERE fechaPago = ?',
             [fecha]);
     }
+
+    static fetchDatosDiplomado(fechaInicio,fechaFin){
+        return db.execute(`SELECT DISTINCT PD.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria, PD.IDDiplomado,
+        D.nombreDiplomado, PD.Motivo, PD.montoPagado, PD.metodoPago, PD.fechaPago, 
+        PD.Nota FROM Pagadiplomado AS PD JOIN Alumno AS A ON PD.Matricula = A.Matricula 
+        JOIN Diplomado AS D ON PD.IDDiplomado = D.IDDiplomado JOIN Cursa AS C ON D.IDDiplomado = C.IDDiplomado 
+        WHERE PD.fechaPago BETWEEN ? AND ? ORDER BY PD.Matricula ASC`,[fechaInicio,fechaFin]);
+    }
 }
