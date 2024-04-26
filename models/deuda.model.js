@@ -47,7 +47,12 @@ module.exports = class Deuda {
     }
 
     static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ?',
+        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
+        [matricula]);
+    }
+
+    static fetchIDDeudaPagada(matricula){
+        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
     }
     
@@ -65,6 +70,18 @@ module.exports = class Deuda {
     static update_Deuda(monto_a_usar, id_deuda) {
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?', 
         [monto_a_usar, id_deuda]);
+    }
+
+    static fetchDeudasPeriodo(){
+        return db.execute(`SELECT IDDeuda, montoAPagar, fechaLimitePago
+        FROM Deuda AS D, Colegiatura AS C, Periodo AS P
+        WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
+        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0`);
+    }
+
+    static setRecargosDeuda(IDDeuda, montoRecargo){
+        return db.execute(`UPDATE Deuda SET montoAPagar = ?, Recargos = 1
+        WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     }
     
 }
