@@ -45,13 +45,13 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
 
                 // Creas el mensaje para enviar el correo
                 const msg = {
-                    to: 'jaczmx@gmail.com',
+                    to: deudasRecordatorio[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
                         email: '27miguelb11@gmail.com',
                     },
                     subject: '¡Recuerda Pagar tu Colegiatura!',
-                    html: `<p>Hola!</p>
+                    html: `<p>¡Hola!</p>
                     <p>
                         ¡Recuerda que ya avecina el pago de tu Colegiatura! 
                         Debes realizar tu pago antes del ${moment(deudasRecordatorio[count].fechaLimitePago).format('DD [de] MMMM')}
@@ -66,8 +66,8 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                 };
             
                 try {
-                    // await sgMail.send(msg);
-                    // console.log('Correo electrónico enviado correctamente');
+                    await sgMail.send(msg);
+                    console.log('Correo electrónico enviado correctamente');
                 } catch (error) {
                     console.error('Error al enviar el correo electrónico:', error.toString());
                 }
