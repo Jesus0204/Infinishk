@@ -525,19 +525,40 @@ exports.post_mandar_pago = (request, response, next) => {
 
         return response.status(200).json({
             success: true,
-            respuestaXML: decipherText
+            respuestaXML: decipherText,
+            matricula:matricula,
         });
     }).catch((error) => {
         console.log(error);
     })
 };
 
-exports.post_recibir_pago = (request,response,next) => {
-    const strResponse = decodeURIComponent("OeJy0IiOYyuFLHRvSCAnFS%2FgG%2BJpP5GAyHkNFajKAE1mw6X%2BxfHlqfodeqgFvWZThVb8X5NsKohI0eYXEZMlX4tWsGBetblm%2F6whaGn1jByMle%2FQTjENL7cUJOOwvOYxv7obfi6XO713A%2BUOhO7qjLfeK6qaaB4h%2FJJXUfA8WE6RsFXOthuMdKsgc%2FYsKXtfpyOR1TmaE4JFLxOdch3%2Fkpdy8DDtBPVYHWkI0KO9CSjUezZPQM6DRQ%2BX5ZBeuI%2F7F1hL6m8r2ba3w%2BItBkZZs6PNUacD6gn0rX0rguyrqSNTQex96DfYRwRg774zZfDDX%2Fa02IX9NMO3Epaz8B%2FEFqCkma%2BQXPK4SHySQ5YWT7GUVxxvbLYEs85TQZeOBq1Fgku6%2FCJ9NSDjjY4ItxQoAQJyKPWRRZDaTVTKc%2FvUkX8QCSfDg5MkSBkO%2FRTjhgQHy62BqS26qcD%2FQyYBFMxSq%2FwCwyAJiCcsiCj%2FkEoh1JVc%2FG0b9Z9fAVGGQn4QA0jFQViekHB3V5r9vfkPADcz1yccPJdpI4UUboH2ynfyNv9%2FG9Dig9mg73hduG0FZld9zUR0xwNRSCzwOBG2BDF9RCm0jPNIwKLNaE4NfYKb8Z3MyLEPTI6QVNRfEgsQ5FlYAkyx1VNfEFk0F7TrIDk%2BGSA37rtIak1Xpq4G2%2B7gq5cycjdwiMYu4nXOBXHXXgapi152wpEF39J8jC7vnuBDBdvnu0VrFtcoozw%2BOuLrHVK%2Bg2N5pYzTZ77R8aOqbTI41qt2iJ6bxdHbOArUD4GmRTInQ9QR71fxHBtDpaUQ2kjEpVm7Y9wEjbK7RUiipkUDCOclueve2MeuB%2FdCuIcLUjQNIFW7aXSPRddX1TugHux8FYG6kQmP7F0M86IarDyWbxNll15F5OxwQPwztBzgb4tCYjThw8K8fMo74pqcFLcoAqhh4%2FTqXA8Tr0aJczEQ8P2jvbS296%2FVFERB0zXyHsCfn9aUUzpqQ6f2vpw8DKpfyJ%2Fsxn48GyRMDf9mp5za%2Far99pUwBowPGxVqHB3ssY0fDViICDP5l%2FBm02r0h2XVk7BJ6Zp1DMGhhqpsYRBfZHZjsErzZjy%2F1qmzbihsJxsE7jOApGPA5IZwKcQ6OcmAtubfNqd706Y%2BzL9vp1Pz")
+const xml2js = require('xml2js');
+
+exports.post_recibir_pago = (request, response, next) => {
+    const strResponse = decodeURIComponent("yO3hhCLQmgOr2R6j1WHzb5S5IL5raWDL4zSTFIc6VcZOEGQXi4SFK5EDATyDAHQZalBxRhZDJZ46FAFpltJ95CCo59pYVDqpFjmIcqePs4FiUx3BEcRkrjVeqwUyJUILxtlLBOgm9YbYqT%2F%2Fbe8nYCW8sj%2FOH%2BIvXKcxojy%2BljqlZn4Mqi1dsStM%2FSCQa%2BSFLOJ%2FJXcSuAjhu7i7Sj%2BNxrqB5mAicNlZ3SoZv2z3MULe9MIuyzgYNg6bUC%2BCHMRiujhoUXOs55gts7kAVdEasRiNl0LFWw8neGCB%2FYKWk6n3Xw2moBrIylqGI6yM1p49c2fQBs6FHsGKWtc%2BkP9nbWBy25HtrnWdQmgXbanJV4MoXqivlhrOSkDFi0qYzVzI%2BlhYLGYq6zF23u%2BIhsM4szG1qiMocOymkTrqWU7Ns7WWqCzYYX1N3WUVIzpFiJKKJ4gymbIwbvBel5HKy6ZUDxgvpPLGLl1KfzuhNzYg%2F%2FklGpEDxPmZf9km0exPcSKJQGphpj%2BW8LH3Jo0BqIE6qRW434E6LLbmyGyd8AOHlQX%2BZ2a17VBkTR%2BqDz6Ca%2FEwf0aMaDQIQam5zIrqHzL5xPwQgXl0RH66IUM%2FeSpE4h2PeTPY11qEL7Pvyf5bXbuCGFss4GPT0Mj7OiSq6x%2FgHNWjFiHLzPXqOita%2B1PXQu5VNO2VAjZMCSK6XU1LQELDdo4MUtBB6%2BCU16gz5vc6F%2FSwtllu3tbMB4jNGjk6Y9kvvg%2BoHCWSmI2mX0JHDySajJC23tOHW2vO1D%2B9xsM2k%2BwQ8f9xjKjeIXkA2qoPHlgUfDavufWKTyuGWutGKZCCPvvFRTHJoUxpbMYTZQo%2BArsczE4IYkSIHk2FUVDTfRddpuOuoLdBXJQPSHxIruv4OcvsXQnEuknd06zdGYEgM0eyMWfMaSaWIuKJFzuf9p3mQznV8OXA%2F1aNyCOsh90AvHt%2FOPKOi1xwrQU7d9iiNiufr%2FzE4lp%2FmWY6s6TQbZAAyphkqxfwmeNg6Ogsg9hq48RP%2FwjyFdnZwplF8GBgFARBWhy22d8r8vGWVijbYbRYcBnWNtF1GTmWsET7lEzXJfGODOLSZoEQUn%2Fw2%2BfIl4kPx%2F0ycK7yeXC39zpj04hf3bTFuYchz%2BKjzuvHYeDE");
     let key = '5DCC67393750523CD165F17E1EFADD21';
     const responseText = cipher.decifrarAES(strResponse, key);
 
     console.log(responseText);
 
+    xml2js.parseString(responseText, (err, result) => {
+        if(err) {
+            throw err;
+        }
+
+        // Accede a cada campo del XML y guárdalo en una variable
+        let matricula = request.body.matricula;
+        let status = result.CENTEROFPAYMENTS.response[0];
+        let importe = result.CENTEROFPAYMENTS.amount[0];
+        let date = result.CENTEROFPAYMENTS.date[0];
+
+        console.log(status); // Imprime las variables
+        console.log(importe);
+        console.log(date);
+        console.log(matricula);
+    });
+
     return response.status(200).json({ responseText });
 }
+
