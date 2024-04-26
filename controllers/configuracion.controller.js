@@ -317,10 +317,12 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     const fechaInicio_utc = fechas[0];
     const fechaFin_temp = fechas[1];
-    const fechaFin_utc = fechaFin_temp.replace(/\s/g, '') + ' 23:59:59';
+    const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(7, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(7, 'hours').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(6, 'hours').format();
+
+    console.log(fechaFin)
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
