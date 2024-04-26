@@ -9,15 +9,23 @@ exports.set_recargos = (request, response, next) => {
 
     Deuda.fetchDeudasPeriodo(fecha_actual)
     .then(async( [deudasNoPagadas, fieldData]) => {
+        console.log(deudasNoPagadas);
+
+        // Conviertes la fecha limite a la zona horaria de México
+        for (count = 0; count < deudasNoPagadas.length; count++) {
+            deudasNoPagadas[count].fechaLimitePago = moment(deudasNoPagadas[count].fechaLimitePago).tz('America/Mexico_City').format();
+        }
+
         for (let deuda of deudasNoPagadas){
             console.log(deuda);
+
             // De las deudas que no están pagadas y no tengan recargos se guarda el monto a Pagar
             let montoPagar = deuda.montoAPagar;
 
             // Calculas los recargos del 5%
             let montoRecargo = montoPagar + (montoPagar * 0.05);
 
-            await Deuda.setRecargosDeuda(deuda.IDDeuda, montoRecargo);
+            // await Deuda.setRecargosDeuda(deuda.IDDeuda, montoRecargo);
         }
         console.log('La base ha sido actualizada con los recargos :)');
     })

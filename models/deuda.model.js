@@ -67,12 +67,11 @@ module.exports = class Deuda {
         [monto_a_usar, id_deuda]);
     }
 
-    static fetchDeudasPeriodo(fecha_actual){
-        return db.execute(`SELECT IDDeuda, montoAPagar
+    static fetchDeudasPeriodo(){
+        return db.execute(`SELECT IDDeuda, montoAPagar, fechaLimitePago
         FROM Deuda AS D, Colegiatura AS C, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
-        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0 AND D.fechaLimitePago < ?`, 
-        [fecha_actual]);
+        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0`);
     }
 
     static setRecargosDeuda(IDDeuda, montoRecargo){
