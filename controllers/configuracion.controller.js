@@ -321,7 +321,7 @@ exports.post_exportar_datos = async (request, response, next) => {
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
     const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(6, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
