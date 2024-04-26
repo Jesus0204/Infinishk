@@ -16,10 +16,6 @@ const stream = require('stream');
 const moment = require('moment-timezone');
 moment.locale('es-mx');
 
-// Configuras a moment con el locale. 
-const moment = require('moment-timezone');
-moment.locale('es-mx');
-
 exports.get_pago = (request, response, next) => {
     response.render('pago/pago', {
         username: request.session.username || '',
