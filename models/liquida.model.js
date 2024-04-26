@@ -78,7 +78,7 @@ module.exports = class Liquida {
     static fetchDatosLiquida(fechaInicio,fechaFin){
         return db.execute(`SELECT L.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria,L.metodoPago, L.fechaPago, L.Nota, L.Pagado, PE.motivoPago
         FROM Liquida AS L JOIN Alumno AS A ON L.Matricula = A.Matricula 
-        JOIN Pagosextras AS PE ON L.IDPagosExtras = PE.IDPagosExtras 
+        JOIN pagosExtras AS PE ON L.IDPagosExtras = PE.IDPagosExtras 
         WHERE L.fechaPago >= ? AND L.fechaPago <= ? ORDER BY L.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
