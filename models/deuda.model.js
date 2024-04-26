@@ -10,7 +10,7 @@ module.exports = class Deuda {
         this.montoAPagar =mi_montoAPagar;
         this.fechaLimitePago = mi_fechaLimitePago;
         this.Pagado = mi_Pagado;
-    }
+    };
 
     static fetchDeuda(matricula){
         return db.execute(`SELECT (D.montoAPagar - D.Descuento - D.montoPagado) AS "montoAPagar" 
@@ -18,43 +18,43 @@ module.exports = class Deuda {
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo 
         AND P.periodoActivo = '1' AND D.Matricula = ? AND D.Pagado = 0`,
         [matricula]);
-    }
+    };
 
     
     static fetchDeudaPagada(matricula){
         return db.execute('SELECT (montoAPagar-Descuento-montoPagado) AS "montoAPagar" FROM Deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
-    }
+    };
 
     static fetchEstado(matricula){
         return db.execute('SELECT Pagado FROM Deuda WHERE Matricula = ?',
         [matricula]);
-    }
+    };
 
     static fetchColegiatura(id){
         return db.execute('SELECT IDColegiatura FROM Deuda WHERE IDDeuda = ?',
         [id]);
-    }
+    };
 
     static statusDeuda(id){
         return db.execute('SELECT Pagado FROM Deuda WHERE IDDeuda = ?',
         [id]);
-    }
+    };
 
     static update_transferencia(monto,id_deuda){
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?',
         [monto, id_deuda]);
-    }
+    };
 
     static fetchIDDeuda(matricula){
         return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
         [matricula]);
-    }
+    };
 
     static fetchIDDeudaPagada(matricula){
         return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
-    }
+    };
     
     static fetchIDColegiatura(matricula){
         return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
@@ -65,24 +65,32 @@ module.exports = class Deuda {
         return db.execute(`SELECT IDDeuda, (montoAPagar - Descuento) AS 'montoAPagar', 
         fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
         AND IDColegiatura = ? `, [IDColegiatura]);
-    }
+    };
 
     static update_Deuda(monto_a_usar, id_deuda) {
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?', 
         [monto_a_usar, id_deuda]);
-    }
+    };
 
     static fetchDeudasPeriodo(fecha_actual) {
         return db.execute(`SELECT IDDeuda, montoAPagar, fechaLimitePago
         FROM Deuda AS D, Colegiatura AS C, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
         AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0 AND D.fechaLimitePago < ?`,
-         [fecha_actual]);
-    }
+        [fecha_actual]);
+    };
+
+    static fetchDeudasRecordatorio(fecha_actual) {
+        return db.execute(`SELECT montoAPagar, fechaLimitePago, U.correoElectronico
+        FROM Deuda AS D, Colegiatura AS C, Periodo AS P, Usuario AS U
+        WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo 
+        AND U.IDUsuario = D.Matricula AND P.periodoActivo = '1' AND D.Pagado = 0 
+        AND D.fechaLimitePago > ?`, [fecha_actual]);
+    };
 
     static setRecargosDeuda(IDDeuda, montoRecargo){
         return db.execute(`UPDATE Deuda SET montoAPagar = ?, Recargos = 1
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
-    }
+    };
     
 }
