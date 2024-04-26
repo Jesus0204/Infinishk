@@ -37,7 +37,7 @@ async function getAllUsers() {
   const token = await getToken();
   const headers = getHeaders(token);
 
-  const response = await axiosAdminClient.get('v1/users/all', {
+  const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {
     headers,
   });
 
@@ -67,6 +67,23 @@ async function getAllPeriods() {
   return response.data
 }
 
+async function getUserGroups(cycle_id, user_ivd_id) {
+  const token = await getToken()
+  const headers = getHeaders(token)
+
+  const response = await axiosAdminClient.get(
+    'v1/school_cycles/user_groups_index',
+    {
+      headers,
+      params: {
+        id: cycle_id,
+        user_ivd_id,
+      },
+    },
+  )
+  return response.data
+}
 
 
-module.exports = {getAllUsers, getAllCourses,getAllPeriods}
+
+module.exports = {getAllUsers, getAllCourses,getAllPeriods,getUserGroups}

@@ -14,35 +14,46 @@ module.exports = class Alumno {
         this.fechaTermino = mi_fechaTermino;
     }
 
-    static fetchSchedule(matricula) {
-        return db.execute(`SET @porcbeca = (SELECT CASE
-            WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
-            ELSE 1
-            END FROM estudianteprofesional
-            WHERE Matricula = '1001');
-        (‘SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
-            G.fechaInicio, G.fechaTermino, A.horarioAceptado,
-        ((P.precioPesos * M.Creditos)*@porcbeca) AS Precio_materia
-        FROM Grupo AS G
-        JOIN Materia AS M ON G.IDMateria = M.IDMateria
-        JOIN Preciocredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
-        JOIN Alumno AS A ON G.Matricula = A.Matricula
-        WHERE P.precioActivo = 1
-        AND G.Matricula = ?`, [matricula]);
-    }
+    static async fetchSchedule(matricula) {
+        const porcbecaResult = await db.execute(`SELECT CASE
+                WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
+                ELSE 1
+                END AS porcbeca FROM estudianteprofesional
+                WHERE Matricula = ?`, [matricula]);
 
-    static fetchPrecioTotal(matricula){
-        return db.execute(`SET @porcbeca = (SELECT CASE
-            WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
-            ELSE 1
-            END FROM estudianteprofesional
-            WHERE Matricula = '1001');
-        (‘SELECT (SUM(P.precioPesos * M.Creditos)*@porcbeca) AS Preciototal
+        const porcbeca = porcbecaResult[0][0].porcbeca;
+
+        const schedule = await db.execute(`SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
+                G.fechaInicio, G.fechaTermino, A.horarioConfirmado,
+                ((P.precioPesos * M.Creditos)*?) AS Precio_materia
+                FROM Grupo AS G
+                JOIN Materia AS M ON G.IDMateria = M.IDMateria
+                JOIN Preciocredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
+                JOIN Alumno AS A ON G.Matricula = A.Matricula
+                WHERE P.precioActivo = 1
+                AND G.Matricula = ?`, [porcbeca, matricula]);
+
+        return schedule;
+    }
+    
+
+    static async fetchPrecioTotal(matricula){
+
+        const porcbecaResult = await db.execute(`SELECT CASE
+                WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
+                ELSE 1
+                END AS porcbeca FROM estudianteprofesional
+                WHERE Matricula = ?`, [matricula]);
+
+        const porcbeca = porcbecaResult[0][0].porcbeca;
+
+        const PrecioTotal = await db.execute(`SELECT (SUM(P.precioPesos * M.Creditos)*?) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
         JOIN Preciocredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE P.precioActivo = 1
-        AND G.Matricula = ?`, [Matricula]);
+        AND G.Matricula = ?`, [porcbeca, matricula]);
+        return PrecioTotal;
     }
 
 }

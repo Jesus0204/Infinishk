@@ -2,7 +2,8 @@ const Grupo = require('../models/grupo.model');
 const Alumno = require('../models/alumno.model');
 
 exports.post_propuesta_horario = (request, response, next) => {
-    Grupo.fetchSchedule(request.session.username)
+    const schedule = Grupo.fetchSchedule(request.session.username)
+    console.log(schedule)
         .then(([schedule, fieldData]) => {
             Grupo.fetchPrecioTotal(request.session.username)
                 .then((precioTotal) => {

@@ -1,2 +1,129 @@
-<%- include('../includes/head.ejs', { username: username, permisos: permisos, schedule: schedule, precioTotal: precioTotal, confirmacion: confirmacion}) %>
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
 
+    <script type="text/javascript" src="/js/modal_popup.js"></script>
+
+    <style>
+        input:focus {
+            border: 2px solid #910106 !important
+        }
+
+        input:hover {
+            border: 2px solid #5a6581 !important;
+        }
+
+        .table-container {
+            position: relative;
+        }
+
+        .pagination-container {
+            margin-top: 20px;
+        }
+
+        .pagination-btn {
+            margin: 0 5px;
+        }
+    </style>
+
+    <section class='section'>
+        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+
+        <div class="tabs is-boxed">
+            <ul>
+                <li id="nav_horario">
+                    <a onclick="horario()">
+                        <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                        <span>Diplomados en Curso</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="diplomados_activos">
+            <% let count_schedule=0 %>
+
+                <% if (schedule.length===0) { %>
+                    <p>Horario no disponible por el momento.</p>
+                    <% } else { %>
+                        <div id="tablagrupos" class="table-container">
+                            <table class="table is-bordered is-hoverable is-fullwidth">
+                                <thead>
+                                    <tr>
+                                    <tr>
+                                        <th>
+                                            <p class="is-size-5"><strong>ID: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Nombre: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Profesor: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Horario: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Salón: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Fecha de inicio: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Fecha de termino: </strong></p>
+                                        </th>
+                                        <th>
+                                            <p class="is-size-5"><strong>Precio: </strong></p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let grupo of schedule) { %>
+                                        <tr id="pagination-content">
+                                            <td>
+                                                <%= grupo.IDGrupo %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.Nombre %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.Profesor %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.Horario %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.Salon %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.fechaInicio %>
+                                            </td>
+                                            <td>
+                                                <%= grupo.fechaTermino %>
+                                            </td>
+                                            <td>
+                                                $<%= grupo.Precio_materia.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                                            </td>
+                                        </tr>
+                                        <% count_schedule++ %>
+                                            <% } %>
+                                </tbody>
+                            </table>
+                            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                <a class="pagination-previous" id="prev-button">Anterior</a>
+                                <a class="pagination-next" id="next-button">Siguiente</a>
+                                <ul class="pagination-list" id="pagination-list">
+                                    <div id="pagination-numbers">
+                                    </div>
+                                </ul>
+                            </nav>
+                        </div>
+                        <% } %>
+        </div>
+
+    </section>
+    <script type="text/javascript" src="/js/consultarHorario.js"></script>
+    <script type="text/javascript" src="/js/pagination.js"></script>
+
+    </html>
