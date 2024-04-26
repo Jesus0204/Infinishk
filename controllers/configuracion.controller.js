@@ -5,7 +5,7 @@ const Alumno = require('../models/alumno.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const Materia = require('../models/materia.model');
 const Periodo = require('../models/periodo.model');
-const Posee = require('../models/posee.model');  
+const Posee = require('../models/posee.model'); 
 const {
     getAllUsers,
     getAllCourses,
