@@ -806,7 +806,10 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         
         else{
             success = false;
-            response.json({ success: success, message:'No existe deuda actual para ese pago' });
+            response.json({
+                success: success,
+                message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
+            });
             return;
         }
         
