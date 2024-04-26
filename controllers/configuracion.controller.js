@@ -392,7 +392,7 @@ exports.post_alumnos = async (request,response,next) => {
     const referencia = request.body.referenciaBancaria;
     const beca = request.body.beca;
 
-    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
     const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
@@ -409,7 +409,7 @@ exports.post_alumnos = async (request,response,next) => {
             email: '27miguelb11@gmail.com',
         },
         subject: 'Bienvenido a VIA Pago',
-        html: `<p>Hola,</p><p>Haz clic en el siguiente enlace para establecer tu contraseña: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+        html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
     };
 
     try {
