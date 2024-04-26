@@ -501,6 +501,8 @@ exports.post_mandar_pago = (request, response, next) => {
 
     // Pones todo el xml en un string
     let originalString = xml.toString();
+
+    console.log(originalString);
     let key = '5DCC67393750523CD165F17E1EFADD21';
 
     // Lo cifras con las funciones del github de documentación
@@ -528,6 +530,14 @@ exports.post_mandar_pago = (request, response, next) => {
     }).catch((error) => {
         console.log(error);
     })
-
-
 };
+
+exports.post_recibir_pago = (request,response,next) => {
+    const strResponse = decodeURIComponent("OeJy0IiOYyuFLHRvSCAnFS%2FgG%2BJpP5GAyHkNFajKAE1mw6X%2BxfHlqfodeqgFvWZThVb8X5NsKohI0eYXEZMlX4tWsGBetblm%2F6whaGn1jByMle%2FQTjENL7cUJOOwvOYxv7obfi6XO713A%2BUOhO7qjLfeK6qaaB4h%2FJJXUfA8WE6RsFXOthuMdKsgc%2FYsKXtfpyOR1TmaE4JFLxOdch3%2Fkpdy8DDtBPVYHWkI0KO9CSjUezZPQM6DRQ%2BX5ZBeuI%2F7F1hL6m8r2ba3w%2BItBkZZs6PNUacD6gn0rX0rguyrqSNTQex96DfYRwRg774zZfDDX%2Fa02IX9NMO3Epaz8B%2FEFqCkma%2BQXPK4SHySQ5YWT7GUVxxvbLYEs85TQZeOBq1Fgku6%2FCJ9NSDjjY4ItxQoAQJyKPWRRZDaTVTKc%2FvUkX8QCSfDg5MkSBkO%2FRTjhgQHy62BqS26qcD%2FQyYBFMxSq%2FwCwyAJiCcsiCj%2FkEoh1JVc%2FG0b9Z9fAVGGQn4QA0jFQViekHB3V5r9vfkPADcz1yccPJdpI4UUboH2ynfyNv9%2FG9Dig9mg73hduG0FZld9zUR0xwNRSCzwOBG2BDF9RCm0jPNIwKLNaE4NfYKb8Z3MyLEPTI6QVNRfEgsQ5FlYAkyx1VNfEFk0F7TrIDk%2BGSA37rtIak1Xpq4G2%2B7gq5cycjdwiMYu4nXOBXHXXgapi152wpEF39J8jC7vnuBDBdvnu0VrFtcoozw%2BOuLrHVK%2Bg2N5pYzTZ77R8aOqbTI41qt2iJ6bxdHbOArUD4GmRTInQ9QR71fxHBtDpaUQ2kjEpVm7Y9wEjbK7RUiipkUDCOclueve2MeuB%2FdCuIcLUjQNIFW7aXSPRddX1TugHux8FYG6kQmP7F0M86IarDyWbxNll15F5OxwQPwztBzgb4tCYjThw8K8fMo74pqcFLcoAqhh4%2FTqXA8Tr0aJczEQ8P2jvbS296%2FVFERB0zXyHsCfn9aUUzpqQ6f2vpw8DKpfyJ%2Fsxn48GyRMDf9mp5za%2Far99pUwBowPGxVqHB3ssY0fDViICDP5l%2FBm02r0h2XVk7BJ6Zp1DMGhhqpsYRBfZHZjsErzZjy%2F1qmzbihsJxsE7jOApGPA5IZwKcQ6OcmAtubfNqd706Y%2BzL9vp1Pz")
+    let key = '5DCC67393750523CD165F17E1EFADD21';
+    const responseText = cipher.decifrarAES(strResponse, key);
+
+    console.log(responseText);
+
+    return response.status(200).json({ responseText });
+}
