@@ -22,22 +22,22 @@ module.exports = class Deuda {
 
     
     static fetchDeudaPagada(matricula){
-        return db.execute('SELECT (montoAPagar-Descuento-montoPagado) AS "montoAPagar" FROM deuda WHERE Matricula = ? AND Pagado = 1',
+        return db.execute('SELECT (montoAPagar-Descuento-montoPagado) AS "montoAPagar" FROM Deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
     }
 
     static fetchEstado(matricula){
-        return db.execute('SELECT Pagado FROM deuda WHERE Matricula = ?',
+        return db.execute('SELECT Pagado FROM Deuda WHERE Matricula = ?',
         [matricula]);
     }
 
     static fetchColegiatura(id){
-        return db.execute('SELECT IDColegiatura FROM deuda WHERE IDDeuda = ?',
+        return db.execute('SELECT IDColegiatura FROM Deuda WHERE IDDeuda = ?',
         [id]);
     }
 
     static statusDeuda(id){
-        return db.execute('SELECT Pagado FROM deuda WHERE IDDeuda = ?',
+        return db.execute('SELECT Pagado FROM Deuda WHERE IDDeuda = ?',
         [id]);
     }
 
@@ -47,12 +47,12 @@ module.exports = class Deuda {
     }
 
     static fetchIDDeuda(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
+        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 0 AND Now() < fechaLimitePago',
         [matricula]);
     }
 
     static fetchIDDeudaPagada(matricula){
-        return db.execute('SELECT IDDeuda FROM deuda WHERE Matricula = ? AND Pagado = 1',
+        return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 1',
         [matricula]);
     }
 
@@ -65,6 +65,19 @@ module.exports = class Deuda {
     static update_Deuda(monto_a_usar, id_deuda) {
         return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?', 
         [monto_a_usar, id_deuda]);
+    }
+
+    static fetchDeudasPeriodo(fecha_actual){
+        return db.execute(`SELECT IDDeuda, montoAPagar
+        FROM Deuda AS D, Colegiatura AS C, Periodo AS P
+        WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
+        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0 AND D.fechaLimitePago < ?`, 
+        [fecha_actual]);
+    }
+
+    static setRecargosDeuda(IDDeuda, montoRecargo){
+        return db.execute(`UPDATE Deuda SET montoAPagar = ?, Recargos = 1
+        WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     }
     
 }

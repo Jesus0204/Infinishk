@@ -84,6 +84,17 @@ app.locals.contienePermiso = (permisos, casoUso) => {
     return contains;
 };
 
+const scheduleController = require('./controllers/schedule.controller');
+
+const cron = require('node-cron');
+
+cron.schedule('0 0 * * *', () => {
+    scheduleController.set_recargos();
+}, {
+    scheduled: true,
+    timezone: "America/Mexico_City"
+});
+
 //Para error 404
 app.use((request, response, next) => {
     response.status(404);
