@@ -88,7 +88,7 @@ const scheduleController = require('./controllers/schedule.controller');
 
 const cron = require('node-cron');
 
-cron.schedule('*/1 * * * *', () => {
+cron.schedule('0 3 * * *', () => {
     scheduleController.set_recargos();
 }, {
     scheduled: true,
