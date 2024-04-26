@@ -24,6 +24,7 @@ module.exports = class Deuda {
         WHERE D.matricula = A.matricula AND D.IDDeuda = P.IDDeuda AND   
         C.IDPeriodo = Pe.IDPeriodo AND D.IDColegiatura = C.IDColegiatura AND Pe.periodoActivo = True   
         AND D.matricula = ?
+        ORDER BY D.pagado ASC
         LIMIT 0, 1000`, [matricula]);
     }
 
