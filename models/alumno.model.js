@@ -34,4 +34,8 @@ module.exports = class Alumno {
         WHERE Matricula = ?`, [credito, matricula]);
     }
 
+    static fetchHorarioConfirmado(matricula){
+        return db.execute(`SELECT horarioConfirmado FROM Alumno WHERE Matricula = ?`, [matricula]);
+    }
+
 }
