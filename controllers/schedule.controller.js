@@ -9,12 +9,6 @@ exports.set_recargos = (request, response, next) => {
 
     Deuda.fetchDeudasPeriodo(fecha_actual)
     .then(async( [deudasNoPagadas, fieldData]) => {
-        console.log(deudasNoPagadas);
-
-        // Conviertes la fecha limite a la zona horaria de México
-        for (count = 0; count < deudasNoPagadas.length; count++) {
-            deudasNoPagadas[count].fechaLimitePago = moment(deudasNoPagadas[count].fechaLimitePago).tz('America/Mexico_City').format();
-        }
 
         for (let deuda of deudasNoPagadas){
             console.log(deuda);
