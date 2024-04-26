@@ -186,7 +186,7 @@ exports.post_reset_password = async (request, response, next) => {
                 email: '27miguelb11@gmail.com',
             },
             subject: 'Reestablecer contraseña de VIA Pago',
-            html: `<p>Hola,</p><p>Haz clic en el siguiente enlace para reestablecer tu contraseña: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
+            html: `<p>Hola!</p><p>Por favor usa este link para restablecer tu contraseña. Toma en cuenta que la liga solo tiene validez de una hora: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
         };
 
         try {
