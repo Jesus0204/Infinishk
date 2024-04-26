@@ -43,20 +43,14 @@
                 <tr>
                     <th colspan="2">
                         <div class="columns is-vcentered">
-                            <div class="column is-narrow">
-                                <label class="checkbox">
-                                    <input type="checkbox" />
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="column is-1">
+                            <div class="column is-1" style="padding-left: 4em;">
                                 <% let calculo_pagos = 0 %>
                                 <% for (let deuda of deudas_atrasadas) { %>
                                 <% calculo_pagos += deuda.montoPagado / deuda.montoAPagar; %>
                                 <% } %>
                                 <%= calculo_pagos.toFixed(2) %>
                             </div>
-                            <div class="column is-4">
+                            <div class="column is-4 is-offset-1">
                                 Nombre: <%= deudas_atrasadas[0].Nombre %>
                                 <%= deudas_atrasadas[0].Apellidos %>
                             </div>
@@ -64,12 +58,12 @@
                                 Matricula: <%= deudas_atrasadas[0].matricula %>
                             </div>
                             <div class="column">
-                                <form action="/plantilla_correo" method="POST">
+                                <form action="/estado_cuenta" method="GET">
                                     <input type="hidden" name="matricula" id="matricula"
                                         value="<% deudas_atrasadas[0].matricula %>">
                                     <button type="submit" class="button is-rounded is-medium is-responsive"
                                         style="font-size: medium;">
-                                        <span>Enviar Correo</span>
+                                        <span>Estado de Cuenta</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                         </span>
@@ -206,19 +200,6 @@
             </tbody>
         </table>
         <% } %>
-        <div class="columns">
-            <div class="column">
-                <form action="/plantilla_correo" method="POST">
-                    <button type="submit" class="button is-rounded is-medium is-responsive"
-                        style="font-size: medium; margin: 8px 2px;">
-                        <span>Enviar correo a alumnos seleccionados</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
 </section>
 <script type="text/javascript" src="/js/alumnos_atrasados.js"></script>
