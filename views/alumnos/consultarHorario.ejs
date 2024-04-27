@@ -97,19 +97,47 @@
                     <br>
         </div>
         <% if(confirmacion!=1){%>
-            <div class="container">
-                <p class="control">
-                    <a class="button is-rounded is-responsive" style="font-size: large; text-align: center;"
-                    href="/horario/confirmar_horario">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-check"></i>
-                    </span>
-                    <span>
-                        Confirmar horario
-                    </span>
-                    </a>
-                </p>
-            </div>
+            <form action="horario/confirmar_horario" method="POST" style="text-align: center;">
+                <div>
+                    <label class="label is-medium" ="confirmar">Escoge plan de pago:</label>
+                    <div class="control has-icon-left">
+                        <div class="select is-medium">
+                            <select name="planes" id="planes">
+                                <% for (let plan of planesPago){%>
+                                    <option data-nombre="<%=plan.nombrePlan%>">
+                                        <%=plan.nombrePlan%>
+                                    </option>
+                                <%}%>
+                            </select>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="container">
+                    <button class="button is-rounded is-medium is-responsive" type="submit" style="font-size: large;" id="submit">
+                        <span>
+                            Confirmar horario
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
         <%}%>
     </section>
 </html>

@@ -38,4 +38,7 @@ module.exports = class Alumno {
         return db.execute(`SELECT horarioConfirmado FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 
+    static updateHorarioAccepted(matricula){
+        return db.execute(`UPDATE Alumno SET horarioAceptado = 1 WHERE Matricula = ?`, [matricula]);
+    }
 }

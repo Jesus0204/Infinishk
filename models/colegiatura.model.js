@@ -28,5 +28,8 @@ module.exports = class Colegiatura{
         AND C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = '1'
         AND D.Matricula = ?`, [matricula]);
     }
-    
+    // Transacción para crear colegiatura y fichas al mismo tiempo on¿ nada en caso de algún error
+    static createColegiaturasFichas(IDPlanPago, matricula){
+        return db.execute(`CALL crear_colegiaturas_fichas(?,?)`, [IDPlanPago, matricula]);
+    }
 };
