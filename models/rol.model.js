@@ -6,6 +6,6 @@ module.exports = class rol {
     }
 
     static fetchAll() {
-        return db.execute(`SELECT nombreRol FROM Rol WHERE IDRol!=3`);
+        return db.execute(`SELECT nombreRol FROM Rol`);
     }
 };

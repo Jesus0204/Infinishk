@@ -47,11 +47,28 @@ exports.get_consultar_usuario = (request, response, next) => {
 };
 
 exports.get_registrar_usuario = (request, response, next) => {
+    response.render('configuracion/registrar_usuario', {
+        opcion: true,
+        crear: false,
+        modificar: false,
+        obtener: false,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    })
+};
+
+exports.get_crear_usuario = (request, response, next) => {
     Rol.fetchAll()
         .then(([roles_disponibles, fieldData]) => {
             console.log(roles_disponibles)
             response.render('configuracion/registrar_usuario', {
                 roles_disponibles: roles_disponibles,
+                opcion: false,
+                crear: true,
+                modificar: false,
+                obtener: false,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
@@ -61,18 +78,45 @@ exports.get_registrar_usuario = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         })
+}
 
-};
+exports.get_modificar_usuario = (request, response, next) => {
+    response.render('configuracion/registrar_usuario', {
+        opcion: false,
+        crear: false,
+        modificar: true,
+        obtener: false,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    })
+}
+
+exports.get_obtener_usuario = (request, response, next) => {
+    response.render('configuracion/registrar_usuario', {
+        opcion: false,
+        crear: false,
+        modificar: false,
+        obtener: true,
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    })
+}
+
+
 
 exports.post_registrar_usuario = (request, response, next) => {
     const rol = request.body.roles;
-    console.log(rol);  
-    
-    if(rol === 'Administrador'){
+    console.log(rol);
+
+    if (rol === 'Administrador') {
         response.render('configuracion/activar_usuario', {
-            admin:true,
-            alumno:false,
-            vis:false,
+            admin: true,
+            alumno: false,
+            vis: false,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
             permisos: request.session.permisos || [],
@@ -80,11 +124,11 @@ exports.post_registrar_usuario = (request, response, next) => {
         })
     }
 
-    if(rol === 'Alumno'){
+    if (rol === 'Alumno') {
         response.render('configuracion/activar_usuario', {
-            admin:false,
-            alumno:true,
-            vis:false,
+            admin: false,
+            alumno: true,
+            vis: false,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
             permisos: request.session.permisos || [],
@@ -92,11 +136,11 @@ exports.post_registrar_usuario = (request, response, next) => {
         })
     }
 
-    if(rol === 'Visualizador'){
+    if (rol === 'Visualizador') {
         response.render('configuracion/activar_usuario', {
-            admin:false,
-            alumno:false,
-            vis:true,
+            admin: false,
+            alumno: false,
+            vis: true,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
             permisos: request.session.permisos || [],
@@ -106,19 +150,19 @@ exports.post_registrar_usuario = (request, response, next) => {
 };
 
 exports.get_registrar_usuario_alumno = (request, response, next) => {
-    
+
 };
 
 exports.post_registrar_usuario_alumno = (request, response, next) => {
-    
+
 };
 
 exports.get_registrar_usuario_visadmin = (request, response, next) => {
-    
+
 };
 
 exports.post_registrar_usuario_visadmin = (request, response, next) => {
-    
+
 };
 
 
