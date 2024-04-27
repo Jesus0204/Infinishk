@@ -40,6 +40,9 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
             // Le quitas 5 días a la fecha para enviar el correo
             let fecha_correo = moment(deudasRecordatorio[count].fechaLimitePago).subtract(5, 'days').format();
 
+            console.log('Fecha Actual: ' + fecha_actual);
+            console.log('Fecha 5 Días menos' + fecha_correo);
+
             // Si la nueva fecha es igual a la fecha actual se tiene que enviar el correo
             if (fecha_correo == fecha_actual) {
 
@@ -90,6 +93,9 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
         for (count = 0; count < deudasNoPagadas.length; count++) {
             // Le sumas días a la fecha para enviar el correo
             let fecha_correo = moment(deudasNoPagadas[count].fechaLimitePago).add(1, 'days').format();
+
+            console.log('Fecha Actual: ' + fecha_actual);
+            console.log('Fecha 1 Día más' + fecha_correo);
             
             // Si la fecha (un dia despues) se envia el correo notificando de los recargos y del atraso
              if (fecha_correo == fecha_actual) {
