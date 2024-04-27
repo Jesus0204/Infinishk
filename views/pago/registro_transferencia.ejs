@@ -201,9 +201,14 @@
                                 <div id="tablaCompleta" class="has-text-centered mt-5">
                                     <div class="alert alert-info is-size-4">No hay pagos completos en este archivo.
                                     </div>
-                                    <button id="toggleButton" class="button is-large is-rounded is-responsive">Revisar
-                                        No
-                                        Completos</button>
+                                    <button id="toggleButton" class="button is-large is-rounded is-responsive">
+                                        <span>
+                                            Revisar No Completos
+                                        </span>
+                                        <span class="icon is-middle">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
                                 </div>
                                 <% } %>
                         </div>
@@ -361,7 +366,7 @@
                                                                                 </button>
                                                                             
                                                                                 <% } else if (fila.tipoPago==='Pago no Reconocido' ) { %>
-                                                                                        Este alumno no tiene una referencia valida, por favor revisa los datos de este alumno
+                                                                                        Esta referencia no está registrada en nuestra base, por favor revisa los datos de este alumno.
                                                                                 <% } else { %>
                                                                                     <button type="submit"
                                                                                         class="button my-button is-medium is-rounded is-responsive">

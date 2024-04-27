@@ -684,6 +684,9 @@ exports.post_subir_archivo = (request, response, next) => {
                     const fechaParseada = new Date(pagoCompleto[0][0].fechaPago);
                     const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours()}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
 
+                    console.log(fechaParseada);
+                    console.log(fechaFormateada);
+
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
