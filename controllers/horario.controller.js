@@ -4,9 +4,10 @@ const Periodo = require('../models/periodo.model');
 
 exports.get_propuesta_horario = async (request, response, next) => {
     const schedule = await Grupo.fetchSchedule(request.session.username)
-    const precioTotal = await Grupo.fetchPrecioTotal(request.session.username)
-    const confirmacion = await Alumno.fetchHorarioConfirmado(request.session.username)
-    console.log(schedule)
+    const precio = await Grupo.fetchPrecioTotal(request.session.username)
+    const conf = await Alumno.fetchHorarioConfirmado(request.session.username)
+    const precioTotal = precio[0][0].Preciototal
+    const confirmacion = conf[0][0].horarioConfirmado
     response.render('alumnos/consultarHorario', {
         schedule: schedule,
         precioTotal: precioTotal,
