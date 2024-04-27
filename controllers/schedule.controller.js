@@ -32,7 +32,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.enviarCorreoRecordatorio = async(request, response, next) => {
     // Sacas la fecha actual con moment
-    let fecha_actual = moment().tz('America/Mexico_City').startOf('day').format();
+    let fecha_actual = moment().startOf('day').format();
     
     Deuda.fetchDeudasRecordatorio(fecha_actual)
     .then(async ([deudasRecordatorio, fieldData]) => {
@@ -83,7 +83,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
 
 exports.enviarCorreoAtrasado = (request, response, next) => {
     // Sacas la fecha actual con moment
-    let fecha_actual = moment().tz('America/Mexico_City').startOf('day').format();
+    let fecha_actual = moment().startOf('day').format();
 
     Deuda.fetchDeudasCorreoAtrasado(fecha_actual)
     .then(async([deudasNoPagadas, fieldData]) => {
