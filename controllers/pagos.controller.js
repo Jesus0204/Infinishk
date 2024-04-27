@@ -681,10 +681,9 @@ exports.post_subir_archivo = (request, response, next) => {
                 }
 
                 if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && pagoCompleto[0][0].fechaPago !== undefined) {
-                    const fechaParseada = new Date(pagoCompleto[0][0].fechaPago);
-                    const fechaFormateada = `${fechaParseada.getFullYear()}-${(fechaParseada.getMonth() + 1).toString().padStart(2, '0')}-${fechaParseada.getDate().toString().padStart(2, '0')} ${fechaParseada.getHours()}:${fechaParseada.getMinutes().toString().padStart(2, '0')}`;
+                    const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
+                    const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD HH:mm');
 
-                    console.log(fechaParseada);
                     console.log(fechaFormateada);
 
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
