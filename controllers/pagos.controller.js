@@ -687,10 +687,15 @@ exports.post_subir_archivo = (request, response, next) => {
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                    console.log('Monto' + montoRedondeado);
-                    console.log('Importe' + importeRedondeado);
+                    if (fechaFormateada === fila.fechaFormato){
+                        console.log('Fecha es igual');
+                    }
 
-                    if (montoRedondeado === importeRedondeado && fechaFormateada == fila.fechaFormato) {
+                    if (montoRedondeado === importeRedondeado){
+                        console.log('monto es igual');
+                    }
+
+                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
