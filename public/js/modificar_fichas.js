@@ -96,3 +96,39 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
         calendar.on('select', activate_clear_button);
     })
 }
+
+function modificar(descuento, fecha_lim, nota, id) {
+    console.log('Iniciando modificación con los siguientes datos: ', descuento, fecha_lim, nota, id );
+    const csrf = document.getElementById('_csrf').value;
+    const alumno = document.getElementById('alumno').value;
+
+    fetch('/alumnos/fetch_fichas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            descuento : descuento,
+            fecha_lim : fecha_lim,
+            nota : nota,
+            id : id
+        })
+    })
+    .then(response => {
+        if(!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if(data.success){
+            console.log('Modificación exitosa: ', data);
+        } else {
+            console.error('Error en la modificación: ', data.message);
+        }
+    })
+    .catch(error => {
+        console.log('Error en la petición fetch: ', error);
+    });
+}
