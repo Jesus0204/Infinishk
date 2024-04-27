@@ -80,7 +80,7 @@
             /* El color del fondo */
             color: white;
             /* El color del texto */
-            width: 85%;
+            width: 100%;
         }
 
         .my-button:hover {
@@ -351,7 +351,9 @@
                                                                             <% if (fila.tipoPago==='Pago a Registrar' ) { %>
                                                                                 <button type="submit"
                                                                                     class="button my-button is-medium is-rounded is-responsive">
-                                                                                    Postponer
+                                                                                    <span>
+                                                                                        Posponer
+                                                                                    </span>
                                                                                     <span class="icon is-large">
                                                                                         <i class="fa-solid fa-circle-chevron-right"
                                                                                             style="color: #ffffff;"></i>
@@ -363,8 +365,10 @@
                                                                                 <% } else { %>
                                                                                     <button type="submit"
                                                                                         class="button my-button is-medium is-rounded is-responsive">
-                                                                                        Enviar datos
-                                                                                        <span class="icon is-large">
+                                                                                        <span>
+                                                                                            Enviar datos
+                                                                                        </span>
+                                                                                        <span class="icon is-middle">
                                                                                             <i class="fa-solid fa-circle-chevron-right"
                                                                                                 style="color: #ffffff;"></i>
                                                                                         </span>

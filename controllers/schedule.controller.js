@@ -80,3 +80,51 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
 
 
 };
+
+exports.enviarCorreoAtrasado = (request, response, next) => {
+    // Sacas la fecha actual con moment
+    let fecha_actual = moment().tz('America/Mexico_City').startOf('day').format();
+
+    Deuda.fetchDeudasCorreoAtrasado(fecha_actual)
+    .then(async([deudasNoPagadas, fieldData]) => {
+        for (count = 0; count < deudasNoPagadas.length; count++) {
+            // Le sumas días a la fecha para enviar el correo
+            let fecha_correo = moment(deudasNoPagadas[count].fechaLimitePago).add(1, 'days').format();
+            
+            // Si la fecha (un dia despues) se envia el correo notificando de los recargos y del atraso
+             if (fecha_correo == fecha_actual) {
+                // Creas el mensaje para enviar el correo
+                const msg = {
+                    to: deudasNoPagadas[count].correoElectronico,
+                    from: {
+                        name: 'VIA PAGO',
+                        email: '27miguelb11@gmail.com',
+                    },
+                    subject: '¡El pago de tu Colegiatura ha vencido!',
+                    html: `<p>¡Hola!</p>
+                    <p>
+                        Ayer fue la fecha límite del pago de tu colegiatura. ¡Liquidala lo antes posible!
+                        Recuerda que por cada mes retrasado se genera el 5% de recargos sobre ese mes. 
+                    </p>
+                    <p>
+                        Para pagar o consultar tu estado de cuenta, 
+                        puedes entrar a <a href = "https://ivd-pagos-infinishk-f243bfbb50c7.herokuapp.com/auth/login" > ViaPago </a>
+                    </p>
+                    <p>
+                        ¡Gracias y bonito día!
+                    </p>`
+                };
+
+                try {
+                    await sgMail.send(msg);
+                    console.log('Correo electrónico enviado correctamente');
+                } catch (error) {
+                    console.error('Error al enviar el correo electrónico:', error.toString());
+                }
+             }
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+};

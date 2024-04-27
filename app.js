@@ -102,6 +102,13 @@ cron.schedule('0 9 * * *', () => {
     timezone: "America/Mexico_City"
 });
 
+cron.schedule('0 9 * * *', () => {
+    scheduleController.enviarCorreoAtrasado();
+}, {
+    scheduled: true,
+    timezone: "America/Mexico_City"
+});
+
 //Para error 404
 app.use((request, response, next) => {
     response.status(404);

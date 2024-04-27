@@ -23,6 +23,7 @@ $grey-light: $gris-claro;
 $primary: $vino;
 $link: $rojo;
 $danger: $vino;
+$info: $azul;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 $desktop: 960px + (2 * $gap);
@@ -95,3 +96,5 @@ $navbar-dropdown-item-hover-background-color: $rojo;
 $switch-focus: none;
 /* Bulma Switch Control */
 @import "../../node_modules/bulma-switch/src/sass/index.sass";
+
+@import "checkbox.sass";

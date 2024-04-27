@@ -143,9 +143,15 @@ document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach(
             if (boton) {
                 // Cambiar el texto del botón según el tipo de pago seleccionado
                 if (event.target.value === 'Pago a Registrar') {
-                    boton.textContent = 'Posponer';
+                    boton.innerHTML = `<span>Posponer</span>
+                    <span class="icon is-large">
+                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>`;
                 } else {
-                    boton.textContent = 'Enviar datos';
+                    boton.innerHTML = `<span>Enviar datos</span>
+                    <span class="icon is-middle">
+                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>`;
                 }
             } else {
                 console.error('No se encontró el botón correspondiente a la fila.');
