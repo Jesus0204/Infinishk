@@ -21,12 +21,18 @@ exports.get_propuesta_horario = async (request, response, next) => {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
-        csrfToken: request.csrfToken(),
+        csrfToken: request.csrfToken()
     })
 };
 
-exports.post_confirmar_horario = (request, response, next) =>{
+exports.post_confirmar_horario = async (request, response, next) =>{
     Alumno.updateHorarioAccepted(request.session.username)
-    Colegiatura.createColegiaturasFichas(IDPlanPago, matricula)
+    Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username)
     Usuario.fetchCorreo(request.session.username)
+    .then(() => {
+        response.redirect('alumnos/consultarHorario');
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 };

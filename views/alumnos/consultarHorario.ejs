@@ -25,7 +25,6 @@
     </style>
 
     <section class='section'>
-        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
         <div id="diplomados_activos" class="container">
             <% if(confirmacion){%>
@@ -97,22 +96,21 @@
                     <br>
         </div>
         <% if(confirmacion!=1){%>
-            <form action="horario/confirmar_horario" method="POST" style="text-align: center;">
+            <form action="/horario/confirmar_horario" method="POST" style="text-align: center;">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <div>
-                    <label class="label is-medium" ="confirmar">Escoge plan de pago:</label>
-                    <div class="control has-icon-left">
-                        <div class="select is-medium">
-                            <select name="planes" id="planes">
-                                <% for (let plan of planesPago){%>
-                                    <option data-nombre="<%=plan.nombrePlan%>">
-                                        <%=plan.nombrePlan%>
-                                    </option>
-                                <%}%>
-                            </select>
-                        </div>
-                        <br>
-                        <br>
+                    <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+                    <div class="select is-medium">
+                        <select name="IDPlanPago" id="IDPlanPago">
+                            <% for (let plan of planesPago){%>
+                            <option value="<%=plan.IDPlanPago%>" 
+                                data-nombre="<%=plan.nombrePlan%>">
+                                <%=plan.nombrePlan%></option>
+                            <%}%>
+                        </select>
                     </div>
+                    <br>
+                    <br>
                 </div>
                 
 
@@ -128,10 +126,9 @@
 
 
                 <div class="container">
-                    <button class="button is-rounded is-medium is-responsive" type="submit" style="font-size: large;" id="submit">
-                        <span>
-                            Confirmar horario
-                        </span>
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                    style="font-size: large;" id="Boton_confirmar">
+                        <span>Confirmar horario</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-check"></i>
                         </span>

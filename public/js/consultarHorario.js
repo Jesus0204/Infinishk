@@ -1,19 +1,10 @@
-/* Funciones para alternar entre usuarios activos y no activos */
-function diplomados_activos() {
-    const tab_horario = document.querySelector('#nav_en_curso');
-    const tab_no_activos = document.querySelector('#nav_no_activos');
-    const tab_activos = document.querySelector('#nav_activos');
+// //Constantes para acceder al HTML
+// const bt_Confirmar = document.querySelector('#Boton_confirmar');
+// const IDPlanPago = doument.querySelector('#IDPlan');
 
-    tab_en_curso.classList.remove('is-active');
-    tab_no_activos.classList.remove('is-active');
-    tab_activos.classList.add('is-active');
+// function mensaje_IDPlanPago() {
+    
+// }
 
-    const diplomados_no_activos = document.querySelector('#diplomados_no_activos');
-    diplomados_no_activos.classList.add('is-hidden');
-
-    const diplomados_en_curso = document.querySelector('#diplomados_en_curso');
-    diplomados_en_curso.classList.add('is-hidden');
-
-    const diplomados_activos = document.querySelector('#diplomados_activos');
-    diplomados_activos.classList.remove('is-hidden');
-}
+// // Detectar si el usuario maneja select y llamar las funciones anteriores
+// IDPlanPago.addEventListener('select', mensaje_IDPlanPago)
