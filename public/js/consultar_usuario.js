@@ -50,6 +50,11 @@ $(document).ready(function () {
     function mostrarNotificacionYRecargar(tabla, notificacion) {
         $(notificacion).removeClass('is-hidden'); // Mostrar notificación
 
+        // Para que se vea la notifiación
+        $('html, body').animate({
+            scrollTop: 0
+        }, 'slow');
+
         // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
         setTimeout(function () {
             window.location.reload(); // Recargar la página
