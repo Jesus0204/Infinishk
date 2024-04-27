@@ -684,7 +684,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
                     const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD HH:mm');
 
-                    console.log(fechaFormateada);
+                    console.log('La fecha es: ,' + fila.fechaFormato + ',');
 
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
