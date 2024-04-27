@@ -28,5 +28,5 @@ exports.get_propuesta_horario = async (request, response, next) => {
 exports.post_confirmar_horario = (request, response, next) =>{
     Alumno.updateHorarioAccepted(request.session.username)
     Colegiatura.createColegiaturasFichas(IDPlanPago, matricula)
-    Usuario.
+    Usuario.fetchCorreo(request.session.username)
 };
