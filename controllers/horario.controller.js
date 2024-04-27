@@ -4,6 +4,7 @@ const PlanPago = require('../models/planpago.model');
 const Colegiatura = require('../models/colegiatura.model');
 const Usuario = require('../models/usuario.model');
 const Periodo = require('../models/periodo.model');
+const PrecioCredito = require('../models/precio_credito.model');
 const { getAllUsers, getAllCourses,getAllPeriods,getUserGroups } = require('../util/adminApiClient');
 const { request } = require('express');
 
@@ -15,12 +16,67 @@ exports.get_propuesta_horario = async (request, response, next) => {
 
     if (confirmacion === 0){
         const matricula = request.session.username;
-        const periodo = Periodo.fetchActivo();
+        const periodo = await Periodo.fetchActivo();
         const periodoActivo = periodo[0][0].IDPeriodo;
-        console.log(periodoActivo);
+        const precioCredito = await PrecioCredito.fetchPrecioActual();
+        const precioActual = precioCredito[0][0].precioPesos;
+
+        try {
+            const schedule = await getUserGroups([periodoActivo],matricula);
+
+            if(!schedule || !schedule.data){
+                throw new Error('No existen user groups para ese usuario');
+            }
+
+            const cursos = schedule.data.map(schedule => {
+                const{
+                    course = {},
+                    professor = {}
+                } = schedule;
+
+                const {
+                    id = periodoActivo,
+                    name = '',
+                    credits = ''
+                } = course;
+
+                const {
+                    name: nombreProfesor = ''
+                } = professor;
+
+                const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
+
+                const precioMateria = credits* precioActual;
+
+                return {
+                    idMateria: id,
+                    nombreMat: name,
+                    creditos: credits,
+                    nombreProfesor,
+                    semestre
+                }
+            });
+
+            const precioTotal = cursos.reduce((total, curso) => total + curso.precioMateria, 0);
+
+            response.render('alumnos/consultarHorario', {
+                schedule: cursos,
+                confirmacion: confirmacion,
+                planesPago: planesPago,
+                precioTotal: precioTotal,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            })
+        }
+
+        catch (error) {
+            console.error('Error realizando operaciones:', error);
+        }
     }
 
-    if (confirmacion === 1) {
+    else if (confirmacion === 1) {
         const schedule = await Grupo.fetchSchedule(request.session.username)
         const precio = await Grupo.fetchPrecioTotal(request.session.username)
         const precioTotal = precio[0][0].Preciototal
