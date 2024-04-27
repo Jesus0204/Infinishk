@@ -1,0 +1,111 @@
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+ 
+<body>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6" style="text-align: center;">
+                    <h3 class="title is-3">Exportar Datos de Pagos</h3>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6" style="text-align: center;">
+                    <p class="is-size-6">
+                        Selecciona un rango de fechas y el tipo de pagos a exportar para poder descargar la información de la base de datos 
+                        y descargarla en un csv.
+                    </p>
+                </div>
+            </div>
+            <br>
+            <form action="/configuracion/exportarDatos" method="post">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column">
+                        <div class="field">
+                            <input class="is-checkradio is-medium has-background-color is-info" id="colegiatura"
+                                type="checkbox" name="colegiatura" checked>
+                            <label for="colegiatura">
+                                <strong>
+                                    Pagos Colegiatura
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <input class="is-checkradio is-medium has-background-color is-info" id="pag_dipl" type="checkbox"
+                                name="pag_dipl" checked>
+                            <label for="pag_dipl">
+                                <strong>
+                                    Pagos Diplomado
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <input class="is-checkradio is-medium has-background-color is-info" id="extra"
+                                type="checkbox"
+                                name="extra" checked>
+                            <label for="extra">
+                                <strong>
+                                    Pagos Extra
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <% if (error) { %>
+                        <div id="errorNotification" class="notification is-danger">
+                            <button id="closeNotification" class="delete" type="button"></button>
+                            <%= errorMensaje %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-8">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_1"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor selecciona una fecha. 
+                        </p>
+                        <label for="fecha_inicio">
+                            <strong>
+                                Fecha inicio:
+                            </strong>
+                        </label>
+                        <input type="date" id="fecha" name="fecha" class="datepicker">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <button type="submit" class="button is-medium is-rounded is-responsive" id="btn_exportar">
+                            <span>
+                                Descargar Datos
+                            </span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/exportarDatos.js"></script>
+</body>
+
+</html>
