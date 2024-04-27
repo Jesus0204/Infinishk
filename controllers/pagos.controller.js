@@ -711,7 +711,7 @@ exports.post_subir_archivo = (request, response, next) => {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
-                    if (tipoPago === 'Pago no Reconocido') {
+                    else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
                     }
                     else {
@@ -744,7 +744,7 @@ exports.post_subir_archivo = (request, response, next) => {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 'N/A';
                     }
-                    if (tipoPago === 'Pago no Reconocido') {
+                    else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
                     } else {
                         tipoPago = 'Pago de Diplomado'; // Si el importe no coincide con el monto a pagar
