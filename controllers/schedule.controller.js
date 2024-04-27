@@ -32,16 +32,13 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.enviarCorreoRecordatorio = async(request, response, next) => {
     // Sacas la fecha actual con moment
-    let fecha_actual = moment().tz('America/Mexico_City').startOf('day').format();
+    let fecha_actual = moment().startOf('day').format();
     
     Deuda.fetchDeudasRecordatorio(fecha_actual)
     .then(async ([deudasRecordatorio, fieldData]) => {
         for (count = 0; count < deudasRecordatorio.length; count++){
             // Le quitas 5 días a la fecha para enviar el correo
             let fecha_correo = moment(deudasRecordatorio[count].fechaLimitePago).subtract(5, 'days').format();
-
-            console.log('Fecha Actual: ' + fecha_actual);
-            console.log('Fecha 5 Días menos' + fecha_correo);
 
             // Si la nueva fecha es igual a la fecha actual se tiene que enviar el correo
             if (fecha_correo == fecha_actual) {
@@ -86,7 +83,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
 
 exports.enviarCorreoAtrasado = (request, response, next) => {
     // Sacas la fecha actual con moment
-    let fecha_actual = moment().tz('America/Mexico_City').startOf('day').format();
+    let fecha_actual = moment().startOf('day').format();
 
     Deuda.fetchDeudasCorreoAtrasado(fecha_actual)
     .then(async([deudasNoPagadas, fieldData]) => {
@@ -94,9 +91,6 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
             // Le sumas días a la fecha para enviar el correo
             let fecha_correo = moment(deudasNoPagadas[count].fechaLimitePago).add(1, 'days').format();
 
-            console.log('Fecha Actual: ' + fecha_actual);
-            console.log('Fecha 1 Día más' + fecha_correo);
-            
             // Si la fecha (un dia despues) se envia el correo notificando de los recargos y del atraso
              if (fecha_correo == fecha_actual) {
                 // Creas el mensaje para enviar el correo
