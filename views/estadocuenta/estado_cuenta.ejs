@@ -37,34 +37,21 @@
                   <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
                   <span>Pagos (nombre placeholder)</span>
               </a>
-          </li>
+          </li> 
       </ul>
   </div>
 
   <div class="notification" id="deuda">
-    prueba
+    prueba para deuda
   </div>
 
   <div class="is-hidden" id="pagos">
-    <% estadoCuenta.forEach(deuda => { %>
+    <% pagos.forEach(pagos => { %>
       <div class="box">
         <div class="columns is-vcentered">
           <div class="column">
-            <p><strong>Monto a Pagar:</strong> <%= deuda.montoAPagar %> </p>
-            <p><strong>Monto Pagado:</strong> <%= deuda.montoPagado %> </p>
-            <p><strong>Fecha Límite de Pago:</strong> <%= deuda.fechaLimitePago %> </p>
-            <% if(deuda.descuento !== 0) { %>
-              <p><strong>Descuento:</strong> <%= deuda.descuento %> </p>
-            <% } %>      
-            <p><strong>Pagado:</strong> <%= deuda.pagado ? 'Sí' : 'No' %> </p>
-          </div>
-          <div class="column is-narrow">
-            <% if(deuda.pagado == true) { %>
-              <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-            <% } %>   
-            <% if(deuda.pagado == false) { %>
-              <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
-            <% } %>  
+            <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
+            <p><strong>Motivo de pago:</strong> <%= pagos.motivo %> </p>
           </div>
         </div>
       </div>

@@ -11,13 +11,16 @@ exports.get_estado_cuenta = async (request, response, next) => {
         const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username); 
         const matricula = request.session.username;
         const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
+        const [pagos] = await Pago.fetchOne(matricula);
+
 
         response.render('estadocuenta/estado_cuenta', {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             csrfToken: request.csrfToken(),
             estudianteProfesional: estudianteProfesional[0][0],
-            estadoCuenta: estadoCuenta
+            estadoCuenta: estadoCuenta,
+            pagos: pagos
         });
     } catch (error) {
         response.status(500).send("Error en la obtención del estado de cuenta: " + error);
