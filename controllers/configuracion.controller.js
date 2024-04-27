@@ -62,7 +62,6 @@ exports.get_registrar_usuario = (request, response, next) => {
 exports.get_crear_usuario = (request, response, next) => {
     Rol.fetchAll()
         .then(([roles_disponibles, fieldData]) => {
-            console.log(roles_disponibles)
             response.render('configuracion/registrar_usuario', {
                 roles_disponibles: roles_disponibles,
                 opcion: false,
