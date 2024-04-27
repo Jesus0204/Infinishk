@@ -63,26 +63,33 @@
                                     </p>
 
                                     <div class="field">
-                                        <label class="label">Nombre del Plan: </label>
-                                        <div class="control">
-                                            <input class="input" type="text" name="nombrePlan" id="nombre<%= count %>"
+                                        <label class="label is-medium">Nombre del Plan: </label>
+                                        <div class="control has-icons-left">
+                                            <input class="input is-medium" type="text" name="nombrePlan"
+                                                id="nombre<%= count %>"
                                                 value="<%= plan.nombrePlan %>" style="border: 2px solid
                                                     #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-layer-group" style="color: #95404c;"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label class="label">Número de Pagos: </label>
-                                        <div class="control">
-                                            <input readonly class="input" type="text" name="numeroPagos"
+                                        <label class="label is-medium">Número de Pagos: </label>
+                                        <div class="control has-icons-left">
+                                            <input readonly class="input is-medium" type="text" name="numeroPagos"
                                                 value="<%= plan.numeroPagos %>" style="border: 2px solid
                                                     #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label class="label">Estado: </label>
+                                        <label class="label is-medium">Estado: </label>
                                         <div class="control">
-                                            <div class="select">
-                                                <select name="planPagoActivo">
+                                            <div class="select is-medium">
+                                                <select name="planPagoActivo" id="estatus<%= count %>">
                                                     <option value="1" <% if (plan.planPagoActivo===1) { %> selected
                                                         <% } %>>Activo
                                                     </option>
