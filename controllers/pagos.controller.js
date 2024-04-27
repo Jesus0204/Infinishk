@@ -671,7 +671,7 @@ exports.post_subir_archivo = (request, response, next) => {
                 const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
 
                 if (deuda && deuda[0] && deuda[0].length === 0) {
-                    tipoPago = "Pago no Reconocido"
+                    montoAPagar = 0;
                 }
 
                 else {
