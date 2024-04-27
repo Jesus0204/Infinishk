@@ -687,15 +687,8 @@ exports.post_subir_archivo = (request, response, next) => {
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                    if (fechaFormateada === fila.fechaFormato){
-                        console.log('Fecha es igual');
-                    }
-
-                    if (montoRedondeado === importeRedondeado){
-                        console.log('monto es igual');
-                    }
-
                     if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                        console.log('Entre al if de pago completo');
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
