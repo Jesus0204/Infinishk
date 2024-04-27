@@ -8,6 +8,7 @@
     <section class="section">
         <div class="container">
             <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" id="alumno" value="<%= alumno[0].Matricula %>">
             <div class="columns">
                 <div class="column is-6">
                     <h3 class="title is-3">Modificar Fichas de Pago</h3>
@@ -62,7 +63,7 @@
                                 <!-- Resto de la información para el primer pago -->
                                 <form action="/alumnos/fetch_fichas/modify" method="POST" class="form-modificar">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" name="alumno" value="<%= alumno.Matricula %>">
+                                    <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
                                     <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
                                     <strong>Total: </strong>
                                     $<%- ficha1.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -106,7 +107,7 @@
                                         Por favor escribe una nota.</p>
                                     <button id="Boton_modificar<%=display1%>" type="submit"
                                         class="button is-rounded is-medium is-responsive" 
-                                        onclick="modificar('<%= ficha1.descuento, ficha1.fecha_lim, ficha1.nota, ficha1.IDDeuda %>')"
+                                        onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
                                         style="font-size: medium;" disabled>
                                         <span>Modificar</span>
                                         <span class="icon is-large">
@@ -138,7 +139,7 @@
                                 <!-- Resto de la información para el segundo pago -->
                                 <form action="/alumnos/fetch_fichas/modify" method="POST" class="form-modificar">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" name="alumno" value="<%= alumno.Matricula %>">
+                                    <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
                                     <input type="hidden" name="id" value="<%= ficha2.IDDeuda %>">
                                     <strong>Total: </strong>
                                     $<%- ficha2.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -182,7 +183,7 @@
                                         Por favor escribe una nota.</p>
                                     <button id="Boton_modificar<%=display2%>" type="submit"
                                         class="button is-rounded is-medium is-responsive" 
-                                        onclick="modificar('<%= ficha2.descuento, ficha2.fecha_lim, ficha2.nota, ficha2.IDDeuda %>')" 
+                                        onclick="modificar('<%= ficha2.descuento %>', '<%= ficha2.fecha_lim %>', '<%= ficha2.nota %>', '<%= ficha2.IDDeuda %>', '<%= display2 %>')" 
                                         style="font-size: medium;" disabled>
                                         <span>Modificar</span>
                                         <span class="icon is-large">
@@ -204,6 +205,3 @@
 
     <script type="text/javascript" src="/js/modificar_fichas.js"></script>
 </body>
-
-
-

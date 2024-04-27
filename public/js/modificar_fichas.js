@@ -97,33 +97,42 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     })
 }
 
-function modificar(descuento, fecha_lim, nota, id) {
-    console.log('Iniciando modificación con los siguientes datos: ', descuento, fecha_lim, nota, id );
+function modificar(descuento, fecha_lim, nota, id, count) {
     const csrf = document.getElementById('_csrf').value;
     const alumno = document.getElementById('alumno').value;
+    
+    // Obtener dato de la ficha específica
+    const descuentoNum = document.getElementById('descuento' + count).value;
+    const fechaNum = document.getElementById('fecha_lim' + count).value; 
+    const notaNum = document.getElementById('nota' + count).value;
 
-    fetch('/alumnos/fetch_fichas', {
+    console.log('Iniciando modificación con los siguientes datos: ', descuentoNum, fechaNum, notaNum, id);
+
+    // formato de fecha de DD/MM/YYYY -> YYYY-MM-DD para SQL
+    const parts = fechaNum.split('/');
+    const fechaFormat = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+    console.log('Data to be sent:', { descuentoNum, fechaFormat, notaNum, id });
+
+    fetch('/alumnos/fetch_fichas/modify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'csrf-token': csrf
         },
         body: JSON.stringify({
-            descuento : descuento,
-            fecha_lim : fecha_lim,
-            nota : nota,
+            descuentoNum : descuentoNum,
+            fechaFormat : fechaFormat,
+            notaNum : notaNum,
             id : id
         })
     })
-    .then(response => {
-        if(!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
+        console.log('Response from server:', data);
         if(data.success){
             console.log('Modificación exitosa: ', data);
+            window.location.reload;
         } else {
             console.error('Error en la modificación: ', data.message);
         }

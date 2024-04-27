@@ -48,16 +48,13 @@ exports.get_fichas = (request, response, next) => {
 };
 
 exports.post_fichas_modify = async (request, response, next) => { 
-    const id = request.body.id;
-    const descuento = request.body.descuento;
-    const fecha_lim = request.body.fecha_lim;
-    const nota = request.body.nota;
-    const modificador = request.session.username;
+        const { descuentoNum, fechaFormat, notaNum, id } = request.body;
+        const modificador = request.session.username;
 
-    console.log('Received data:', { descuento, fecha_lim, nota, modificador, id });
+        console.log('Received data:', { descuentoNum, fechaFormat, notaNum, modificador, id });
 
-    try {
-        const data = await Fichas.update(descuento, fecha_lim, nota, modificador, id);
+        try {
+            const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
         console.log('Update result: ', data);
 
         response.status(200).json({ success: true, data: data });
