@@ -688,7 +688,6 @@ exports.post_subir_archivo = (request, response, next) => {
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
                     if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
-                        console.log('Entre al if de pago completo');
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
@@ -726,17 +725,7 @@ exports.post_subir_archivo = (request, response, next) => {
 
                 if (pagoDiplomadoCompleto && pagoDiplomadoCompleto[0] && pagoDiplomadoCompleto[0][0] && pagoDiplomadoCompleto[0][0].fechaPago !== undefined) {
                     const fechaParseada = new Date(pagoDiplomadoCompleto[0][0].fechaPago);
-                    const anio = fechaParseada.getFullYear();
-                    const mes = (fechaParseada.getMonth() + 1).toString().padStart(2, '0');
-                    const dia = fechaParseada.getDate().toString().padStart(2, '0');
-                    let horas = fechaParseada.getHours();
-                    const minutos = fechaParseada.getMinutes().toString().padStart(2, '0');
-
-                    if (horas < 10) {
-                        horas = `0${horas}`;
-                    }
-
-                    const fechaFormateada = `${anio}-${mes}-${dia} ${horas}:${minutos}`;
+                    const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD HH:mm');
 
                     const montoRedondeado = Math.round(pagoDiplomadoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
