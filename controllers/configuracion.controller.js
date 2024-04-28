@@ -200,7 +200,7 @@ exports.get_alumnos = async (request, response, next) => {
                 name,
                 first_surname,
                 second_surname,
-                email,
+                email ='',
                 status,
                 semester,
                 degree_name,
@@ -222,6 +222,8 @@ exports.get_alumnos = async (request, response, next) => {
             (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
             user.status === 'active'
         ));
+
+        console.log(filteredUsers);
         // Realiza la comparación para cada usuario
         const updatedUsers = [];
         for (const user of filteredUsers) {
