@@ -1,133 +1,89 @@
-<%- include('../includes/head', { username: username, permisos: permisos, rol: rol }) %>
+<%- include('../includes/head', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
 
-    <style>
-        .form-button {
-            margin-bottom: 20px;
-            /* Ajusta este valor a tus necesidades */
-        }
-    </style>
-
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-            </div>
-
-            <% if (opcion) { %>
-                <div class="column is-8">
-                    <h3 class="title is-3">Registrar y Modificar Usuarios</h3>
-                </div>
-                <form action="/configuracion/crear_usuario" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Registrar Nuevo Usuario
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-                <form action="/configuracion/modificar_usuario" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Modificar Usuario
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-
-                <form action="/configuracion/obtener_usuario" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Obtener Usuario
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-                <%}%>
-
-                    <% if (crear) { %>
-                        <div class="column is-8">
-                            <h3 class="title is-3">Registrar Usuario</h3>
-                        </div>
-                        <form action="/configuracion/crear_usuario" method="POST">
-                            <input id="formCrear" type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <div class="columns is-vcentered">
-                                <div class="column is-3"></div>
-                                <div class="column is-5">
-                                    <label class="label is-medium" for="pago">Tipo de usuario:</label>
-                                    <div class="control has-icons-left">
-                                        <div class="select is-medium">
-                                            <select name="roles" id="roles">
-                                                <% for (let roles of roles_disponibles) { %>
-                                                    <option data-nombre="<%= roles.nombreRol %>">
-                                                        <%= roles.nombreRol%>
-                                                    </option>
-                                                <%}%>
-                                            </select>
-                                        </div>
-                                        <div class="icon is-medium is-left">
-                                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                        
-                                    <!-- Campos para Alumno -->
-                                    <div id="alumnoFields" style="display: none;">
-                                        <label for="IDUsuario" class="label is-large">Matricula:</label>
-                                        <input type="text" id="IDUsuario" name="IDUsuario" required class="input is-large">
-                        
-                                        <label for="correoElectronico" class="label is-large">Correo:</label>
-                                        <input type="text" id="correoElectronico" name="correoElectronico" required class="input is-large">
-                        
-                                        <label for="referenciaBancaria" class="label is-large">Referencia Bancaria:</label>
-                                        <input type="text" id="referenciaBancaria" name="referenciaBancaria" required class="input is-large">
-                        
-                                        <label for="diplomado" class="label is-large">Diplomado:</label>
-                                        <input type="text" id="diplomado" name="diplomado" required class="input is-large">
-                        
-                                        <label for="fechaInscripcion" class="label is-large">Fecha de Inscripcion:</label>
-                                        <input type="date" id="fechaInscripcion" name="fechaInscripcion" required class="input is-large">
-                        
-                                        <label for="nombre" class="label is-large">Nombre:</label>
-                                        <input type="text" id="nombre" name="nombre" required class="input is-large">
-                        
-                                        <label for="apellidos" class="label is-large">Apellidos:</label>
-                                        <input type="text" id="apellidos" name="apellidos" required class="input is-large">
-                                    </div>
-                        
-                                    <!-- Campos para No Alumno -->
-                                    <div id="noAlumnoFields">
-                                        <!-- Tus campos existentes para No Alumno -->
-                                        <label for="IDUsuario" class="label is-large">IDUsuario:</label>
-                                        <input type="text" id="IDUsuario" name="IDUsuario" required class="input is-large">
-                        
-                                        <label for="correoElectronico" class="label is-large">Correo Electronico:</label>
-                                        <input type="text" id="correoElectronico" name="correoElectronico" required class="input is-large">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-3"></div>
-                                <div class="column is-6">
-                                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
-                                        <span>Registrar Usuario</span>
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>                        
+<section class="section">
+    <div class="container">
+        <div class="column is-8">
+            <h3 class="title is-3">Registrar Usuario</h3>
         </div>
-    </section>
-    <%}%>
-    </section>
-    <script type="text/javascript" src="/js/registrar_usuario.js"></script>
+        <form action="/configuracion/registrar_usuario" method="POST">
+            <input id="formCrear" type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="columns is-vcentered">
+                <div class="column is-3"></div>
+                <div class="column is-5">
+                    <label class="label is-medium" for="pago">Tipo de usuario:</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium">
+                            <select name="roles" id="roles">
+                                <% for (let roles of roles_disponibles) { %>
+                                <option data-nombre="<%= roles.nombreRol %>">
+                                    <%= roles.nombreRol%>
+                                </option>
+                                <%}%>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+
+                                <!-- Campos para Alumno -->
+                                <div id="alumnoFields" style="display: none;">
+                                    <label for="IDUsuario" class="label is-large">Matricula:</label>
+                                    <input type="text" id="IDUsuario" name="IDUsuario" required class="input is-large">
+
+                                    <label for="correoElectronico" class="label is-large">Correo:</label>
+                                    <input type="text" id="correoElectronico" name="correoElectronico" required
+                                        class="input is-large">
+
+                                    <label for="referenciaBancaria" class="label is-large">Referencia Bancaria:</label>
+                                    <input type="text" id="referenciaBancaria" name="referenciaBancaria" required
+                                        class="input is-large">
+
+                                    <label for="diplomado" class="label is-large">Diplomado:</label>
+                                    <input type="text" id="diplomado" name="diplomado" required class="input is-large">
+
+                                    <label for="fechaInscripcion" class="label is-large">Fecha de Inscripcion:</label>
+                                    <input type="date" id="fechaInscripcion" name="fechaInscripcion" required
+                                        class="input is-large">
+
+                                    <label for="nombre" class="label is-large">Nombre:</label>
+                                    <input type="text" id="nombre" name="nombre" required class="input is-large">
+
+                                    <label for="apellidos" class="label is-large">Apellidos:</label>
+                                    <input type="text" id="apellidos" name="apellidos" required class="input is-large">
+                                </div>
+
+                                <!-- Campos para No Alumno -->
+                                <div id="noAlumnoFields">
+                                    <!-- Tus campos existentes para No Alumno -->
+                                    <label for="IDUsuario" class="label is-large">IDUsuario:</label>
+                                    <input type="text" id="IDUsuario" name="IDUsuario" required class="input is-large">
+
+                                    <label for="correoElectronico" class="label is-large">Correo Electronico:</label>
+                                    <input type="text" id="correoElectronico" name="correoElectronico" required
+                                        class="input is-large">
+                                </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-3"></div>
+                        <div class="column is-6">
+                            <button class="button is-rounded is-medium is-responsive" type="submit"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
+                                <span>Registrar Usuario</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+        </form>
+    </div>
+</section>
+
+<script type="text/javascript" src="/js/registrar_usuario.js"></script>

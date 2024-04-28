@@ -3,11 +3,6 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Usuario = require('../models/usuario.model')
 const Rol = require('../models/rol.model')
 
-exports.get_configuracion = (request, response, next) => {
-    console.log("Aquí estoy");
-    response.render('configuracion/configuracion');
-};
-
 exports.get_administrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
@@ -47,27 +42,12 @@ exports.get_consultar_usuario = (request, response, next) => {
 };
 
 exports.get_registrar_usuario = (request, response, next) => {
-    response.render('configuracion/registrar_usuario', {
-        opcion: true,
-        crear: false,
-        modificar: false,
-        obtener: false,
-        csrfToken: request.csrfToken(),
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    })
-};
-
-exports.get_crear_usuario = (request, response, next) => {
     Rol.fetchAll()
         .then(([roles_disponibles, fieldData]) => {
             response.render('configuracion/registrar_usuario', {
+                registrar: false,
+                obtener: true,
                 roles_disponibles: roles_disponibles,
-                opcion: false,
-                crear: true,
-                modificar: false,
-                obtener: false,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
@@ -77,26 +57,11 @@ exports.get_crear_usuario = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         })
-}
-
-exports.get_modificar_usuario = (request, response, next) => {
-    response.render('configuracion/registrar_usuario', {
-        opcion: false,
-        crear: false,
-        modificar: true,
-        obtener: false,
-        csrfToken: request.csrfToken(),
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    })
-}
+};
 
 exports.get_obtener_usuario = (request, response, next) => {
     response.render('configuracion/registrar_usuario', {
-        opcion: false,
-        crear: false,
-        modificar: false,
+        registrar: false,
         obtener: true,
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
@@ -104,8 +69,6 @@ exports.get_obtener_usuario = (request, response, next) => {
         rol: request.session.rol || "",
     })
 }
-
-
 
 exports.post_registrar_usuario = (request, response, next) => {
     const rol = request.body.roles;
@@ -186,23 +149,6 @@ exports.get_search_noactivo = (request, response, next) => {
         })
         .catch((error) => {
             console.log(error);
-        });
-};
-
-exports.post_modificar_usuario = (request, response, next) => {
-    const id = request.body.IDUsuario;
-    const status = request.body.statusUsuario === 'on' ? '1' : '0';
-
-    Usuario.update(id, status)
-        .then(() => {
-            // Redirigir al usuario de vuelta a la misma página
-            response.redirect('/configuracion/consultar_usuario');
-        })
-        .catch((error) => {
-            console.log('Hubo error');
-            console.log(error);
-            // Manejar el error de alguna forma
-            response.redirect('/configuracion/consultar_usuario');
         });
 };
 

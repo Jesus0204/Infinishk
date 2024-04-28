@@ -45,29 +45,46 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-6">
+                    <div class="column is-7">
                         <h3 class="title is-3">Configuración Usuarios</h3>
                     </div>
-                    <% if (contienePermiso(permisos, 'Registrar usuario' )==true) { %>
-                        <div class="column is-offset-2">
-                            <p class="control">
-                                <a class="button is-rounded is-responsive" style="font-size: large;"
-                                    href="/configuracion/registrar_usuario">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-circle-plus"></i>
-                                    </span>
-                                    <span>
-                                        Manejar Usuarios
-                                    </span>
-                                </a>
-                            </p>
+                    <% if (contienePermiso(permisos, 'Registrar usuario' )== true) { %>
+                    <div class="column is-offset-1">
+                        <p class="control">
+                            <a class="button is-rounded is-responsive" style="font-size: large;"
+                                href="/configuracion/registrar_usuario">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                </span>
+                                <span>
+                                    Registrar Usuario
+                                </span>
+                            </a>
+                        </p>
+                        <div class="columns">
+                            <div class="column is-12">
+                                <% if (contienePermiso(permisos, 'Registrar usuario' )== true) { %>
+                                <p class="control">
+                                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                                        href="/configuracion/obtener_usuario">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-plus"></i>
+                                        </span>
+                                        <span>
+                                            Obtener Usuario
+                                        </span>
+                                    </a>
+                                </p>
+                                <% } %>
+                            </div>
                         </div>
-                        <% } %>
-                </div>
+                    </div>
+                    <% } %>
+                    </div>
 
-                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
-                <div class="tabs is-boxed">
+                    <div class="tabs is-boxed" style="margin-top: -1.3em;">
                     <ul>
                         <li class="is-active" id="nav_activos">
                             <a onclick="usuarios_activos()">

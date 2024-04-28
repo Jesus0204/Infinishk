@@ -22,16 +22,14 @@ router.post('/precio_credito', isAuth, can_ConsultarCostoCredito, configuracionC
 router.get('/registrar_precio_credito', isAuth, can_RegistrarCostoCredito, configuracionController.get_registrar_precio_credito);
 router.post('/registrar_precio_credito', isAuth, can_RegistrarCostoCredito, configuracionController.post_registrar_precio_credito);
 
+// Consultar Usuario
 router.get('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionController.get_consultar_usuario);
 router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_activo);
 router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
-router.post('/modificar_usuario',isAuth,can_ConsultarUsuario,configuracionController.post_modificar_usuario);
+
+// Registrar Usuario de ambas formas
 router.get('/registrar_usuario', can_RegistrarUsuario,configuracionController.get_registrar_usuario);
 router.post('/registrar_usuario', can_RegistrarUsuario,configuracionController.post_registrar_usuario);
-router.get('/crear_usuario',isAuth,can_RegistrarUsuario,configuracionController.get_crear_usuario);
-router.get('/modificar_usuario',isAuth,can_RegistrarUsuario,configuracionController.get_modificar_usuario);
 router.get('/obtener_usuario',isAuth,can_RegistrarUsuario,configuracionController.get_obtener_usuario);
-
-router.get('/', configuracionController.get_configuracion);
 
 module.exports = router;
