@@ -73,15 +73,15 @@
                                                                     <i class="fa-regular fa-calendar"></i>
                                                                 </span>
                                                                 <strong>Fecha de inicio: </strong>
-                                                                <%= grupo.fechaInicio %>
+                                                                <%= new Date(grupo.fechaInicio).toLocaleDateString("es-ES") %>
                                                             </p>
                                                             <p>
                                                                 <span class="icon is-small">
                                                                     <i class="fa-regular fa-calendar"></i>
                                                                 </span>
                                                                 <strong>Fecha de termino: </strong>
-                                                                <%= grupo.fechaTermino %>
-                                                            </p>
+                                                                <%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
+                                                            </p>                                                            
                                                             <p>
                                                                 <span class="icon is-small">
                                                                     <i class="fa-solid fa-tags"></i>
@@ -141,12 +141,12 @@
                                                     </span>
                                                     <strong>Horario: </strong>
                                                 </p>
-                                                <% for (let horario of curso.horarios) { %>
-                                                    <input type="hidden" name="horario[]" value="<%= horario.diaSemana %>
-                                                    <%= horario.fechaInicio %> - <%= horario.fechaTermino %>">
-                                                        <%= horario.diaSemana %>
-                                                            <%= horario.fechaInicio %> - <%= horario.fechaTermino %>
-                                                    <% } %>
+                                                <% for (let i = 0; i < curso.horarios.length; i += 2) { %>
+                                                    <input type="hidden" name="grupoHorario[]" value="<%= curso.horarios[i].diaSemana %> <%= curso.horarios[i].fechaInicio %> - <%= curso.horarios[i].fechaTermino %>, <%= curso.horarios[i+1].diaSemana %> <%= curso.horarios[i+1].fechaInicio %> - <%= curso.horarios[i+1].fechaTermino %>">
+                                                        <%= curso.horarios[i].diaSemana %> <%= curso.horarios[i].fechaInicio %> - <%= curso.horarios[i].fechaTermino %>
+                                                        <%= curso.horarios[i+1].diaSemana %> <%= curso.horarios[i+1].fechaInicio %> - <%= curso.horarios[i+1].fechaTermino %>
+                                                <% } %>
+                                                
                                                         <p>
                                                             <span class="icon is-small">
                                                                 <i class="fa-regular fa-building"></i>

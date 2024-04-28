@@ -8,6 +8,9 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Materia = require('../models/materia.model');
 const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
 const { request } = require('express');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.get_propuesta_horario = async (request, response, next) => {
     const conf = await Alumno.fetchHorarioConfirmado(request.session.username)
@@ -142,26 +145,22 @@ exports.get_propuesta_horario = async (request, response, next) => {
 
 exports.post_confirmar_horario = async (request, response, next) => {
 
-    console.log(request.body);
-
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
-
-    console.log(precioActual);
 
     const idMateria = Array.isArray(request.body['idMateria[]']) ? request.body['idMateria[]'] : [];
     const nombreProfesorCompleto = Array.isArray(request.body['nombreProfesorCompleto[]']) ? request.body['nombreProfesorCompleto[]'] : [];
     const salon = Array.isArray(request.body['salon[]']) ? request.body['salon[]'] : [];
     const fechaInicio = Array.isArray(request.body['fechaInicio[]']) ? request.body['fechaInicio[]'] : [];
     const fechaFin = Array.isArray(request.body['fechaFin[]']) ? request.body['fechaFin[]'] : [];
-    const horario = Array.isArray(request.body['horario[]']) ? request.body['horario[]'] : [];
+    const grupoHorario = Array.isArray(request.body['grupoHorario[]']) ? request.body['grupoHorario[]'] : [];
 
     // Iterar sobre los cursos confirmados
     for (let i = 0; i < idMateria.length; i++) {
         const materia = idMateria[i];
         const profesor = nombreProfesorCompleto[i];
         const salonCurso = salon[i];
-        const horarioCurso = horario[i];
+        const horarioCurso = grupoHorario[i];
         const fechaInicioCurso = fechaInicio[i];
         const fechaFinCurso = fechaFin[i];
 
@@ -169,31 +168,23 @@ exports.post_confirmar_horario = async (request, response, next) => {
 
          const IDMateria = idmateria[0][0].IDMateria;
 
-         console.log(IDMateria);
-         console.log(profesor);
-         console.log(salonCurso);
-         console.log(horarioCurso);
-         console.log(fechaInicioCurso);
-         console.log(fechaFinCurso);
-
-
-    //     // Guardar el grupo en la base de datos
-    //     await Grupo.saveGrupo(
-    //         request.session.username, // Suponiendo que matricula se toma de la sesión del usuario
-    //         IDMateria,
-    //         precioActual,
-    //         profesor,
-    //         salonCurso,
-    //         horarioCurso,
-    //         fechaInicioCurso,
-    //         fechaFinCurso
-    //     );
+         // Guardar el grupo en la base de datos
+         await Grupo.saveGrupo(
+             request.session.username, // Suponiendo que matricula se toma de la sesión del usuario
+             IDMateria,
+             precioActual,
+             profesor,
+             salonCurso,
+             horarioCurso,
+             fechaInicioCurso,
+             fechaFinCurso
+         );
     }
 
-    // // Acciones adicionales después de manejar cada grupo
-    // await Alumno.updateHorarioAccepted(request.session.username);
-    // await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username);
-    // await Usuario.fetchCorreo(request.session.username);
+     // Acciones adicionales después de manejar cada grupo
+     await Alumno.updateHorarioAccepted(request.session.username);
+     await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username);
+     await Usuario.fetchCorreo(request.session.username);
 
-    // response.redirect('/horario/consultaHorario');
+     response.redirect('/horario/consultaHorario');
 }
