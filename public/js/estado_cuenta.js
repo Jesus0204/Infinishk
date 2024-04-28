@@ -66,3 +66,35 @@ function extras() {
     const tabla_extras = document.querySelector('#extras');
     tabla_extras.classList.remove('is-hidden');
 }
+
+function pagoscol() {
+    const tab_pagoscol = document.querySelector('#nav_pagoscol');
+    const tab_pagosextra = document.querySelector('#nav_pagosextra');
+   
+    tab_pagosextra.classList.remove('is-active');
+    tab_pagoscol.classList.add('is-active');
+
+    // Quitar la tabla de extras
+    const tabla_extras = document.querySelector('#pagosextra');
+    tabla_extras.classList.add('is-hidden');
+
+    // Poner la tabla de pagos colegiatura
+    const tabla_pagoscol = document.querySelector('#pagoscol');
+    tabla_pagoscol.classList.remove('is-hidden');
+}
+
+function pagosextra() {
+    const tab_pagoscol = document.querySelector('#nav_pagoscol');
+    const tab_pagosextra = document.querySelector('#nav_pagosextra');
+   
+    tab_pagosextra.classList.add('is-active');
+    tab_pagoscol.classList.remove('is-active');
+
+    // Quitar la tabla de pagos colegiatura
+    const tabla_pagoscol = document.querySelector('#pagoscol');
+    tabla_pagoscol.classList.add('is-hidden');
+
+    // Poner la tabla de pagos extras
+    const tabla_extras = document.querySelector('#pagosextra');
+    tabla_extras.classList.remove('is-hidden');
+}
