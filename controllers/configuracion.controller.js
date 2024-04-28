@@ -270,7 +270,7 @@ exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
 
-    PlanPago.save(nombre, numero, activo)
+    PlanPago.save(nombre, numero)
         .then(([planespago, fieldData]) => {
             response.redirect('/configuracion/administrar_planpago');
         })
