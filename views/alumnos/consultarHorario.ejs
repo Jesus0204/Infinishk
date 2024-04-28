@@ -113,32 +113,41 @@
                                             <span class="icon is-small">
                                                 <i class="fa-regular fa-user"></i>
                                             </span>
-                                            <strong>Profesor: </strong><%= curso.nombreProfesor %>
+                                            <strong>Profesor: </strong><%= curso.nombreProfesorCompleto %>
                                         </p>
+                                    </p>
+                                    <% for (let horario of curso.horarios) { %>
                                         <p>
                                             <span class="icon is-small">
                                                 <i class="fa-regular fa-clock"></i>
                                             </span>
-                                            <strong>Horario: </strong> <!-- Aquí puedes agregar el horario -->
+                                            <strong>Horario: </strong><%= horario.diaSemana %> <%= horario.fechaInicio %> - <%= horario.fechaTermino %>
                                         </p>
+                                    <% } %>
                                         <p>
                                             <span class="icon is-small">
                                                 <i class="fa-regular fa-building"></i>
                                             </span>
-                                            <strong>Salón: </strong> <!-- Aquí puedes agregar el salón -->
+                                            <strong>Salón: </strong><%= curso.nombreSalon%>
                                         </p>
                                         <p>
                                             <span class="icon is-small">
                                                 <i class="fa-regular fa-calendar"></i>
                                             </span>
-                                            <strong>Fecha de inicio: </strong> <!-- Aquí puedes agregar la fecha de inicio -->
+                                            <strong>Fecha de inicio: </strong> <%= curso.startDateFormat%>
                                         </p>
                                         <p>
                                             <span class="icon is-small">
                                                 <i class="fa-regular fa-calendar"></i>
                                             </span>
-                                            <strong>Fecha de termino: </strong> <!-- Aquí puedes agregar la fecha de termino -->
+                                            <strong>Fecha de termino: </strong> <%= curso.endDateFormat%>
                                         </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-graduation-cap"></i>
+                                            </span>
+                                            <strong>Créditos: </strong> <%= curso.creditos %>
+                                        </p>                                        
                                         <p>
                                             <span class="icon is-small">
                                                 <i class="fa-solid fa-tags"></i>

@@ -5,7 +5,7 @@ const Colegiatura = require('../models/colegiatura.model');
 const Usuario = require('../models/usuario.model');
 const Periodo = require('../models/periodo.model');
 const PrecioCredito = require('../models/precio_credito.model');
-const { getAllUsers, getAllCourses,getAllPeriods,getUserGroups } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
 const { request } = require('express');
 
 exports.get_propuesta_horario = async (request, response, next) => {
@@ -14,7 +14,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
     const confirmacion = conf[0][0].horarioConfirmado
     const planesPago = planes[0]
 
-    if (confirmacion === 0){
+    if (confirmacion === 0) {
         const matricula = request.session.username;
         const periodo = await Periodo.fetchActivo();
         const periodoActivo = periodo[0][0].IDPeriodo;
@@ -22,16 +22,20 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const precioActual = precioCredito[0][0].precioPesos;
 
         try {
-            const schedule = await getUserGroups(periodoActivo,matricula);
+            const schedule = await getUserGroups(periodoActivo, matricula);
 
-            if(!schedule || !schedule.data){
+            if (!schedule || !schedule.data) {
                 throw new Error('No existen user groups para ese usuario');
             }
 
             const cursos = schedule.data.map(schedule => {
-                const{
+                const {
+                    room = '',
+                    name: nameSalon = '',
+                    schedules = [],
                     course = {},
-                    professor = {}
+                    professor = {},
+                    school_cycle = {}
                 } = schedule;
 
                 const {
@@ -41,20 +45,61 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 } = course;
 
                 const {
-                    name: nombreProfesor = ''
+                    name: nombreProfesor = '',
+                    first_surname = '',
+                    second_surname = ''
                 } = professor;
+
+                const {
+                    start_date = '',
+                    end_date = '',
+                } = school_cycle;
+
+                const startDate = new Date(start_date);
+                const endDate = new Date(end_date);
+
+                const startDateFormat = `${startDate.getFullYear()}-${startDate.getMonth() + 1 < 10 ? '0' : ''}${startDate.getMonth() + 1}-${startDate.getDate() < 10 ? '0' : ''}${startDate.getDate()}`;
+                const endDateFormat = `${endDate.getFullYear()}-${endDate.getMonth() + 1 < 10 ? '0' : ''}${endDate.getMonth() + 1}-${endDate.getDate() < 10 ? '0' : ''}${endDate.getDate()}`;
+
+                const nombreSalon = `${room} ${nameSalon}`;
+                const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
 
                 const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
 
-                const precioMateria = credits* precioActual;
+                const precioMateria = credits * precioActual;
+
+                const horarios = schedules.map(schedule => {
+                    const {
+                        weekday = '',
+                        start_hour = '',
+                        end_hour = '',
+                    } = schedule;
+
+                    // Crear objetos Date a partir de las horas de inicio y final
+                    const startDate = new Date(start_hour);
+                    const endDate = new Date(end_hour);
+
+                    const fechaInicio = `${startDate.getHours()}:${startDate.getMinutes() < 10 ? '0' : ''}${startDate.getMinutes()}`;
+                    const fechaTermino = `${endDate.getHours()}:${endDate.getMinutes() < 10 ? '0' : ''}${endDate.getMinutes()}`;
+
+                    return {
+                        diaSemana: weekday,
+                        fechaInicio,
+                        fechaTermino
+                    };
+                });
 
                 return {
                     idMateria: id,
                     nombreMat: name,
                     creditos: credits,
-                    nombreProfesor,
+                    nombreProfesorCompleto,
+                    nombreSalon,
                     semestre,
-                    precioMateria
+                    precioMateria,
+                    horarios,
+                    startDateFormat,
+                    endDateFormat,
                 }
             });
 
