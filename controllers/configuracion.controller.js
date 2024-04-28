@@ -45,8 +45,6 @@ exports.get_registrar_usuario = (request, response, next) => {
     Rol.fetchAll()
         .then(([roles_disponibles, fieldData]) => {
             response.render('configuracion/registrar_usuario', {
-                registrar: false,
-                obtener: true,
                 roles_disponibles: roles_disponibles,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
@@ -61,8 +59,6 @@ exports.get_registrar_usuario = (request, response, next) => {
 
 exports.get_obtener_usuario = (request, response, next) => {
     response.render('configuracion/registrar_usuario', {
-        registrar: false,
-        obtener: true,
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -72,7 +68,6 @@ exports.get_obtener_usuario = (request, response, next) => {
 
 exports.post_registrar_usuario = (request, response, next) => {
     const rol = request.body.roles;
-    console.log(rol);
 
     if (rol === 'Administrador') {
         response.render('configuracion/activar_usuario', {
