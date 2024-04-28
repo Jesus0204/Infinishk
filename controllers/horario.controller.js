@@ -18,11 +18,11 @@ exports.get_propuesta_horario = async (request, response, next) => {
     const planes = await PlanPago.fetchAllActivePlans()
     const confirmacion = conf[0][0].horarioConfirmado
     const planesPago = planes[0]
+    var periodoExistente = 1;
 
     if (confirmacion === 0) {
         const matricula = request.session.username;
         const periodo = await Periodo.fetchActivo();
-        var periodoExistente = 1;
         if(periodo[0].length === 0){
             periodoExistente = 0;
             response.render('alumnos/consultarHorario', {
@@ -143,6 +143,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const precio = await Grupo.fetchPrecioTotal(request.session.username)
         const precioTotal = precio[0][0].Preciototal
         response.render('alumnos/consultarHorario', {
+            periodoExistente: periodoExistente,
             schedule: schedule,
             precioTotal: precioTotal,
             confirmacion: confirmacion,
