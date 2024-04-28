@@ -81,7 +81,16 @@
                                                                 </span>
                                                                 <strong>Fecha de termino: </strong>
                                                                 <%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
-                                                            </p>                                                            
+                                                            </p> 
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fas fa-graduation-cap"></i>
+                                                                </span>
+                                                                <strong>Créditos: </strong>
+                                                                <%= grupo.Creditos.toLocaleString('mx', {
+                                                                    minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                                    }) %>
+                                                            </p>                                                           
                                                             <p>
                                                                 <span class="icon is-small">
                                                                     <i class="fa-solid fa-tags"></i>
