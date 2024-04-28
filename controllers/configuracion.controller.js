@@ -3,6 +3,12 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Usuario = require('../models/usuario.model')
 const Rol = require('../models/rol.model')
 
+const { getAllUsers, getAllCourses,getAllPeriods,getUser } = require('../util/adminApiClient');
+
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 exports.get_administrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
@@ -66,13 +72,43 @@ exports.get_obtener_usuario = (request, response, next) => {
     })
 }
 
-exports.post_obtener_usuario = (request, response, next) => {
-    response.render('configuracion/obtener_usuario', {
-        csrfToken: request.csrfToken(),
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    })
+exports.post_obtener_usuario = async (request, response, next) => {
+    const matricula = request.body.user;
+
+    try{
+
+        const user = await getUser(matricula);
+
+        if (!user || !user.data) {
+            throw new Error('No existe ese usuario');
+        }
+
+        const usuarios = user.data.map(usuario => {
+
+            const {
+                ivd_id = '',
+                email = '',
+            } = usuario;
+
+            return {
+                ivd_id: ivd_id,
+                email:email,
+            }
+        })
+
+        response.render('configuracion/activar_usuario', {
+            usuarios: usuarios,
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
+
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
 }
 
 exports.post_registrar_usuario = (request, response, next) => {

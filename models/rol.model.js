@@ -8,4 +8,8 @@ module.exports = class rol {
     static fetchAll() {
         return db.execute(`SELECT nombreRol FROM Rol`);
     }
+
+    static fetchNotAll() {
+        return db.execute(`SELECT nombreRol FROM Rol`);
+    }
 };

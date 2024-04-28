@@ -61,7 +61,15 @@
             <h3 id="title" class="title">Ingresa el username</h3>
             <form action="/configuracion/obtener_usuario" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input required id="usernameInput" class="input" name="correo">
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input name="user" class="input is-medium" type="text" id="user"
+                            placeholder="Matrícula del Usuario" />
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
+                        </span>
+                    </p>
+                </div>
                 <button id="guardarBtn" type="submit" class="button is-primary">Obtener Usuario</button>
             </form>
             <p id="errorMessage" style="color: red;"></p>
