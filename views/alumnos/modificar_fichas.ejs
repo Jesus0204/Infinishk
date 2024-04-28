@@ -17,7 +17,20 @@
 
             <p id="fichas_length" class="is-hidden"><%=fichas.length %></p>
 
+            <% if (fichas.length === 0) { %>
+                <div class="columns">
+                    <div class="column is-6">
+                        <h3 class="subtitle">No se encontraron deudas recientes</h3>
+                    </div>
+                </div>
+            <% } %>
+
             <table class="table is-bordered is-hoverable is-fullwidth">
+                 <div id="modificacion_ficha" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            <button id="btn_eliminar_estatus" class="delete"></button>
+                            ¡Fichs modificada! Recargando datos...
+                    </div> 
                 <% if (fichas.length > 0) { %>
                 <thead>
                     <tr>
@@ -84,7 +97,7 @@
                                     <strong>Descuento:</strong>
                                     <input
                                         id="descuento<%=display1%>" name="descuento" class="input is-medium" type="number"
-                                        step="any" placeholder="Descuento">
+                                        step="any" value="<%= ficha1.Descuento %>">
                                     <p id="ayuda_descuento_vacio<%=display1%>"
                                         class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                         style="padding: 0.5em; margin-bottom: -2em;">
@@ -160,7 +173,7 @@
                                     <strong>Descuento:</strong>
                                     <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
                                         type="number"
-                                        step="any" placeholder="Descuento">
+                                        step="any" value="<%= ficha2.Descuento %>">
                                     <p id="ayuda_descuento_vacio<%=display2%>"
                                         class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                         style="padding: 0.5em; margin-bottom: -2em;">
