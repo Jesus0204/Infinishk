@@ -232,7 +232,7 @@ exports.get_alumnos = async (request, response, next) => {
                 if (!isNaN(user.ivd_id)) {
                     await Usuario.updateUsuario(user.ivd_id, user.email);
                 } else {
-                    console.error(`IDUsuario inválido: ${user.ivd_id}`);
+                    console.log(`IDUsuario inválido: ${user.ivd_id}`);
                 }
                 
                 await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
