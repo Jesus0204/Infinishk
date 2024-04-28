@@ -132,7 +132,7 @@ function modificar(descuento, fecha_lim, nota, id, count) {
         console.log('Response from server:', data);
         if(data.success){
             console.log('Modificación exitosa: ', data);
-            window.location.reload;
+            window.location.reload();
         } else {
             console.error('Error en la modificación: ', data.message);
         }
