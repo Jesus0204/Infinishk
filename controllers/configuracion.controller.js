@@ -196,7 +196,7 @@ exports.get_alumnos = async (request, response, next) => {
 
         const parsedUsers = users.data.map(user => {
             const {
-                ivd_id,
+                ivd_id = '',
                 name,
                 first_surname,
                 second_surname,
