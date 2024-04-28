@@ -57,13 +57,13 @@
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                     <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>">
 
-                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre<%= count %>">
-                                        Por favor
-                                        escribe un nombre del plan de Pago.
-                                    </p>
-
+                                    
                                     <div class="field">
                                         <label class="label is-medium">Nombre del Plan: </label>
+                                        <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre<%= count %>"
+                                            style="padding: 0.5em; margin-top: -1em;">
+                                            Por favor escribe un nombre del plan de Pago.
+                                        </p>
                                         <div class="control has-icons-left">
                                             <input class="input is-medium" type="text" name="nombrePlan"
                                                 id="nombre<%= count %>"

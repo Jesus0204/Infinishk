@@ -23,7 +23,7 @@ module.exports = class PlanPago{
         `, [nombrePlan, numeroPagos]);
     }
 
-    static fetchOne(nombre){
-        return db.execute('Select * from planPago WHERE nombrePlan = ?',[nombre]);
+    static fetchOne(numPagos){
+        return db.execute('SELECT * FROM planPago WHERE numeroPagos = ?', [numPagos]);
     }
 }

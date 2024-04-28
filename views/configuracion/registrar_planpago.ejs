@@ -34,6 +34,10 @@
                                     method="POST">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                     <label class="label is-medium">Nombre del Plan:</label>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor escribe un nombre del plan de Pago.
+                                    </p>
                                     <div class="field">
                                         <div class="control has-icons-left">
                                             <input class="input is-medium" type="text" id="nombrePlan"
@@ -45,6 +49,22 @@
                                         </div>
                                     </div>
                                     <label class="label is-medium">Número de Pagos:</label>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_vacio"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor escribe un número de pagos válido.
+                                    </p>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_negativo"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor escribe un número mayor a 0.
+                                    </p>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_exponente"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor escribe un número de pagos sin exponente.
+                                    </p>
+                                    <p class="help is-hidden has-text-danger-dark" id="existente"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Ya existe un plan con ese número de pagos. 
+                                    </p>
                                     <div class="field">
                                         <div class="control has-icons-left">
                                             <input class="input is-medium" type="number" id="numeroPagos"

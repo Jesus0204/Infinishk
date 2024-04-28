@@ -248,8 +248,8 @@ exports.get_registrar_precio_credito = (request, response, next) => {
 
 
 exports.get_check_plan = (request, response, next) => {
-    const nombre = request.query.nombre;
-    PlanPago.fetchOne(nombre)
+    const num = request.query.num;
+    PlanPago.fetchOne(num)
         .then(([planpagos]) => {
             if (planpagos.length > 0) {
                 response.json({
@@ -270,7 +270,7 @@ exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
 
-    PlanPago.save(nombre, numero, activo)
+    PlanPago.save(nombre, numero)
         .then(([planespago, fieldData]) => {
             response.redirect('/configuracion/administrar_planpago');
         })
