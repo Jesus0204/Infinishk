@@ -29,173 +29,199 @@
         <div id="diplomados_activos" class="container">
             <% if(confirmacion){%>
                 <h3 class="title is-2">Consultar horario</h3>
-            <%}else{%>
-                <h3 class="title is-2">Confirmar horario</h3>
-            <%}%>
-            <% if(confirmacion === 1){%>
-                <% if (schedule[0].length===0) { %>
-                    <h3 class="title is-2">Horario no disponible por el momento.</h3>
-                    <% } else { %>
-                        <% for (let grupo of schedule[0]) { %>
-                        <table class="table is bordered is hoverable is-fullwidth">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="column">
-                                            <p>Unidad de formación: <%= grupo.IDGrupo %></p>
-                                            <h3 class="title is-5"><%= grupo.Nombre %></h3>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-user"></i>
-                                                </span>
-                                                <strong>Profesor: </strong><%= grupo.Profesor %>
-                                            </p>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-clock"></i>
-                                                </span>
-                                                <strong>Horario: </strong><%= grupo.Horario %>
-                                            </p>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-building"></i>
-                                                </span>
-                                                <strong>Salón: </strong><%= grupo.Salon %>
-                                            </p>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-calendar"></i>
-                                                </span>
-                                                <strong>Fecha de inicio: </strong><%= grupo.fechaInicio %>
-                                            </p>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-calendar"></i>
-                                                </span>
-                                                <strong>Fecha de termino: </strong><%= grupo.fechaTermino %>
-                                            </p>
-                                            <p>
-                                                <span class="icon is-small">
-                                                    <i class="fa-solid fa-tags"></i>
-                                                </span>
-                                                <strong>Costo(MXN): </strong>$<%= grupo.Precio_materia.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %>
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <% } %>
-                    <% } %>
-                    <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $<%= precioTotal.toLocaleString('mx', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }) %></h3>
-                    <br>
-                <% } %>
+                <%}else{%>
+                    <h3 class="title is-2">Confirmar horario</h3>
+                    <%}%>
+                        <% if(confirmacion===1){%>
+                            <% if (schedule[0].length===0) { %>
+                                <h3 class="title is-2">Horario no disponible por el momento.</h3>
+                                <% } else { %>
+                                    <% for (let grupo of schedule[0]) { %>
+                                        <table class="table is bordered is hoverable is-fullwidth">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="column">
+                                                            <p>Unidad de formación: <%= grupo.IDGrupo %>
+                                                            </p>
+                                                            <h3 class="title is-5">
+                                                                <%= grupo.Nombre %>
+                                                            </h3>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-regular fa-user"></i>
+                                                                </span>
+                                                                <strong>Profesor: </strong>
+                                                                <%= grupo.Profesor %>
+                                                            </p>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-regular fa-clock"></i>
+                                                                </span>
+                                                                <strong>Horario: </strong>
+                                                                <%= grupo.Horario %>
+                                                            </p>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-regular fa-building"></i>
+                                                                </span>
+                                                                <strong>Salón: </strong>
+                                                                <%= grupo.Salon %>
+                                                            </p>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-regular fa-calendar"></i>
+                                                                </span>
+                                                                <strong>Fecha de inicio: </strong>
+                                                                <%= grupo.fechaInicio %>
+                                                            </p>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-regular fa-calendar"></i>
+                                                                </span>
+                                                                <strong>Fecha de termino: </strong>
+                                                                <%= grupo.fechaTermino %>
+                                                            </p>
+                                                            <p>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa-solid fa-tags"></i>
+                                                                </span>
+                                                                <strong>Costo(MXN): </strong>$<%=
+                                                                    grupo.Precio_materia.toLocaleString('mx', {
+                                                                    minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                    }) %>
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <% } %>
+                                            <% } %>
+                                                <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $
+                                                    <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2 }) %>
+                                                </h3>
+                                                <br>
+                                                <% } %>
         </div>
         <% if(confirmacion!=1){%>
-            <% if (schedule.length === 0) { %>
+            <% if (schedule.length===0) { %>
                 <h3 class="title is-2">Horario no disponible por el momento.</h3>
-            <% } else { %>
-                <% for (let curso of schedule) { %>
-                    <table class="table is bordered is hoverable is-fullwidth">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="column">
-                                        <p>Unidad de formación: <%= curso.idMateria %></p>
-                                        <h3 class="title is-5"><%= curso.nombreMat %></h3>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-user"></i>
-                                            </span>
-                                            <strong>Profesor: </strong><%= curso.nombreProfesorCompleto %>
-                                        </p>
-                                    </p>
-                                    <% for (let horario of curso.horarios) { %>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-clock"></i>
-                                            </span>
-                                            <strong>Horario: </strong><%= horario.diaSemana %> <%= horario.fechaInicio %> - <%= horario.fechaTermino %>
-                                        </p>
-                                    <% } %>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-building"></i>
-                                            </span>
-                                            <strong>Salón: </strong><%= curso.nombreSalon%>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-calendar"></i>
-                                            </span>
-                                            <strong>Fecha de inicio: </strong> <%= curso.startDateFormat%>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-calendar"></i>
-                                            </span>
-                                            <strong>Fecha de termino: </strong> <%= curso.endDateFormat%>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fas fa-graduation-cap"></i>
-                                            </span>
-                                            <strong>Créditos: </strong> <%= curso.creditos %>
-                                        </p>                                        
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-solid fa-tags"></i>
-                                            </span>
-                                            <strong>Costo(MXN): </strong>$<%= curso.precioMateria.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            }) %>
-                                        </p>
+                <% } else { %>
+                    <form action="/horario/confirmar_horario" method="POST" style="text-align: center;">
+                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                        <% for (let curso of schedule) { %>
+                            <input type="hidden" name="idMateria[]" value="<%= curso.idMateria %>">
+                            <input type="hidden" name="nombreProfesorCompleto[]" value="<%= curso.nombreProfesorCompleto %>">
+                            <input type="hidden" name="salon[]" value="<%= curso.nombreSalon %>">
+                            <input type="hidden" name="fechaInicio[]" value="<%= curso.startDateFormat %>">
+                            <input type="hidden" name="fechaFin[]" value="<%= curso.endDateFormat %>">
+                            <table class="table is bordered is hoverable is-fullwidth">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="column">
+                                                <p>Unidad de formación: <%= curso.idMateria %>
+                                                </p>
+                                                <h3 class="title is-5">
+                                                    <%= curso.nombreMat %>
+                                                </h3>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-regular fa-user"></i>
+                                                    </span>
+                                                    <strong>Profesor: </strong>
+                                                    <%= curso.nombreProfesorCompleto %>
+                                                </p>
+                                                </p>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-regular fa-clock"></i>
+                                                    </span>
+                                                    <strong>Horario: </strong>
+                                                </p>
+                                                <% for (let horario of curso.horarios) { %>
+                                                    <input type="hidden" name="horario[]" value="<%= horario.diaSemana %>
+                                                    <%= horario.fechaInicio %> - <%= horario.fechaTermino %>">
+                                                        <%= horario.diaSemana %>
+                                                            <%= horario.fechaInicio %> - <%= horario.fechaTermino %>
+                                                    <% } %>
+                                                        <p>
+                                                            <span class="icon is-small">
+                                                                <i class="fa-regular fa-building"></i>
+                                                            </span>
+                                                            <strong>Salón: </strong>
+                                                            <%= curso.nombreSalon%>
+                                                        </p>
+                                                        <p>
+                                                            <span class="icon is-small">
+                                                                <i class="fa-regular fa-calendar"></i>
+                                                            </span>
+                                                            <strong>Fecha de inicio: </strong>
+                                                            <%= curso.startDateFormat%>
+                                                        </p>
+                                                        <p>
+                                                            <span class="icon is-small">
+                                                                <i class="fa-regular fa-calendar"></i>
+                                                            </span>
+                                                            <strong>Fecha de termino: </strong>
+                                                            <%= curso.endDateFormat%>
+                                                        </p>
+                                                        <p>
+                                                            <span class="icon is-small">
+                                                                <i class="fas fa-graduation-cap"></i>
+                                                            </span>
+                                                            <strong>Créditos: </strong>
+                                                            <%= curso.creditos %>
+                                                        </p>
+                                                        <p>
+                                                            <span class="icon is-small">
+                                                                <i class="fa-solid fa-tags"></i>
+                                                            </span>
+                                                            <strong>Costo(MXN): </strong>$<%=
+                                                                curso.precioMateria.toLocaleString('mx', {
+                                                                minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                        </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <% } %>
+                                <% } %>
+                                    <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $<%=
+                                            precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2 }) %>
+                                    </h3>
+                                    <br>
+
+                                    <div>
+                                        <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+                                        <div class="select is-medium">
+                                            <select name="IDPlanPago" id="IDPlanPago">
+                                                <% for (let plan of planesPago){%>
+                                                    <option value="<%=plan.IDPlanPago%>"
+                                                        data-nombre="<%=plan.nombrePlan%>">
+                                                        <%=plan.nombrePlan%>
+                                                    </option>
+                                                    <%}%>
+                                            </select>
+                                        </div>
+                                        <br>
+                                        <br>
                                     </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                <% } %>
-            <% } %>
-            <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $<%= precioTotal.toLocaleString('mx', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }) %></h3>
-            <br>
-            
-            <form action="/horario/confirmar_horario" method="POST" style="text-align: center;">
-                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                <div>
-                    <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
-                    <div class="select is-medium">
-                        <select name="IDPlanPago" id="IDPlanPago">
-                            <% for (let plan of planesPago){%>
-                            <option value="<%=plan.IDPlanPago%>" 
-                                data-nombre="<%=plan.nombrePlan%>">
-                                <%=plan.nombrePlan%></option>
-                            <%}%>
-                        </select>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <div class="container">
-                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                    style="font-size: large;" id="Boton_confirmar">
-                        <span>Confirmar horario</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-check"></i>
-                        </span>
-                    </button>
-                </div>
-            </form>
-        <%}%>
+                                    <div class="container">
+                                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                                            style="font-size: large;" id="Boton_confirmar">
+                                            <span>Confirmar horario</span>
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                    </form>
+                    <%}%>
     </section>
-</html>
+
+    </html>
