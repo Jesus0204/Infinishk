@@ -13,6 +13,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.get_propuesta_horario = async (request, response, next) => {
+
     const conf = await Alumno.fetchHorarioConfirmado(request.session.username)
     const planes = await PlanPago.fetchAllActivePlans()
     const confirmacion = conf[0][0].horarioConfirmado
@@ -21,108 +22,119 @@ exports.get_propuesta_horario = async (request, response, next) => {
     if (confirmacion === 0) {
         const matricula = request.session.username;
         const periodo = await Periodo.fetchActivo();
-        const periodoActivo = periodo[0][0].IDPeriodo;
-        const precioCredito = await PrecioCredito.fetchPrecioActual();
-        const precioActual = precioCredito[0][0].precioPesos;
-
-        try {
-            const schedule = await getUserGroups(periodoActivo, matricula);
-
-            if (!schedule || !schedule.data) {
-                throw new Error('No existen user groups para ese usuario');
-            }
-
-            const cursos = schedule.data.map(schedule => {
-                const {
-                    room = '',
-                    name: nameSalon = '',
-                    schedules = [],
-                    course = {},
-                    professor = {},
-                    school_cycle = {}
-                } = schedule;
-
-                const {
-                    id = periodoActivo,
-                    name = '',
-                    credits = ''
-                } = course;
-
-                const {
-                    name: nombreProfesor = '',
-                    first_surname = '',
-                    second_surname = ''
-                } = professor;
-
-                const {
-                    start_date = '',
-                    end_date = '',
-                } = school_cycle;
-
-                const startDate = new Date(start_date);
-                const endDate = new Date(end_date);
-
-                const startDateFormat = `${startDate.getFullYear()}-${startDate.getMonth() + 1 < 10 ? '0' : ''}${startDate.getMonth() + 1}-${startDate.getDate() < 10 ? '0' : ''}${startDate.getDate()}`;
-                const endDateFormat = `${endDate.getFullYear()}-${endDate.getMonth() + 1 < 10 ? '0' : ''}${endDate.getMonth() + 1}-${endDate.getDate() < 10 ? '0' : ''}${endDate.getDate()}`;
-
-                const nombreSalon = `${room} ${nameSalon}`;
-                const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
-
-                const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
-
-                const precioMateria = credits * precioActual;
-
-                const horarios = schedules.map(schedule => {
-                    const {
-                        weekday = '',
-                        start_hour = '',
-                        end_hour = '',
-                    } = schedule;
-
-                    // Crear objetos Date a partir de las horas de inicio y final
-                    const startDate = new Date(start_hour);
-                    const endDate = new Date(end_hour);
-
-                    const fechaInicio = `${startDate.getHours()}:${startDate.getMinutes() < 10 ? '0' : ''}${startDate.getMinutes()}`;
-                    const fechaTermino = `${endDate.getHours()}:${endDate.getMinutes() < 10 ? '0' : ''}${endDate.getMinutes()}`;
-
-                    return {
-                        diaSemana: weekday,
-                        fechaInicio,
-                        fechaTermino
-                    };
-                });
-
-                return {
-                    idMateria: id,
-                    nombreMat: name,
-                    creditos: credits,
-                    nombreProfesorCompleto,
-                    nombreSalon,
-                    semestre,
-                    precioMateria,
-                    horarios,
-                    startDateFormat,
-                    endDateFormat,
-                }
-            });
-
-            const precioTotal = cursos.reduce((total, curso) => total + curso.precioMateria, 0);
-
+        var periodoExistente = 1;
+        if(periodo[0].length === 0){
+            periodoExistente = 0;
             response.render('alumnos/consultarHorario', {
-                schedule: cursos,
-                confirmacion: confirmacion,
-                planesPago: planesPago,
-                precioTotal: precioTotal,
+                periodoExistente: periodoExistente,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
                 csrfToken: request.csrfToken()
             })
-        }
-
-        catch (error) {
-            console.error('Error realizando operaciones:', error);
+        } else {
+            const periodoActivo = periodo[0][0].IDPeriodo;
+            const precioCredito = await PrecioCredito.fetchPrecioActual();
+            const precioActual = precioCredito[0][0].precioPesos;
+            try {
+                const schedule = await getUserGroups(periodoActivo, matricula);
+    
+                if (!schedule || !schedule.data) {
+                    throw new Error('No existen user groups para ese usuario');
+                }
+    
+                const cursos = schedule.data.map(schedule => {
+                    const {
+                        room = '',
+                        name: nameSalon = '',
+                        schedules = [],
+                        course = {},
+                        professor = {},
+                        school_cycle = {}
+                    } = schedule;
+    
+                    const {
+                        id = periodoActivo,
+                        name = '',
+                        credits = ''
+                    } = course;
+    
+                    const {
+                        name: nombreProfesor = '',
+                        first_surname = '',
+                        second_surname = ''
+                    } = professor;
+    
+                    const {
+                        start_date = '',
+                        end_date = '',
+                    } = school_cycle;
+    
+                    const startDate = new Date(start_date);
+                    const endDate = new Date(end_date);
+    
+                    const startDateFormat = `${startDate.getFullYear()}-${startDate.getMonth() + 1 < 10 ? '0' : ''}${startDate.getMonth() + 1}-${startDate.getDate() < 10 ? '0' : ''}${startDate.getDate()}`;
+                    const endDateFormat = `${endDate.getFullYear()}-${endDate.getMonth() + 1 < 10 ? '0' : ''}${endDate.getMonth() + 1}-${endDate.getDate() < 10 ? '0' : ''}${endDate.getDate()}`;
+    
+                    const nombreSalon = `${room} ${nameSalon}`;
+                    const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
+    
+                    const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
+    
+                    const precioMateria = credits * precioActual;
+    
+                    const horarios = schedules.map(schedule => {
+                        const {
+                            weekday = '',
+                            start_hour = '',
+                            end_hour = '',
+                        } = schedule;
+    
+                        // Crear objetos Date a partir de las horas de inicio y final
+                        const startDate = new Date(start_hour);
+                        const endDate = new Date(end_hour);
+    
+                        const fechaInicio = `${startDate.getHours()}:${startDate.getMinutes() < 10 ? '0' : ''}${startDate.getMinutes()}`;
+                        const fechaTermino = `${endDate.getHours()}:${endDate.getMinutes() < 10 ? '0' : ''}${endDate.getMinutes()}`;
+    
+                        return {
+                            diaSemana: weekday,
+                            fechaInicio,
+                            fechaTermino
+                        };
+                    });
+    
+                    return {
+                        idMateria: id,
+                        nombreMat: name,
+                        creditos: credits,
+                        nombreProfesorCompleto,
+                        nombreSalon,
+                        semestre,
+                        precioMateria,
+                        horarios,
+                        startDateFormat,
+                        endDateFormat,
+                    }
+                });
+    
+                const precioTotal = cursos.reduce((total, curso) => total + curso.precioMateria, 0);
+    
+                response.render('alumnos/consultarHorario', {
+                    periodoExistente: periodoExistente,
+                    schedule: cursos,
+                    confirmacion: confirmacion,
+                    planesPago: planesPago,
+                    precioTotal: precioTotal,
+                    username: request.session.username || '',
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                    csrfToken: request.csrfToken()
+                })
+            }
+            catch (error) {
+                console.error('Error realizando operaciones:', error);
+            }
         }
     }
 
