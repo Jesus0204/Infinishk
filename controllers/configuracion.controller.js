@@ -58,7 +58,16 @@ exports.get_registrar_usuario = (request, response, next) => {
 };
 
 exports.get_obtener_usuario = (request, response, next) => {
-    response.render('configuracion/registrar_usuario', {
+    response.render('configuracion/obtener_usuario', {
+        csrfToken: request.csrfToken(),
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+    })
+}
+
+exports.post_obtener_usuario = (request, response, next) => {
+    response.render('configuracion/obtener_usuario', {
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -105,23 +114,6 @@ exports.post_registrar_usuario = (request, response, next) => {
         })
     }
 };
-
-exports.get_registrar_usuario_alumno = (request, response, next) => {
-
-};
-
-exports.post_registrar_usuario_alumno = (request, response, next) => {
-
-};
-
-exports.get_registrar_usuario_visadmin = (request, response, next) => {
-
-};
-
-exports.post_registrar_usuario_visadmin = (request, response, next) => {
-
-};
-
 
 exports.get_search_activo = (request, response, next) => {
     const consulta = request.query.q;
