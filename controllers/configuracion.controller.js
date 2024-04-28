@@ -230,6 +230,7 @@ exports.get_alumnos = async (request, response, next) => {
                 // Si la comparación devuelve resultados, actualiza el usuario
                 await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
                 if (!isNaN(user.ivd_id)) {
+                    console.log(`IDUsuario: ${user.ivd_id}`);
                     await Usuario.updateUsuario(user.ivd_id, user.email);
                 } else {
                     console.log(`IDUsuario inválido: ${user.ivd_id}`);
