@@ -229,7 +229,12 @@ exports.get_alumnos = async (request, response, next) => {
             if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
                 // Si la comparación devuelve resultados, actualiza el usuario
                 await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
-                await Usuario.updateUsuario(user.ivd_id, user.email);
+                if (!isNaN(user.ivd_id)) {
+                    await Usuario.updateUsuario(user.ivd_id, user.email);
+                } else {
+                    console.error(`IDUsuario inválido: ${user.ivd_id}`);
+                }
+                
                 await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
                 updatedUsers.push({ ...user, updated: true });
             } else {
