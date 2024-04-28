@@ -27,9 +27,9 @@ router.get('/consultar_usuario',isAuth,can_ConsultarUsuario,configuracionControl
 router.get('/search_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_activo);
 router.get('/search_no_activos', isAuth, can_ConsultarUsuario, configuracionController.get_search_noactivo);
 
-// Registrar Usuario de ambas formas
-router.get('/registrar_usuario', can_RegistrarUsuario,configuracionController.get_registrar_usuario);
-router.post('/registrar_usuario', can_RegistrarUsuario,configuracionController.post_registrar_usuario);
+// Registrar Usuario de ambas formas (nuevo y con base de datos)
+router.get('/registrar_usuario', isAuth, can_RegistrarUsuario, configuracionController.get_registrar_usuario);
+router.post('/registrar_usuario', isAuth, can_RegistrarUsuario, configuracionController.post_registrar_usuario);
 router.get('/obtener_usuario',isAuth,can_RegistrarUsuario,configuracionController.get_obtener_usuario);
 
 module.exports = router;

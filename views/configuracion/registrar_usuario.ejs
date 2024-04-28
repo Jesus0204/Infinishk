@@ -8,19 +8,19 @@
     <div class="container">
         <div class="columns">
             <div class="column is-3"></div>
-            <div class="column is-6">
-                <h3 class="title is-3">Registrar Usuario</h3>
+            <div class="column is-6" style="text-align: center;">
+                <h3 class="title is-3">Registrar Usuario Nuevo</h3>
             </div>
         </div>
         <form action="/configuracion/registrar_usuario" method="POST">
-            <input id="formCrear" type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
             <div class="columns is-vcentered">
                 <div class="column is-3"></div>
-                <div class="column is-5">
-                    <label class="label is-medium" for="pago">Tipo de usuario:</label>
+                <div class="column is-6">
+                    <label class="label is-medium" for="roles">Tipo de usuario:</label>
                     <div class="control has-icons-left">
-                        <div class="select is-medium">
-                            <select name="roles" id="roles">
+                        <div class="select is-medium" style="width: 110%;">
+                            <select name="roles" id="roles" style="width: 110%;">
                                 <% for (let roles of roles_disponibles) { %>
                                 <option data-nombre="<%= roles.nombreRol %>">
                                     <%= roles.nombreRol%>
@@ -32,77 +32,103 @@
                             <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                         </div>
                     </div>
-                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                    
-                    <!-- Campos para Alumno -->
-                    <div id="alumnoFields" style="display: none;">
-                        <label for="IDUsuario" class="label is-medium">
-                            Matricula:
+                </div>
+            </div>
+            <div id="noAlumnoFields">
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="IDUsuario_NoAlumno" class="label is-medium">
+                            Matrícula:
                         </label>
-                        <input type="text" id="IDUsuario" name="IDUsuario" class="input is-medium">
-
-                        <label for="correoElectronico" class="label is-medium">
-                            Correo:
-                        </label>
-                        <input type="text" id="correoElectronico" name="correoElectronico"
-                            class="input is-medium">
-
-                        <label for="referenciaBancaria" class="label is-medium">
-                            Referencia Bancaria:
-                        </label>
-                        <input type="text" id="referenciaBancaria" name="referenciaBancaria"
-                            class="input is-medium">
-
-                        <label for="diplomado" class="label is-medium">
-                            Diplomado:
-                        </label>
-                        <input type="text" id="diplomado" name="diplomado" class="input is-medium">
-
-                        <label for="fechaInscripcion" class="label is-medium">
-                            Fecha de Inscripcion:
-                        </label>
-                        <input type="date" id="fechaInscripcion" name="fechaInscripcion"
-                            class="input is-medium">
-
-                        <label for="nombre" class="label is-medium">
-                            Nombre:
-                        </label>
-                        <input type="text" id="nombre" name="nombre" class="input is-medium">
-
-                        <label for="apellidos" class="label is-medium">
-                            Apellidos:
-                        </label>
-                        <input type="text" id="apellidos" name="apellidos" class="input is-medium">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_matricula_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Matrícula.
+                        </p>
+                         <p class="control has-icons-left">
+                             <input type="text" id="IDUsuario_NoAlumno" name="IDUsuario_NoAlumno"
+                                 class="input is-medium" placeholder="Matrícula del Nuevo Administrador">
+                             <span class="icon is-small is-left">
+                                <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                            </span>
+                         </p>
                     </div>
-
-                    <!-- Campos para No Alumno -->
-                    <div id="noAlumnoFields">
-                        <!-- Tus campos existentes para No Alumno -->
-                        <label for="IDUsuario" class="label is-medium">
-                            Matricula:
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="correoElectronico_NoAlumno" class="label is-medium">
+                            Correo Electrónico:
                         </label>
-                        <input type="text" id="IDUsuario" name="IDUsuario" class="input is-medium">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_correo_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un Correo Electrónico.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="text" id="correoElectronico_NoAlumno" name="correoElectronico_NoAlumno"
+                                class="input is-medium" placeholder="Correo del Nuevo Administrador">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-at" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-                        <label for="correoElectronico" class="label is-medium">
-                            Correo Electronico:
-                        </label>
-                        <input type="text" id="correoElectronico" name="correoElectronico"
-                            class="input is-medium">
-                    </div>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-3"></div>
-                        <div class="column is-6">
-                            <button class="button is-rounded is-medium is-responsive" type="submit"
-                                style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
-                                <span>Registrar Usuario</span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
+            <!-- Campos para Alumno -->
+            <div id="alumnoFields" style="display: none;">
+                <label for="IDUsuario" class="label is-medium">
+                    Matrícula:
+                </label>
+                <input type="text" id="IDUsuario" name="IDUsuario" class="input is-medium">
+
+                <label for="correoElectronico" class="label is-medium">
+                    Correo:
+                </label>
+                <input type="text" id="correoElectronico" name="correoElectronico"
+                    class="input is-medium">
+
+                <label for="referenciaBancaria" class="label is-medium">
+                    Referencia Bancaria:
+                </label>
+                <input type="text" id="referenciaBancaria" name="referenciaBancaria"
+                    class="input is-medium">
+
+                <label for="diplomado" class="label is-medium">
+                    Diplomado:
+                </label>
+                <input type="text" id="diplomado" name="diplomado" class="input is-medium">
+
+                <label for="fechaInscripcion" class="label is-medium">
+                    Fecha de Inscripcion:
+                </label>
+                <input type="date" id="fechaInscripcion" name="fechaInscripcion"
+                    class="input is-medium">
+
+                <label for="nombre" class="label is-medium">
+                    Nombre:
+                </label>
+                <input type="text" id="nombre" name="nombre" class="input is-medium">
+
+                <label for="apellidos" class="label is-medium">
+                    Apellidos:
+                </label>
+                <input type="text" id="apellidos" name="apellidos" class="input is-medium">
+            </div>
+
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                        <span>Registrar Usuario</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            
         </form>
     </div>
 </section>
