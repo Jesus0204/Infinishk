@@ -29,7 +29,7 @@
                  <div id="modificacion_ficha" class="notification is-hidden"
                             style="background-color: #5a6581; color:#ffffff;">
                             <button id="btn_eliminar_estatus" class="delete"></button>
-                            ¡Fichs modificada! Recargando datos...
+                            ¡Ficha modificada! Recargando datos...
                     </div> 
                 <% if (fichas.length > 0) { %>
                 <thead>
@@ -112,7 +112,7 @@
                                         El descuento no puede tener exponentes.</p>
                                     <br>
                                     <strong>Nota:</strong>
-                                    <textarea id="nota<%=display1%>" name="nota" class="input is-medium"
+                                    <textarea id="nota<%=display1%>" name="nota" class="input is-medium" value="<%= ficha1.notaModificacion %>"
                                         placeholder="Escribe tu nota"></textarea>
                                     <p id="ayuda_nota<%=display1%>"
                                         class="help is-hidden has-text-danger-dark"
@@ -188,7 +188,7 @@
                                         El descuento no puede tener exponentes.</p>
                                     <br>
                                     <strong>Nota:</strong>
-                                    <textarea id="nota<%=display2%>" name="nota" class="input is-medium"
+                                    <textarea id="nota<%=display2%>" name="nota" class="input is-medium" value="<%= ficha2.notaModificacion %>"
                                         placeholder="Escribe tu nota"></textarea>
                                     <p id="ayuda_nota<%=display2%>"
                                         class="help is-hidden has-text-danger-dark ayuda-nota"

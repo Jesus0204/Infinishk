@@ -51,15 +51,10 @@ exports.post_fichas_modify = async (request, response, next) => {
     const { descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
 
-    console.log('Received data:', { descuentoNum, fechaFormat, notaNum, modificador, id });
-
     try {
         const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
-        console.log('Update result: ', data);
-
         response.status(200).json({ success: true, data: data });
     } catch (error) {
-        console.error('Error updating data:', error);
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
 };

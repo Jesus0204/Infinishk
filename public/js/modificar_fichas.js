@@ -114,6 +114,16 @@ function modificar(descuento, fecha_lim, nota, id, count) {
 
     console.log('Data to be sent:', { descuentoNum, fechaFormat, notaNum, id });
 
+    // Desactivar el botón después de hacer clic en él para evitar múltiples envíos
+    document.getElementById('Boton_modificar' + count).setAttribute('disabled', 'disabled');
+
+    // Mostrar la notificación de modificación
+    const notificacion = document.getElementById('modificacion_ficha');
+    notificacion.classList.remove('is-hidden');
+
+    // Desplazar la página hacia arriba
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     fetch('/alumnos/fichas/modify', {
         method: 'POST',
         headers: {
@@ -132,12 +142,19 @@ function modificar(descuento, fecha_lim, nota, id, count) {
         console.log('Response from server:', data);
         if(data.success){
             console.log('Modificación exitosa: ', data);
-            window.location.reload();
+            // Recargar la página después de mostrar la notificación durante unos segundos
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // 3000 milisegundos = 3 segundos
         } else {
             console.error('Error en la modificación: ', data.message);
+            // Reactivar el botón en caso de error para permitir nuevos intentos
+            document.getElementById('Boton_modificar' + count).removeAttribute('disabled');
         }
     })
     .catch(error => {
         console.log('Error en la petición fetch: ', error);
+        // Reactivar el botón en caso de error para permitir nuevos intentos
+        document.getElementById('Boton_modificar' + count).removeAttribute('disabled');
     });
 }
