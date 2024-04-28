@@ -63,7 +63,7 @@
         </form>
     </div>
     <%  } else if (solicitud_pago != true && pago_manual != true) { %> %>
-    <form action="/alumnos/fetch_<% if (fichas_pago) { %>fichas <% } %>" method="POST">
+    <form action="/alumnos/<% if (fichas_pago) { %>fichas <% } %>" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="columns">
             <div class="column is-3"></div>

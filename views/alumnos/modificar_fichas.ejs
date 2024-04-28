@@ -61,7 +61,7 @@
                             </div>
                             <div class="column" style="text-align: center;">
                                 <!-- Resto de la información para el primer pago -->
-                                <form action="/alumnos/fetch_fichas/modify" method="POST" class="form-modificar">
+                                <form action="/alumnos/fichas/modify" method="POST" class="form-modificar">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                     <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
                                     <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
@@ -137,7 +137,7 @@
                             </div>
                             <div class="column" style="text-align: center;">
                                 <!-- Resto de la información para el segundo pago -->
-                                <form action="/alumnos/fetch_fichas/modify" method="POST" class="form-modificar">
+                                <form action="/alumnos/fichas/modify" method="POST" class="form-modificar">
                                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                     <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
                                     <input type="hidden" name="id" value="<%= ficha2.IDDeuda %>">

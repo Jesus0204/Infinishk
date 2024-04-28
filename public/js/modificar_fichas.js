@@ -114,7 +114,7 @@ function modificar(descuento, fecha_lim, nota, id, count) {
 
     console.log('Data to be sent:', { descuentoNum, fechaFormat, notaNum, id });
 
-    fetch('/alumnos/fetch_fichas/modify', {
+    fetch('/alumnos/fichas/modify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

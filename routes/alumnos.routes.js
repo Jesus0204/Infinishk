@@ -12,8 +12,8 @@ const can_ConsultarAlumno = require('../util/privileges/can_consultar_alumno');
 const can_ModificarDeuda = require('../util/privileges/admin/otros/can_modificar_Deuda');
 
 // Modificar Fichas
-router.get('/fichas', isAuth, can_ModificarDeuda, alumnosController.get_fichas);
-router.post('/fetch_fichas', isAuth, can_ModificarDeuda, alumnosController.post_fetch_fichas);
-router.post('/fetch_fichas/modify', isAuth, can_ModificarDeuda, alumnosController.post_fichas_modify);
+router.get('/fetch_fichas', isAuth, can_ModificarDeuda, alumnosController.get_fichas);
+router.post('/fichas', isAuth, can_ModificarDeuda, alumnosController.post_fetch_fichas);
+router.post('/fichas/modify', isAuth, can_ModificarDeuda, alumnosController.post_fichas_modify);
 
 module.exports = router;
