@@ -1,0 +1,89 @@
+<%- include('../includes/head', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6" style="text-align: center;">
+                <h3 class="title is-3">Registrar Usuario desde la Base</h3>
+            </div>
+        </div>
+        <form action="/configuracion/activar_usuario" method="POST">
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <div class="columns is-vcentered">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="roles">Tipo de usuario:</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium" style="width: 110%;">
+                            <select name="roles" id="roles" style="width: 110%;">
+                                <% for (let roles of roles_disponibles) { %>
+                                <option data-nombre="<%= roles %>">
+                                    <%= roles%>
+                                </option>
+                                <%}%>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="noAlumnoFields">
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="IDUsuario_NoAlumno" class="label is-medium">
+                            Matrícula:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_matricula_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Matrícula.
+                        </p>
+                         <p class="control has-icons-left">
+                             <input type="text" id="matricula" name="matricula"
+                                 class="input is-medium" value="<%= usuarios.ivd_id %>">
+                             <span class="icon is-small is-left">
+                                <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                            </span>
+                         </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="correoElectronico_NoAlumno" class="label is-medium">
+                            Correo Electrónico:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_correo_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un Correo Electrónico.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="text" id="correo" name="correo"
+                                class="input is-medium" value="<%= usuarios.email %>">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-at" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
+                        <span>Registrar Usuario</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
