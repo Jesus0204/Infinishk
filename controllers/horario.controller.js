@@ -142,7 +142,9 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const schedule = await Grupo.fetchSchedule(request.session.username)
         const precio = await Grupo.fetchPrecioTotal(request.session.username)
         const precioTotal = precio[0][0].Preciototal
+        const periodoExistente = 1;
         response.render('alumnos/consultarHorario', {
+            periodoExistente, periodoExistente,
             schedule: schedule,
             precioTotal: precioTotal,
             confirmacion: confirmacion,
