@@ -1,4 +1,4 @@
-document.getElementById('numeroPagos').addEventListener('blur', checkPlanExists);
+document.getElementById('numeroPagos').addEventListener('input', checkPlanExists);
 
 const numPagos = document.getElementById("numeroPagos");
 const nombre = document.getElementById("nombrePlan");
@@ -45,15 +45,11 @@ function mensaje_numPagos() {
     }
 }
 
-function clearExistente(){
-    existente.classList.add('is-hidden');
-}
 // Detectar si el usuario maneja input y llamar las funciones anteriores
 nombre.addEventListener('input', checar_contenido);
 numPagos.addEventListener('input', checar_contenido);
 nombre.addEventListener('input', mensaje_nombre);
 numPagos.addEventListener('input', mensaje_numPagos);
-numPagos.addEventListener('input', clearExistente);
 
 function checkPlanExists() {
     let num = document.getElementById("numeroPagos").value;
