@@ -49,4 +49,11 @@ module.exports = class PagoExtra {
         return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
     }
 
-};
+    static fetchSinPagar(matricula){
+        return db.execute('SELECT * FROM pagosextras AS P, liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 0 AND Matricula = ?', [matricula]);
+    }
+
+    static fetchPagados(matricula){
+        return db.execute('SELECT * FROM pagosextras AS P, liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 1 AND Matricula = ?', [matricula]);
+    }
+}
