@@ -20,7 +20,7 @@ $(document).ready(function() {
 const calendars = bulmaCalendar.attach('[type="date"]', {
     startDate: new Date(),
     displayMode: 'dialog',
-    dateFormat: 'yyyy/MM/dd',
+    dateFormat: 'dd/MM/yyyy',
     maxDate: new Date(),
     weekStart: 1,
     lang: 'es',
@@ -38,7 +38,7 @@ function checar_contenido() {
     Boton_registrar.disabled = IDUsuario_NoAlumno.value.length === 0 || correoElectronico_NoAlumno.value.length === 0;
 }
 
-// Activar mensaje si el motivo no tiene input
+// Activar mensaje si la matricula no tiene input
 function mensaje_matricula() {
     if (IDUsuario_NoAlumno.value.length === 0) {
         ayuda_matricula_noAlumno.classList.remove('is-hidden');
@@ -60,3 +60,27 @@ IDUsuario_NoAlumno.addEventListener('input', mensaje_matricula);
 correoElectronico_NoAlumno.addEventListener('input', checar_contenido);
 correoElectronico_NoAlumno.addEventListener('input', mensaje_correo);
 
+const correoElectronico = document.querySelector('#correoElectronico');
+const IDUsuario_Alumno = document.querySelector('#IDUsuario');
+const ayuda_matricula_Alumno = document.querySelector('#ayuda_matricula_Alumno');
+const ayuda_correo_Alumno = document.querySelector('#ayuda_correo_Alumno');
+
+
+function mensaje_matriculaAlumno() {
+    if (IDUsuario_Alumno.value.length === 0) {
+        ayuda_matricula_Alumno.classList.remove('is-hidden');
+    } else {
+        ayuda_matricula_Alumno.classList.add('is-hidden');
+    }
+};
+
+function mensaje_correoAlumno() {
+    if (correoElectronico.value.length === 0) {
+        ayuda_correo_Alumno.classList.remove('is-hidden');
+    } else {
+        ayuda_correo_Alumno.classList.add('is-hidden');
+    }
+};
+
+IDUsuario_Alumno.addEventListener('input', mensaje_matriculaAlumno);
+correoElectronico.addEventListener('input', mensaje_correoAlumno);

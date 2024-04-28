@@ -66,7 +66,7 @@ exports.get_obtener_usuario = (request, response, next) => {
     })
 }
 
-exports.post_registrar_usuario = (request, response, next) => {
+exports.post_obtener_usuario = (request, response, next) => {
     const rol = request.body.roles;
 
     if (rol === 'Administrador') {
