@@ -96,7 +96,7 @@ module.exports = class Usuario{
     }
 
     static updateUsuario(id,correo){
-        return db.execute('UPDATE usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
+        return db.execute('UPDATE usuario SET correoElectronico=? WHERE IDUsuario=?',[correo,id])
     }
 
     static saveUsuario(id,correo){
