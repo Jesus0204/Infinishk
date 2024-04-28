@@ -77,7 +77,7 @@ async function getUserGroups(cycle_id, user_ivd_id) {
       headers,
       params: {
         id: cycle_id,
-        user_ivd_id,
+        user_ivd_id: user_ivd_id,
       },
     },
   )

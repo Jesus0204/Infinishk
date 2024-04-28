@@ -22,7 +22,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const precioActual = precioCredito[0][0].precioPesos;
 
         try {
-            const schedule = await getUserGroups([periodoActivo],matricula);
+            const schedule = await getUserGroups(periodoActivo,matricula);
 
             if(!schedule || !schedule.data){
                 throw new Error('No existen user groups para ese usuario');
@@ -53,7 +53,8 @@ exports.get_propuesta_horario = async (request, response, next) => {
                     nombreMat: name,
                     creditos: credits,
                     nombreProfesor,
-                    semestre
+                    semestre,
+                    precioMateria
                 }
             });
 

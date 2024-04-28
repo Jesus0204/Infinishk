@@ -32,6 +32,7 @@
             <%}else{%>
                 <h3 class="title is-2">Confirmar horario</h3>
             <%}%>
+            <% if(confirmacion === 1){%>
                 <% if (schedule[0].length===0) { %>
                     <h3 class="title is-2">Horario no disponible por el momento.</h3>
                     <% } else { %>
@@ -94,8 +95,72 @@
                         maximumFractionDigits: 2
                     }) %></h3>
                     <br>
+                <% } %>
         </div>
         <% if(confirmacion!=1){%>
+            <% if (schedule.length === 0) { %>
+                <h3 class="title is-2">Horario no disponible por el momento.</h3>
+            <% } else { %>
+                <% for (let curso of schedule) { %>
+                    <table class="table is bordered is hoverable is-fullwidth">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="column">
+                                        <p>Unidad de formación: <%= curso.idMateria %></p>
+                                        <h3 class="title is-5"><%= curso.nombreMat %></h3>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-user"></i>
+                                            </span>
+                                            <strong>Profesor: </strong><%= curso.nombreProfesor %>
+                                        </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-clock"></i>
+                                            </span>
+                                            <strong>Horario: </strong> <!-- Aquí puedes agregar el horario -->
+                                        </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-building"></i>
+                                            </span>
+                                            <strong>Salón: </strong> <!-- Aquí puedes agregar el salón -->
+                                        </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-calendar"></i>
+                                            </span>
+                                            <strong>Fecha de inicio: </strong> <!-- Aquí puedes agregar la fecha de inicio -->
+                                        </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-calendar"></i>
+                                            </span>
+                                            <strong>Fecha de termino: </strong> <!-- Aquí puedes agregar la fecha de termino -->
+                                        </p>
+                                        <p>
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-tags"></i>
+                                            </span>
+                                            <strong>Costo(MXN): </strong>$<%= curso.precioMateria.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }) %>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <% } %>
+            <% } %>
+            <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $<%= precioTotal.toLocaleString('mx', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) %></h3>
+            <br>
+            
             <form action="/horario/confirmar_horario" method="POST" style="text-align: center;">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <div>
