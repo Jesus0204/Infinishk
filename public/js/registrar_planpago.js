@@ -1,56 +1,76 @@
-document.getElementById('formRegistrarPlanPago').addEventListener('input', validateForm);
-document.getElementById('nombrePlan').addEventListener('blur', checkPlanExists);
+document.getElementById('numeroPagos').addEventListener('blur', checkPlanExists);
 
-function validateForm() {
-    var numPagos = document.getElementById("numeroPagos").value;
-    var nombre = document.getElementById("nombrePlan").value;
-    var formValid = true;
+const numPagos = document.getElementById("numeroPagos");
+const nombre = document.getElementById("nombrePlan");
+const btn_aplicar_cambios = document.getElementById('btn_aplicar_cambios');
+const ayuda_nombre = document.querySelector('#ayuda_nombre');
+const ayuda_num_vacio = document.querySelector('#ayuda_num_vacio');
+const ayuda_num_negativo = document.querySelector('#ayuda_num_negativo');
+const ayuda_num_exponente = document.querySelector('#ayuda_num_exponente');
+const existente = document.querySelector('#existente');
 
-    if ( !numPagos || !nombre) {
-        displayError("Por favor rellena todos los datos.");
-        formValid = false;
-    } else if (parseFloat(numPagos) <= 0) {
-        displayError("El numero de pagos debe ser mayor a 0.");
-        formValid = false;
-    } else if (numPagos.includes('e') || numPagos.includes('E')) {
-        displayError("El numero de pagos no puede tener exponentes");
-        formValid = false;
-    } else {
-        clearError();
-    }
-
-    document.getElementById('btn_aplicar_cambios').disabled = !formValid;
+// Checar si hay contenido dentro del input, pata desactivar el boton
+function checar_contenido() {
+    btn_aplicar_cambios.disabled = nombre.value.length === 0 || numPagos.value.length === 0 || numPagos.value < 0 ||
+        parseFloat(numPagos.value) <= 0;
 }
 
+// Activar mensaje si el motivo no tiene input
+function mensaje_nombre() {
+    if (nombre.value.length === 0) {
+        ayuda_nombre.classList.remove('is-hidden');
+    } else {
+        ayuda_nombre.classList.add('is-hidden');
+    }
+}
+
+function mensaje_numPagos() {
+    if (numPagos.value.length === 0) {
+        ayuda_num_vacio.classList.remove('is-hidden');
+    } else {
+        ayuda_num_vacio.classList.add('is-hidden');
+    }
+
+    if (parseFloat(numPagos.value) <= 0) {
+        ayuda_num_negativo.classList.remove('is-hidden');
+    } else {
+        ayuda_num_negativo.classList.add('is-hidden');
+    }
+
+    if (numPagos.value.includes('e') || numPagos.value.includes('E')) {
+        btn_aplicar_cambios.disabled = true;
+        ayuda_num_exponente.classList.remove('is-hidden');
+    } else {
+        ayuda_num_exponente.classList.add('is-hidden');
+    }
+}
+
+function clearExistente(){
+    existente.classList.add('is-hidden');
+}
+// Detectar si el usuario maneja input y llamar las funciones anteriores
+nombre.addEventListener('input', checar_contenido);
+numPagos.addEventListener('input', checar_contenido);
+nombre.addEventListener('input', mensaje_nombre);
+numPagos.addEventListener('input', mensaje_numPagos);
+numPagos.addEventListener('input', clearExistente);
+
 function checkPlanExists() {
-    var nombre = document.getElementById("nombrePlan").value;
-    var xmlhttp = new XMLHttpRequest();
+    let num = document.getElementById("numeroPagos").value;
+    let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            var exists = JSON.parse(this.responseText).exists;
+            let exists = JSON.parse(this.responseText).exists;
             if (exists) {
-                displayError("Ese plan de pago ya existe.");
+                existente.classList.remove('is-hidden');
                 document.getElementById('btn_aplicar_cambios').disabled = true;
-                document.getElementById('numeroPagos').disabled = true;
             }
             else {
-                document.getElementById('numeroPagos').disabled = false;
+                existente.classList.add('is-hidden');
             }
         }
     };
-    xmlhttp.open("GET", "/configuracion/check_planpago?nombre=" + encodeURIComponent(nombre), true);
+    xmlhttp.open("GET", "/configuracion/check_planpago?num=" + encodeURIComponent(num), true);
     xmlhttp.send();
-}
-
-function displayError(message) {
-    var errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-}
-
-function clearError() {
-    var errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
 }
 
