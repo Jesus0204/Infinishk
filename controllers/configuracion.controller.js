@@ -248,7 +248,7 @@ exports.get_registrar_precio_credito = (request, response, next) => {
 
 
 exports.get_check_plan = (request, response, next) => {
-    const num = request.query.num;
+    const num = request.params.num;
     PlanPago.fetchOne(num)
         .then(([planpagos]) => {
             if (planpagos.length > 0) {

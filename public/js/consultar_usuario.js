@@ -5,6 +5,27 @@ $(document).ready(function () {
         $('#tablaActivos tbody tr').filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(consulta) > -1);
         });
+
+        let count = 0;
+        let table_length = $('#tablaActivos tbody tr').length;
+
+        $('#tablaActivos tbody tr').each(function() {
+            if (this.getAttribute("style")){
+                count++;
+            }
+        });
+
+        const tabla_activos = document.querySelector('#tablaActivos');
+        const resultadoActivo = document.querySelector('#resultadoActivo');
+
+        if (count == table_length){
+            tabla_activos.classList.add('is-hidden');
+            resultadoActivo.classList.remove('is-hidden');
+        } else {
+            tabla_activos.classList.remove('is-hidden');
+            resultadoActivo.classList.add('is-hidden');
+        }
+
     });
 
     // Función para manejar la búsqueda en la tabla de usuarios no activos
@@ -13,6 +34,26 @@ $(document).ready(function () {
         $('#tablaNoActivos tbody tr').filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(consulta) > -1);
         });
+
+        let count = 0;
+        let table_length = $('#tablaNoActivos tbody tr').length;
+
+        $('#tablaNoActivos tbody tr').each(function () {
+            if (this.getAttribute("style")) {
+                count++;
+            }
+        });
+
+        const tabla_Noactivos = document.querySelector('#tablaNoActivos');
+        const resultadoNoActivo = document.querySelector('#resultadoNoActivo');
+
+        if (count == table_length) {
+            tabla_Noactivos.classList.add('is-hidden');
+            resultadoNoActivo.classList.remove('is-hidden');
+        } else {
+            tabla_Noactivos.classList.remove('is-hidden');
+            resultadoNoActivo.classList.add('is-hidden');
+        }
     });
 });
 

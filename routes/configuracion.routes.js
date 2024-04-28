@@ -34,7 +34,7 @@ router.post('/modificar_planpago',isAuth,can_ModificarPlanPago,configuracionCont
 router.post('/registrar_planpago',isAuth,can_ModificarPlanPago,configuracionController.post_registrar_planpago);
 router.get('/registrar_planpago',isAuth,can_registrar_PlanPago,configuracionController.get_registrar_planpago);
 
-router.get('/check_planpago', configuracionController.get_check_plan);
+router.get('/check_planpago/:num', configuracionController.get_check_plan);
 
 router.get('/exportarDatos',isAuth,can_exportar_Datos,configuracionController.get_exportar_datos);
 router.post('/exportarDatos',isAuth,can_exportar_Datos,configuracionController.post_exportar_datos);

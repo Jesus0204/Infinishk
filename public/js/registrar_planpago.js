@@ -53,20 +53,26 @@ numPagos.addEventListener('input', mensaje_numPagos);
 
 function checkPlanExists() {
     let num = document.getElementById("numeroPagos").value;
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let exists = JSON.parse(this.responseText).exists;
-            if (exists) {
+
+    if (num){
+        //función que manda la petición asíncrona
+        fetch('/configuracion/check_planpago/' + num, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((result) => {
+            return result.json(); //Regresa otra promesa
+        }).then((data) => {
+            if (data.exists == true){
                 existente.classList.remove('is-hidden');
                 document.getElementById('btn_aplicar_cambios').disabled = true;
             }
-            else {
-                existente.classList.add('is-hidden');
-            }
-        }
-    };
-    xmlhttp.open("GET", "/configuracion/check_planpago?num=" + encodeURIComponent(num), true);
-    xmlhttp.send();
+        });
+    } else {
+        existente.classList.add('is-hidden');
+    }
+
+
 }
 
