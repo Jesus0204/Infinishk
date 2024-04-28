@@ -59,6 +59,14 @@
     <section class="section">
         <div class="container">
             <h3 id="title" class="title">Ingresa el username</h3>
+            <div class="column is-6">
+                <% if (error) { %>
+                <div id="errorNotification" class="notification is-danger">
+                    <button id="closeNotification" class="delete" type="button"></button>
+                    <%= errorMensaje %>
+                </div>
+                <% } %>
+            </div>
             <form action="/configuracion/obtener_usuario" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="field">
@@ -76,5 +84,7 @@
         </div>
     </section>
 </body>
+
+<script type="text/javascript" src="/js/obtener_usuario.js"></script>
 
 </html>

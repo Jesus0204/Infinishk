@@ -1,13 +1,21 @@
 const PlanPago = require('../models/planpago.model');
 const PrecioCredito = require('../models/precio_credito.model');
-const Usuario = require('../models/usuario.model')
-const Rol = require('../models/rol.model')
+const Usuario = require('../models/usuario.model');
+const Rol = require('../models/rol.model');
+const Posee = require('../models/posee.model');
 
 const { getAllUsers, getAllCourses,getAllPeriods,getUser } = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
 
 exports.get_administrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
@@ -65,6 +73,8 @@ exports.get_registrar_usuario = (request, response, next) => {
 
 exports.get_obtener_usuario = (request, response, next) => {
     response.render('configuracion/obtener_usuario', {
+        error:false,
+        errorMensaje: '',
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -74,30 +84,45 @@ exports.get_obtener_usuario = (request, response, next) => {
 
 exports.post_obtener_usuario = async (request, response, next) => {
     const matricula = request.body.user;
+    const roles = await Rol.fetchNotAll();
+    const roles_disponibles = roles[0].map(rol => rol.nombreRol);
+
+    const usuarioExistente = await Usuario.fetchOne(matricula);
+
+    if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
+        response.render('configuracion/obtener_usuario', {
+            error:true,
+            errorMensaje: 'Ese usuario ya existe por favor ingresa otra matrícula',
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
+    }
+
 
     try{
-
         const user = await getUser(matricula);
 
-        if (!user || !user.data) {
-            throw new Error('No existe ese usuario');
+        if (!user || !user.data || user.data.data === 'User not found') {
+            return response.render('configuracion/obtener_usuario', {
+                error:true,
+                errorMensaje: 'No se encontro un usaurio con esa matricula, por favor intenta con otra',
+                csrfToken: request.csrfToken(),
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            })
         }
 
-        const usuarios = user.data.map(usuario => {
-
-            const {
-                ivd_id = '',
-                email = '',
-            } = usuario;
-
-            return {
-                ivd_id: ivd_id,
-                email:email,
-            }
-        })
+        const usuarios = {
+            ivd_id: user.data.ivd_id || '',
+            email: user.data.email || '',
+        }
 
         response.render('configuracion/activar_usuario', {
             usuarios: usuarios,
+            roles_disponibles: roles_disponibles,
             csrfToken: request.csrfToken(),
             username: request.session.username || '',
             permisos: request.session.permisos || [],
@@ -107,47 +132,98 @@ exports.post_obtener_usuario = async (request, response, next) => {
     }
 
     catch (error) {
-        console.error('Error realizando operaciones:', error);
+        return response.render('configuracion/obtener_usuario', {
+            error:true,
+            errorMensaje: 'No se encontro un usaurio con esa matricula, por favor intenta con otra',
+            csrfToken: request.csrfToken(),
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        })
     }
 }
 
-exports.post_registrar_usuario = (request, response, next) => {
+exports.post_activar_usuario = async (request, response, next) => {
     const rol = request.body.roles;
+    const matricula = request.body.matricula;
+    const correo = request.body.correo;
 
     if (rol === 'Administrador') {
-        response.render('configuracion/activar_usuario', {
-            admin: true,
-            alumno: false,
-            vis: false,
-            csrfToken: request.csrfToken(),
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-        })
-    }
+        await Usuario.saveUsuario(matricula,correo);
+        await Posee.savePosee(matricula,1);
 
-    if (rol === 'Alumno') {
-        response.render('configuracion/activar_usuario', {
-            admin: false,
-            alumno: true,
-            vis: false,
-            csrfToken: request.csrfToken(),
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-        })
+        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        
+        // Enlace con el token incluido
+        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+        const msg = {
+            to: correo,
+            from: {
+                name: 'VIA PAGO',
+                email: '27miguelb11@gmail.com',
+            },
+            subject: 'Bienvenido a VIA Pago',
+            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+        };
+    
+        try {
+            await sgMail.send(msg);
+            console.log('Correo electrónico enviado correctamente');
+        } 
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        }
+
+        response.redirect('/configuracion/consultar_usuario')
+
     }
 
     if (rol === 'Visualizador') {
-        response.render('configuracion/activar_usuario', {
-            admin: false,
-            alumno: false,
-            vis: true,
-            csrfToken: request.csrfToken(),
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-        })
+        await Usuario.saveUsuario(matricula,correo);
+        await Posee.savePosee(matricula,2); 
+
+        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        
+        // Enlace con el token incluido
+        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+        const msg = {
+            to: correo,
+            from: {
+                name: 'VIA PAGO',
+                email: '27miguelb11@gmail.com',
+            },
+            subject: 'Bienvenido a VIA Pago',
+            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+        };
+    
+        try {
+            await sgMail.send(msg);
+            console.log('Correo electrónico enviado correctamente');
+        } 
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        }
+
+        response.redirect('/configuracion/consultar_usuario')
+
+    }
+};
+
+
+exports.post_registrar_usuario = async (request, response, next) => {
+    const rol = request.body.roles;
+
+    if (rol === 'Administrador') {
+    }
+
+    if (rol === 'Alumno') {
+        
+    }
+
+    if (rol === 'Visualizador') {
+        
     }
 };
 
@@ -200,6 +276,7 @@ exports.get_precio_credito = (request, response, next) => {
 
 // Configuras a moment con el locale. 
 const moment = require('moment');
+const rol = require('../models/rol.model');
 moment.locale('es-mx');
 
 exports.post_precio_credito = (request, response, next) => {

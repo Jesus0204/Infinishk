@@ -77,4 +77,8 @@ module.exports = class Usuario{
             [`%${consulta}%`]
         );
     }
+
+    static saveUsuario(id,correo){
+        return db.execute('INSERT INTO usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
+    }
 }

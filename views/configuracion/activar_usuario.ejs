@@ -12,7 +12,7 @@
                 <h3 class="title is-3">Registrar Usuario desde la Base</h3>
             </div>
         </div>
-        <form action="/configuracion/registrar_usuario" method="POST">
+        <form action="/configuracion/activar_usuario" method="POST">
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
             <div class="columns is-vcentered">
                 <div class="column is-3"></div>
@@ -22,8 +22,8 @@
                         <div class="select is-medium" style="width: 110%;">
                             <select name="roles" id="roles" style="width: 110%;">
                                 <% for (let roles of roles_disponibles) { %>
-                                <option data-nombre="<%= roles.nombreRol %>">
-                                    <%= roles.nombreRol%>
+                                <option data-nombre="<%= roles %>">
+                                    <%= roles%>
                                 </option>
                                 <%}%>
                             </select>
@@ -46,8 +46,8 @@
                             Por favor escribe una Matrícula.
                         </p>
                          <p class="control has-icons-left">
-                             <input type="text" id="IDUsuario_NoAlumno" name="IDUsuario_NoAlumno"
-                                 class="input is-medium" placeholder="Matrícula del Nuevo Administrador">
+                             <input type="text" id="matricula" name="matricula"
+                                 class="input is-medium" value="<%= usuarios.ivd_id %>">
                              <span class="icon is-small is-left">
                                 <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
                             </span>
@@ -65,12 +65,25 @@
                             Por favor escribe un Correo Electrónico.
                         </p>
                         <p class="control has-icons-left">
-                            <input type="text" id="correoElectronico_NoAlumno" name="correoElectronico_NoAlumno"
-                                class="input is-medium" placeholder="Correo del Nuevo Administrador">
+                            <input type="text" id="correo" name="correo"
+                                class="input is-medium" value="<%= usuarios.email %>">
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-at" style="color: #95404c;"></i>
                             </span>
                         </p>
                     </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button class="button is-rounded is-medium is-responsive" type="submit"
+                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
+                        <span>Registrar Usuario</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
