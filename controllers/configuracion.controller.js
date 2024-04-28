@@ -231,6 +231,7 @@ exports.get_alumnos = async (request, response, next) => {
                 await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
                 if (!isNaN(user.ivd_id)) {
                     console.log(`IDUsuario: ${user.ivd_id}`);
+                    console.log(`Correo:${user.email}`);
                     await Usuario.updateUsuario(user.ivd_id, user.email);
                 } else {
                     console.log(`IDUsuario inválido: ${user.ivd_id}`);
