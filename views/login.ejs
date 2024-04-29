@@ -29,6 +29,13 @@
         margin-top: 10px; 
     }
 
+    .title-container {
+        display: flex;
+        justify-content: center; /* Centra los elementos hijos horizontalmente */
+        width: 100%; /* Asegura que el contenedor se expanda al ancho completo */
+        margin-top: 20px; /* Añade espacio arriba del título, ajusta según necesites */
+    }
+
     .link-reseteo {
   
         display: inline-block;
@@ -44,58 +51,84 @@
     cursor: pointer;
     }
 
+    .main-container, .form-container {
+        width: 100%; /* Ocupa el ancho completo de su contenedor padre */
+        max-width: 400px; /* Establece un ancho máximo para contenedores más anchos */
+        margin: 0 auto; /* Centra el contenedor si es menor que el ancho de la ventana */
+    }
+
+    html, body {
+        height: 100%; /* Importante para asegurar que body ocupe toda la altura de la ventana */
+        margin: 0; /* Restablecer el margen predeterminado de body */
+        background: url('/images/Fondologin.png') no-repeat center center fixed;
+        background-size: cover; /* Para que la imagen de fondo cubra toda la pantalla */
+    }
+
+    .login-container {
+        background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con transparencia para ver la imagen detrás */
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+        padding: 2rem; /* Espaciado interno */
+        margin: 2rem; /* Espaciado externo */
+        max-width: 400px; /* Ancho máximo del contenedor */
+        width: 100%; /* Asegura que no sea más ancho que 400px */
+        box-sizing: border-box; /* Asegura que el padding y el borde están incluidos en el ancho */
+        display: flex; /* Habilita Flexbox */
+        flex-direction: column; /* Organiza los hijos verticalmente */
+        align-items: center; /* Centra los hijos horizontalmente */
+        justify-content: center; /* Centra los hijos verticalmente si es necesario */
+    }
+
+    .image.is-128x128 img {
+        max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+        height: auto; /* Mantiene la proporción de la imagen */
+        border-radius: 15px; /* Redondea los bordes de la imagen */
+
+    }
+
+
 </style>
 
-<header>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-img" href="/">
-            <img src="\images\logo.png" alt="Via diseño logo" width="100" height="100">
-        </a>
-      </div>
-    </nav>
-</header>
-
 <body>
-  <section class="section">
-    <div class="container">
 
-      <% if (error) { %>
-      <div class="notification is-danger">
-        <strong> <%= error %></strong>
-      </div>
-      <% } %>
+  <div class="main-container" style="padding-top: 30px;">
+    <div class="login-container">
+      <!-- Contenedor del logo y el título -->
+      <a class="image is-128x128">
+          <img src="\images\logo.png" alt="Via diseño logo">
+      </a>
 
-    <h3 id="title" class="title"> Iniciar sesión </h3>
-    <div class="container">
-      <form action="/auth/<% if (registrar) { %>signup <% } else { %>login <% } %>" method="post" class="lg-form">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div class="field">
-          <label class="label" for="IDUsuario">Matrícula</label>
-          <div class="control has-icons-left">
-            <input class="input" type="text" name="IDUsuario" id="IDUsuario" placeholder="" />
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-          </div>
-        </div>
+      <!-- Contenedor del formulario -->
+      <div class="form-container">
+          <form action="/auth/<% if (registrar) { %>signup <% } else { %>login <% } %>" method="post" class="lg-form">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              
+              <!-- Campo Matrícula -->
+              <div class="field">
+                  <label class="label" for="IDUsuario">Matrícula</label>
+                  <div class="control has-icons-left">
+                      <input class="input" type="text" name="IDUsuario" id="IDUsuario" placeholder="" />
+                      <span class="icon is-small is-left">
+                          <i class="fas fa-user"></i>
+                      </span>
+                  </div>
+              </div>
 
-        <div class="field">
-          <label class="label" for="password">Contraseña</label>
-          <div class="control has-icons-left">
-            <input class="input" type="password" name="password" id="password" placeholder="" />
-            <span class="icon is-small is-left">
-              <i class="fas fa-lock"></i>
-            </span>
-            <label class="switch">
-              <input type="checkbox" onclick="togglePassword('password')">
-              <span class="switch-label">Mostrar contraseña</span>
-            </label>
-          </div>
-        </div>
-            <div class="is-clearfix">
-            <a href="/auth/reset_password" class="link-reseteo">Restablecer contraseña</a> 
-            </div>
+              <!-- Campo Contraseña -->
+              <div class="field">
+                  <label class="label" for="password">Contraseña</label>
+                  <div class="control has-icons-left">
+                      <input class="input" type="password" name="password" id="password" placeholder="" />
+                      <span class="icon is-small is-left">
+                          <i class="fas fa-lock"></i>
+                      </span>
+                      <label class="switch">
+                          <input type="checkbox" onclick="togglePassword('password')">
+                          <span class="switch-label">Mostrar contraseña</span>
+                      </label>
+                  </div>
+              </div>
+            
 
             
 
@@ -104,9 +137,15 @@
             <input type="submit" class="button is-primary" value="<% if (registrar) { %>Registrarse <% } else { %>Ingresar <% } %>"/>
           </div>
         </div>
+        <div class="is-clearfix">
+          <a href="/auth/reset_password" class="link-reseteo">¿Olvidaste tu contraseña?</a> 
+          </div>
       </form>
     </div>
+    </div>
   </section>
+</section>
+</div>
 
   <script type="text/javascript" src="/js/login.js"></script>
 </body>
