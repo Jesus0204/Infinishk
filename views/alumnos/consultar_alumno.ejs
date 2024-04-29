@@ -61,27 +61,27 @@
                     <ul>
                         <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
                         <li class="is-active" id="nav_estado">
-                            <a onclick="">
+                            <a onclick="muestra_estado_de_cuenta()">
                                 <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
                                 <span>Estado de Cuenta</span>
                             </a>
                         </li>
                         <% } %>
                         <li id="nav_otros_cargos">
-                            <a onclick="">
+                            <a onclick="muestra_otros_cargos()">
                                 <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
                                 <span>Otros Cargos</span>
                             </a>
                         </li> 
                         <li id="nav_historial_pagos">
-                            <a onclick="">
+                            <a onclick="muestra_historial_de_pagos()">
                                 <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
                                 <span>Historial de Pagos</span>
                             </a>
                         </li> 
                         <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
                         <li id="nav_horario">
-                            <a onclick="">
+                            <a onclick="muestra_horario()">
                                 <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
                                 <span>Horario</span>
                             </a>

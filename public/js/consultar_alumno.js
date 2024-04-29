@@ -71,7 +71,7 @@ function muestra_historial_de_pagos() {
     historial.classList.remove('is-hidden');
 }
 
-function muestra_historial_de_pagos() {
+function muestra_horario() {
     const tab_estado = document.querySelector('#nav_estado');
     const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
