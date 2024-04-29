@@ -21,22 +21,13 @@ const jwt = require('jsonwebtoken');
 
 const config = require('../config');
 
-// Usar la clave secreta en tu código
-const secretKey = config.jwtSecret;
-
-<<<<<<< HEAD
 const path = require('path');
 
 const fs = require('fs');
-=======
-const jwt = require('jsonwebtoken');
-
-const config = require('../config');
 
 // Usar la clave secreta en tu código
 const secretKey = config.jwtSecret;
 
->>>>>>> CU25/Actualizar_Base
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -337,29 +328,14 @@ exports.post_exportar_datos = async (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-<<<<<<< HEAD
     const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
     const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
-    
-        const parsedUsers = users.data.map(user => {
-            const {
-                ivd_id = '',
-                name,
-                first_surname,
-                second_surname,
-                email ='',
-                status,
-                semester,
-                degree_name,
-            } = user;
->>>>>>> CU25/Actualizar_Base
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
         fs.mkdirSync(uploadsDir);
     }
 
-<<<<<<< HEAD
     // Función para eliminar acentos
     function eliminarAcentos(texto) {
         return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -390,34 +366,6 @@ exports.post_exportar_datos = async (request, response, next) => {
                 });
                 csvContent += '\f';
             });
-=======
-        const filteredUsers = parsedUsers.filter(user => (
-            (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
-            user.status === 'active'
-        ));
-
-        console.log(filteredUsers);
-        // Realiza la comparación para cada usuario
-        const updatedUsers = [];
-        for (const user of filteredUsers) {
-            const usuarioExistente = await Alumno.fetchOne(user.ivd_id);
-            if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
-                // Si la comparación devuelve resultados, actualiza el usuario
-                await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
-                if (!isNaN(user.ivd_id)) {
-                    console.log(`IDUsuario: ${user.ivd_id}`);
-                    console.log(`Correo:${user.email}`);
-                    await Usuario.updateUsuario(user.ivd_id, user.email);
-                } else {
-                    console.log(`IDUsuario inválido: ${user.ivd_id}`);
-                }
-                
-                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
-                updatedUsers.push({ ...user, updated: true });
-            } else {
-                updatedUsers.push({ ...user, updated: false });
-            }
->>>>>>> CU25/Actualizar_Base
         }
     }
 
@@ -506,10 +454,145 @@ exports.post_exportar_datos = async (request, response, next) => {
         nombreArchivo = `datos_extra_${fechaActual}.csv`;
     }
 
-<<<<<<< HEAD
     response.attachment(nombreArchivo);
     response.send(csvContent);
-=======
+}
+
+exports.get_actualizar_base = (request, response, next) => {
+    response.render('configuracion/actualizarBase', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
+};
+
+
+exports.get_alumnos = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const users = await getAllUsers();
+
+        const parsedUsers = users.data.map(user => {
+            const {
+                ivd_id = '',
+                name,
+                first_surname,
+                second_surname,
+                email ='',
+                status,
+                semester,
+                degree_name,
+            } = user;
+
+            const apellidos = ` ${first_surname} ${second_surname}`;
+            return {
+                ivd_id: ivd_id,
+                name: name,
+                apellidos: apellidos,
+                email: email,
+                status: status,
+                semester: semester,
+                planEstudio: degree_name,
+            };
+        });
+
+        const filteredUsers = parsedUsers.filter(user => (
+            (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
+            user.status === 'active'
+        ));
+
+        // Realiza la comparación para cada usuario
+        const updatedUsers = [];
+        for (const user of filteredUsers) {
+            const usuarioExistente = await Alumno.fetchOne(user.ivd_id);
+            if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
+                if (!isNaN(user.ivd_id)) {
+                    await Usuario.updateUsuario(user.ivd_id, user.email);
+                } else {
+                    console.log(`IDUsuario inválido`);
+                }
+                
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
+                updatedUsers.push({ ...user, updated: true });
+            } else {
+                updatedUsers.push({ ...user, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const usuariosSinActualizar = updatedUsers.filter(user => !user.updated);
+
+        response.render('configuracion/actualizarAlumnos', {
+            usuarios: usuariosSinActualizar, // Utiliza la lista de usuarios actualizados
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+
+exports.get_materias = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const courses = await getAllCourses();
+
+        const parsedCourses = courses.data.map(course => {
+
+            const {
+                id,
+                name,
+                credits,
+                sep_id,
+            } = course;
+
+            const semestre = course.plans_courses?.[0]?.semester;
+            const carrera = course.plans?.[0]?.degree?.name;
+            return {
+                id: id,
+                name: name,
+                credits: credits,
+                sep_id: sep_id,
+                semestre: semestre,
+                carrera: carrera,
+            };
+        });
+
+        const updatedCourses = [];
+        for (const course of parsedCourses) {
+            const courseExistente = await Materia.fetchOne(course.id)
+            if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Materia.updateMateria(course.sep_id,course.name,course.carrera,course.semestre,course.credits,course.id)
+                updatedCourses.push({ ...course, updated: true });
+            } else {
+                updatedCourses.push({ ...course, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const coursesSinActualizar = updatedCourses.filter(course => !course.updated);
+
+        response.render('configuracion/actualizarMaterias', {
+            materias: coursesSinActualizar,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
     catch (error) {
         console.error('Error realizando operaciones:', error);
     }
@@ -625,5 +708,34 @@ exports.post_alumnos = async (request,response,next) => {
 
     response.json({success:success})
     
->>>>>>> CU25/Actualizar_Base
+}
+
+exports.post_materias = async (request,response,next) => {
+    let success = true;
+    const idMateria= request.body.id;
+    const idSep = request.body.idsep;
+    const nombre = request.body.nombre;
+    const creditos = request.body.creditos;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.carrera;
+
+    await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
+    
+
+    response.json({success:success})
+    
+}
+
+exports.post_periodos = async (request,response,next) => {
+    let success = true;
+    const idPeriodo= request.body.id;
+    const nombre = request.body.nombre;
+    const inicio = request.body.inicio;
+    const fin = request.body.fin;
+    const status = request.body.status;
+
+    await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+    
+    response.json({success:success})
+    
 }

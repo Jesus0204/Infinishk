@@ -13,18 +13,6 @@ const config = require('../config');
 const secretKey = config.jwtSecret;
 
 
-const sgMail = require('@sendgrid/mail');
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-const jwt = require('jsonwebtoken');
-
-const config = require('../config');
-
-// Usar la clave secreta en tu código
-const secretKey = config.jwtSecret;
-
-
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
     request.session.error = '';
