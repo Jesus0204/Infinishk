@@ -1,0 +1,84 @@
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .select:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
+    .select:focus {
+        border: 2px solid #910106 !important;
+    }
+</style>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-half">
+                <form id="formRegistro" action="/pagos/reporte_ingresos" method="POST">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                    <h3 class="title is-3">Reporte Metodos de pago</h3>
+                    <div class="columns is-vcentered">
+                        <div class="column is-4">
+                            <label class="label is-size-5" for="periodo">Periodo:</label>
+                        </div>
+                        <div class="column is-8">
+                            <div class="select is-fullwidth">
+                                <select class="periodo" name="periodo" id="periodo">
+                                    <% periodos.forEach(periodo=> { %>
+                                        <option value="<%= periodo['Nombre'] %>" selected>
+                                            <%= periodo['Nombre'] %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-vcentered">
+                        <div class="column is-4">
+                            <label class="label is-size-5" for="tipo">Tipo de Pago:</label>
+                        </div>
+                        <div class="column is-8">
+                            <div class="select is-fullwidth">
+                                <select class="tipo" name="tipo" id="tipo">
+                                    <option value="Tarjeta_Terminal" selected>Tarjeta Terminal</option>
+                                    <option value="Web_Tarjeta" selected>Web Tarjeta</option>
+                                    <option value="Efectivo" selected>Efectivo</option>
+                                    <option value="Transferencia" selected>Transferencia</option>
+                                    <option value="todos" selected>Todos</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button id="btnSubmit" class="button is-large is-rounded is-responsive" style="margin-top: 40px;" onclick="generateReport()">Generar Reporte</button>
+            </div>
+            <div class="column is-1"></div>
+            <div class="column is-3">
+                <div class="table is-fullwidth">
+                    <table id="tabla" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <div class="container">
+        <div class="columns is-vcentered">
+            <div class="column is-12">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="/js/reporte_metodo_pago.js"></script>

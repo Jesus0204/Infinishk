@@ -50,7 +50,7 @@ const helmet = require("helmet");
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net'],
+            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net',],
             "script-src-attr": ["'unsafe-inline'"]
         },
     },
@@ -59,6 +59,9 @@ app.use(helmet({
 const compression = require("compression");
 
 app.use(compression());
+
+// Para utilizar chartist para la generación de gráficos
+const chartist = require("chartist");
 
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
