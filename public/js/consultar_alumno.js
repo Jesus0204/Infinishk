@@ -94,3 +94,42 @@ function muestra_horario() {
     const horario = document.querySelector('#horario');
     horario.classList.remove('is-hidden');
 }
+
+function darDeBajaGrupo(IDGrupo, matricula) {
+    //El token de protección CSRF
+    const csrf = document.getElementById('_csrf').value;
+
+    // Enviar los datos al servidor
+    fetch('/alumnos/datos_alumno/dar_baja_grupo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'csrf-token': csrf
+            },
+            body: JSON.stringify({
+                IDGrupo: IDGrupo,
+                matricula: matricula
+            })
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+
+            const table = document.getElementById(id);
+
+            if (table) {
+                table.remove();
+            } else {
+                console.error(`No se encontró la fila ${id}.`);
+            }
+
+            document.getElementById('eliminacion').classList.remove('is-hidden');
+            $('html, body').animate({
+                scrollTop: 0
+            }, 'slow');
+        })
+        .catch(error => {
+            console.error('Error en la petición fetch:', error);
+        });
+};

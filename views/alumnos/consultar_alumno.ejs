@@ -212,7 +212,7 @@
                                                                                 </p>
                                                                                 <br>
                                                                                 <br>
-                                                                                <div class="columns is-vcentered">
+                                                                                <div style="text-align: center;">
                                                                                     <p class="is-size-5" style="text-align: center;">
                                                                                         <strong>Nombre: </strong><%= grupo.Nombre %>
                                                                                     </p>
@@ -258,7 +258,7 @@
                                                                                     </p>
                                                                                     <p class="control">
                                                                                         <button class="button is-rounded is-medium is-responsive"
-                                                                                            onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>')" <!-- Ajusta esta función según lo necesites -->
+                                                                                            onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
                                                                                             style="font-size: large; margin: 8px 2px; background-color: #000000;">
                                                                                             <span class="icon is-large">
                                                                                                 <i class="fa-solid fa-trash" style="color: #ffffff;"></i>

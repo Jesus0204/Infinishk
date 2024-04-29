@@ -10,7 +10,7 @@ const Fichas = require('../models/fichas_pago.model');
 const EstudianteProfesional = require('../models/estudianteprofesional.model');
 const EstudianteDiplomado = require('../models/estudiantediplomado.model')
 const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
-const { request } = require('express');
+const { request, response } = require('express');
 
 // Consultar Alumno
 exports.get_datos = async (request, response, next) => {
@@ -25,6 +25,25 @@ exports.get_datos = async (request, response, next) => {
         csrfToken: request.csrfToken()
     });
 };
+
+exports.post_dar_baja_grupo = async (request, response, next) => {
+    console.log('Holaaaaaaa')
+    console.log(request.body)
+    response.redirect('/alumnos/datos_alumno')
+    const { IDGrupo, matricula} = request.body;
+    console.log(IDGrupo)
+    console.log(matricula)
+    const modificador = request.session.username;
+
+    try {
+        // Función Eliminar Grupo
+        // Función Modificar fichas de pago
+        // const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        response.status(200).json({ success: true, data: data });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
+}
 
 exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
