@@ -412,7 +412,7 @@ exports.post_alumnos = async (request,response,next) => {
     await Posee.savePosee(matricula,3);
 
     const msg = {
-        to: 'samirbaidonpardo@hotmail.com',
+        to: email,
         from: {
             name: 'VIA PAGO',
             email: '27miguelb11@gmail.com',
