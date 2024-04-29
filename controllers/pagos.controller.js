@@ -311,7 +311,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
         });
 };
 
-exports.get_ingresos = async (request, response, next) => {
+exports.get_ingresos = async (request, response, next) => { 
     try {
         const [periodos, fieldData] = await Reporte.fetchPeriodos();
         
