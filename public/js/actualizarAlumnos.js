@@ -48,7 +48,9 @@ for (let count = 0; count < usuarios_length.innerHTML; count++){
 
      // Checar si hay contenido dentro del input, pata desactivar el boton
      function checar_contenido() {
-         btn_Subir.disabled = referencia.value.length === 0 || beca.value.length === 0;
+         btn_Subir.disabled = referencia.value.length === 0 || beca.value.length === 0 || 
+         parseFloat(referencia.value) <= 0 || parseFloat(beca.value) < 0 || beca.value.includes('e') || 
+         beca.value.includes('E') || referencia.value.includes('e') || referencia.value.includes('E');
      }
 
      // Activar mensaje si el motivo no tiene input
@@ -66,7 +68,6 @@ for (let count = 0; count < usuarios_length.innerHTML; count++){
          }
 
          if (referencia.value.includes('e') || referencia.value.includes('E')) {
-             btn_Subir.disabled = true;
              ayuda_referencia_exponente.classList.remove('is-hidden');
          } else {
              ayuda_referencia_exponente.classList.add('is-hidden');
@@ -87,7 +88,6 @@ for (let count = 0; count < usuarios_length.innerHTML; count++){
          }
 
          if (beca.value.includes('e') || beca.value.includes('E')) {
-             btn_Subir.disabled = true;
              ayuda_beca_exponente.classList.remove('is-hidden');
          } else {
              ayuda_beca_exponente.classList.add('is-hidden');
