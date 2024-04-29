@@ -1,60 +1,95 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const closeBtn = document.getElementById('closeNotification');
-    const errorNotification = document.getElementById('errorNotification');
+let admin = "";
+const user = document.querySelector('#user');
+const registrarAdmin = document.querySelector('#registrarAdmin');
+const ayuda_usuario = document.querySelector('#ayuda_usuario');
+const ayuda_vacio = document.querySelector('#ayuda_vacio');
+const ayuda_registrado = document.querySelector('#ayuda_registrado');
 
-    if (closeBtn){
-        closeBtn.addEventListener('click', () => {
-            errorNotification.style.display = 'none';
-        });
+// Checar si hay contenido dentro del input, pata desactivar el boton
+function checar_usuario() {
+    if (user.value != admin) {
+        registrarAdmin.disabled = true;
+        ayuda_usuario.classList.remove('is-hidden');
+    } else {
+        ayuda_usuario.classList.add('is-hidden');
+        registrarAdmin.disabled = false;
     }
-});
 
-const correoElectronico_NoAlumno = document.querySelector('#correoElectronico_NoAlumno');
-const IDUsuario_NoAlumno = document.querySelector('#IDUsuario_NoAlumno');
+    if (user.value.length === 0) {
+        ayuda_usuario.classList.add('is-hidden');
+        registrarAdmin.disabled = true;
+    }
+}
 
-$(document).ready(function() {
-    $('#roles').change(function() {
-        if ($(this).val() === 'Alumno') {
-            $('#alumnoFields').show();
-            $('#noAlumnoFields').hide();
+const getAdmins = () => { 
+    //El token de protección CSRF
+    const csrf = document.getElementById('_csrf').value;
+    fetch('/configuracion/getAdmins/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            input: user.value,
+        })
+    })
+    .then((result) => {
+        return result.json(); //Regresa otra promesa
+    })
+    .then((data) => {
+        if (data.registered.length > 0){
+            ayuda_registrado.classList.remove('is-hidden');
         } else {
-            $('#alumnoFields').hide();
-            $('#noAlumnoFields').show();
-
-            IDUsuario_NoAlumno.placeholder = `Matrícula del Nuevo ${$(this).val()}`;
-            correoElectronico_NoAlumno.placeholder = `Correo del Nuevo ${$(this).val()}`;
+            ayuda_registrado.classList.add('is-hidden');
         }
+        if (data.admins.length == 0 && registrarAdmin.disabled == true && data.registered.length == 0) {
+            ayuda_vacio.classList.remove('is-hidden');
+        } else {
+            ayuda_vacio.classList.add('is-hidden');
+        }
+
+        if (data.admins.length === 1) {
+            admin = data.admins[0]
+        }
+
+        checar_usuario();
+
+        if (data.admins.length == 0) {
+            ayuda_usuario.classList.add('is-hidden');
+        }
+
+        $("#user").autocomplete({
+            source: data.admins,
+            select: function (event, ui) {
+                admin = ui.item.value;
+                registrarAdmin.disabled = false;
+            },
+            minLength: 3
+        });
+    })
+    .catch(error => {
+        console.error('Error en la petición fetch:', error);
     });
+};
+
+$("#user").on("autocompleteselect", function (event, ui) {
+    ayuda_usuario.classList.add('is-hidden');
 });
 
-// Crear constantes para acceder a HTML
-const Boton_registrar = document.querySelector('#Boton_registrar');
-const ayuda_matricula_noAlumno = document.querySelector('#ayuda_matricula_noAlumno');
-const ayuda_correo_noAlumno = document.querySelector('#ayuda_correo_noAlumno');
+const ayuda_buscar = document.querySelector('#ayuda_buscar');
 
 // Checar si hay contenido dentro del input, pata desactivar el boton
 function checar_contenido() {
-    Boton_registrar.disabled = IDUsuario_NoAlumno.value.length === 0 || correoElectronico_NoAlumno.value.length === 0;
+    registrarAdmin.disabled = user.value.length === 0;
+    if (user.value.length === 0) {
+        ayuda_buscar.classList.remove('is-hidden');
+        ayuda_vacio.classList.add('is-hidden');
+    } else {
+        ayuda_buscar.classList.add('is-hidden');
+    }
 }
 
-// Activar mensaje si el motivo no tiene input
-function mensaje_matricula() {
-    if (IDUsuario_NoAlumno.value.length === 0) {
-        ayuda_matricula_noAlumno.classList.remove('is-hidden');
-    } else {
-        ayuda_matricula_noAlumno.classList.add('is-hidden');
-    }
-};
-
-function mensaje_correo() {
-    if (correoElectronico_NoAlumno.value.length === 0) {
-        ayuda_correo_noAlumno.classList.remove('is-hidden');
-    } else {
-        ayuda_correo_noAlumno.classList.add('is-hidden');
-    }
-};
-
-IDUsuario_NoAlumno.addEventListener('input', checar_contenido);
-IDUsuario_NoAlumno.addEventListener('input', mensaje_matricula);
-correoElectronico_NoAlumno.addEventListener('input', checar_contenido);
-correoElectronico_NoAlumno.addEventListener('input', mensaje_correo);
+user.addEventListener('input', getAdmins);
+user.addEventListener('input', checar_contenido);
+user.addEventListener('input', checar_usuario);

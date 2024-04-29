@@ -42,7 +42,7 @@ const buscar_alumno = () => {
                 data.alumnos[0].Matricula;
         }
 
-        checar_alumno()
+        checar_alumno();
 
         if (data.alumnos.length == 0) {
             ayuda_alumno.classList.add('is-hidden');

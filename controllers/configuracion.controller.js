@@ -7,7 +7,13 @@ const Alumno = require('../models/alumno.model');
 const estudianteDiplomado = require('../models/estudianteDiplomado.model');
 const Diplomado = require('../models/diplomado.model');
 
-const { getAllUsers, getAllCourses,getAllPeriods,getUser } = require('../util/adminApiClient');
+const {
+    getAllUsers,
+    getAllCourses,
+    getAllPeriods,
+    getUser,
+    getAllAdmins
+} = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
 
@@ -222,24 +228,54 @@ exports.get_obtener_usuario = (request, response, next) => {
     })
 }
 
+exports.post_getAdmins = async(request, response, next) => {
+    let input = request.body.input;
+    try {
+        const users = await getAllAdmins();
+
+        let unregisteredAdmins = [];
+        let registeredAdmins = [];
+    
+        for (let count = 0; count < users.data.length; count++) {
+            let admin_matricula = (users.data[count].ivd_id).toString()
+            let [usuarioExistente, fieldData] = await Usuario.fetchOne(admin_matricula);
+
+            if (usuarioExistente.length == 0){
+                unregisteredAdmins.push(admin_matricula)
+            } 
+        }
+
+        // Filtras dependiendo del user input
+        function filterArray(userInput) {
+            return unregisteredAdmins.filter(number => number.includes(userInput));
+        }
+
+        // llamas la función con el input
+        const filteredResults = filterArray(input);
+
+        // Sacas si existe un usuario con el input
+        let [usuarioExistente, fieldData] = await Usuario.fetchOne(input);
+
+        let usuarioExist = JSON.stringify(usuarioExistente);
+
+        if (usuarioExist.length != 2) {
+            registeredAdmins.push(input)
+        }
+
+        return response.status(200).json({
+            admins: filteredResults,
+            registered: registeredAdmins
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 exports.post_obtener_usuario = async (request, response, next) => {
     const matricula = request.body.user;
     const roles = await Rol.fetchNotAll();
     const roles_disponibles = roles[0].map(rol => rol.nombreRol);
-
-    const usuarioExistente = await Usuario.fetchOne(matricula);
-
-    if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
-        response.render('configuracion/obtener_usuario', {
-            error: true,
-            errorMensaje: 'Ese usuario ya existe por favor ingresa otra matrícula',
-            csrfToken: request.csrfToken(),
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-        })
-    }
-
 
     try {
         const user = await getUser(matricula);
