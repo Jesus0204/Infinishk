@@ -42,7 +42,7 @@ exports.get_administrar_planpago = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
-            });
+           });
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -62,9 +62,7 @@ exports.post_modificar_planpago = (request, response, next) => {
     PlanPago.update(nombre, activo, IDPlanPago)
         .then(([planespago, fieldData]) => {
             // Aquí puedes enviar una respuesta JSON indicando éxito
-            response.json({
-                success: true
-            });
+            response.json({ success: true });
         })
         .catch((error) => {
             console.log(error);
@@ -74,7 +72,7 @@ exports.post_modificar_planpago = (request, response, next) => {
 exports.get_registrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
-            response.render('configuracion/registrar_planpago', {
+           response.render('configuracion/registrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
@@ -231,11 +229,7 @@ exports.post_precio_credito = (request, response, next) => {
 
 exports.get_registrar_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
-        .then(([precio_actual, fieldData]) => {
-            // Conviertes las fechas a tu zona horaria con moment
-            for (let count = 0; count < precio_actual.length; count++) {
-                precio_actual[count].fechaModificacion = moment(new Date(precio_actual[count].fechaModificacion)).tz('America/Mexico_City').format('LL');
-            };
+        .then((precio_actual) => {
             response.render('configuracion/registrar_precio_credito', {
                 precio_actual: precio_actual[0],
                 username: request.session.username || '',
@@ -260,13 +254,9 @@ exports.get_check_plan = (request, response, next) => {
     PlanPago.fetchOne(num)
         .then(([planpagos]) => {
             if (planpagos.length > 0) {
-                response.json({
-                    exists: true
-                });
+                response.json({ exists: true });
             } else {
-                response.json({
-                    exists: false
-                });
+                response.json({ exists: false });
             }
         })
         .catch((error) => {
@@ -277,8 +267,9 @@ exports.get_check_plan = (request, response, next) => {
 exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
+    const activo = request.body.planPagoActivo;
 
-    PlanPago.save(nombre, numero)
+    PlanPago.save(nombre,numero,activo)
         .then(([planespago, fieldData]) => {
             response.redirect('/configuracion/administrar_planpago');
         })
