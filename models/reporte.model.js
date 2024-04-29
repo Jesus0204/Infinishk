@@ -175,16 +175,21 @@ module.exports = class Reporte {
         const [rows, fieldData] = await db.execute(`
             CALL fetchIngresosMes(?, ?, ?)`, 
                [mes, fechaInicio, fechaFin]);
-        console.log('MES: '+mes+': \n')
-        console.log(rows)
         const data = rows[0][0]
         const Colegiatura = data.totalColegiatura;
-        console.log(Colegiatura)
         const Diplomado = data.totalDiplomado;
-        console.log(Diplomado)
-        const PagosExtras = data.totalPagosExtras;
-        console.log(PagosExtras)
-        
+        const PagosExtras = data.totalPagosExtras;        
         return { Colegiatura, Diplomado, PagosExtras };
+    }
+
+    static async fetchMetodosPagoMes(mes, fechaInicio, fechaFin){
+        const [rows, fieldData] = await db.execute(`
+            CALL fetchMetodosPagoMes(?, ?, ?)`, 
+               [mes, fechaInicio, fechaFin]);
+        const data = rows[0][0]
+        const Tarjeta = data.Tarjeta;
+        const Efectivo = data.Efectivo;
+        const Transferencia = data.Transferencia;        
+        return { Tarjeta, Efectivo, Transferencia };
     }
 }
