@@ -1,7 +1,16 @@
+const Grupo = require('../models/grupo.model');
 const Alumno = require('../models/alumno.model');
+const PlanPago = require('../models/planpago.model');
+const Colegiatura = require('../models/colegiatura.model');
+const Usuario = require('../models/usuario.model');
+const Periodo = require('../models/periodo.model');
+const PrecioCredito = require('../models/precio_credito.model');
+const Materia = require('../models/materia.model');
 const Fichas = require('../models/fichas_pago.model');
 const EstudianteProfesional = require('../models/estudianteprofesional.model');
 const EstudianteDiplomado = require('../models/estudiantediplomado.model')
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
+const { request } = require('express');
 
 // Consultar Alumno
 exports.get_datos = (request, response, next) => {
