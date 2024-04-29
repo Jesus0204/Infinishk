@@ -15,6 +15,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
         const [pagos] = await Pago.fetchOne(matricula);
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
+        const [deuda] = await Deuda.fetchDeuda(matricula);
 
 
         response.render('estadocuenta/estado_cuenta', {
@@ -24,6 +25,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             estudianteProfesional: estudianteProfesional[0][0],
             estadoCuenta: estadoCuenta,
             pagos: pagos,
+            deuda: deuda,
             pagosExtra: cargosExtra,
             pagadosExtra: pagosExtra
         });
