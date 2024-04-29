@@ -97,6 +97,10 @@
                         <label for="nombre" class="label is-medium">
                             Nombre:
                         </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe el Nombre del Alumno.
+                        </p>
                          <p class="control has-icons-left">
                              <input type="text" id="nombre" name="nombre" class="input is-medium"
                                 placeholder="Nombre(s) del Alumno de Diplomado">
@@ -127,6 +131,10 @@
                         <label for="apellidos" class="label is-medium">
                             Apellidos:
                         </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_apellidos"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe Apellidos del Alumno.
+                        </p>
                         <p class="control has-icons-left">
                             <input type="text" id="apellidos" name="apellidos" class="input is-medium"
                             placeholder="Apellidos del Alumno de Diplomado">
@@ -141,6 +149,10 @@
                         <label for="referenciaBancaria" class="label is-medium">
                             Referencia Bancaria:
                         </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Referencia Bancaria.
+                        </p>
                         <p class="control has-icons-left">
                             <input type="text" id="referenciaBancaria" name="referenciaBancaria" class="input is-medium"
                                 placeholder="Referencia del Alumno de Diplomado">
@@ -153,6 +165,10 @@
                         <label for="fechaInscripcion" class="label is-medium">
                             Fecha de Inscripción:
                         </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor elige una Fecha.
+                        </p>
                         <input type="date" id="fechaInscripcion" name="fechaInscripcion"
                             class="input is-medium">
                     </div>
@@ -182,13 +198,24 @@
             <div class="columns">
                 <div class="column is-3"></div>
                 <div class="column is-6">
-                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
-                        <span>Registrar Usuario</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
+                    <div id="boton_no_Alumno">
+                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                            <span>Registrar Usuario</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div id="boton_Alumno" class="is-hidden">
+                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar_alumno" disabled>
+                            <span>Registrar Usuario</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
             
