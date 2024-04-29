@@ -128,15 +128,18 @@
                       </label>
                   </div>
               </div>
-            
-
-            
+              <% if (error) { %>
+                <div class="notification is-danger">
+                  <strong> <%= error %></strong>
+                </div>
+                <% } %>
 
         <div class="field">
           <div class="control">
             <input type="submit" class="button is-primary" value="<% if (registrar) { %>Registrarse <% } else { %>Ingresar <% } %>"/>
           </div>
         </div>
+        
         <div class="is-clearfix">
           <a href="/auth/reset_password" class="link-reseteo">¿Olvidaste tu contraseña?</a> 
           </div>
