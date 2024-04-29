@@ -117,6 +117,10 @@ function pagar() {
     //El token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
     const matricula = document.getElementById('matricula').value;
+    const deuda = document.getElementById('deuda').value;
+    const liquida = document.getElementById('liquida').value;
+    const nota = document.getElementById('nota').value;
+    const test = 1;
 
     fetch('/pagos/mandar_pago', {
         method: 'POST',
@@ -155,6 +159,10 @@ function pagar() {
             monto: monto,
             motivo:motivo,
             tipo:tipo,
+            test:test,
+            deuda:deuda,
+            nota:nota,
+            liquida:liquida,
         })
     }).then((result) => {
         return result.json();

@@ -42,5 +42,10 @@ module.exports = class Deuda {
         fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
         AND IDColegiatura = ? `, [IDColegiatura]);
     }
+
+    static update_Deuda(monto_a_usar, id_deuda) {
+        return db.execute('UPDATE Deuda SET montoPagado = montoPagado + ? WHERE IDDeuda = ?', 
+        [monto_a_usar, id_deuda]);
+    }
     
 }

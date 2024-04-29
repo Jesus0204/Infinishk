@@ -17,5 +17,11 @@ module.exports = class pagoDiplomado {
             `CALL insertarPagoDiplomado (?,?,?,?, '', ?, 'Transferencia');`, 
                 [matricula,id,fecha,monto,nota]);
     }
+
+    static save_tarjeta(matricula,id,fecha,monto,nota) {
+        return db.execute(
+            `CALL insertarPagoDiplomado (?,?,?,?, '', ?, 'Tarjeta');`, 
+                [matricula,id,fecha,monto,nota]);
+    }
         
 }

@@ -22,4 +22,10 @@ module.exports = class Colegiatura{
         AND C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = '1'
         AND D.Matricula = ?`, [matricula]);
     }
+
+    static update_Colegiatura(monto_a_usar, idColegiatura){
+        return db.execute(`UPDATE Colegiatura 
+        SET montoPagadoTotal = montoPagadoTotal + ?  
+        WHERE IDColegiatura = ?`, [monto_a_usar, idColegiatura]);
+    }
 }

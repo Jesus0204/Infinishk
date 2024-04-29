@@ -134,6 +134,8 @@
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
+                    <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
+                    <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
                 <div id="pago_colegiatura">
                     <div class="columns">
                         <div class="column is-5">
