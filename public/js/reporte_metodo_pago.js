@@ -29,7 +29,7 @@ function prepareChartData(metodoPagoData, tipo) {
     let labels = Object.keys(metodoPagoData.metodoPagoData);
     let data = Object.values(metodoPagoData.metodoPagoData);
 
-    let categories = ['Tarjeta', 'Efectivo', 'Transferencia'];
+    let categories = ['Tarjeta_Terminal', 'Web_Tarjeta', 'Efectivo', 'Transferencia'];
 
     let series = [];
 
@@ -57,8 +57,10 @@ function prepareChartData(metodoPagoData, tipo) {
 
 function getColorByCategoria(categoria) {
     switch (categoria) {
-        case 'Tarjeta':
+        case 'Tarjeta_Terminal':
             return '#95404c';
+        case 'Web_Tarjeta':
+            return 'rgba(4, 114, 77, 0.7)'
         case 'Efectivo':
             return '#5a6581';
         case 'Transferencia':
@@ -71,7 +73,7 @@ function getColorByCategoria(categoria) {
 var myChart;
 
 function renderChart(chartData, tipo) {
-    var categories = ['Tarjeta', 'Efectivo', 'Transferencia'];
+    var categories = ['Tarjeta_Terminal', 'Web_Tarjeta', 'Efectivo', 'Transferencia'];
     var labels = chartData.labels;
     var datasets = [];
 
