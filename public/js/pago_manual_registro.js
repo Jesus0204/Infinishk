@@ -127,6 +127,22 @@ function cambiar_fecha_modal_col() {
 const boton_pago_extra = document.querySelector('#Boton_registrar_pago_extra');
 const boton_pago_col = document.querySelector('#boton_pago_col');
 
+// Crear constantes para acceder a HTML
+const motivo = document.querySelector('#motivo_col');
+const monto = document.querySelector('#monto_col');
+const ayuda_motivo = document.querySelector('#ayuda_motivo');
+const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
+const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
+const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
+const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
+
+// Checar si hay contenido dentro del input, pata desactivar el boton
+function checar_contenido() {
+    boton_pago_col.disabled = motivo.value.length === 0 || monto.value.length === 0 ||
+        parseFloat(monto.value) <= 0 || monto.value.includes('e') || monto.value.includes('E') || 
+        fecha_col.value.length === 0;
+}
+
 window.addEventListener('load', cambiar_fecha_modal);
 boton_pago_extra.addEventListener('click', cambiar_fecha_modal);
 
@@ -136,9 +152,8 @@ if (fecha_col) {
 }
 
 function clear_button() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
     ayuda_fecha.classList.remove('is-hidden');
-    boton_pago_col.disabled = true;
+    checar_contenido();
 }
 
 function clear_button_pago_extra() {
@@ -164,9 +179,8 @@ clear.forEach((button) => {
 })
 
 function activate_clear_button() {
-    const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
     ayuda_fecha.classList.add('is-hidden');
-    boton_pago_col.disabled = false;
+    checar_contenido();
 }
 
 function activate_clear_button_pago_extra() {
@@ -179,23 +193,15 @@ let count_activate = 0;
 calendars.forEach((calendar) => {
     if (clear.length == 2) {
         if (count_activate == 0) {
-            calendar.on('select', activate_clear_button);
+            calendar.on('hide', activate_clear_button);
         } else if (count_activate == 1) {
-            calendar.on('select', activate_clear_button_pago_extra);
+            calendar.on('hide', activate_clear_button_pago_extra);
         }
         count_activate++;
     } else if (clear.length == 1) {
-        calendar.on('select', activate_clear_button_pago_extra);
+        calendar.on('hide', activate_clear_button_pago_extra);
     }
 })
-
-// Crear constantes para acceder a HTML
-const motivo = document.querySelector('#motivo_col');
-const monto = document.querySelector('#monto_col');
-const ayuda_motivo = document.querySelector('#ayuda_motivo');
-const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
-const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
-const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
 
 function cambiar_motivo_monto_modal() {
     document.querySelector('#motivo_modal_col').innerHTML = '<strong>Motivo: </strong>' + motivo.value;
@@ -207,12 +213,6 @@ function cambiar_motivo_monto_modal() {
 };
 
 window.addEventListener('load', cambiar_motivo_monto_modal);
-
-// Checar si hay contenido dentro del input, pata desactivar el boton
-function checar_contenido() {
-    boton_pago_col.disabled = motivo.value.length === 0 || monto.value.length === 0 ||
-        parseFloat(monto.value) <= 0 || monto.value.includes('e') || monto.value.includes('E');
-}
 
 // Activar mensaje si el motivo no tiene input
 function mensaje_motivo() {
