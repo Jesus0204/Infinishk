@@ -160,7 +160,9 @@ exports.post_fetch_datos = async (request, response, next) => {
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(matricula)
             const precio = await Grupo.fetchPrecioTotal(matricula)
-            const precioTotal = precio[0][0].Preciototal
+            const descuento = await Alumno.fetchCredito(matricula)
+            const desc = descuento[0][0].Credito
+            const precioTotal = (precio[0][0].Preciototal - desc)
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
                 periodoExistente: periodoExistente,

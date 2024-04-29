@@ -28,4 +28,8 @@ module.exports = class Alumno {
         return db.execute(`SELECT horarioConfirmado FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 
+    static fetchCredito(matricula){
+        return db.execute(`SELECT Credito FROM Alumno WHERE Matricula = ?`, [matricula])
+    }
+
 }
