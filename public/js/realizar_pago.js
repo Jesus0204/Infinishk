@@ -111,7 +111,9 @@ $('.motivo_extra').change(function () {
 
 function pagar() {
     // Sacas el que tiene el monto actual
-    const monto = document.getElementById('monto');
+    const tipo = document.getElementById('tipo').value;
+    const monto = document.getElementById('monto').value;
+    const motivo = document.getElementById('motivo').value;
     //El token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
     const matricula = document.getElementById('matricula').value;
@@ -123,7 +125,7 @@ function pagar() {
             'csrf-token': csrf
         },
         body: JSON.stringify({
-            monto: monto.value,
+            monto: monto,
             matricula: matricula
         })
     }).then((result) => {
@@ -137,6 +139,27 @@ function pagar() {
 
         document.getElementById('frame_pago').src = liga_pago;
 
+    }).catch(err => {
+        console.log(err);
+    });
+
+    // Enviar solicitud al endpoint para recibir el pago
+    fetch('/pagos/recibir_pago', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            matricula: matricula,
+            monto: monto,
+            motivo:motivo,
+            tipo:tipo,
+        })
+    }).then((result) => {
+        return result.json();
+    }).then((data) => {
+        // Aquí puedes hacer algo con la respuesta si es necesario
     }).catch(err => {
         console.log(err);
     });
