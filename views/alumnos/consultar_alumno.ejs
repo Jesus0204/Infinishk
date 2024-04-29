@@ -1,0 +1,294 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %> 
+
+<body>
+    <section class="section">
+        <div class="container">
+            <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" id="alumnoConsulta" value="<%= alumnoConsulta[0].Matricula %>">
+            
+            <div class="columns">
+                <div class="column is-6">
+                    <h3 class="title is-3">Consultar Alumno</h3>
+                </div>
+            </div>
+
+            <!-- datos personales -->
+            <div class="notification">
+                <div class="columns is-vcentered">
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Nombre:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Nombre %> <%= alumnoConsulta[0].Apellidos %></div>
+                    </div>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Matrícula:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Matricula %></div>
+                    </div>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].referenciaBancaria %></div>
+                    </div>
+                    <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Semestre:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].semestreActual %></div>
+                    </div>
+                      <% if (alumnoConsulta[0].porcBeca !== 0) { %>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].porcBeca %>%</div>
+                      </div>
+                    <% } %>
+                    <% } else { %>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Fecha de Inscripción:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].fechaInscripcion %></div>
+                    </div>
+                    <% } %>
+                    </div>
+                    <div class="column is-narrow">
+                        <button class="button is-primary">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- menú de tabs -->
+            <div class="container" style="padding-top: 15px;">
+                <div class="tabs is-boxed">
+                    <ul>
+                        <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                        <li class="is-active" id="nav_estado">
+                            <a onclick="muestra_estado_de_cuenta()">
+                                <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                                <span>Estado de Cuenta</span>
+                            </a>
+                        </li>
+                        <% } %>
+                        <li id="nav_otros_cargos">
+                            <a onclick="muestra_otros_cargos()">
+                                <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
+                                <span>Otros Cargos</span>
+                            </a>
+                        </li> 
+                        <li id="nav_historial_pagos">
+                            <a onclick="muestra_historial_de_pagos()">
+                                <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
+                                <span>Historial de Pagos</span>
+                            </a>
+                        </li> 
+                        <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                        <li id="nav_horario">
+                            <a onclick="muestra_horario()">
+                                <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
+                                <span>Horario</span>
+                            </a>
+                        </li> 
+                        <% } %>
+                    </ul>
+                </div>
+
+                <div id="otros_cargos" class="is-hidden">
+                    <p>Otros cargos</p>
+                </div>
+
+                <div id="historial" class="is-hidden">
+                    <p>Historial</p>
+                </div>
+
+                <section id="horario" class="section is-hidden">
+                    <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    </form>
+                    <div id="diplomados_activos" class="container">
+                        <% if(confirmacion){%>
+                            <h3 class="title is-2">Consultar horario</h3>
+                            <%}else{%>
+                                <h3 class="title is-2">Confirmar horario</h3>
+                                <%}%>
+                                    <% if(confirmacion===1){%>
+                                        <% if (schedule[0].length===0) { %>
+                                            <h3 class="title is-2">Horario no disponible por el momento.</h3>
+                                            <% } else { %>
+                                                <% for (let grupo of schedule[0]) { %>
+                                                    <table class="table is bordered is hoverable is-fullwidth">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="column">
+                                                                        <p>Unidad de formación: <%= grupo.IDGrupo %>
+                                                                        </p>
+                                                                        <h3 class="title is-5">
+                                                                            <%= grupo.Nombre %>
+                                                                        </h3>
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-regular fa-user"></i>
+                                                                            </span>
+                                                                            <strong>Profesor: </strong>
+                                                                            <%= grupo.Profesor %>
+                                                                        </p>
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-regular fa-clock"></i>
+                                                                            </span>
+                                                                            <strong>Horario: </strong>
+                                                                            <%= grupo.Horario %>
+                                                                        </p>
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-regular fa-building"></i>
+                                                                            </span>
+                                                                            <strong>Salón: </strong>
+                                                                            <%= grupo.Salon %>
+                                                                        </p>
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-regular fa-calendar"></i>
+                                                                            </span>
+                                                                            <strong>Fecha de inicio: </strong>
+                                                                            <%= new Date(grupo.fechaInicio).toLocaleDateString("es-ES") %>
+                                                                        </p>
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-regular fa-calendar"></i>
+                                                                            </span>
+                                                                            <strong>Fecha de termino: </strong>
+                                                                            <%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
+                                                                        </p> 
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fas fa-graduation-cap"></i>
+                                                                            </span>
+                                                                            <strong>Créditos: </strong>
+                                                                            <%= grupo.Creditos.toLocaleString('mx', {
+                                                                                minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                                                }) %>
+                                                                        </p>                                                           
+                                                                        <p>
+                                                                            <span class="icon is-small">
+                                                                                <i class="fa-solid fa-tags"></i>
+                                                                            </span>
+                                                                            <strong>Costo(MXN): </strong>$<%=
+                                                                                grupo.Precio_materia.toLocaleString('mx', {
+                                                                                minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                                }) %>
+                                                                        </p>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="display: block;">
+                                                                    <br><br><br><br>
+                                                                    <div class="columns is-vcentered">
+                                                                        <div class="column" style="text-align: center;">
+                                                                            <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                                                                style="font-size: medium; background-color: #000000;"
+                                                                                id="Boton_eliminar"
+                                                                                data-target="modal-confirmar-dar_baja">
+                                                                                <span class="icon is-large">
+                                                                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                                </span>
+                                                                                <span>Dar de baja</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="modal-confirmar-dar_baja" class="modal">
+                                                                        <div class="modal-background"></div>
+                                                                        <div class="modal-card">
+                                                                            <header class="modal-card-head">
+                                                                                <p class="modal-card-title" style="text-align: center;">
+                                                                                    <strong> Dar de baja materia Extra</strong>
+                                                                                </p>
+                                                                                <button class="delete" aria-label="delete"></button>
+                                                                            </header>
+                                                                            <section class="modal-card-body">
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>¡Esta acción no se puede deshacer!</strong>
+                                                                                </p>
+                                                                                <br>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    Los datos del grupo a dar de baja son los siguientes:
+                                                                                </p>
+                                                                                <br>
+                                                                                <br>
+                                                                                <div class="columns is-vcentered">
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Nombre: </strong><%= grupo.Nombre %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Profesor: </strong><%= grupo.Profesor %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Horario: </strong><%= grupo.Horario %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Salón: </strong><%= grupo.Salon %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Fecha de inicio: </strong><%= new Date(grupo.fechaInicio).toLocaleDateString("es-ES") %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Fecha de termino: </strong><%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Créditos: </strong>
+                                                                                        <%= grupo.Creditos.toLocaleString('mx', {
+                                                                                            minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                                                            }) %>
+                                                                                    </p>
+                                                                                    <p class="is-size-5" style="text-align: center;">
+                                                                                        <strong>Costo(MXN): </strong>
+                                                                                        $<%=grupo.Precio_materia.toLocaleString('mx', {
+                                                                                            minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                                            }) %>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </section>
+                                                                            <footer class="modal-card-foot" style="justify-content: center;">
+                                                                                <div class="field is-grouped">
+                                                                                    <p class="control">
+                                                                                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                                                                            style="font-size: large; margin: 8px 2px;">
+                                                                                            <span class="icon is-large">
+                                                                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                                                            </span>
+                                                                                            <span>Regresar</span>
+                                                                                        </button>
+                                                                                    </p>
+                                                                                    <p class="control">
+                                                                                        <button class="button is-rounded is-medium is-responsive"
+                                                                                            onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>')" <!-- Ajusta esta función según lo necesites -->
+                                                                                            style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                                                                            <span class="icon is-large">
+                                                                                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                                            </span>
+                                                                                            <span>Dar de baja</span>
+                                                                                        </button>
+                                                                                    </p>
+                                                                            </footer>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                <% } %>
+                                            <% } %>
+                                            <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $
+                                                <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                            </h3>
+                                            <br>
+                                    <% } %>
+                    </div>
+                </section>
+
+                <div id="estado_cuenta" class="is-active">
+                    <p>Estado de cuenta</p>
+                </div>
+
+            </div>
+    <script type="text/javascript" src="/js/consultar_alumno.js"></script>
+    <script type="text/javascript" src="/js/modal_popup.js"></script>
+</html>
