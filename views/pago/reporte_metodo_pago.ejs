@@ -18,7 +18,7 @@
             <div class="column is-half">
                 <form id="formRegistro" action="/pagos/reporte_ingresos" method="POST">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                    <h3 class="title is-3">Reporte Ingresos</h3>
+                    <h3 class="title is-3">Reporte Metodos de pago</h3>
                     <div class="columns is-vcentered">
                         <div class="column is-4">
                             <label class="label is-size-5" for="periodo">Periodo:</label>
@@ -42,9 +42,9 @@
                         <div class="column is-8">
                             <div class="select is-fullwidth">
                                 <select class="tipo" name="tipo" id="tipo">
-                                    <option value="colegiatura" selected>Colegiatura</option>
-                                    <option value="diplomado" selected>Diplomado</option>
-                                    <option value="pagosextras" selected>Pagos Extra</option>
+                                    <option value="Tarjeta" selected>Tarjeta</option>
+                                    <option value="Efectivo" selected>Efectivo</option>
+                                    <option value="Transferencia" selected>Transferencia</option>
                                     <option value="todos" selected>Todos</option>
                                 </select>
                             </div>
@@ -80,4 +80,4 @@
         </div>
     </div>
 
-<script type="text/javascript" src="/js/reporte_ingresos.js"></script>
+<script type="text/javascript" src="/js/reporte_metodo_pago.js"></script>

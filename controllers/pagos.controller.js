@@ -330,22 +330,21 @@ exports.post_ingresos = async (request, response, next) => {
 
     if (fechaInicio.getMonth() >= 0 && fechaInicio.getMonth() <= 5) {
         // Para periodos Enero-Junio
-        ingresosData.Enero = await Reporte.fetchIngresosEnero(fechaInicio, fechaFin);
-        ingresosData.Febrero = await Reporte.fetchIngresosFeb(fechaInicio, fechaFin);
-        ingresosData.Marzo = await Reporte.fetchIngresosMarzo(fechaInicio, fechaFin);
-        ingresosData.Abril = await Reporte.fetchIngresosAbril(fechaInicio, fechaFin);
-        ingresosData.Mayo = await Reporte.fetchIngresosMayo(fechaInicio, fechaFin);
-        ingresosData.Junio = await Reporte.fetchIngresosJun(fechaInicio, fechaFin);
+        ingresosData.Enero = await Reporte.fetchIngresosMes(1, fechaInicio, fechaFin);
+        ingresosData.Febrero = await Reporte.fetchIngresosMes(2, fechaInicio, fechaFin);
+        ingresosData.Marzo = await Reporte.fetchIngresosMes(3, fechaInicio, fechaFin);
+        ingresosData.Abril = await Reporte.fetchIngresosMes(4, fechaInicio, fechaFin);
+        ingresosData.Mayo = await Reporte.fetchIngresosMes(5, fechaInicio, fechaFin);
+        ingresosData.Junio = await Reporte.fetchIngresosMes(6, fechaInicio, fechaFin);
     } else {
         // Para periodos Julio-Diciembre
-        ingresosData.Julio = await Reporte.fetchIngresosJul(fechaInicio, fechaFin);
-        ingresosData.Agosto = await Reporte.fetchIngresosAgo(fechaInicio, fechaFin);
-        ingresosData.Septiembre = await Reporte.fetchIngresosSept(fechaInicio, fechaFin);
-        ingresosData.Octubre = await Reporte.fetchIngresosOct(fechaInicio, fechaFin);
-        ingresosData.Noviembre = await Reporte.fetchIngresosNov(fechaInicio, fechaFin);
-        ingresosData.Diciembre = await Reporte.fetchIngresosDic(fechaInicio, fechaFin);
+        ingresosData.Julio = await Reporte.fetchIngresosMes(7, fechaInicio, fechaFin);
+        ingresosData.Agosto = await Reporte.fetchIngresosMes(8, fechaInicio, fechaFin);
+        ingresosData.Septiembre = await Reporte.fetchIngresosMes(9, fechaInicio, fechaFin);
+        ingresosData.Octubre = await Reporte.fetchIngresosMes(10, fechaInicio, fechaFin);
+        ingresosData.Noviembre = await Reporte.fetchIngresosMes(11, fechaInicio, fechaFin);
+        ingresosData.Diciembre = await Reporte.fetchIngresosMes(12, fechaInicio, fechaFin);
     }
-
     response.send({ingresosData});
 };
 
@@ -374,27 +373,27 @@ exports.post_metodo_pago = async (request, response, next) => {
     const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
     const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
     
-    let ingresosData = {};
+    let metodoPagoData = {};
 
     if (fechaInicio.getMonth() >= 0 && fechaInicio.getMonth() <= 5) {
         // Para periodos Enero-Junio
-        ingresosData.Enero = await Reporte.fetchIngresosEnero(fechaInicio, fechaFin);
-        ingresosData.Febrero = await Reporte.fetchIngresosFeb(fechaInicio, fechaFin);
-        ingresosData.Marzo = await Reporte.fetchIngresosMarzo(fechaInicio, fechaFin);
-        ingresosData.Abril = await Reporte.fetchIngresosAbril(fechaInicio, fechaFin);
-        ingresosData.Mayo = await Reporte.fetchIngresosMayo(fechaInicio, fechaFin);
-        ingresosData.Junio = await Reporte.fetchIngresosJun(fechaInicio, fechaFin);
+        metodoPagoData.Enero = await Reporte.fetchMetodoPagoEnero(fechaInicio, fechaFin);
+        metodoPagoData.Febrero = await Reporte.fetchMetodoPagoFeb(fechaInicio, fechaFin);
+        metodoPagoData.Marzo = await Reporte.fetchMetodoPagoMarzo(fechaInicio, fechaFin);
+        metodoPagoData.Abril = await Reporte.fetchMetodoPagoAbril(fechaInicio, fechaFin);
+        metodoPagoData.Mayo = await Reporte.fetchMetodoPagoMayo(fechaInicio, fechaFin);
+        metodoPagoData.Junio = await Reporte.fetchMetodoPagoJun(fechaInicio, fechaFin);
     } else {
         // Para periodos Julio-Diciembre
-        ingresosData.Julio = await Reporte.fetchIngresosJul(fechaInicio, fechaFin);
-        ingresosData.Agosto = await Reporte.fetchIngresosAgo(fechaInicio, fechaFin);
-        ingresosData.Septiembre = await Reporte.fetchIngresosSept(fechaInicio, fechaFin);
-        ingresosData.Octubre = await Reporte.fetchIngresosOct(fechaInicio, fechaFin);
-        ingresosData.Noviembre = await Reporte.fetchIngresosNov(fechaInicio, fechaFin);
-        ingresosData.Diciembre = await Reporte.fetchIngresosDic(fechaInicio, fechaFin);
+        metodoPagoData.Julio = await Reporte.fetchMetodoPagoJul(fechaInicio, fechaFin);
+        metodoPagoData.Agosto = await Reporte.fetchMetodoPagoAgo(fechaInicio, fechaFin);
+        metodoPagoData.Septiembre = await Reporte.fetchMetodoPagoSept(fechaInicio, fechaFin);
+        metodoPagoData.Octubre = await Reporte.fetchMetodoPagoOct(fechaInicio, fechaFin);
+        metodoPagoData.Noviembre = await Reporte.fetchMetodoPagoNov(fechaInicio, fechaFin);
+        metodoPagoData.Diciembre = await Reporte.fetchMetodoPagoDic(fechaInicio, fechaFin);
     }
 
-    response.send({ingresosData});
+    response.send({metodoPagoData});
 };
 
 exports.get_autocomplete = (request, response, next) => {
