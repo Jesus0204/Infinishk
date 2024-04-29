@@ -1,0 +1,92 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" id="alumnoConsulta" value="<%= alumnoConsulta[0].Matricula %>">
+            
+            <div class="columns">
+                <div class="column is-6">
+                    <h3 class="title is-3">Consultar Alumno</h3>
+                </div>
+            </div>
+
+            <!-- datos personales -->
+            <div class="notification">
+                <div class="columns is-vcentered">
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Nombre:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Nombre %> <%= alumnoConsulta[0].Apellidos %></div>
+                    </div>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Matrícula:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Matricula %></div>
+                    </div>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].referenciaBancaria %></div>
+                    </div>
+                    <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Semestre:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].semestreActual %></div>
+                    </div>
+                      <% if (alumnoConsulta[0].porcBeca !== 0) { %>
+                    <div class="column is-2">
+                        <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].porcBeca %>%</div>
+                      </div>
+                    <% } %>
+                    <% } else { %>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Fecha de Inscripción:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].fechaInscripcion %></div>
+                    </div>
+                    <% } %>
+                    </div>
+                    <div class="column is-narrow">
+                        <button class="button is-primary">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- menú de tabs -->
+            <div class="container" style="padding-top: 15px;">
+                <div class="tabs is-boxed">
+                    <ul>
+                        <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                        <li class="is-active" id="">
+                            <a onclick="">
+                                <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                                <span>Estado de Cuenta</span>
+                            </a>
+                        </li>
+                        <% } %>
+                        <li id="">
+                        <a onclick="">
+                            <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
+                            <span>Otros Cargos</span>
+                        </a>
+                        </li> 
+                        <li id="">
+                            <a onclick="">
+                                <span class="icon is-small"><i class="fa-regular fa-pen-to-square"></i></span>
+                                <span>Historial de Pagos</span>
+                            </a>
+                        </li> 
+                        <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                        <li id="">
+                            <a onclick="">
+                                <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
+                                <span>Horario</span>
+                            </a>
+                        </li> 
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
