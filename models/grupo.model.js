@@ -44,7 +44,6 @@ module.exports = class Alumno {
                 ELSE 1
                 END AS porcbeca FROM estudianteprofesional
                 WHERE Matricula = ?`, [matricula]);
-
         const porcbeca = porcbecaResult[0][0].porcbeca;
 
         const PrecioTotal = await db.execute(`SELECT (SUM(P.precioPesos * M.Creditos)*?) AS Preciototal
