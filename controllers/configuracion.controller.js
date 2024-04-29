@@ -3,6 +3,9 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Usuario = require('../models/usuario.model');
 const Rol = require('../models/rol.model');
 const Posee = require('../models/posee.model');
+const Alumno = require('../models/alumno.model');
+const estudianteDiplomado = require('../models/estudianteDiplomado.model');
+const Diplomado = require('../models/diplomado.model');
 
 const { getAllUsers, getAllCourses,getAllPeriods,getUser } = require('../util/adminApiClient');
 
@@ -61,6 +64,7 @@ exports.get_registrar_usuario = (request, response, next) => {
             response.render('configuracion/registrar_usuario', {
                 roles_disponibles: roles_disponibles,
                 csrfToken: request.csrfToken(),
+                error: false,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
@@ -69,6 +73,142 @@ exports.get_registrar_usuario = (request, response, next) => {
         .catch((error) => {
             console.log(error)
         })
+};
+
+exports.post_registrar_usuario = async (request, response, next) => {
+    const [roles_disponibles, fieldData] = await Rol.fetchAll()
+
+    const rol = request.body.roles;
+    const matricula = request.body.IDUsuario_NoAlumno;
+    const correo = request.body.correoElectronico_NoAlumno;
+
+    const token_noAlumno = jwt.sign({
+        matricula: matricula
+    }, secretKey, {
+        expiresIn: '3d'
+    });
+
+    // Enlace con el token incluido
+    const setPasswordLinkNoAlumno = `http://localhost:4000/auth/set_password?token=${token_noAlumno}`;
+
+    const msg_noAlumno = {
+        to: correo,
+        from: {
+            name: 'VIA PAGO',
+            email: '27miguelb11@gmail.com',
+        },
+        subject: 'Bienvenido a VIA Pago',
+        html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLinkNoAlumno}">Establecer Contraseña</a></p>`
+    };
+
+     if (rol === 'Administrador') {
+        
+        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula);
+        if (usuarioExistente.length > 0) { 
+            return response.render('configuracion/registrar_usuario', {
+                roles_disponibles: roles_disponibles,
+                csrfToken: request.csrfToken(),
+                error: true,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            })
+        }
+
+        await Usuario.saveUsuario(matricula, correo);
+        await Posee.savePosee(matricula, 1);
+
+        try {
+            await sgMail.send(msg_noAlumno);
+            console.log('Correo electrónico enviado correctamente');
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        };
+     }
+     
+     if (rol === 'Visualizador') {
+
+        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula);
+        if (usuarioExistente.length > 0) {
+            return response.render('configuracion/registrar_usuario', {
+                roles_disponibles: roles_disponibles,
+                csrfToken: request.csrfToken(),
+                error: true,
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            })
+        }
+
+        await Usuario.saveUsuario(matricula, correo);
+        await Posee.savePosee(matricula, 2);
+
+        try {
+            await sgMail.send(msg_noAlumno);
+            console.log('Correo electrónico enviado correctamente');
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        };
+    }
+    
+    if (rol === 'Alumno') {
+
+       const matricula_alumno = request.body.IDUsuario;
+       const correo_alumno = request.body.correoElectronico;
+       const nombre = request.body.nombre;
+       const apellidos = request.body.apellidos;
+       const referenciaBancaria = request.body.referenciaBancaria;
+       const fechaInscripcion = request.body.fechaInscripcion;
+
+       const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
+       if (usuarioExistente.length > 0) {
+           return response.render('configuracion/registrar_usuario', {
+               roles_disponibles: roles_disponibles,
+               csrfToken: request.csrfToken(),
+               error: true,
+               username: request.session.username || '',
+               permisos: request.session.permisos || [],
+               rol: request.session.rol || "",
+           })
+       };
+
+       // Registras al usuario y al alumno
+       await Usuario.saveUsuario(matricula_alumno, correo_alumno);
+       await Posee.savePosee(matricula_alumno, 3);
+       await Alumno.save_alumno(matricula_alumno, nombre, apellidos, referenciaBancaria);
+
+       // Registras al estudiante en diplomado
+       const estudiante = new estudianteDiplomado(matricula_alumno, fechaInscripcion);
+       await estudiante.save();
+
+       const token = jwt.sign({
+           matricula: matricula_alumno
+       }, secretKey, {
+           expiresIn: '3d'
+       });
+
+       // Enlace con el token incluido
+       const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+       const msgAlumno = {
+           to: correo,
+           from: {
+               name: 'VIA PAGO',
+               email: '27miguelb11@gmail.com',
+           },
+           subject: 'Bienvenido a VIA Pago',
+           html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+       };
+
+       try {
+           await sgMail.send(msgAlumno);
+           console.log('Correo electrónico enviado correctamente');
+       } catch (error) {
+           console.error('Error al enviar el correo electrónico:', error.toString());
+       }
+    }
+
+    response.redirect('/configuracion/consultar_usuario');
 };
 
 exports.get_obtener_usuario = (request, response, next) => {
@@ -204,24 +344,8 @@ exports.post_activar_usuario = async (request, response, next) => {
             console.error('Error al enviar el correo electrónico:', error.toString());
         }
 
-        response.redirect('/configuracion/consultar_usuario')
+        response.redirect('/configuracion/consultar_usuario');
 
-    }
-};
-
-
-exports.post_registrar_usuario = async (request, response, next) => {
-    const rol = request.body.roles;
-
-    if (rol === 'Administrador') {
-    }
-
-    if (rol === 'Alumno') {
-        
-    }
-
-    if (rol === 'Visualizador') {
-        
     }
 };
 

@@ -41,7 +41,7 @@ const ayuda_matricula_noAlumno = document.querySelector('#ayuda_matricula_noAlum
 const ayuda_correo_noAlumno = document.querySelector('#ayuda_correo_noAlumno');
 
 // Checar si hay contenido dentro del input, pata desactivar el boton
-function checar_contenido() {
+function checar_contenido_NoAlumno() {
     Boton_registrar.disabled = IDUsuario_NoAlumno.value.length === 0 || correoElectronico_NoAlumno.value.length === 0;
 }
 
@@ -62,9 +62,9 @@ function mensaje_correo() {
     }
 };
 
-IDUsuario_NoAlumno.addEventListener('input', checar_contenido);
+IDUsuario_NoAlumno.addEventListener('input', checar_contenido_NoAlumno);
 IDUsuario_NoAlumno.addEventListener('input', mensaje_matricula);
-correoElectronico_NoAlumno.addEventListener('input', checar_contenido);
+correoElectronico_NoAlumno.addEventListener('input', checar_contenido_NoAlumno);
 correoElectronico_NoAlumno.addEventListener('input', mensaje_correo);
 
 const Boton_registrar_alumno = document.querySelector('#Boton_registrar_alumno');

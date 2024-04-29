@@ -24,4 +24,8 @@ module.exports = class Alumno {
         FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 
+    static save_alumno(matricula, nombre, apellidos, referencia) {
+        return db.execute('INSERT INTO `alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito`, `horarioConfirmado`) VALUES (?,?,?,?,0,0)', [matricula, nombre, apellidos, referencia])
+    }
+
 }
