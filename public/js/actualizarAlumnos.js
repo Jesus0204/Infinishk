@@ -30,3 +30,72 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
             });
     });
 });
+
+const usuarios_length = document.getElementById('usuarios_length');
+
+for (let count = 0; count < usuarios_length.innerHTML; count++){
+
+    // Accedes a cada input y al boton con el id del counter
+    const btn_Subir = document.querySelector('#btn_Subir' + count);
+    const ayuda_referencia_vacio = document.querySelector('#ayuda_referencia_vacio' + count);
+    const ayuda_referencia_negativo = document.querySelector('#ayuda_referencia_negativo' + count);
+    const ayuda_referencia_exponente = document.querySelector('#ayuda_referencia_exponente' + count);
+    const referencia = document.querySelector('#referencia' + count);
+    const ayuda_beca_vacio = document.querySelector('#ayuda_beca_vacio' + count);
+    const ayuda_beca_negativo = document.querySelector('#ayuda_beca_negativo' + count);
+    const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente' + count);
+    const beca = document.querySelector('#beca' + count);
+
+     // Checar si hay contenido dentro del input, pata desactivar el boton
+     function checar_contenido() {
+         btn_Subir.disabled = referencia.value.length === 0 || beca.value.length === 0 || 
+         parseFloat(referencia.value) <= 0 || parseFloat(beca.value) < 0 || beca.value.includes('e') || 
+         beca.value.includes('E') || referencia.value.includes('e') || referencia.value.includes('E');
+     }
+
+     // Activar mensaje si el motivo no tiene input
+     function mensaje_referencia() {
+         if (referencia.value.length === 0) {
+             ayuda_referencia_vacio.classList.remove('is-hidden');
+         } else {
+             ayuda_referencia_vacio.classList.add('is-hidden');
+         }
+
+         if (parseFloat(referencia.value) <= 0) {
+             ayuda_referencia_negativo.classList.remove('is-hidden');
+         } else {
+             ayuda_referencia_negativo.classList.add('is-hidden');
+         }
+
+         if (referencia.value.includes('e') || referencia.value.includes('E')) {
+             ayuda_referencia_exponente.classList.remove('is-hidden');
+         } else {
+             ayuda_referencia_exponente.classList.add('is-hidden');
+         }
+     }
+
+     function mensaje_beca() {
+         if (beca.value.length === 0) {
+             ayuda_beca_vacio.classList.remove('is-hidden');
+         } else {
+             ayuda_beca_vacio.classList.add('is-hidden');
+         }
+
+         if (parseFloat(beca.value) < 0) {
+             ayuda_beca_negativo.classList.remove('is-hidden');
+         } else {
+             ayuda_beca_negativo.classList.add('is-hidden');
+         }
+
+         if (beca.value.includes('e') || beca.value.includes('E')) {
+             ayuda_beca_exponente.classList.remove('is-hidden');
+         } else {
+             ayuda_beca_exponente.classList.add('is-hidden');
+         }
+     }
+
+     referencia.addEventListener('input', checar_contenido);
+     referencia.addEventListener('input', mensaje_referencia);
+     beca.addEventListener('input', checar_contenido);
+     beca.addEventListener('input', mensaje_beca);
+};

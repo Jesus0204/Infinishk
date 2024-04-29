@@ -10,4 +10,8 @@ module.exports = class Periodo {
         return db.execute(`SELECT Nombre From Periodo WHERE periodoActivo = 1`);
     }
 
+    static fetchActivo(){
+        return db.execute('SELECT IDPeriodo where periodoActivo = 1');
+    }
+
 }

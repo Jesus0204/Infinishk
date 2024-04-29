@@ -43,25 +43,6 @@
             margin-top: 0px;
             margin-bottom: 0px;
         }
-
-        .my-button {
-            background-color: #000000;
-            /* El color del fondo */
-            color: white;
-            /* El color del texto */
-            width: 100%;
-        }
-
-        .my-button:hover {
-            background-color: #910106;
-            color: #ffffff;
-            border: solid #000000;
-        }
-
-        .fa-solid {
-            margin-left: 20px;
-            /* Añade un margen a la izquierda del ícono */
-        }
     </style>
 
     <body>
@@ -69,7 +50,7 @@
         <% if (periodos.length> 0) { %>
             <section class="section">
                 <div class="table-container">
-                    <h3 class="title is-3">Revisión de datos de Periodos para ingresar</h3>
+                    <h3 class="title is-3">Revisión de datos de Periodos</h3>
                     <table>
                         <thead>
                             <tr>
@@ -104,11 +85,11 @@
 
                                     <td class="has-text-black">
                                         <%= periodo.status %>
-                                    </td>
-
-                                    <td>
                                         <form action="/configuracion/actualizarPeriodos" method="POST"
                                             id="form<%= index %>" class="form-enviar-datos">
+                                    </td>
+
+                                    <td style="width:auto">
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" name="id" value="<%= periodo.id %>">
                                             <input type="hidden" name="nombre" value="<%= periodo.name %>">
@@ -118,7 +99,7 @@
                                             <button type="submit"
                                                 class="button my-button is-medium is-rounded is-responsive">
                                                 Registrar Periodo
-                                                <span class="icon is-large">
+                                                <span class="icon is-large" style="margin-left: 0.4em;">
                                                     <i class="fa-solid fa-circle-chevron-right"
                                                         style="color: #ffffff;"></i>
                                                 </span>

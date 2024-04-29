@@ -17,9 +17,26 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
+
+<<<<<<< HEAD
 const path = require('path');
 
 const fs = require('fs');
+=======
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
+
+>>>>>>> CU25/Actualizar_Base
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -320,14 +337,29 @@ exports.post_exportar_datos = async (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
+<<<<<<< HEAD
     const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
     const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    
+        const parsedUsers = users.data.map(user => {
+            const {
+                ivd_id = '',
+                name,
+                first_surname,
+                second_surname,
+                email ='',
+                status,
+                semester,
+                degree_name,
+            } = user;
+>>>>>>> CU25/Actualizar_Base
 
     const uploadsDir = path.join(__dirname, '../', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
         fs.mkdirSync(uploadsDir);
     }
 
+<<<<<<< HEAD
     // Función para eliminar acentos
     function eliminarAcentos(texto) {
         return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -358,6 +390,34 @@ exports.post_exportar_datos = async (request, response, next) => {
                 });
                 csvContent += '\f';
             });
+=======
+        const filteredUsers = parsedUsers.filter(user => (
+            (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
+            user.status === 'active'
+        ));
+
+        console.log(filteredUsers);
+        // Realiza la comparación para cada usuario
+        const updatedUsers = [];
+        for (const user of filteredUsers) {
+            const usuarioExistente = await Alumno.fetchOne(user.ivd_id);
+            if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
+                if (!isNaN(user.ivd_id)) {
+                    console.log(`IDUsuario: ${user.ivd_id}`);
+                    console.log(`Correo:${user.email}`);
+                    await Usuario.updateUsuario(user.ivd_id, user.email);
+                } else {
+                    console.log(`IDUsuario inválido: ${user.ivd_id}`);
+                }
+                
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
+                updatedUsers.push({ ...user, updated: true });
+            } else {
+                updatedUsers.push({ ...user, updated: false });
+            }
+>>>>>>> CU25/Actualizar_Base
         }
     }
 
@@ -446,6 +506,124 @@ exports.post_exportar_datos = async (request, response, next) => {
         nombreArchivo = `datos_extra_${fechaActual}.csv`;
     }
 
+<<<<<<< HEAD
     response.attachment(nombreArchivo);
     response.send(csvContent);
+=======
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+exports.get_periodos = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const periods = await getAllPeriods();
+
+        const parsedPeriods = periods.data.map(period => {
+
+            const {
+                id,
+                code,
+                start_date,
+                end_date,
+                active,
+            } = period;
+
+            const startDate = new Date(start_date);
+            const endDate = new Date(end_date);
+            const status = active ? 1 : 0;
+
+            const yearStart = startDate.getFullYear();
+            const monthStart = startDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayStart = startDate.getDate();
+
+            const yearEnd = endDate.getFullYear();
+            const monthEnd = endDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayEnd = endDate.getDate();
+
+            return {
+                id: id,
+                name: code,
+                start: `${yearStart}-${monthStart}-${dayStart}`,
+                end: `${yearEnd}-${monthEnd}-${dayEnd}`,
+                status: status,
+            };
+        });
+
+        const updatedPeriods = [];
+        for (const period of parsedPeriods) {
+            const periodoExistente = await Periodo.fetchOne(period.id);
+            if (periodoExistente && periodoExistente.length > 0 && periodoExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Periodo.updatePeriodo(period.id,period.start,period.end,period.name,period.status)
+                updatedPeriods.push({ ...period, updated: true });
+            } else {
+                updatedPeriods.push({ ...period, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
+
+        response.render('configuracion/actualizarPeriodos', {
+            periodos: periodosSinActualizar,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+
+exports.post_alumnos = async (request,response,next) => {
+    let success = true;
+    const matricula = request.body.matricula;
+    const nombre = request.body.nombre;
+    const apellidos = request.body.apellidos;
+    const email = request.body.email;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.planEstudio;
+    const referencia = request.body.referenciaBancaria;
+    const beca = request.body.beca;
+
+    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        
+        // Enlace con el token incluido
+    const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+    await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca)
+    await Usuario.saveUsuario(matricula,email);
+    await Posee.savePosee(matricula,3);
+
+    const msg = {
+        to: email,
+        from: {
+            name: 'VIA PAGO',
+            email: '27miguelb11@gmail.com',
+        },
+        subject: 'Bienvenido a VIA Pago',
+        html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log('Correo electrónico enviado correctamente');
+    } 
+    catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
+
+    response.json({success:success})
+    
+>>>>>>> CU25/Actualizar_Base
 }

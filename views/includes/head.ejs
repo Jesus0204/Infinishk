@@ -16,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <script src="/js/bulma-calendar.min.js"></script>
+    <script src="/js/bulma-calendar.min.js"></script>
 </head>
 
 <style>
@@ -383,36 +384,35 @@
                         <% } %>
                         <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
                                 contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-                            <div class="nested dropdown has-dropdown is-hoverable">
-                                <a class="navbar-item" style="padding-right: 3.9em;">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-globe"></i>
-                                    </span>
-                                    Datos
-                                    <span class="icon is-large ">
-                                        <i class="fas fa-angle-right"></i>
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="navbar-dropdown">
-                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-database"></i>
-                                            </span>
-                                            Sincronizar
-                                            <br>
-                                            Base Datos
-                                        </a>
-                                        <hr class="navbar-divider">
-                                        <a class="navbar-item" href="/configuracion/exportarDatos">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-file-excel"></i>
-                                            </span>
-                                            Exportar 
-                                            <br>
-                                            Datos a CSV
-                                        </a>
-                                    </div>
+                        <div class="nested dropdown has-dropdown is-hoverable">
+                            <a class="navbar-item" style="padding-right: 3.9em;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-globe"></i>
+                                </span>
+                                Datos
+                                <span class="icon is-large ">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-database"></i>
+                                        </span>
+                                        Sincronizar
+                                        <br>
+                                        Base Datos
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" href="/configuracion/exportarDatos">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </span>
+                                        Exportar
+                                        <br>
+                                        Datos a CSV
+                                    </a>
                                 </div>
                             </div>
                             <hr class="navbar-divider">
