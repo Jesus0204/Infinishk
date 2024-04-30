@@ -105,9 +105,11 @@
                         <th>
                             <p class="is-size-5"><strong>Precio: </strong></p>
                         </th>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <th>
                             
                         </th>
+                        <% } %>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,6 +130,7 @@
                                                     maximumFractionDigits: 2
                                                  }) %>
                         </td>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <td>
                             <form action="/diplomado/editar_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -142,6 +145,7 @@
                                 </button>
                             </form>
                         </td>
+                        <% } %>
                     </tr>
                     <% count_activos++ %>
                     <% } %>
@@ -189,9 +193,11 @@
                         <th>
                             <p class="is-size-5"><strong>Precio: </strong></p>
                         </th>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <th>
 
                         </th>
+                        <% } %>
                     </tr>
                 </thead>
                 <tbody>
@@ -212,6 +218,7 @@
                                                     maximumFractionDigits: 2
                                                  }) %>
                         </td>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <td>
                             <form action="/diplomado/editar_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -226,6 +233,7 @@
                                 </button>
                             </form>
                         </td>
+                        <% } %>
                     </tr>
                     <% count_activos++ %>
                     <% } %>
@@ -274,9 +282,11 @@
                         <th>
                             <p class="is-size-5"><strong>Precio: </strong></p>
                         </th>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <th>
 
                         </th>
+                        <% } %>
                     </tr>
                 </thead>
                 <tbody>
@@ -297,6 +307,7 @@
                                                     maximumFractionDigits: 2
                                                  }) %>
                         </td>
+                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <td>
                             <form action="/diplomado/editar_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -311,6 +322,7 @@
                                 </button>
                             </form>
                         </td>
+                        <% } %>
                     </tr>
                     <% count_activos++ %>
                     <% } %>

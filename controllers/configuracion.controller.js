@@ -229,7 +229,11 @@ exports.post_precio_credito = (request, response, next) => {
 
 exports.get_registrar_precio_credito = (request, response, next) => {
     PrecioCredito.fetchPrecioActual()
-        .then((precio_actual) => {
+        .then(([precio_actual, fieldData]) => {
+            // Conviertes las fechas a tu zona horaria con moment
+            for (let count = 0; count < precio_actual.length; count++) {
+                precio_actual[count].fechaModificacion = moment(new Date(precio_actual[count].fechaModificacion)).tz('America/Mexico_City').format('LL');
+            };
             response.render('configuracion/registrar_precio_credito', {
                 precio_actual: precio_actual[0],
                 username: request.session.username || '',
@@ -267,9 +271,8 @@ exports.get_check_plan = (request, response, next) => {
 exports.post_registrar_planpago = (request, response, next) => {
     const nombre = request.body.nombrePlan;
     const numero = request.body.numeroPagos;
-    const activo = request.body.planPagoActivo;
 
-    PlanPago.save(nombre,numero,activo)
+    PlanPago.save(nombre, numero)
         .then(([planespago, fieldData]) => {
             response.redirect('/configuracion/administrar_planpago');
         })
