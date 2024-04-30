@@ -57,7 +57,7 @@
         <div id="navbarViaDiseño" class="navbar-menu">
             <div class="navbar-start">
                 <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
-                <a class="navbar-item main_menu" href="/horario/consultahorario">
+                <a class="navbar-item desktop_menu" href="/horario/consultahorario">
                     <span class="icon is-large">
                         <i class="fa-solid fa-calendar-week"></i>
                     </span>
@@ -68,7 +68,7 @@
                 <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                        contienePermiso(permisos, 'Modificar diplomado') == true || 
                        contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                    <a class="navbar-item main_menu" style="padding-right: 2.1em;"
+                    <a class="navbar-item desktop_menu" style="padding-right: 2.1em;"
                         href="/diplomado/consultar_diplomado">
                         <span class="icon is-large" style="margin-left: -0.5em;">
                             <i class="fa-solid fa-graduation-cap"></i>
@@ -78,7 +78,7 @@
                 <% } %>
 
                 <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
-                <a class="navbar-item main_menu" href="/" style="margin-left: -0.5em;">
+                <a class="navbar-item desktop_menu" href="/" style="margin-left: -0.5em;">
                     <span class="icon is-large">
                         <i class="fa-solid fa-money-check-dollar"></i>
                     </span>
