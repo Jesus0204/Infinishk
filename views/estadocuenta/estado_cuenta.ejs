@@ -93,7 +93,11 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= deuda[count].fechaLimitePago %>
+                                    <%= new Date(deuda[count].fechaLimitePago).toLocaleDateString('es-MX', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
                                 </div>
                             </div>
                         </td>
@@ -132,7 +136,11 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= deuda[count].fechaLimitePago %>
+                                    <%= new Date(deuda[count].fechaLimitePago).toLocaleDateString('es-MX', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
                                 </div>
                             </div>
                         </td>
@@ -169,7 +177,11 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= deuda[count + 1].fechaLimitePago %>
+                                    <%= new Date(deuda[count + 1].fechaLimitePago).toLocaleDateString('es-MX', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
                                 </div>
                             </div>
                         </td>
