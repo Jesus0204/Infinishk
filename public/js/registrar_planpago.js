@@ -67,6 +67,8 @@ function checkPlanExists() {
             if (data.exists == true){
                 existente.classList.remove('is-hidden');
                 document.getElementById('btn_aplicar_cambios').disabled = true;
+            } else {
+                existente.classList.add('is-hidden');
             }
         });
     } else {
@@ -75,4 +77,3 @@ function checkPlanExists() {
 
 
 }
-

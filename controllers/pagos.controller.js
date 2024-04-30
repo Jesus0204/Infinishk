@@ -708,7 +708,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 }
 
                 // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                monto_a_usar = monto_a_usar - deuda.montoAPagar;
+                monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
             }
 
             // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
