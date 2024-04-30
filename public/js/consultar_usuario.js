@@ -1,3 +1,6 @@
+const resultadoActivo = document.querySelector('#resultadoActivo');
+const resultadoNoActivo = document.querySelector('#resultadoNoActivo');
+
 $(document).ready(function () {
     // Función para manejar la búsqueda en la tabla de usuarios activos
     $('#searchActivos').on('input', function () {
@@ -16,7 +19,6 @@ $(document).ready(function () {
         });
 
         const tabla_activos = document.querySelector('#tablaActivos');
-        const resultadoActivo = document.querySelector('#resultadoActivo');
 
         if (count == table_length){
             tabla_activos.classList.add('is-hidden');
@@ -45,7 +47,6 @@ $(document).ready(function () {
         });
 
         const tabla_Noactivos = document.querySelector('#tablaNoActivos');
-        const resultadoNoActivo = document.querySelector('#resultadoNoActivo');
 
         if (count == table_length) {
             tabla_Noactivos.classList.add('is-hidden');
@@ -90,6 +91,9 @@ $(document).ready(function () {
     // Función para mostrar la notificación y recargar la página
     function mostrarNotificacionYRecargar(tabla, notificacion) {
         $(notificacion).removeClass('is-hidden'); // Mostrar notificación
+
+        resultadoNoActivo.classList.add('is-hidden');
+        resultadoActivo.classList.add('is-hidden');
 
         // Para que se vea la notifiación
         $('html, body').animate({
