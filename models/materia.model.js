@@ -28,4 +28,8 @@ module.exports = class Materia {
         return db.execute(`SELECT IDMateria FROM materia WHERE IDMateriaExterna = ?`, [idexterna]);
     }
 
+    static fetchIDPorGrupo(IDGrupo){
+        return db.execute(`SELECT IDMateria FROM grupo WHERE IDGrupo = ?`, [IDGrupo]);
+    }
+
 }

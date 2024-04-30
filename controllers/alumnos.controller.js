@@ -30,14 +30,19 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     const { IDGrupo, matricula} = request.body;
     console.log(IDGrupo)
     console.log(matricula)
-    var precioCredito = PrecioCredito.fetchPrecioActual();
-    var precioCredito = precioCredito[0] 
-    console.log(precioCredito.precioPesos)
-
+    
     try {
-        // Función Eliminar Grupo
+        const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
+        const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
+        const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
+        const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
+        const Beca = resultfetchBeca[0][0].beca
+        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca);
+        console.log('exito :)')
+
         // Función Modificar fichas de pago
-        Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        // Función Eliminar Grupo
         response.status(200).json({success: true});
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });

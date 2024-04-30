@@ -22,4 +22,8 @@ module.exports = class Fichas {
         const [rows, fields] = await db.execute(`CALL updateFicha(?,?,?,?,?)`, [descuento, fechaLimitePago, notaModificacion, modificador, id]);
         return rows;
     }
+
+    static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca){
+        db.execute(`CALL delete_grupo_update_fichas(?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca])
+    }
 }
