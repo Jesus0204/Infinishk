@@ -10,12 +10,14 @@
           <label class="block font-semibold"><strong>Semestre:</strong></label>
           <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.semestreActual %></div>
         </div>
+        <% if(rol == 3) { %>
         <% if(estudianteProfesional.porcBeca !== 0) { %>
         <div class="column">
           <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
           <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.porcBeca %>%</div>
         </div>
         <% } %> 
+        <% } %>
         <div class="column is-narrow">
           <a href="/pago/realizar_pago">
             <button class="button is-primary">Realizar pago</button>
