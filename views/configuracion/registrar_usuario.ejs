@@ -75,7 +75,7 @@
                             Por favor escribe un Correo Electrónico.
                         </p>
                         <p class="control has-icons-left">
-                            <input type="text" id="correoElectronico_NoAlumno" name="correoElectronico_NoAlumno"
+                            <input type="email" id="correoElectronico_NoAlumno" name="correoElectronico_NoAlumno"
                                 class="input is-medium" placeholder="Correo del Nuevo Administrador">
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-at" style="color: #95404c;"></i>
@@ -147,7 +147,7 @@
                             Por favor escribe un Correo Electrónico.
                         </p>
                         <p class="control has-icons-left">
-                            <input type="text" id="correoElectronico" name="correoElectronico" 
+                            <input type="email" id="correoElectronico" name="correoElectronico" 
                             class="input is-medium" placeholder="Correo del Alumno de Diplomado">
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-at" style="color: #95404c;"></i>
@@ -164,8 +164,16 @@
                             style="padding: 0.5em; margin-top: -1em;">
                             Por favor escribe una Referencia Bancaria.
                         </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia_negativo"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un número mayor a 0.
+                        </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia_exponente"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un motivo sin exponente.
+                        </p>
                         <p class="control has-icons-left">
-                            <input type="text" id="referenciaBancaria" name="referenciaBancaria" class="input is-medium"
+                            <input type="number" id="referenciaBancaria" name="referenciaBancaria" class="input is-medium"
                                 placeholder="Referencia del Alumno de Diplomado">
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-building-columns" style="color: #95404c;"></i>

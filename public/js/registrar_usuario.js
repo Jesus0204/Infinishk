@@ -79,12 +79,15 @@ const ayuda_correo_Alumno = document.querySelector('#ayuda_correo_Alumno');
 const ayuda_nombre = document.querySelector('#ayuda_nombre');
 const ayuda_apellidos = document.querySelector('#ayuda_apellidos');
 const ayuda_referencia = document.querySelector('#ayuda_referencia');
+const ayuda_referencia_negativo = document.querySelector('#ayuda_referencia_negativo');
+const ayuda_referencia_exponente = document.querySelector('#ayuda_referencia_exponente');
 
 // Checar si hay contenido dentro del input, pata desactivar el boton
 function checar_contenido() {
     Boton_registrar_alumno.disabled = IDUsuario_Alumno.value.length === 0 || correoElectronico.value.length === 0 ||
     nombre.value.length === 0 || apellidos.value.length === 0 || referenciaBancaria.value.length === 0 || 
-    fechaInscripcion.value.length === 0;
+    fechaInscripcion.value.length === 0 || parseFloat(referenciaBancaria.value) <= 0 || referenciaBancaria.value.includes('e') || 
+    referenciaBancaria.value.includes('E');
 }
 
 function mensaje_matriculaAlumno() {
@@ -124,6 +127,18 @@ function mensaje_referencia() {
         ayuda_referencia.classList.remove('is-hidden');
     } else {
         ayuda_referencia.classList.add('is-hidden');
+    }
+
+    if (parseFloat(referenciaBancaria.value) <= 0) {
+        ayuda_referencia_negativo.classList.remove('is-hidden');
+    } else {
+        ayuda_referencia_negativo.classList.add('is-hidden');
+    }
+
+    if (referenciaBancaria.value.includes('e') || referenciaBancaria.value.includes('E')) {
+        ayuda_referencia_exponente.classList.remove('is-hidden');
+    } else {
+        ayuda_referencia_exponente.classList.add('is-hidden');
     }
 };
 
