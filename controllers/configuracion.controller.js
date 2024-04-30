@@ -717,7 +717,7 @@ exports.post_alumnos = async (request,response,next) => {
             success: success
         });
         
-    } catch {
+    } catch (error) {
         let success = false;
         console.log(error);
         response.json({
