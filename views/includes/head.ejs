@@ -98,14 +98,6 @@
                 </div>
                 <hr class="navbar-divider">
                 <% } %>
-                <% if (contienePermiso(permisos, 'Realizar Pago') == true) { %>
-                <a class="navbar-item main_menu" href="/">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-dollar-sign"></i>
-                    </span>
-                    Realizar Pago
-                </a>
-                <% } %>
 
                 <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
                 <a class="navbar-item main_menu" href="/" style="margin-left: -0.5em;">
