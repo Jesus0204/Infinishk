@@ -674,48 +674,56 @@ exports.get_periodos = async (request, response, next) => {
 
 
 exports.post_alumnos = async (request,response,next) => {
-    let success = true;
-    const matricula = request.body.matricula;
-    const nombre = request.body.nombre;
-    const apellidos = request.body.apellidos;
-    const email = request.body.email;
-    const semestre = request.body.semestre;
-    const planEstudio = request.body.planEstudio;
-    const referencia = request.body.referenciaBancaria;
-    const beca = request.body.beca;
-
-    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
-        
-        // Enlace con el token incluido
-    const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
-
-    await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
-    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
-    await Usuario.saveUsuario(matricula,email);
-    await Posee.savePosee(matricula,3);
-
-    const msg = {
-        to: email,
-        from: {
-            name: 'VIA PAGO',
-            email: '27miguelb11@gmail.com',
-        },
-        subject: 'Bienvenido a VIA Pago',
-        html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
-    };
-
     try {
-        await sgMail.send(msg);
-        console.log('Correo electrónico enviado correctamente');
-    } 
-    catch (error) {
-        console.error('Error al enviar el correo electrónico:', error.toString());
-    }
-
-    response.json({
-        success: success
-    });
+        let success = true;
+        const matricula = request.body.matricula;
+        const nombre = request.body.nombre;
+        const apellidos = request.body.apellidos;
+        const email = request.body.email;
+        const semestre = request.body.semestre;
+        const planEstudio = request.body.planEstudio;
+        const referencia = request.body.referenciaBancaria;
+        const beca = request.body.beca;
     
+        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+            
+            // Enlace con el token incluido
+        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+    
+        await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
+        await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
+        await Usuario.saveUsuario(matricula,email);
+        await Posee.savePosee(matricula,3);
+    
+        const msg = {
+            to: email,
+            from: {
+                name: 'VIA PAGO',
+                email: '27miguelb11@gmail.com',
+            },
+            subject: 'Bienvenido a VIA Pago',
+            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+        };
+    
+        try {
+            await sgMail.send(msg);
+            console.log('Correo electrónico enviado correctamente');
+        } 
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        }
+    
+        response.json({
+            success: success
+        });
+        
+    } catch {
+        let success = false;
+        console.log(error);
+        response.json({
+            success: success
+        });
+    };
 }
 
 exports.post_materias = async (request,response,next) => {
