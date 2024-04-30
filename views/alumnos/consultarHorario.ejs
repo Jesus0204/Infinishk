@@ -44,8 +44,74 @@
                 </div>
             <% } else { %>
                 <table class="table is-bordered is-hoverable is-fullwidth">
-                <% for (let count = 0; count < schedule[0].length; count++) { %> 
-                <tbody>
+                    <tbody>
+                    <% for (let count = 0; count < schedule[0].length; count = count + 2) { %>
+                    <% if (count + 1 == schedule.length) { %>
+                        <tr>
+                            <td>
+                                <div class="column">
+                                    <p>Unidad de formación: <%= schedule[0][count].IDGrupo %>
+                                    </p>
+                                    <h3 class="title is-5">
+                                        <%= schedule[0][count].Nombre %>
+                                    </h3>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-regular fa-user"></i>
+                                        </span>
+                                        <strong>Profesor: </strong>
+                                        <%= schedule[0][count].Profesor %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-regular fa-clock"></i>
+                                        </span>
+                                        <strong>Horario: </strong>
+                                        <%= schedule[0][count].Horario %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-regular fa-building"></i>
+                                        </span>
+                                        <strong>Salón: </strong>
+                                        <%= schedule[0][count].Salon %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-regular fa-calendar"></i>
+                                        </span>
+                                        <strong>Fecha de inicio: </strong>
+                                        <%= new Date(schedule[0][count].fechaInicio).toLocaleDateString("es-ES") %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-regular fa-calendar"></i>
+                                        </span>
+                                        <strong>Fecha de termino: </strong>
+                                        <%= new Date(schedule[0][count].fechaTermino).toLocaleDateString("es-ES") %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </span>
+                                        <strong>Créditos: </strong>
+                                        <%= schedule[0][count].Creditos.toLocaleString('mx', {
+                                        minimumFractionDigits: 1, maximumFractionDigits: 1
+                                    }) %>
+                                    </p>
+                                    <p>
+                                        <span class="icon is-small">
+                                            <i class="fa-solid fa-tags"></i>
+                                        </span>
+                                        <strong>Costo(MXN): </strong>
+                                        $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                                    }) %>
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } else { %> 
                     <tr>
                         <td>
                             <div class="column">
@@ -109,7 +175,70 @@
                                 </p>
                             </div>
                         </td>
+                        <td>
+                            <div class="column">
+                                <p>Unidad de formación: <%= schedule[0][count + 1].IDGrupo %>
+                                </p>
+                                <h3 class="title is-5">
+                                    <%= schedule[0][count + 1].Nombre %>
+                                </h3>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    <strong>Profesor: </strong>
+                                    <%= schedule[0][count + 1].Profesor %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <strong>Horario: </strong>
+                                    <%= schedule[0][count + 1].Horario %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-building"></i>
+                                    </span>
+                                    <strong>Salón: </strong>
+                                    <%= schedule[0][count + 1].Salon %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de inicio: </strong>
+                                    <%= new Date(schedule[0][count + 1].fechaInicio).toLocaleDateString("es-ES") %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de termino: </strong>
+                                    <%= new Date(schedule[0][count + 1].fechaTermino).toLocaleDateString("es-ES") %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </span>
+                                    <strong>Créditos: </strong>
+                                    <%= schedule[0][count + 1].Creditos.toLocaleString('mx', {
+                                        minimumFractionDigits: 1, maximumFractionDigits: 1
+                                    }) %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-solid fa-tags"></i>
+                                    </span>
+                                    <strong>Costo(MXN): </strong>
+                                    $<%= schedule[0][count + 1].Precio_materia.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                                    }) %>
+                                </p>
+                            </div>
+                        </td>
                     </tr>
+                    <% } %>
                     <% } %>
                 </tbody>
             </table>
