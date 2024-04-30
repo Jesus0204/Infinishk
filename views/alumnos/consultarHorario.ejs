@@ -48,9 +48,9 @@
                     <% for (let count = 0; count < schedule[0].length; count = count + 2) { %>
                     <% if (count + 1 == schedule[0].length) { %>
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <div class="column">
-                                    <p>Unidad de formación: <%= schedule[0][count].IDGrupo %>
+                                    <p>Unidad de formación: 
                                     </p>
                                     <h3 class="title is-5">
                                         <%= schedule[0][count].Nombre %>
@@ -115,7 +115,7 @@
                     <tr>
                         <td>
                             <div class="column">
-                                <p>Unidad de formación: <%= schedule[0][count].IDGrupo %>
+                                <p>Unidad de formación:
                                 </p>
                                 <h3 class="title is-5">
                                     <%= schedule[0][count].Nombre %>
@@ -177,7 +177,7 @@
                         </td>
                         <td>
                             <div class="column">
-                                <p>Unidad de formación: <%= schedule[0][count + 1].IDGrupo %>
+                                <p>Unidad de formación: 
                                 </p>
                                 <h3 class="title is-5">
                                     <%= schedule[0][count + 1].Nombre %>
