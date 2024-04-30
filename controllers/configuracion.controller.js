@@ -166,6 +166,8 @@ exports.post_registrar_usuario = async (request, response, next) => {
        const referenciaBancaria = request.body.referenciaBancaria;
        const fechaInscripcion = request.body.fechaInscripcion;
 
+       console.log(fechaInscripcion);
+
        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
        if (usuarioExistente.length > 0) {
            return response.render('configuracion/registrar_usuario', {
