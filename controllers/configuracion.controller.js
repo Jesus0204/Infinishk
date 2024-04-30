@@ -690,7 +690,7 @@ exports.post_alumnos = async (request,response,next) => {
     const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
 
     await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
-    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca)
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
     await Usuario.saveUsuario(matricula,email);
     await Posee.savePosee(matricula,3);
 
@@ -712,36 +712,56 @@ exports.post_alumnos = async (request,response,next) => {
         console.error('Error al enviar el correo electrónico:', error.toString());
     }
 
-    response.json({success:success})
+    response.json({
+        success: success
+    });
     
 }
 
 exports.post_materias = async (request,response,next) => {
-    let success = true;
-    const idMateria= request.body.id;
-    const idSep = request.body.idsep;
-    const nombre = request.body.nombre;
-    const creditos = request.body.creditos;
-    const semestre = request.body.semestre;
-    const planEstudio = request.body.carrera;
-
-    await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
+    try {
+        let success = true;
+        const idMateria= request.body.id;
+        const idSep = request.body.idsep;
+        const nombre = request.body.nombre;
+        const creditos = request.body.creditos;
+        const semestre = request.body.semestre;
+        const planEstudio = request.body.carrera;
     
-
-    response.json({success:success})
+        await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria);
+    
+        response.json({
+            success: success
+        });
+    } catch (error) {
+        let success = false;
+        console.log(error);
+        response.json({
+            success: success
+        });
+    }
     
 }
 
 exports.post_periodos = async (request,response,next) => {
-    let success = true;
-    const idPeriodo= request.body.id;
-    const nombre = request.body.nombre;
-    const inicio = request.body.inicio;
-    const fin = request.body.fin;
-    const status = request.body.status;
-
-    await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+    try {
+        let success = true;
+        const idPeriodo= request.body.id;
+        const nombre = request.body.nombre;
+        const inicio = request.body.inicio;
+        const fin = request.body.fin;
+        const status = request.body.status;
     
-    response.json({success:success})
-    
+        await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+        
+        response.json({
+            success: success
+        });
+    } catch {
+        let success = false;
+        console.log(error);
+        response.json({
+            success: success
+        });
+    };
 }
