@@ -37,10 +37,7 @@ async function getAllUsers() {
   const token = await getToken();
   const headers = getHeaders(token);
 
-  const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {
-  const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {
-    headers,
-  });
+  const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {});
 
   return response.data;
 }
@@ -49,10 +46,10 @@ async function getAllCourses() {
   const token = await getToken();
   const headers = getHeaders(token);
 
-  const response = await axiosAdminClient.get('v1/courses/all',{
-      headers,
-    });
-    
+  const response = await axiosAdminClient.get('v1/courses/all', {
+    headers,
+  });
+
   return response.data
 }
 
@@ -61,10 +58,10 @@ async function getAllPeriods() {
   const token = await getToken();
   const headers = getHeaders(token);
 
-  const response = await axiosAdminClient.get('v1/school_cycles/index',{
-      headers,
-    });
-    
+  const response = await axiosAdminClient.get('v1/school_cycles/index', {
+    headers,
+  });
+
   return response.data
 }
 
@@ -73,8 +70,7 @@ async function getUserGroups(cycle_id, user_ivd_id) {
   const headers = getHeaders(token)
 
   const response = await axiosAdminClient.get(
-    'v1/school_cycles/user_groups_index',
-    {
+    'v1/school_cycles/user_groups_index', {
       headers,
       params: {
         id: cycle_id,
@@ -85,6 +81,9 @@ async function getUserGroups(cycle_id, user_ivd_id) {
   return response.data
 }
 
-
-
-module.exports = {getAllUsers, getAllCourses,getAllPeriods,getUserGroups}
+module.exports = {
+  getAllUsers,
+  getAllCourses,
+  getAllPeriods,
+  getUserGroups
+};

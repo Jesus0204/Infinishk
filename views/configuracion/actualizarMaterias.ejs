@@ -44,86 +44,94 @@
         margin-bottom: 0px;
     }
 </style>
+<body>
+    <section class="section">
+    <% if (materias.length> 0) { %>
+            <div class="table-container">
+                <h3 class="title is-3">Revisión de datos de Cursos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white">ID</th>
+                            <th class="has-text-white">SEP ID</th>
+                            <th class="has-text-white">Nombre</th>
+                            <th class="has-text-white">Créditos</th>
+                            <th class="has-text-white">Semestre</th>
+                            <th class="has-text-white">Carrera</th>
+                            <th class="has-text-white">Registrar</th>
+                        </tr>
+                    </thead>
 
-    <body>
-        <% if (materias.length> 0) { %>
-            <section class="section">
-                <div class="table-container">
-                    <h3 class="title is-3">Revisión de datos de Cursos</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="has-text-white">ID</th>
-                                <th class="has-text-white">SEP ID</th>
-                                <th class="has-text-white">Nombre</th>
-                                <th class="has-text-white">Créditos</th>
-                                <th class="has-text-white">Semestre</th>
-                                <th class="has-text-white">Carrera</th>
-                                <th class="has-text-white">Registrar</th>
+                    <tbody>
+                        <% materias.forEach((materia, index)=> { %>
+                            <tr id="fila<%= index %>">
+                                <td class="has-text-black">
+                                    <%= materia.id %>
+                                </td>
+                                <td class="has-text-black">
+                                    <%= materia.sep_id %>
+                                </td>
+                                <td class="has-text-black">
+                                    <%= materia.name %>
+                                </td>
+                                <td class="has-text-black">
+                                    <%= materia.credits %>
+                                </td>
+                                <td class="has-text-black">
+                                    <%= materia.semestre %>
+                                </td>
+                                <td class="has-text-black">
+                                    <%= materia.carrera %>
+                                    <form action="/configuracion/actualizarMaterias" method="POST"
+                                        id="form<%= index %>" class="form-enviar-datos">
+                                </td>
+                                <td>
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" name="id" value="<%= materia.id %>">
+                                        <input type="hidden" name="idsep" value="<%= materia.sep_id %>">
+                                        <input type="hidden" name="nombre" value="<%= materia.name %>">
+                                        <input type="hidden" name="creditos" value="<%= materia.credits %>">
+                                        <input type="hidden" name="semestre" value="<%= materia.semestre %>">
+                                        <input type="hidden" name="carrera" value="<%= materia.carrera %>">
+                                        <button type="submit"
+                                        class="button my-button is-medium is-rounded is-responsive">
+                                        Registrar Materia
+                                        <span class="icon is-large" style="margin-left: 0.4em;">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                    </form>
+                                </td>
                             </tr>
-                        </thead>
+                            <% }); %>
+                    </tbody>
+                </table>
+                <br>
+                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                    <a class="pagination-next" id="next-button-2">Siguiente</a>
+                    <ul class="pagination-list" id="pagination-list-2">
+                        <div id="pagination-numbers-2">
 
-                        <tbody>
-                            <% materias.forEach((materia, index)=> { %>
-                                <tr id="fila<%= index %>">
-                                    <td class="has-text-black">
-                                        <%= materia.id %>
-                                    </td>
-                                    <td class="has-text-black">
-                                        <%= materia.sep_id %>
-                                    </td>
-                                    <td class="has-text-black">
-                                        <%= materia.name %>
-                                    </td>
-                                    <td class="has-text-black">
-                                        <%= materia.credits %>
-                                    </td>
-                                    <td class="has-text-black">
-                                        <%= materia.semestre %>
-                                    </td>
-                                    <td class="has-text-black">
-                                        <%= materia.carrera %>
-                                        <form action="/configuracion/actualizarMaterias" method="POST"
-                                            id="form<%= index %>" class="form-enviar-datos">
-                                    </td>
-                                    <td>
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" name="id" value="<%= materia.id %>">
-                                            <input type="hidden" name="idsep" value="<%= materia.sep_id %>">
-                                            <input type="hidden" name="nombre" value="<%= materia.name %>">
-                                            <input type="hidden" name="creditos" value="<%= materia.credits %>">
-                                            <input type="hidden" name="semestre" value="<%= materia.semestre %>">
-                                            <input type="hidden" name="carrera" value="<%= materia.carrera %>">
-                                            <button type="submit"
-                                            class="button my-button is-medium is-rounded is-responsive">
-                                            Registrar Materia
-                                            <span class="icon is-large" style="margin-left: 0.4em;">
-                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                            </span>
-                                        </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                    <br>
-                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
-                        <a class="pagination-next" id="next-button-2">Siguiente</a>
-                        <ul class="pagination-list" id="pagination-list-2">
-                            <div id="pagination-numbers-2">
-
-                            </div>
-                        </ul>
-                    </nav>
-                </div>
-            </section>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
             <% } else { %>
-                <p>No hay cursos para mostrar.</p>
+                <h3 class="title is-3">Revisión de datos de Cursos</h3>
+                <br>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-8">
+                        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                            Actualmente todos las materias del sistema administrativo están registrados en el sistema, por lo que
+                            no hay materias nuevas que registrar. 
+                        </div>
+                    </div>
+                </div>
                 <% } %>
-                    <script type="text/javascript" src="/js/pagination_datos.js"></script>
-                    <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
-    </body>
-
-    </html>
+            </section>
+        </body>
+        <script type="text/javascript" src="/js/pagination_datos.js"></script>
+        <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
+</html>

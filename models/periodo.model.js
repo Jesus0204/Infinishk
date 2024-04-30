@@ -17,7 +17,7 @@ module.exports = class Periodo {
     }
 
     static updatePeriodo(id,inicio,fin,nombre,status) {
-        return db.execute('UPDATE periodo SET IDPeriodo=?, fechaInicio=?, fechaFin=?, Nombre=?, periodoActivo=?  WHERE IDPeriodo=?', [id,inicio,fin,nombre,status,id])
+        return db.execute('UPDATE periodo SET IDPeriodo=?, fechaInicio=?, fechaFin=?, Nombre=?, periodoActivo=?  WHERE IDPeriodo=?', [id.toString(), inicio, fin, nombre, status, id.toString()])
     }
 
     static savePeriodo(id,inicio,fin,nombre,status){
