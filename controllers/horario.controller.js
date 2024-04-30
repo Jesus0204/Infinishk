@@ -212,10 +212,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const horarioCurso = grupoHorario[i];
             const fechaInicioCurso = fechaInicio[i];
             const fechaFinCurso = fechaFin[i];
-    
-            const idmateria = await Materia.fetchID(materia);
-    
-            const IDMateria = idmateria[0][0].IDMateria;
+            const IDMateria = idMateria[i];
     
             // Guardar el grupo en la base de datos
             await Grupo.saveGrupo(

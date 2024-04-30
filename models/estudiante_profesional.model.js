@@ -9,8 +9,8 @@ module.exports = class estudianteProfesional {
         this.planEstudio = mi_planEstudio;
     }
 
-    static update_alumno_profesional(matricula,semestre,planEstudio){
-        return db.execute('UPDATE estudianteprofesional SET Matricula=?, semestreActual = ? , planEstudio = ? WHERE Matricula=?',[matricula,semestre,planEstudio,matricula])
+    static update_alumno_profesional(matricula,semestre){
+        return db.execute('UPDATE estudianteprofesional SET Matricula=?, semestreActual = ? WHERE Matricula=?',[matricula,semestre,matricula])
     }
 
     static save_alumno_profesional(matricula,semestre,plan,beca){

@@ -504,7 +504,7 @@ exports.get_alumnos = async (request, response, next) => {
                     console.log(`IDUsuario inválido`);
                 }
                 
-                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester)
                 updatedUsers.push({ ...user, updated: true });
             } else {
                 updatedUsers.push({ ...user, updated: false });
@@ -568,7 +568,7 @@ exports.get_materias = async (request, response, next) => {
             const courseExistente = await Materia.fetchOne(course.id)
             if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
                 // Si la comparación devuelve resultados, actualiza el usuario
-                await Materia.updateMateria(course.sep_id,course.name,course.carrera,course.semestre,course.credits,course.id)
+                await Materia.updateMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id)
                 updatedCourses.push({ ...course, updated: true });
             } else {
                 updatedCourses.push({ ...course, updated: false });
@@ -728,7 +728,7 @@ exports.post_materias = async (request,response,next) => {
         const semestre = request.body.semestre;
         const planEstudio = request.body.carrera;
     
-        await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria);
+        await Materia.saveMateria(idMateria, nombre, planEstudio, semestre, creditos, idSep);
     
         response.json({
             success: success
