@@ -7,7 +7,7 @@ module.exports = class estudianteDiplomado {
         this.fechaInscripción = mi_fechaInscripcion;
     }
 
-    static save(){
+    save(){
         return db.execute(
             `INSERT INTO estudianteDiplomado VALUES (?, ?)`, 
             [this.Matricula, this.fechaInscripción]);
