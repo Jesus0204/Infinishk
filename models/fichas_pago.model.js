@@ -24,6 +24,7 @@ module.exports = class Fichas {
     }
 
     static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca){
+        console.log(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca)
         db.execute(`CALL delete_grupo_update_fichas(?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca])
     }
-}
+} 
