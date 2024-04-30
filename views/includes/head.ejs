@@ -57,7 +57,7 @@
         <div id="navbarViaDiseño" class="navbar-menu">
             <div class="navbar-start">
                 <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
-                <a class="navbar-item main_menu" href="/">
+                <a class="navbar-item main_menu" href="/horario/consultahorario">
                     <span class="icon is-large">
                         <i class="fa-solid fa-calendar-week"></i>
                     </span>
@@ -365,7 +365,7 @@
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="navbar-dropdown">
-                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
+                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-database"></i>
                                             </span>
@@ -395,7 +395,7 @@
                                         Datos
                                     </a>
                                     <div class="navbar-dropdown" id="datos">
-                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/actualizarBase">
+                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-database"></i>
                                             </span>

@@ -29,9 +29,28 @@ module.exports = class Alumno {
         FROM Alumno WHERE Matricula = ?`, [matricula]);
     }
 
+    static updateAlumno(matricula, nombre, apellidos) {
+        return db.execute('UPDATE alumno SET Matricula=?, Nombre=?, Apellidos=? WHERE Matricula=?', [matricula, nombre, apellidos, matricula])
+    }
+
+    static save_alumno(matricula, nombre, apellidos, referencia) {
+        return db.execute('INSERT INTO `alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito`, `horarioConfirmado`) VALUES (?,?,?,?,0,0)', [matricula, nombre, apellidos, referencia])
+    }
+
     static update_credito(matricula, credito) {
         return db.execute(`UPDATE Alumno SET Credito = Credito + ?
         WHERE Matricula = ?`, [credito, matricula]);
     }
 
+    static fetchHorarioConfirmado(matricula){
+        return db.execute(`SELECT horarioConfirmado FROM Alumno WHERE Matricula = ?`, [matricula]);
+    }
+
+    static updateHorarioAccepted(matricula){
+        return db.execute(`UPDATE Alumno SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
+    }
+
+    static fetchCredito(matricula){
+        return db.execute(`SELECT CAST(credito AS CHAR(20)) FROM alumno WHERE Matricula = ?`,[matricula]);
+    }
 }
