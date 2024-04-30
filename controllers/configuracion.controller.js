@@ -26,6 +26,11 @@ const config = require('../config');
 // Usar la clave secreta en tu código
 const secretKey = config.jwtSecret;
 
+// Configuras a moment con el locale. 
+const moment = require('moment-timezone');
+const rol = require('../models/rol.model');
+moment.locale('es-mx');
+
 exports.get_administrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
@@ -80,6 +85,7 @@ exports.get_registrar_usuario = (request, response, next) => {
             console.log(error)
         })
 };
+
 
 exports.post_registrar_usuario = async (request, response, next) => {
     const [roles_disponibles, fieldData] = await Rol.fetchAll()
@@ -166,7 +172,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
        const referenciaBancaria = request.body.referenciaBancaria;
        const fechaInscripcion = request.body.fechaInscripcion;
 
-       console.log(fechaInscripcion);
+       fechaModificacion = moment(fechaInscripcion).tz('America/Mexico_City').format('YYYY/MM/DD');
 
        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
        if (usuarioExistente.length > 0) {
@@ -186,7 +192,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
        await Alumno.save_alumno(matricula_alumno, nombre, apellidos, referenciaBancaria);
 
        // Registras al estudiante en diplomado
-       const estudiante = new estudianteDiplomado(matricula_alumno, fechaInscripcion);
+       const estudiante = new estudianteDiplomado(matricula_alumno, fechaModificacion);
        await estudiante.save();
 
        const token = jwt.sign({
@@ -416,11 +422,6 @@ exports.get_precio_credito = (request, response, next) => {
             console.log(error)
         });
 };
-
-// Configuras a moment con el locale. 
-const moment = require('moment');
-const rol = require('../models/rol.model');
-moment.locale('es-mx');
 
 exports.post_precio_credito = (request, response, next) => {
     const anioSelect = request.body.anio;
