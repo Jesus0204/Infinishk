@@ -145,6 +145,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                 }
             }
@@ -183,6 +184,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
         console.log(error);
     }
@@ -201,35 +203,46 @@ exports.post_confirmar_horario = async (request, response, next) => {
     const fechaFin = Array.isArray(request.body['fechaFin[]']) ? request.body['fechaFin[]'] : [];
     const grupoHorario = Array.isArray(request.body['grupoHorario[]']) ? request.body['grupoHorario[]'] : [];
 
-    // Iterar sobre los cursos confirmados
-    for (let i = 0; i < idMateria.length; i++) {
-        const materia = idMateria[i];
-        const profesor = nombreProfesorCompleto[i];
-        const salonCurso = salon[i];
-        const horarioCurso = grupoHorario[i];
-        const fechaInicioCurso = fechaInicio[i];
-        const fechaFinCurso = fechaFin[i];
-
-        const idmateria = await Materia.fetchID(materia);
-
-        const IDMateria = idmateria[0][0].IDMateria;
-
-        // Guardar el grupo en la base de datos
-        await Grupo.saveGrupo(
-            request.session.username, // Suponiendo que matricula se toma de la sesión del usuario
-            IDMateria,
-            precioActual,
-            profesor,
-            salonCurso,
-            horarioCurso,
-            fechaInicioCurso,
-            fechaFinCurso
-        );
+    try {
+        // Iterar sobre los cursos confirmados
+        for (let i = 0; i < idMateria.length; i++) {
+            const materia = idMateria[i];
+            const profesor = nombreProfesorCompleto[i];
+            const salonCurso = salon[i];
+            const horarioCurso = grupoHorario[i];
+            const fechaInicioCurso = fechaInicio[i];
+            const fechaFinCurso = fechaFin[i];
+    
+            const idmateria = await Materia.fetchID(materia);
+    
+            const IDMateria = idmateria[0][0].IDMateria;
+    
+            // Guardar el grupo en la base de datos
+            await Grupo.saveGrupo(
+                request.session.username, // Suponiendo que matricula se toma de la sesión del usuario
+                IDMateria,
+                precioActual,
+                profesor,
+                salonCurso,
+                horarioCurso,
+                fechaInicioCurso,
+                fechaFinCurso
+            );
+        }
+    
+         // Acciones adicionales después de manejar cada grupo
+         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
+         await Alumno.updateHorarioAccepted(request.session.username);
+    
+        response.redirect('/horario/consultaHorario');
+    } 
+    catch (error) {
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: true
+        });
+        console.log(error);
     }
-
-     // Acciones adicionales después de manejar cada grupo
-     await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-     await Alumno.updateHorarioAccepted(request.session.username);
-
-    response.redirect('/horario/consultaHorario');
 }

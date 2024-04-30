@@ -83,6 +83,7 @@ exports.post_login = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         })

@@ -23,6 +23,7 @@ exports.post_propuesta_horario = (request, response, next) => {
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
+                            error_alumno: false
                         });
                         console.log(error);
                     });
@@ -31,7 +32,8 @@ exports.post_propuesta_horario = (request, response, next) => {
                     response.status(500).render('500', {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
-                        rol: request.session.rol || "",
+                        rol: request.session.rol || "", 
+                        error_alumno: false
                     });
                     console.log(error);
                 });
@@ -41,6 +43,7 @@ exports.post_propuesta_horario = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
