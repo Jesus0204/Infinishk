@@ -7,248 +7,256 @@
 <section class='section'>
     <div class="container">
         <% if (periodoExistente == 0) { %>
-            <div class="columns">
-                <div class="column is-2"></div>
-                <div class="column is-8">
-                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                        Tú horario no está listo por el momento. Por favor intenta más tarde.
-                    </div>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Tú horario no está listo por el momento. Por favor intenta más tarde.
                 </div>
             </div>
+        </div>
         <% } else { %>
-            <% if (confirmacion === 1) { %>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-6">
-                        <h3 class="title is-3">Consultar Horario</h3>
-                    </div>
+        <% if (confirmacion === 1) { %>
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Consultar Horario</h3>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-6">
+                <h3 class="title is-3">Confirmar Horario</h3>
+            </div>
+        </div>
+        <% } %>
+        <br>
+        <% if (confirmacion === 1) { %>
+        <% if (schedule[0].length === 0) { %>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Tú horario no está disponible por el momento. Por favor intenta más tarde.
                 </div>
-            <% } else { %>
-                <div class="columns">
-                    <div class="column is-4"></div>
-                    <div class="column is-6">
-                        <h3 class="title is-3">Confirmar Horario</h3>
-                    </div>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    ¡Gracias por confirmar tu horario! En está página puedes encontrar un resumen de tus clases, su horario, al igual que el costo de la misma. 
                 </div>
-            <% } %>
-            <br>
-            <% if (confirmacion === 1) { %>
-            <% if (schedule[0].length === 0) { %>
-                <div class="columns">
-                    <div class="column is-2"></div>
-                    <div class="column is-8">
-                        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                            Tú horario no está disponible por el momento. Por favor intenta más tarde.
+            </div>
+        </div>
+        <table class="table is-bordered is-hoverable is-fullwidth" style="text-align: center;">
+            <tbody>
+                <% for (let count = 0; count < schedule[0].length; count = count + 2) { %>
+                <% if (count + 1 == schedule[0].length) { %>
+                <tr>
+                    <td colspan="2">
+                        <div class="column">
+                            <p>Unidad de formación:
+                            </p>
+                            <h3 class="title is-5">
+                                <%= schedule[0][count].Nombre %>
+                            </h3>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                <strong>Profesor: </strong>
+                                <%= schedule[0][count].Profesor %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-clock"></i>
+                                </span>
+                                <strong>Horario: </strong>
+                                <%= schedule[0][count].Horario %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-building"></i>
+                                </span>
+                                <strong>Salón: </strong>
+                                <%= schedule[0][count].Salon %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de inicio: </strong>
+                                <%= schedule[0][count].fechaInicio %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de termino: </strong>
+                                <%= schedule[0][count].fechaTermino %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                                <strong>Créditos: </strong>
+                                <%= schedule[0][count].Creditos.toLocaleString('mx', {
+                                        minimumFractionDigits: 1, maximumFractionDigits: 1
+                                    }) %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                <strong>Costo(MXN): </strong>
+                                $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                                    }) %>
+                            </p>
                         </div>
-                    </div>
-                </div>
-            <% } else { %>
-                <table class="table is-bordered is-hoverable is-fullwidth">
-                    <tbody>
-                    <% for (let count = 0; count < schedule[0].length; count = count + 2) { %>
-                    <% if (count + 1 == schedule[0].length) { %>
-                        <tr>
-                            <td colspan="2">
-                                <div class="column">
-                                    <p>Unidad de formación: 
-                                    </p>
-                                    <h3 class="title is-5">
-                                        <%= schedule[0][count].Nombre %>
-                                    </h3>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-user"></i>
-                                        </span>
-                                        <strong>Profesor: </strong>
-                                        <%= schedule[0][count].Profesor %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-clock"></i>
-                                        </span>
-                                        <strong>Horario: </strong>
-                                        <%= schedule[0][count].Horario %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-building"></i>
-                                        </span>
-                                        <strong>Salón: </strong>
-                                        <%= schedule[0][count].Salon %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de inicio: </strong>
-                                        <%= new Date(schedule[0][count].fechaInicio).toLocaleDateString("es-ES") %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de termino: </strong>
-                                        <%= new Date(schedule[0][count].fechaTermino).toLocaleDateString("es-ES") %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fas fa-graduation-cap"></i>
-                                        </span>
-                                        <strong>Créditos: </strong>
-                                        <%= schedule[0][count].Creditos.toLocaleString('mx', {
+                    </td>
+                </tr>
+                <% } else { %>
+                <tr>
+                    <td>
+                        <div class="column">
+                            <p>Unidad de formación:
+                            </p>
+                            <h3 class="title is-5">
+                                <%= schedule[0][count].Nombre %>
+                            </h3>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                <strong>Profesor: </strong>
+                                <%= schedule[0][count].Profesor %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-clock"></i>
+                                </span>
+                                <strong>Horario: </strong>
+                                <%= schedule[0][count].Horario %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-building"></i>
+                                </span>
+                                <strong>Salón: </strong>
+                                <%= schedule[0][count].Salon %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de inicio: </strong>
+                                <%= schedule[0][count].fechaInicio %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de termino: </strong>
+                                <%= schedule[0][count].fechaTermino %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                                <strong>Créditos: </strong>
+                                <%= schedule[0][count].Creditos.toLocaleString('mx', {
                                         minimumFractionDigits: 1, maximumFractionDigits: 1
                                     }) %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-solid fa-tags"></i>
-                                        </span>
-                                        <strong>Costo(MXN): </strong>
-                                        $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                <strong>Costo(MXN): </strong>
+                                $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2
                                     }) %>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    <% } else { %> 
-                    <tr>
-                        <td>
-                            <div class="column">
-                                <p>Unidad de formación:
-                                </p>
-                                <h3 class="title is-5">
-                                    <%= schedule[0][count].Nombre %>
-                                </h3>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-user"></i>
-                                    </span>
-                                    <strong>Profesor: </strong>
-                                    <%= schedule[0][count].Profesor %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-clock"></i>
-                                    </span>
-                                    <strong>Horario: </strong>
-                                    <%= schedule[0][count].Horario %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-building"></i>
-                                    </span>
-                                    <strong>Salón: </strong>
-                                    <%= schedule[0][count].Salon %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de inicio: </strong>
-                                    <%= new Date(schedule[0][count].fechaInicio).toLocaleDateString("es-ES") %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de termino: </strong>
-                                    <%= new Date(schedule[0][count].fechaTermino).toLocaleDateString("es-ES") %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </span>
-                                    <strong>Créditos: </strong>
-                                    <%= schedule[0][count].Creditos.toLocaleString('mx', {
+                            </p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="column">
+                            <p>Unidad de formación:
+                            </p>
+                            <h3 class="title is-5">
+                                <%= schedule[0][count + 1].Nombre %>
+                            </h3>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                <strong>Profesor: </strong>
+                                <%= schedule[0][count + 1].Profesor %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-clock"></i>
+                                </span>
+                                <strong>Horario: </strong>
+                                <%= schedule[0][count + 1].Horario %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-building"></i>
+                                </span>
+                                <strong>Salón: </strong>
+                                <%= schedule[0][count + 1].Salon %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de inicio: </strong>
+                                <%= schedule[0][count + 1].fechaInicio %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </span>
+                                <strong>Fecha de termino: </strong>
+                                <%= schedule[0][count + 1].fechaTermino %>
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                                <strong>Créditos: </strong>
+                                <%= schedule[0][count + 1].Creditos.toLocaleString('mx', {
                                         minimumFractionDigits: 1, maximumFractionDigits: 1
                                     }) %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-solid fa-tags"></i>
-                                    </span>
-                                    <strong>Costo(MXN): </strong>
-                                    $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
+                            </p>
+                            <p>
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                <strong>Costo(MXN): </strong>
+                                $<%= schedule[0][count + 1].Precio_materia.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2
                                     }) %>
-                                </p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="column">
-                                <p>Unidad de formación: 
-                                </p>
-                                <h3 class="title is-5">
-                                    <%= schedule[0][count + 1].Nombre %>
-                                </h3>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-user"></i>
-                                    </span>
-                                    <strong>Profesor: </strong>
-                                    <%= schedule[0][count + 1].Profesor %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-clock"></i>
-                                    </span>
-                                    <strong>Horario: </strong>
-                                    <%= schedule[0][count + 1].Horario %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-building"></i>
-                                    </span>
-                                    <strong>Salón: </strong>
-                                    <%= schedule[0][count + 1].Salon %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de inicio: </strong>
-                                    <%= new Date(schedule[0][count + 1].fechaInicio).toLocaleDateString("es-ES") %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de termino: </strong>
-                                    <%= new Date(schedule[0][count + 1].fechaTermino).toLocaleDateString("es-ES") %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </span>
-                                    <strong>Créditos: </strong>
-                                    <%= schedule[0][count + 1].Creditos.toLocaleString('mx', {
-                                        minimumFractionDigits: 1, maximumFractionDigits: 1
-                                    }) %>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-solid fa-tags"></i>
-                                    </span>
-                                    <strong>Costo(MXN): </strong>
-                                    $<%= schedule[0][count + 1].Precio_materia.toLocaleString('mx', {
-                                        minimumFractionDigits: 2, maximumFractionDigits: 2
-                                    }) %>
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
-                    <% } %>
-                </tbody>
-            </table>
-            <% } %>
-            <h3 class="title is-4" style="text-align: center;">
-                Costo total(MXN): $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <% } %>
+                <% } %>
+            </tbody>
+        </table>
+        <% } %>
+        <h3 class="title is-4" style="text-align: center;">
+            Costo total(MXN): $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                                 maximumFractionDigits: 2 }) %>
-            </h3>
-            <br>
-            <% } %>
+        </h3>
+        <br>
+        <% } %>
         <% if(confirmacion!= 1) { %>
         <% if (schedule.length === 0) { %>
         <div class="columns">
@@ -260,282 +268,296 @@
             </div>
         </div>
         <% } else { %>
-        <form action="/horario/confirmar_horario" method="POST" style="text-align: center;">
+        <form action="/horario/confirmar_horario" method="POST">
+            <div class="columns">
+                <div class="column">
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        ¡Bienvenido a ViaPago! En está sección, puedes consultar las materias que tienes inscritas para
+                        el semestre en curso. También podrás elegir entre los distintos planes de pago, para que eligas el que 
+                        más se te acomoda. Por favor revisa las materias y el costo cautelosamente, para evitar cambios inecesarios. 
+                        Si no estás conforme con la propuesta, por favor contacta a tu coordinador@ de carrera, para que los cambios
+                        necesarios se puedan aplicar. ¡Gracias!
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column is-6">
+                    <h3 class="title is-4">
+                        Costo total(MXN): $<%=
+                        precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                            maximumFractionDigits: 2 }) %>
+                    </h3>
+                    <br>
+                    <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+                    <div class="select is-medium">
+                        <select name="IDPlanPago" id="IDPlanPago">
+                            <% for (let plan of planesPago){%>
+                            <option value="<%=plan.IDPlanPago%>" data-nombre="<%=plan.nombrePlan%>">
+                                <%=plan.nombrePlan%>
+                            </option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="column is-5">
+                    <br>
+                    <br>
+                    <button class="button is-rounded is-medium is-responsive" type="submit" style="font-size: large;"
+                        id="Boton_confirmar">
+                        <span>Confirmar horario</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-           <table class="table is-bordered is-hoverable is-fullwidth">
-               <tbody>
-                   <% for (let count = 0; count < schedule.length; count = count + 2) { %>
+            <table class="table is-bordered is-hoverable is-fullwidth" style="text-align: center;">
+                <tbody>
+                    <% for (let count = 0; count < schedule.length; count = count + 2) { %>
                     <% if (count + 1 == schedule.length) { %>
-                        <tr>
-                            <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
-                            <input type="hidden" name="nombreProfesorCompleto[]"
-                                value="<%= schedule[count].nombreProfesorCompleto %>">
-                            <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
-                            <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
-                            <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
-                            <td colspan="2">
-                                <div class="column">
-                                    <p>Unidad de formación: <%= schedule[count].idMateria %>
-                                    </p>
-                                    <h3 class="title is-5">
-                                        <%= schedule[count].nombreMat %>
-                                    </h3>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-user"></i>
-                                        </span>
-                                        <strong>Profesor: </strong>
-                                        <%= schedule[count].nombreProfesorCompleto %>
-                                    </p>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-clock"></i>
-                                        </span>
-                                        <strong>Horario: </strong>
-                                    </p>
-                                    <% for (let i = 0; i < schedule[count].horarios.length; i += 2) { %>
-                                    <input type="hidden" name="grupoHorario[]"
-                                        value="<%= schedule[count].horarios[i].diaSemana %> <%= schedule[count].horarios[i].fechaInicio %> - <%= schedule[count].horarios[i].fechaTermino %>, <%= schedule[count].horarios[i+1].diaSemana %> <%= schedule[count].horarios[i+1].fechaInicio %> - <%= schedule[count].horarios[i+1].fechaTermino %>">
-                                    <%= schedule[count].horarios[i].diaSemana %>
-                                    <%= schedule[count].horarios[i].fechaInicio %> -
-                                    <%= schedule[count].horarios[i].fechaTermino %>
-                                    <%= schedule[count].horarios[i+1].diaSemana %>
-                                    <%= schedule[count].horarios[i+1].fechaInicio %> -
-                                    <%= schedule[count].horarios[i+1].fechaTermino %>
-                                    <% } %>
+                    <tr>
+                        <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
+                        <input type="hidden" name="nombreProfesorCompleto[]"
+                            value="<%= schedule[count].nombreProfesorCompleto %>">
+                        <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
+                        <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
+                        <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
+                        <td colspan="2">
+                            <div class="column">
+                                <p>Unidad de formación: <%= schedule[count].idMateria %>
+                                </p>
+                                <h3 class="title is-5">
+                                    <%= schedule[count].nombreMat %>
+                                </h3>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    <strong>Profesor: </strong>
+                                    <%= schedule[count].nombreProfesorCompleto %>
+                                </p>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <strong>Horario: </strong>
+                                </p>
+                                <% for (let i = 0; i < schedule[count].horarios.length; i += 2) { %>
+                                <input type="hidden" name="grupoHorario[]"
+                                    value="<%= schedule[count].horarios[i].diaSemana %> <%= schedule[count].horarios[i].fechaInicio %> - <%= schedule[count].horarios[i].fechaTermino %>, <%= schedule[count].horarios[i+1].diaSemana %> <%= schedule[count].horarios[i+1].fechaInicio %> - <%= schedule[count].horarios[i+1].fechaTermino %>">
+                                <%= schedule[count].horarios[i].diaSemana %>
+                                <%= schedule[count].horarios[i].fechaInicio %> -
+                                <%= schedule[count].horarios[i].fechaTermino %>
+                                <%= schedule[count].horarios[i+1].diaSemana %>
+                                <%= schedule[count].horarios[i+1].fechaInicio %> -
+                                <%= schedule[count].horarios[i+1].fechaTermino %>
+                                <% } %>
 
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-building"></i>
-                                        </span>
-                                        <strong>Salón: </strong>
-                                        <%= schedule[count].nombreSalon%>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de inicio: </strong>
-                                        <%= schedule[count].startDateFormat%>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de termino: </strong>
-                                        <%= schedule[count].endDateFormat%>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fas fa-graduation-cap"></i>
-                                        </span>
-                                        <strong>Créditos: </strong>
-                                        <%= schedule[count].creditos %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-solid fa-tags"></i>
-                                        </span>
-                                        <strong>Costo(MXN):
-                                        </strong>$<%=
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-building"></i>
+                                    </span>
+                                    <strong>Salón: </strong>
+                                    <%= schedule[count].nombreSalon%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de inicio: </strong>
+                                    <%= schedule[count].startDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de termino: </strong>
+                                    <%= schedule[count].endDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </span>
+                                    <strong>Créditos: </strong>
+                                    <%= schedule[count].creditos %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-solid fa-tags"></i>
+                                    </span>
+                                    <strong>Costo(MXN):
+                                    </strong>$<%=
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
                     <% } else {%>
                     <tr>
-                       <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
-                       <input type="hidden" name="nombreProfesorCompleto[]"
-                           value="<%= schedule[count].nombreProfesorCompleto %>">
-                       <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
-                       <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
-                       <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
-                       <td>
-                           <div class="column">
-                               <p>Unidad de formación: <%= schedule[count].idMateria %>
-                               </p>
-                               <h3 class="title is-5">
-                                   <%= schedule[count].nombreMat %>
-                               </h3>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-user"></i>
-                                   </span>
-                                   <strong>Profesor: </strong>
-                                   <%= schedule[count].nombreProfesorCompleto %>
-                               </p>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-clock"></i>
-                                   </span>
-                                   <strong>Horario: </strong>
-                               </p>
-                               <% for (let i = 0; i < schedule[count].horarios.length; i += 2) { %>
-                               <input type="hidden" name="grupoHorario[]"
-                                   value="<%= schedule[count].horarios[i].diaSemana %> <%= schedule[count].horarios[i].fechaInicio %> - <%= schedule[count].horarios[i].fechaTermino %>, <%= schedule[count].horarios[i+1].diaSemana %> <%= schedule[count].horarios[i+1].fechaInicio %> - <%= schedule[count].horarios[i+1].fechaTermino %>">
-                               <%= schedule[count].horarios[i].diaSemana %>
-                               <%= schedule[count].horarios[i].fechaInicio %> -
-                               <%= schedule[count].horarios[i].fechaTermino %>
-                               <%= schedule[count].horarios[i+1].diaSemana %>
-                               <%= schedule[count].horarios[i+1].fechaInicio %> -
-                               <%= schedule[count].horarios[i+1].fechaTermino %>
-                               <% } %>
+                        <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
+                        <input type="hidden" name="nombreProfesorCompleto[]"
+                            value="<%= schedule[count].nombreProfesorCompleto %>">
+                        <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
+                        <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
+                        <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
+                        <td>
+                            <div class="column">
+                                <p>Unidad de formación: <%= schedule[count].idMateria %>
+                                </p>
+                                <h3 class="title is-5">
+                                    <%= schedule[count].nombreMat %>
+                                </h3>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    <strong>Profesor: </strong>
+                                    <%= schedule[count].nombreProfesorCompleto %>
+                                </p>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <strong>Horario: </strong>
+                                </p>
+                                <% for (let i = 0; i < schedule[count].horarios.length; i += 2) { %>
+                                <input type="hidden" name="grupoHorario[]"
+                                    value="<%= schedule[count].horarios[i].diaSemana %> <%= schedule[count].horarios[i].fechaInicio %> - <%= schedule[count].horarios[i].fechaTermino %>, <%= schedule[count].horarios[i+1].diaSemana %> <%= schedule[count].horarios[i+1].fechaInicio %> - <%= schedule[count].horarios[i+1].fechaTermino %>">
+                                <%= schedule[count].horarios[i].diaSemana %>
+                                <%= schedule[count].horarios[i].fechaInicio %> -
+                                <%= schedule[count].horarios[i].fechaTermino %>
+                                <%= schedule[count].horarios[i+1].diaSemana %>
+                                <%= schedule[count].horarios[i+1].fechaInicio %> -
+                                <%= schedule[count].horarios[i+1].fechaTermino %>
+                                <% } %>
 
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-building"></i>
-                                   </span>
-                                   <strong>Salón: </strong>
-                                   <%= schedule[count].nombreSalon%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-calendar"></i>
-                                   </span>
-                                   <strong>Fecha de inicio: </strong>
-                                   <%= schedule[count].startDateFormat%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-calendar"></i>
-                                   </span>
-                                   <strong>Fecha de termino: </strong>
-                                   <%= schedule[count].endDateFormat%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fas fa-graduation-cap"></i>
-                                   </span>
-                                   <strong>Créditos: </strong>
-                                   <%= schedule[count].creditos %>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-solid fa-tags"></i>
-                                   </span>
-                                   <strong>Costo(MXN):
-                                   </strong>$<%=
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-building"></i>
+                                    </span>
+                                    <strong>Salón: </strong>
+                                    <%= schedule[count].nombreSalon%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de inicio: </strong>
+                                    <%= schedule[count].startDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de termino: </strong>
+                                    <%= schedule[count].endDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </span>
+                                    <strong>Créditos: </strong>
+                                    <%= schedule[count].creditos %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-solid fa-tags"></i>
+                                    </span>
+                                    <strong>Costo(MXN):
+                                    </strong>$<%=
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                               </p>
-                           </div>
-                       </td>
-                       <input type="hidden" name="idMateria[]" value="<%= schedule[count + 1].idMateria %>">
-                       <input type="hidden" name="nombreProfesorCompleto[]"
-                           value="<%= schedule[count + 1].nombreProfesorCompleto %>">
-                       <input type="hidden" name="salon[]" value="<%= schedule[count + 1].nombreSalon %>">
-                       <input type="hidden" name="fechaInicio[]" value="<%= schedule[count + 1].startDateFormat %>">
-                       <input type="hidden" name="fechaFin[]" value="<%= schedule[count + 1].endDateFormat %>">
-                       <td>
-                           <div class="column">
-                               <p>Unidad de formación: <%= schedule[count + 1].idMateria %>
-                               </p>
-                               <h3 class="title is-5">
-                                   <%= schedule[count + 1].nombreMat %>
-                               </h3>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-user"></i>
-                                   </span>
-                                   <strong>Profesor: </strong>
-                                   <%= schedule[count + 1].nombreProfesorCompleto %>
-                               </p>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-clock"></i>
-                                   </span>
-                                   <strong>Horario: </strong>
-                               </p>
-                               <% for (let i = 0; i < schedule[count + 1].horarios.length; i += 2) { %>
-                               <input type="hidden" name="grupoHorario[]"
-                                   value="<%= schedule[count + 1].horarios[i].diaSemana %> <%= schedule[count + 1].horarios[i].fechaInicio %> - <%= schedule[count + 1].horarios[i].fechaTermino %>, <%= schedule[count + 1].horarios[i+1].diaSemana %> <%= schedule[count + 1].horarios[i+1].fechaInicio %> - <%= schedule[count + 1].horarios[i+1].fechaTermino %>">
-                               <%= schedule[count + 1].horarios[i].diaSemana %>
-                               <%= schedule[count + 1].horarios[i].fechaInicio %> -
-                               <%= schedule[count + 1].horarios[i].fechaTermino %>
-                               <%= schedule[count + 1].horarios[i+1].diaSemana %>
-                               <%= schedule[count + 1].horarios[i+1].fechaInicio %> -
-                               <%= schedule[count + 1].horarios[i+1].fechaTermino %>
-                               <% } %>
+                                </p>
+                            </div>
+                        </td>
+                        <input type="hidden" name="idMateria[]" value="<%= schedule[count + 1].idMateria %>">
+                        <input type="hidden" name="nombreProfesorCompleto[]"
+                            value="<%= schedule[count + 1].nombreProfesorCompleto %>">
+                        <input type="hidden" name="salon[]" value="<%= schedule[count + 1].nombreSalon %>">
+                        <input type="hidden" name="fechaInicio[]" value="<%= schedule[count + 1].startDateFormat %>">
+                        <input type="hidden" name="fechaFin[]" value="<%= schedule[count + 1].endDateFormat %>">
+                        <td>
+                            <div class="column">
+                                <p>Unidad de formación: <%= schedule[count + 1].idMateria %>
+                                </p>
+                                <h3 class="title is-5">
+                                    <%= schedule[count + 1].nombreMat %>
+                                </h3>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    <strong>Profesor: </strong>
+                                    <%= schedule[count + 1].nombreProfesorCompleto %>
+                                </p>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-clock"></i>
+                                    </span>
+                                    <strong>Horario: </strong>
+                                </p>
+                                <% for (let i = 0; i < schedule[count + 1].horarios.length; i += 2) { %>
+                                <input type="hidden" name="grupoHorario[]"
+                                    value="<%= schedule[count + 1].horarios[i].diaSemana %> <%= schedule[count + 1].horarios[i].fechaInicio %> - <%= schedule[count + 1].horarios[i].fechaTermino %>, <%= schedule[count + 1].horarios[i+1].diaSemana %> <%= schedule[count + 1].horarios[i+1].fechaInicio %> - <%= schedule[count + 1].horarios[i+1].fechaTermino %>">
+                                <%= schedule[count + 1].horarios[i].diaSemana %>
+                                <%= schedule[count + 1].horarios[i].fechaInicio %> -
+                                <%= schedule[count + 1].horarios[i].fechaTermino %>
+                                <%= schedule[count + 1].horarios[i+1].diaSemana %>
+                                <%= schedule[count + 1].horarios[i+1].fechaInicio %> -
+                                <%= schedule[count + 1].horarios[i+1].fechaTermino %>
+                                <% } %>
 
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-building"></i>
-                                   </span>
-                                   <strong>Salón: </strong>
-                                   <%= schedule[count + 1].nombreSalon%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-calendar"></i>
-                                   </span>
-                                   <strong>Fecha de inicio: </strong>
-                                   <%= schedule[count + 1].startDateFormat%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-regular fa-calendar"></i>
-                                   </span>
-                                   <strong>Fecha de termino: </strong>
-                                   <%= schedule[count + 1].endDateFormat%>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fas fa-graduation-cap"></i>
-                                   </span>
-                                   <strong>Créditos: </strong>
-                                   <%= schedule[count + 1].creditos %>
-                               </p>
-                               <p>
-                                   <span class="icon is-small">
-                                       <i class="fa-solid fa-tags"></i>
-                                   </span>
-                                   <strong>Costo(MXN):
-                                   </strong>$<%=
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-building"></i>
+                                    </span>
+                                    <strong>Salón: </strong>
+                                    <%= schedule[count + 1].nombreSalon%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de inicio: </strong>
+                                    <%= schedule[count + 1].startDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-regular fa-calendar"></i>
+                                    </span>
+                                    <strong>Fecha de termino: </strong>
+                                    <%= schedule[count + 1].endDateFormat%>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </span>
+                                    <strong>Créditos: </strong>
+                                    <%= schedule[count + 1].creditos %>
+                                </p>
+                                <p>
+                                    <span class="icon is-small">
+                                        <i class="fa-solid fa-tags"></i>
+                                    </span>
+                                    <strong>Costo(MXN):
+                                    </strong>$<%=
                                     schedule[count + 1].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                               </p>
-                           </div>
-                       </td>
-                   </tr>
-                   <% } %>
-                   <% } %>
-               </tbody>
-           </table>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+                    <% } %>
+                </tbody>
+            </table>
             <% } %>
-            <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $<%=
-                precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
-                    maximumFractionDigits: 2 }) %>
-            </h3>
-            <br>
-    
-            <div>
-                <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
-                <div class="select is-medium">
-                    <select name="IDPlanPago" id="IDPlanPago">
-                        <% for (let plan of planesPago){%>
-                        <option value="<%=plan.IDPlanPago%>" data-nombre="<%=plan.nombrePlan%>">
-                            <%=plan.nombrePlan%>
-                        </option>
-                        <% } %>
-                    </select>
-                </div>
-                <br>
-                <br>
-            </div>
-            <div class="container">
-                <button class="button is-rounded is-medium is-responsive" type="submit"
-                    style="font-size: large;" id="Boton_confirmar">
-                    <span>Confirmar horario</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-check"></i>
-                    </span>
-                </button>
-            </div>
         </form>
         <% } %>
         <% } %>

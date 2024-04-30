@@ -10,6 +10,10 @@ const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
 const { request } = require('express');
 
+// Configuras a moment con el locale. 
+const moment = require('moment-timezone');
+moment.locale('es-mx');
+
 exports.get_propuesta_horario = async (request, response, next) => {
 
     try {
@@ -72,8 +76,8 @@ exports.get_propuesta_horario = async (request, response, next) => {
                         const startDate = new Date(start_date);
                         const endDate = new Date(end_date);
 
-                        const startDateFormat = `${startDate.getFullYear()}-${startDate.getMonth() + 1 < 10 ? '0' : ''}${startDate.getMonth() + 1}-${startDate.getDate() < 10 ? '0' : ''}${startDate.getDate()}`;
-                        const endDateFormat = `${endDate.getFullYear()}-${endDate.getMonth() + 1 < 10 ? '0' : ''}${endDate.getMonth() + 1}-${endDate.getDate() < 10 ? '0' : ''}${endDate.getDate()}`;
+                        const startDateFormat = moment(startDate).format('LL');
+                        const endDateFormat = moment(endDate).format('LL');
 
                         const nombreSalon = `${room} ${nameSalon}`;
                         const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
@@ -93,8 +97,9 @@ exports.get_propuesta_horario = async (request, response, next) => {
                             const startDate = new Date(start_hour);
                             const endDate = new Date(end_hour);
 
-                            const fechaInicio = `${startDate.getHours()}:${startDate.getMinutes() < 10 ? '0' : ''}${startDate.getMinutes()}`;
-                            const fechaTermino = `${endDate.getHours()}:${endDate.getMinutes() < 10 ? '0' : ''}${endDate.getMinutes()}`;
+                            const fechaInicio = moment(startDate).format('LT');
+                            const fechaTermino = moment(endDate).format('LT');
+                            console.log(fechaInicio);
 
                             return {
                                 diaSemana: weekday,
@@ -162,8 +167,12 @@ exports.get_propuesta_horario = async (request, response, next) => {
             const beca = await EstudianteProfesional.fetchBeca(request.session.username);
             const porcenBeca = beca[0][0].porcBeca / 100;
 
-            precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito
+            precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito;
 
+            for (let count = 0; count < schedule[0].length; count++) {
+                schedule[0][count].fechaInicio = moment(new Date(schedule[0][count].fechaInicio)).format('LL');
+                schedule[0][count].fechaTermino = moment(new Date(schedule[0][count].fechaTermino)).format('LL');
+            }
 
             const periodoExistente = 1;
             response.render('alumnos/consultarHorario', {
