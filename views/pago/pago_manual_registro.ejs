@@ -33,7 +33,7 @@
                 <br>
                 <div id="info_pago_normal">
                     <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
-                    <table class="table is-bordered Pago-de-Colegiatura"
+                        <table class="table is-bordered Pago-de-Colegiatura"
                         style="color: #ffffff;  margin-left: auto; margin-right: auto;">
                         <caption class="is-size-5">
                             <strong>
@@ -42,32 +42,8 @@
                         </caption>
                         <thead>
                             <th style="color: #ffffff">
-                                Fecha Límite
-                            </th>
-                            <th style="color: #ffffff">
                                 Mensualidad
                             </th>
-                        </thead>
-                        <tbody>
-                            <td style="color: #ffffff">
-                                <%= deuda[0].fechaLimitePago %>
-                            </td>
-                            <td style="color: #ffffff">
-                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }) %>
-                            </td>
-                        </tbody>
-                    </table>
-                    <table class="table is-bordered Pago-de-Colegiatura"
-                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
-                        <caption class="is-size-5">
-                            <strong>
-                                Saldo:
-                            </strong>
-                        </caption>
-                        <thead>
                             <th style="color: #ffffff">
                                 Pendiente
                             </th>
@@ -79,17 +55,36 @@
                             <tr>
                                 <td>
                                     $<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toLocaleString('mx', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
                                     }) %>
                                 </td>
                                 <td>
                                     $<%= deuda[0].montoPagado.toLocaleString('mx', {
-                                                        minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2
-                                                     }) %>
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </td>
+                                <td style="color: #ffffff">
+                                    $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-bordered Pago-de-Colegiatura"
+                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
+                        <thead>
+                            <th style="color: #ffffff">
+                                Fecha Límite
+                            </th>
+                        </thead>
+                        <tbody>
+                            <td style="color: #ffffff">
+                                <%= deuda[0].fechaLimitePago %>
+                            </td>
                         </tbody>
                     </table>
                     <% } %>
