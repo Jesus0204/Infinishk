@@ -91,7 +91,7 @@
 
 <body>
 
-  <div class="main-container" style="padding-top: 30px;">
+  <div class="main-container" style="padding-top: 60px;">
     <div class="login-container">
       <!-- Contenedor del logo y el título -->
       <a class="image is-128x128">
@@ -100,9 +100,15 @@
 
       <!-- Contenedor del formulario -->
       <div class="form-container">
-          <form action="/auth/<% if (registrar) { %>signup <% } else { %>login <% } %>" method="post" class="lg-form">
+          <form action="/auth/login" method="post" class="lg-form">
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              
+              <br>
+              <% if (error) { %>
+              <div class="notification is-danger">
+                  <strong> <%= error %></strong>
+              </div>
+              <% } %>
+            
               <!-- Campo Matrícula -->
               <div class="field">
                   <label class="label" for="IDUsuario">Matrícula</label>
@@ -128,15 +134,10 @@
                       </label>
                   </div>
               </div>
-              <% if (error) { %>
-                <div class="notification is-danger">
-                  <strong> <%= error %></strong>
-                </div>
-                <% } %>
 
         <div class="field">
           <div class="control">
-            <input type="submit" class="button is-primary" value="<% if (registrar) { %>Registrarse <% } else { %>Ingresar <% } %>"/>
+            <input type="submit" class="button is-primary" value="Ingresar"/>
           </div>
         </div>
         
