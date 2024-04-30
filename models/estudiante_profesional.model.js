@@ -10,15 +10,15 @@ module.exports = class estudianteProfesional {
     }
 
     static update_alumno_profesional(matricula,semestre){
-        return db.execute('UPDATE estudianteprofesional SET Matricula=?, semestreActual = ? WHERE Matricula=?',[matricula,semestre,matricula])
+        return db.execute('UPDATE estudianteProfesional SET Matricula=?, semestreActual = ? WHERE Matricula=?',[matricula,semestre,matricula])
     }
 
     static save_alumno_profesional(matricula,semestre,plan,beca){
-        return db.execute('INSERT INTO `estudianteprofesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
+        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
     }
 
     static fetchBeca(matricula){
-        return db.execute('SELECT porcBeca FROM estudianteprofesional WHERE Matricula = ?',[matricula])
+        return db.execute('SELECT porcBeca FROM estudianteProfesional WHERE Matricula = ?',[matricula])
     }
     
 }
