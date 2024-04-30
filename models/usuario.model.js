@@ -96,7 +96,7 @@ module.exports = class Usuario{
     }
 
     static updateUsuario(id,correo){
-        return db.execute('UPDATE usuario SET correoElectronico=? WHERE IDUsuario=?', [correo, id.toString()])
+        return db.execute('UPDATE Usuario SET correoElectronico=? WHERE IDUsuario=?', [correo, id.toString()])
     }
 
     static saveUsuario(id,correo){
@@ -112,6 +112,6 @@ module.exports = class Usuario{
     }
 
     static fetchCorreo(matricula){
-        return db.execute('SELECT correoElectronico FROM usuario WHERE IDUsuario = ?',[matricula]);
+        return db.execute('SELECT correoElectronico FROM Usuario WHERE IDUsuario = ?',[matricula]);
     }
 }

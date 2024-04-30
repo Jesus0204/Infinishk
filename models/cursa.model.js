@@ -10,7 +10,7 @@ module.exports = class Cursa{
     };
 
     static fetchDiplomado(matricula){
-        return db.execute('SELECT IDDiplomado FROM cursa WHERE Matricula = ?',
+        return db.execute('SELECT IDDiplomado FROM Cursa WHERE Matricula = ?',
         [matricula]);
     };
 
