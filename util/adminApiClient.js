@@ -38,7 +38,6 @@ async function getAllUsers() {
   const headers = getHeaders(token);
 
   const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {
-  const response = await axiosAdminClient.get('v1/users/all?type=Users::Student', {
     headers,
   });
 
