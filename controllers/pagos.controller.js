@@ -255,6 +255,7 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
         .then(([alumno, fieldData]) => {
             Pago_Extra.fetchActivos()
                 .then(([pagos_extra, fieldData]) => {
+                    console.log(pagos_extra)
                     response.render('pago/registrar_solicitud', {
                         alumno: alumno,
                         pagos_extra: pagos_extra, 

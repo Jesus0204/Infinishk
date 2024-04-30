@@ -185,7 +185,7 @@
                                                                             <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
                                                                                 style="font-size: medium; background-color: #000000;"
                                                                                 id="Boton_eliminar"
-                                                                                data-target="modal-confirmar-dar_baja">
+                                                                                data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
                                                                                 <span class="icon is-large">
                                                                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                                                                 </span>
@@ -193,83 +193,123 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div id="modal-confirmar-dar_baja" class="modal">
-                                                                        <div class="modal-background"></div>
-                                                                        <div class="modal-card">
-                                                                            <header class="modal-card-head">
-                                                                                <p class="modal-card-title" style="text-align: center;">
-                                                                                    <strong> Dar de baja materia Extra</strong>
-                                                                                </p>
-                                                                                <button class="delete" aria-label="delete"></button>
-                                                                            </header>
-                                                                            <section class="modal-card-body">
-                                                                                <p class="is-size-5" style="text-align: center;">
-                                                                                    <strong>¡Esta acción no se puede deshacer!</strong>
-                                                                                </p>
-                                                                                <br>
-                                                                                <p class="is-size-5" style="text-align: center;">
-                                                                                    Los datos del grupo a dar de baja son los siguientes:
-                                                                                </p>
-                                                                                <br>
-                                                                                <br>
-                                                                                <div style="text-align: center;">
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Nombre: </strong><%= grupo.Nombre %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Profesor: </strong><%= grupo.Profesor %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Horario: </strong><%= grupo.Horario %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Salón: </strong><%= grupo.Salon %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Fecha de inicio: </strong><%= new Date(grupo.fechaInicio).toLocaleDateString("es-ES") %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Fecha de termino: </strong><%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Créditos: </strong>
-                                                                                        <%= grupo.Creditos.toLocaleString('mx', {
-                                                                                            minimumFractionDigits: 1, maximumFractionDigits: 1
-                                                                                            }) %>
-                                                                                    </p>
-                                                                                    <p class="is-size-5" style="text-align: center;">
-                                                                                        <strong>Costo(MXN): </strong>
-                                                                                        $<%=grupo.Precio_materia.toLocaleString('mx', {
-                                                                                            minimumFractionDigits: 2, maximumFractionDigits: 2
-                                                                                            }) %>
-                                                                                    </p>
-                                                                                </div>
-                                                                            </section>
-                                                                            <footer class="modal-card-foot" style="justify-content: center;">
-                                                                                <div class="field is-grouped">
-                                                                                    <p class="control">
-                                                                                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                                                                                            style="font-size: large; margin: 8px 2px;">
-                                                                                            <span class="icon is-large">
-                                                                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
-                                                                                            </span>
-                                                                                            <span>Regresar</span>
-                                                                                        </button>
-                                                                                    </p>
-                                                                                    <p class="control">
-                                                                                        <button class="button is-rounded is-medium is-responsive"
-                                                                                            onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
-                                                                                            style="font-size: large; margin: 8px 2px; background-color: #000000;">
-                                                                                            <span class="icon is-large">
-                                                                                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
-                                                                                            </span>
-                                                                                            <span>Dar de baja</span>
-                                                                                        </button>
-                                                                                    </p>
-                                                                            </footer>
-                                                                        </div>
-                                                                    </div>
                                                                 </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                
+                                                                <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
+                                                                    <div class="modal-background"></div>
+                                                                    <div class="modal-card">
+                                                                        <header class="modal-card-head">
+                                                                            <p class="modal-card-title" style="text-align: center;">
+                                                                                <strong> Dar de baja materia Extra</strong>
+                                                                            </p>
+                                                                            <button class="delete" aria-label="delete"></button>
+                                                                        </header>
+                                                                        <section class="modal-card-body">
+                                                                            <p class="is-size-5" style="text-align: center;">
+                                                                                <strong>¡Esta acción no se puede deshacer!</strong>
+                                                                            </p>
+                                                                            <br>
+                                                                            <p class="is-size-5" style="text-align: center;">
+                                                                                Los datos del grupo a dar de baja son los siguientes:
+                                                                            </p>
+                                                                            <br>
+                                                                            <br>
+                                                                            <div style="text-align: center;">
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Nombre: </strong><%= grupo.Nombre %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Profesor: </strong><%= grupo.Profesor %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Horario: </strong><%= grupo.Horario %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Salón: </strong><%= grupo.Salon %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Fecha de inicio: </strong><%= new Date(grupo.fechaInicio).toLocaleDateString("es-ES") %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Fecha de termino: </strong><%= new Date(grupo.fechaTermino).toLocaleDateString("es-ES") %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Créditos: </strong>
+                                                                                    <%= grupo.Creditos.toLocaleString('mx', {
+                                                                                        minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                                                        }) %>
+                                                                                </p>
+                                                                                <p class="is-size-5" style="text-align: center;">
+                                                                                    <strong>Costo(MXN): </strong>
+                                                                                    $<%=grupo.Precio_materia.toLocaleString('mx', {
+                                                                                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                                        }) %>
+                                                                                </p>
+                                                                            </div>
+                                                                        </section>
+                                                                        <footer class="modal-card-foot" style="justify-content: center;">
+                                                                            <div class="field is-grouped">
+                                                                                <p class="control">
+                                                                                    <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                                                                        style="font-size: large; margin: 8px 2px;">
+                                                                                        <span class="icon is-large">
+                                                                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                                                        </span>
+                                                                                        <span>Regresar</span>
+                                                                                    </button>                                                                                    </p>
+                                                                                <p class="control">
+                                                                                    <button class="button is-rounded is-medium is-responsive"
+                                                                                        onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
+                                                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                                                                        <span class="icon is-large">
+                                                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                                        </span>
+                                                                                        <span>Dar de baja</span>
+                                                                                    </button>
+                                                                                </p>
+                                                                        </footer>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                             </tr>
                                                         </tbody>
                                                     </table>
