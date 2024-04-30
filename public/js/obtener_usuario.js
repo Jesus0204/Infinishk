@@ -65,7 +65,7 @@ const getAdmins = () => {
                 admin = ui.item.value;
                 registrarAdmin.disabled = false;
             },
-            minLength: 3
+            minLength: 2
         });
     })
     .catch(error => {

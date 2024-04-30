@@ -280,17 +280,6 @@ exports.post_obtener_usuario = async (request, response, next) => {
     try {
         const user = await getUser(matricula);
 
-        if (!user || !user.data || user.data.data === 'User not found') {
-            return response.render('configuracion/obtener_usuario', {
-                error: true,
-                errorMensaje: 'No se encontro un usaurio con esa matricula, por favor intenta con otra',
-                csrfToken: request.csrfToken(),
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-            })
-        }
-
         const usuarios = {
             ivd_id: user.data.ivd_id || '',
             email: user.data.email || '',
@@ -306,14 +295,8 @@ exports.post_obtener_usuario = async (request, response, next) => {
         })
 
     } catch (error) {
-        return response.render('configuracion/obtener_usuario', {
-            error: true,
-            errorMensaje: 'No se encontro un usaurio con esa matricula, por favor intenta con otra',
-            csrfToken: request.csrfToken(),
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-        })
+        console.log(error);
+        response.redirect('/configuracion/consultar_usuario')
     }
 }
 

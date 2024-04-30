@@ -8,7 +8,7 @@
     <div class="container">
         <div class="columns">
             <div class="column is-3"></div>
-            <div class="column is-6" style="text-align: center;">
+            <div class="column is-7">
                 <h3 class="title is-3">Registrar Usuario desde la Base</h3>
             </div>
         </div>
@@ -48,7 +48,7 @@
                          <p class="control has-icons-left">
                              <input type="text" id="matricula" name="matricula"
                                  class="input is-medium" value="<%= usuarios.ivd_id %>" 
-                                 placeholder="Matrícula del Nuevo Administrador">
+                                 placeholder="Matrícula del Nuevo Administrador" readonly>
                              <span class="icon is-small is-left">
                                 <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
                             </span>
@@ -68,7 +68,7 @@
                         <p class="control has-icons-left">
                             <input type="text" id="correo" name="correo"
                                 class="input is-medium" value="<%= usuarios.email %>" 
-                                placeholder="Correo del Nuevo Administrador">
+                                placeholder="Correo del Nuevo Administrador" readonly>
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-at" style="color: #95404c;"></i>
                             </span>
