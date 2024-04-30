@@ -1,4 +1,8 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol }) 
+    %>
 
 <body>
     <div class="container" style="display: flex; justify-content: center;">
@@ -27,8 +31,15 @@
                         </div>
                     </div>
                 </div>
-                <form action="/diplomado/editar_diplomado" method="GET">
-                    <button type="submit" class="button is-rounded is-large is-responsive">Modificar otro Diplomado</button>
+                <form action="/diplomado/consultar_diplomado" method="GET">
+                    <button type="submit" class="button is-rounded is-large is-responsive">
+                        <span>
+                            Regresar a Diplomados
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
                 </form>
             <% } %>
 

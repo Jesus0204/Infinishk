@@ -5,28 +5,7 @@ exports.get_diplomado = (request, response, next) => {
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
-    });
-};
-
-exports.get_opcion_diplomado = (request, response, next) => {
-    response.render('diplomado/editar_diplomado', {
-        editar: false,
-        fetch: true,
-        error: null,
-        csrfToken: request.csrfToken(),
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    });
-};
-
-exports.get_modificar_diplomado = (request, response, next) => {
-    response.render('diplomado/editar_diplomado', {
-        editar: false,
-        fetch: true,
-        error: null,
-        csrfToken: request.csrfToken(),
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
+        username: request.session.username || ''
     });
 };
 
@@ -35,30 +14,7 @@ exports.get_registrar_diplomado = (request, response, next) => {
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
-    });
-};
-
-exports.get_autocomplete = (request, response, next) => {
-    const consulta = request.query.q;
-    // Realiza ambas búsquedas simultáneamente y combina los resultados
-    Promise.all([
-        Diplomado.buscar(consulta), // Búsqueda de diplomados activos
-        Diplomado.buscar_noactivo(consulta), // Búsqueda de diplomados no activos
-        Diplomado.buscar_en_curso(consulta)
-    ]).then(results => {
-        // Combina los resultados de ambas búsquedas
-        let diplomados = [...results[0][0], ...results[1][0], ...results[2][0]];
-
-        // Eliminar duplicados
-        diplomados = diplomados.filter((diplomado, index) => {
-            const firstIndex = diplomados.findIndex(d => d.nombreDiplomado === diplomado.nombreDiplomado);
-            return firstIndex === index; // Mantener solo la primera aparición del nombre
-        });
-
-        response.json(diplomados);
-    }).catch((error) => {
-        console.log(error);
-        response.status(500).json({ error: 'Error en el servidor' });
+        username: request.session.username || ''
     });
 };
 
@@ -83,23 +39,13 @@ exports.post_fetch_diplomado = (request, response, next) => {
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
                 response.render('diplomado/editar_diplomado', {
-                    editar: true,
-                    fetch: false,
                     diplomado: diplomados[0],
                     csrfToken: request.csrfToken(),
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
+                    username: request.session.username || '',
                 });
-            } else {
-                response.render('diplomado/editar_diplomado', {
-                    editar: false,
-                    fetch: true,
-                    error: 'Ese diplomado no existe, por favor ingresa uno valido',
-                    csrfToken: request.csrfToken(),
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                });
-            }
+            } 
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -125,6 +71,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
+                            username: request.session.username || '',
                             csrfToken: request.csrfToken(),
                         });
                     })
@@ -174,6 +121,7 @@ exports.post_modificar_diplomado = (request, response, next) => {
                 csrfToken: request.csrfToken(),
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                username: request.session.username || '',
             });
         })
         .catch((error) => {
@@ -202,6 +150,7 @@ exports.post_registrar_diplomado = (request, response, next) => {
                 csrfToken: request.csrfToken(),
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                username: request.session.username || '',
             });
         })
         .catch((error) => {

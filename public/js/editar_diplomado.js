@@ -34,67 +34,6 @@ $(document).ready(function () {
     }
 });
 
-
-$(function () {
-    var nombresValidos = []; // Aquí debes insertar los nombres de diplomados válidos
-
-    $("#nombre").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: "/diplomado/autocomplete",
-                dataType: "json",
-                data: {
-                    q: request.term
-                },
-                success: function (data) {
-                    nombresValidos = data.map(function (diplomado) {
-                        return diplomado.nombreDiplomado;
-                    });
-                    response(nombresValidos);
-                }
-            });
-        },
-        minLength: 2,
-        select: function (event, ui) {
-            // Restablecer el mensaje de validación
-            $("#mensajeValidacion").text('');
-            // Cambiar el estilo del botón si el nombre es válido
-            var esValido = nombresValidos.includes(ui.item.value);
-            $("#buscarBtn").prop('disabled', !esValido)
-                .css('background-color', esValido ? '#910106' : '#ffcccc') // Color normal: azul, Color cuando es inválido: rojo ligero
-                .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
-        }
-    });
-
-    // Inicializar el botón con el estilo de deshabilitado y color rojo ligero
-    $("#buscarBtn").prop('disabled', true)
-        .css('background-color', '#ffcccc')
-        .addClass('is-light');
-
-    $("#nombre").on("blur", function () {
-        var mensaje = '';
-        if (!this.value.trim()) {
-            mensaje = 'Por favor ingresa un nombre';
-        } else if (!nombresValidos.includes(this.value)) {
-            mensaje = 'Por favor ingresa un nombre válido';
-        }
-        $("#mensajeValidacion").text(mensaje);
-
-        // Validar si el nombre es válido y no está en la lista de nombres válidos
-        var esValido = nombresValidos.includes(this.value);
-        var estaEnLista = nombresValidos.includes(this.value.trim());
-        if (!esValido && estaEnLista) {
-            esValido = true; // Permitir el nombre si está en la lista pero no es válido actualmente
-        }
-
-        $("#buscarBtn").prop('disabled', !esValido)
-            .css('background-color', esValido ? '#910106' : '#ffcccc')
-            .toggleClass('is-light', !esValido); // Agrega o quita la clase 'is-light' según la validez
-    });
-
-
-});
-
 document.getElementById('statusDiplomado').addEventListener('change', function () {
     var hiddenInput = document.getElementById('statusDiplomadoHidden');
     hiddenInput.value = this.checked ? 'on' : 'off';

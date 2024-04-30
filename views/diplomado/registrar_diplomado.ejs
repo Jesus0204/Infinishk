@@ -1,4 +1,8 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol }) 
+%>
 <body>
     <section class="section">
         <div class="container" style="display: flex; justify-content: center;">

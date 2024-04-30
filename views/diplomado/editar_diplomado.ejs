@@ -1,77 +1,79 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol })
+%>
 
-    <body>
-        <section class="section">
-            <div class="container" style="display: flex; justify-content: center;">
-                <% if (fetch) { %>
-                    <p class="title" style="text-align: center;">Buscar Diplomado</p>
-                    <form action="/diplomado/editar_diplomado" method="POST" style="width: 50%; margin-top: 50px;">
-                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                        <label for="nombre" class="label is-large">Nombre del Diplomado:</label>
-                        <input type="text" id="nombre" name="nombre" required class="input is-large">
-                        <br>
-                        <br>
-                        <button type="submit" id="buscarBtn"
-                            class="button is-rounded is-large is-responsive">Buscar</button>
-                        <p id="mensajeValidacion" class="help is-danger"></p>
-                    </form>
-                    <% if (error) { %>
-                        <p class="is-size-4">
-                            <%= error %>
-                        </p>
-                        <% } %>
-                            <% } %>
+<body>
+    <section class="section">
+        <div class="container" style="display: flex; justify-content: center;">
+            <p class="title" style="text-align: center;">Modificar Diplomado</p>
+            <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()"
+                style="width: 50%; margin-top: 50px;">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
+                <label for="Duracion" class="label is-large">Duración:</label>
 
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required
+                            class="input is-large">
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
+                        </span>
+                    </p>
+                </div>
 
-                                <% if (editar) { %>
-                                    <p class="title" style="text-align: center;">Modificar Diplomado</p>
-                                    <form action="/diplomado/resultado_diplomado" method="POST"
-                                        onsubmit="return validateForm()" style="width: 50%; margin-top: 50px;">
-                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                        <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-                                        <label for="Duracion" class="label is-large">Duración:</label>
-                                        <input type="text" id="Duracion" name="Duracion"
-                                            value="<%= diplomado.Duracion %>" required class="input is-large">
+                <label for="precioDiplomado" class="label is-large">Precio:</label>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input type="number" id="precioDiplomado" name="precioDiplomado"
+                            value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any" required
+                            class="input is-large" pattern="^\d+(\.\d+)?$" placeholder="Precio del Diplomado">
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                        </span>
+                    </p>
+                </div>
 
-                                        <label for="precioDiplomado" class="label is-large">Precio:</label>
-                                        <input type="number" id="precioDiplomado" name="precioDiplomado"
-                                            value="<%= diplomado.precioDiplomado %>" step="any" required
-                                            class="input is-large" pattern="^\d+(\.\d+)?$">
+                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>"
+                            required class="input is-large">
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                        </span>
+                    </p>
+                </div>
 
-                                        <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-                                        <input type="text" id="nombreDiplomado" name="nombreDiplomado"
-                                            value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
+                <label for="statusDiplomado" class="label is-large">Estatus:</label>
+                <label class="checkbox">
+                    <% if (diplomado.diplomadoActivo === 0) { %>
+                    <div class="field">
+                        <input id="statusDiplomado" type="checkbox" name="statusDiplomado" class="switch is-rounded">
+                        <label for="statusDiplomado"></label>
+                    </div>
+                    <% } else { %>
+                    <div class="field">
+                        <input id="statusDiplomado" type="checkbox" name="statusDiplomado" class="switch is-rounded"
+                            checked>
+                        <label for="statusDiplomado"></label>
+                    </div>
+                    <% } %>
+                </label>
+                <br>
+                <button type="submit" class="button is-rounded is-large is-responsive">
+                    <span>Registrar Cambios</span>
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>
+                </button>
+                <p id="alerta" class="help is-danger" style="display: none;"></p>
+            </form>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/editar_diplomado.js"></script>
+</body>
 
-                                        <label for="statusDiplomado" class="label is-large">Estatus:</label>
-                                        <label class="checkbox">
-                                            <% if (diplomado.diplomadoActivo===0) { %>
-                                            <div class="field">
-                                                <input id="statusDiplomado" type="checkbox" name="statusDiplomado"
-                                                    class="switch is-rounded">
-                                                <label for="statusDiplomado"></label>
-                                            </div>
-                                            <% } else { %>
-                                            <div class="field">
-                                                <input id="statusDiplomado" type="checkbox" name="statusDiplomado"
-                                                    class="switch is-rounded" checked>
-                                                <label for="statusDiplomado"></label>
-                                            </div>
-                                            <% } %>
-                                        </label>
-                                        <br>
-                                        <button type="submit" class="button is-rounded is-large is-responsive">
-                                           <span>Registrar Cambios</span>
-                                           <span class="icon is-large">
-                                               <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                           </span>
-                                        </button>
-                                        <p id="alerta" class="help is-danger" style="display: none;"></p>
-                                    </form>
-                                    <% } %>
-
-            </div>
-        </section>
-        <script type="text/javascript" src="/js/editar_diplomado.js"></script>
-    </body>
-
-    </html>
+</html>
