@@ -5,7 +5,7 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
     startDate: new Date(twoMonthsAgo.format()),
     endDate: new Date(),
     displayMode: 'dialog',
-    dateFormat: 'yyyy/MM/dd',
+    dateFormat: 'dd/MM/yyyy',
     maxDate: new Date(),
     weekStart: 1,
     lang: 'es',
