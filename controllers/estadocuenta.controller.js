@@ -27,7 +27,8 @@ exports.get_estado_cuenta = async (request, response, next) => {
             pagos: pagos,
             deuda: deuda,
             pagosExtra: cargosExtra,
-            pagadosExtra: pagosExtra
+            pagadosExtra: pagosExtra,
+            rol: request.session.rol || ""
         });
     } catch (error) {
         response.status(500).send("Error en la obtención del estado de cuenta: " + error);
