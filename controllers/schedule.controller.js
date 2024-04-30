@@ -22,6 +22,11 @@ exports.set_recargos = (request, response, next) => {
         console.log('La base ha sido actualizada con los recargos :)');
     })
     .catch((error) => {
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        });
         console.log(error);
     })
 };
@@ -75,6 +80,11 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
         }
     })
     .catch((error) => {
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        });
         console.log(error);
     });
 
@@ -125,6 +135,11 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
         }
     })
     .catch((error) => {
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        });
         console.log(error);
     })
 };
