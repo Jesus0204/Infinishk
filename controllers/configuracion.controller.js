@@ -170,9 +170,10 @@ exports.post_registrar_usuario = async (request, response, next) => {
        const nombre = request.body.nombre;
        const apellidos = request.body.apellidos;
        const referenciaBancaria = request.body.referenciaBancaria;
-       const fechaInscripcion = request.body.fechaInscripcion;
+       const fechaInscripcion = request.body.fechaInscripcion.split("/").reverse().join("-");
+       const fechaModificacion = fechaInscripcion + ' 08:00:00';
 
-       fechaModificacion = moment(fechaInscripcion).tz('America/Mexico_City').format('YYYY/MM/DD');
+       console.log(correo_alumno);
 
        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
        if (usuarioExistente.length > 0) {
