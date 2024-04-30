@@ -27,23 +27,37 @@ exports.get_datos = async (request, response, next) => {
 };
 
 exports.post_dar_baja_grupo = async (request, response, next) => {
-    console.log('Holaaaaaaa')
-    console.log(request.body)
-    response.redirect('/alumnos/datos_alumno')
     const { IDGrupo, matricula} = request.body;
     console.log(IDGrupo)
     console.log(matricula)
-    const modificador = request.session.username;
+    var precioCredito = PrecioCredito.fetchPrecioActual();
+    var precioCredito = precioCredito[0] 
+    console.log(precioCredito.precioPesos)
 
     try {
         // Función Eliminar Grupo
         // Función Modificar fichas de pago
-        // const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        response.status(200).json({success: true});
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
+
+    // response.redirect('/alumnos/datos_alumno');
+}
+
+exports.post_fichas_modify = async (request, response, next) => { 
+    const { descuentoNum, fechaFormat, notaNum, id } = request.body;
+    const modificador = request.session.username;
+
+    try {
+        const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
         response.status(200).json({ success: true, data: data });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
-}
+};
+
 
 exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
@@ -252,16 +266,4 @@ exports.get_fichas = (request, response, next) => {
         rol: request.session.rol || "",
         csrfToken: request.csrfToken()
     });
-};
-
-exports.post_fichas_modify = async (request, response, next) => { 
-    const { descuentoNum, fechaFormat, notaNum, id } = request.body;
-    const modificador = request.session.username;
-
-    try {
-        const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
-        response.status(200).json({ success: true, data: data });
-    } catch (error) {
-        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
-    }
 };

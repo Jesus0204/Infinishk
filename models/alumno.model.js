@@ -32,4 +32,14 @@ module.exports = class Alumno {
         return db.execute(`SELECT Credito FROM Alumno WHERE Matricula = ?`, [matricula])
     }
 
+    static fetchBeca(matricula){
+        return db.execute(`SELECT 
+        CASE 
+        WHEN porcBeca > 0 THEN (1 - (porcBeca / 100)) 
+        ELSE 1 
+        END 
+        FROM estudianteprofesional 
+        WHERE Matricula = ?`, [matricula])
+    }
+
 }
