@@ -52,6 +52,7 @@ exports.post_fetch_diplomado = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -80,6 +81,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
+                            error_alumno: false
                         });
                         console.log(error)
                     });
@@ -89,6 +91,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 });
@@ -98,6 +101,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -129,6 +133,7 @@ exports.post_modificar_diplomado = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -158,6 +163,7 @@ exports.post_registrar_diplomado = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });

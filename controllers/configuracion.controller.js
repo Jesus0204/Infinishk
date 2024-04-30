@@ -49,6 +49,7 @@ exports.get_administrar_planpago = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -70,27 +71,13 @@ exports.post_modificar_planpago = (request, response, next) => {
 }
 
 exports.get_registrar_planpago = (request, response, next) => {
-    PlanPago.fetchAll()
-        .then(([planpagos]) => {
-           response.render('configuracion/registrar_planpago',{
-                planpago: planpagos,
-                csrfToken: request.csrfToken(),
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-                csrfToken: request.csrfToken(),
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-            });
-        })
-        .catch((error) => {
-            response.status(500).render('500', {
-                username: request.session.username || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.rol || "",
-            });
-            console.log(error);
-        });
+    response.render('configuracion/registrar_planpago', {
+         csrfToken: request.csrfToken(),
+         username: request.session.username || '',
+         permisos: request.session.permisos || [],
+         rol: request.session.rol || "",
+         error_alumno: false
+     });
 };
 
 exports.get_consultar_usuario = (request, response, next) => {
@@ -112,6 +99,7 @@ exports.get_consultar_usuario = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 });
@@ -121,6 +109,7 @@ exports.get_consultar_usuario = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -191,6 +180,7 @@ exports.get_precio_credito = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error);
                 });
@@ -200,6 +190,7 @@ exports.get_precio_credito = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -247,6 +238,7 @@ exports.get_registrar_precio_credito = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -281,6 +273,7 @@ exports.post_registrar_planpago = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -296,6 +289,7 @@ exports.post_registrar_precio_credito = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -531,6 +525,12 @@ exports.get_alumnos = async (request, response, next) => {
 
     catch (error) {
         console.error('Error realizando operaciones:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
     }
 };
 
@@ -589,6 +589,12 @@ exports.get_materias = async (request, response, next) => {
 
     catch (error) {
         console.error('Error realizando operaciones:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
     }
 };
 
@@ -656,6 +662,12 @@ exports.get_periodos = async (request, response, next) => {
 
     catch (error) {
         console.error('Error realizando operaciones:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
     }
 };
 

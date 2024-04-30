@@ -80,6 +80,7 @@ exports.post_registrar_pago_extra = (request, response, next) => {
                                 username: request.session.username || '',
                                 permisos: request.session.permisos || [],
                                 rol: request.session.rol || "",
+                                error_alumno: false
                             });
                             console.log(error)
                         })
@@ -89,6 +90,7 @@ exports.post_registrar_pago_extra = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 })
@@ -98,6 +100,7 @@ exports.post_registrar_pago_extra = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -133,6 +136,7 @@ exports.get_pago_extra = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 })
@@ -142,6 +146,7 @@ exports.get_pago_extra = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         })
@@ -157,6 +162,7 @@ exports.post_pago_extra_modify = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         })
@@ -205,6 +211,7 @@ exports.get_solicitudes = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 });
@@ -214,6 +221,7 @@ exports.get_solicitudes = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -242,6 +250,7 @@ exports.post_solicitudes_modify = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         })
@@ -280,6 +289,7 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error);
                 });
@@ -289,6 +299,7 @@ exports.post_fetch_registrar_solicitud = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
@@ -306,6 +317,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -330,6 +342,7 @@ exports.get_ingresos = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
         console.log(error);
     }
@@ -366,6 +379,7 @@ exports.post_ingresos = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
         console.log(error);
     }
@@ -390,6 +404,7 @@ exports.get_metodo_pago = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
         console.log(error);
     }
@@ -428,6 +443,7 @@ exports.post_metodo_pago = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
         console.log(error);
     }
@@ -560,6 +576,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error)
                 });
@@ -569,6 +586,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -596,6 +614,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                             username: request.session.username || '',
                             permisos: request.session.permisos || [],
                             rol: request.session.rol || "",
+                            error_alumno: false
                         });
                         console.log(error);
                     })
@@ -619,6 +638,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                                         username: request.session.username || '',
                                         permisos: request.session.permisos || [],
                                         rol: request.session.rol || "",
+                                        error_alumno: false
                                     });
                                     console.log(error);
                                 })
@@ -636,6 +656,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                                 username: request.session.username || '',
                                 permisos: request.session.permisos || [],
                                 rol: request.session.rol || "",
+                                error_alumno: false
                             });
                             console.log(error);
                         })
@@ -647,6 +668,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -672,6 +694,7 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         });
@@ -722,6 +745,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error);
         })
