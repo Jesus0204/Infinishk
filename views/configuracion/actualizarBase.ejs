@@ -7,18 +7,36 @@
             <div class="container">
                 <h3 id="title" class="title"> Actualizar Base de Datos</h3>
                 <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
-                        Alumnos</button>
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
+                        <span>
+                            Obtener Alumnos
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
                 <form action="/configuracion/actualizarMaterias" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
-                        Materias</button>
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
+                        <span>
+                            Obtener Materias
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
                 <form action="/configuracion/actualizarPeriodos" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">Obtener
-                        Periodos</button>
+                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
+                        <span>
+                            Obtener Periodos
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
                 <style>

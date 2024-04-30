@@ -17,9 +17,17 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
 const path = require('path');
 
 const fs = require('fs');
+
+// Usar la clave secreta en tu código
+const secretKey = config.jwtSecret;
+
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -34,7 +42,7 @@ exports.get_administrar_planpago = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
-            });
+           });
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -54,9 +62,7 @@ exports.post_modificar_planpago = (request, response, next) => {
     PlanPago.update(nombre, activo, IDPlanPago)
         .then(([planespago, fieldData]) => {
             // Aquí puedes enviar una respuesta JSON indicando éxito
-            response.json({
-                success: true
-            });
+            response.json({ success: true });
         })
         .catch((error) => {
             console.log(error);
@@ -66,7 +72,7 @@ exports.post_modificar_planpago = (request, response, next) => {
 exports.get_registrar_planpago = (request, response, next) => {
     PlanPago.fetchAll()
         .then(([planpagos]) => {
-            response.render('configuracion/registrar_planpago', {
+           response.render('configuracion/registrar_planpago',{
                 planpago: planpagos,
                 csrfToken: request.csrfToken(),
                 username: request.session.username || '',
@@ -252,13 +258,9 @@ exports.get_check_plan = (request, response, next) => {
     PlanPago.fetchOne(num)
         .then(([planpagos]) => {
             if (planpagos.length > 0) {
-                response.json({
-                    exists: true
-                });
+                response.json({ exists: true });
             } else {
-                response.json({
-                    exists: false
-                });
+                response.json({ exists: false });
             }
         })
         .catch((error) => {
@@ -448,4 +450,286 @@ exports.post_exportar_datos = async (request, response, next) => {
 
     response.attachment(nombreArchivo);
     response.send(csvContent);
+}
+
+exports.get_actualizar_base = (request, response, next) => {
+    response.render('configuracion/actualizarBase', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
+};
+
+
+exports.get_alumnos = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const users = await getAllUsers();
+
+        const parsedUsers = users.data.map(user => {
+            const {
+                ivd_id = '',
+                name,
+                first_surname,
+                second_surname,
+                email ='',
+                status,
+                semester,
+                degree_name,
+            } = user;
+
+            const apellidos = ` ${first_surname} ${second_surname}`;
+            return {
+                ivd_id: ivd_id,
+                name: name,
+                apellidos: apellidos,
+                email: email,
+                status: status,
+                semester: semester,
+                planEstudio: degree_name,
+            };
+        });
+
+        const filteredUsers = parsedUsers.filter(user => (
+            (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
+            user.status === 'active'
+        ));
+
+        // Realiza la comparación para cada usuario
+        const updatedUsers = [];
+        for (const user of filteredUsers) {
+            const usuarioExistente = await Alumno.fetchOne(user.ivd_id);
+            if (usuarioExistente && usuarioExistente.length > 0 && usuarioExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Alumno.updateAlumno(user.ivd_id, user.name, user.apellidos);
+                if (!isNaN(user.ivd_id)) {
+                    await Usuario.updateUsuario(user.ivd_id, user.email);
+                } else {
+                    console.log(`IDUsuario inválido`);
+                }
+                
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
+                updatedUsers.push({ ...user, updated: true });
+            } else {
+                updatedUsers.push({ ...user, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const usuariosSinActualizar = updatedUsers.filter(user => !user.updated);
+
+        response.render('configuracion/actualizarAlumnos', {
+            usuarios: usuariosSinActualizar, // Utiliza la lista de usuarios actualizados
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+
+exports.get_materias = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const courses = await getAllCourses();
+
+        const parsedCourses = courses.data.map(course => {
+
+            const {
+                id,
+                name,
+                credits,
+                sep_id,
+            } = course;
+
+            const semestre = course.plans_courses?.[0]?.semester;
+            const carrera = course.plans?.[0]?.degree?.name;
+            return {
+                id: id,
+                name: name,
+                credits: credits,
+                sep_id: sep_id,
+                semestre: semestre,
+                carrera: carrera,
+            };
+        });
+
+        const updatedCourses = [];
+        for (const course of parsedCourses) {
+            const courseExistente = await Materia.fetchOne(course.id)
+            if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Materia.updateMateria(course.sep_id,course.name,course.carrera,course.semestre,course.credits,course.id)
+                updatedCourses.push({ ...course, updated: true });
+            } else {
+                updatedCourses.push({ ...course, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const coursesSinActualizar = updatedCourses.filter(course => !course.updated);
+
+        response.render('configuracion/actualizarMaterias', {
+            materias: coursesSinActualizar,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+exports.get_periodos = async (request, response, next) => {
+
+    try {
+        // Llama a las funciones necesarias para obtener datos
+        const periods = await getAllPeriods();
+
+        const parsedPeriods = periods.data.map(period => {
+
+            const {
+                id,
+                code,
+                start_date,
+                end_date,
+                active,
+            } = period;
+
+            const startDate = new Date(start_date);
+            const endDate = new Date(end_date);
+            const status = active ? 1 : 0;
+
+            const yearStart = startDate.getFullYear();
+            const monthStart = startDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayStart = startDate.getDate();
+
+            const yearEnd = endDate.getFullYear();
+            const monthEnd = endDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
+            const dayEnd = endDate.getDate();
+
+            return {
+                id: id,
+                name: code,
+                start: `${yearStart}-${monthStart}-${dayStart}`,
+                end: `${yearEnd}-${monthEnd}-${dayEnd}`,
+                status: status,
+            };
+        });
+
+        const updatedPeriods = [];
+        for (const period of parsedPeriods) {
+            const periodoExistente = await Periodo.fetchOne(period.id);
+            if (periodoExistente && periodoExistente.length > 0 && periodoExistente[0].length > 0) {
+                // Si la comparación devuelve resultados, actualiza el usuario
+                await Periodo.updatePeriodo(period.id,period.start,period.end,period.name,period.status)
+                updatedPeriods.push({ ...period, updated: true });
+            } else {
+                updatedPeriods.push({ ...period, updated: false });
+            }
+        }
+
+        // Filtra los usuarios que no fueron actualizados
+        const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
+
+        response.render('configuracion/actualizarPeriodos', {
+            periodos: periodosSinActualizar,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+    }
+
+    catch (error) {
+        console.error('Error realizando operaciones:', error);
+    }
+};
+
+
+
+exports.post_alumnos = async (request,response,next) => {
+    let success = true;
+    const matricula = request.body.matricula;
+    const nombre = request.body.nombre;
+    const apellidos = request.body.apellidos;
+    const email = request.body.email;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.planEstudio;
+    const referencia = request.body.referenciaBancaria;
+    const beca = request.body.beca;
+
+    const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        
+        // Enlace con el token incluido
+    const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+
+    await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca)
+    await Usuario.saveUsuario(matricula,email);
+    await Posee.savePosee(matricula,3);
+
+    const msg = {
+        to: email,
+        from: {
+            name: 'VIA PAGO',
+            email: '27miguelb11@gmail.com',
+        },
+        subject: 'Bienvenido a VIA Pago',
+        html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log('Correo electrónico enviado correctamente');
+    } 
+    catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
+
+    response.json({success:success})
+    
+}
+
+exports.post_materias = async (request,response,next) => {
+    let success = true;
+    const idMateria= request.body.id;
+    const idSep = request.body.idsep;
+    const nombre = request.body.nombre;
+    const creditos = request.body.creditos;
+    const semestre = request.body.semestre;
+    const planEstudio = request.body.carrera;
+
+    await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
+    
+
+    response.json({success:success})
+    
+}
+
+exports.post_periodos = async (request,response,next) => {
+    let success = true;
+    const idPeriodo= request.body.id;
+    const nombre = request.body.nombre;
+    const inicio = request.body.inicio;
+    const fin = request.body.fin;
+    const status = request.body.status;
+
+    await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+    
+    response.json({success:success})
+    
 }

@@ -39,4 +39,15 @@ router.get('/check_planpago/:num', configuracionController.get_check_plan);
 router.get('/exportarDatos',isAuth,can_exportar_Datos,configuracionController.get_exportar_datos);
 router.post('/exportarDatos',isAuth,can_exportar_Datos,configuracionController.post_exportar_datos);
 
+router.get('/actualizarBase',isAuth,can_ActualizarBase,configuracionController.get_actualizar_base);
+
+router.get('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionController.get_alumnos);
+router.post('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionController.post_alumnos);
+
+router.get('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.get_materias);
+router.post('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.post_materias);
+
+router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.get_periodos);
+router.post('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.post_periodos);
+
 module.exports = router;

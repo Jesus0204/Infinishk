@@ -1,7 +1,7 @@
 const db = require('../util/database');
 const bcrypt = require('bcryptjs');
 
-module.exports = class Usuario{
+module.exports = class Usuario {
     // Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(mi_IDUsuario, mi_password) {
         this.IDUsuario = mi_IDUsuario;
@@ -17,7 +17,7 @@ module.exports = class Usuario{
             .then((password_cifrado) => {
                 return db.execute(
                     'UPDATE Usuario SET `Contraseña`=?,`usuarioActivo`=1 WHERE IDUsuario=?',
-                    [password_cifrado,this.IDUsuario]
+                    [password_cifrado, this.IDUsuario]
                 );
             })
             .catch((error) => {
@@ -76,9 +76,9 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 0');
     }
 
-    static update(IDUsuario,estado){
+    static update(IDUsuario, estado) {
         return db.execute('UPDATE Usuario SET UsuarioActivo = ? WHERE IDUsuario = ?',
-        [estado,IDUsuario])
+            [estado, IDUsuario])
     }
 
     static buscarActivos(consulta) {
@@ -95,21 +95,23 @@ module.exports = class Usuario{
         );
     }
 
-    static updateUsuario(id,correo){
-        return db.execute('UPDATE Usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?',[id,correo,id])
+    static updateUsuario(id, correo) {
+        return db.execute('UPDATE Usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?', [id, correo, id])
     }
 
-    static saveUsuario(id,correo){
-        return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo])
+    static saveUsuario(id, correo) {
+        return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)', [id, correo])
     }
 
-    static fetchUser(correo){
-        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?',[correo]);
+    static fetchUser(correo) {
+        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?', [correo]);
     }
 
-    static updateToken(token,id){
-        return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?',[token,id])
+    static updateToken(token, id) {
+        return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?', [token, id])
     }
 
-    
+    static fetchCorreo(matricula) {
+        return db.execute('SELECT correoElectronico FROM usuario WHERE IDUsuario = ?', [matricula]);
+    }
 }
