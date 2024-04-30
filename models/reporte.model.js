@@ -25,45 +25,45 @@ module.exports = class Reporte {
     static async fetchMetodosPagoPeriodo(fechaInicio, fechaFin){
         const [rows] = await db.execute(`
             SELECT ((SELECT COUNT(DISTINCT IDPago) AS Colegiatura
-            FROM pago 
+            FROM Pago 
             WHERE metodoPago = 'Tarjeta'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT Matricula, IDDiplomado) AS TotalPagos
-            FROM pagadiplomado 
+            FROM pagaDiplomado 
             WHERE metodoPago = 'Tarjeta'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT IDLiquida) AS TotalPagos
-            FROM liquida 
+            FROM Liquida 
             WHERE metodoPago = 'Tarjeta'
             AND Pagado = 1
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras
             ))) AS TotalGeneralTarjeta,
 
             (SELECT ((SELECT COUNT(DISTINCT IDPago) AS Colegiatura
-            FROM pago 
+            FROM Pago 
             WHERE metodoPago = 'Efectivo'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT Matricula, IDDiplomado) AS TotalPagos
-            FROM pagadiplomado 
+            FROM pagaDiplomado 
             WHERE metodoPago = 'Efectivo'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT IDLiquida) AS TotalPagos
-            FROM liquida 
+            FROM Liquida 
             WHERE metodoPago = 'Efectivo'
             AND Pagado = 1
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras
             ))) AS TotalGeneralEfectivo,
 
             (SELECT ((SELECT COUNT(DISTINCT IDPago) AS Colegiatura
-            FROM pago 
+            FROM Pago 
             WHERE metodoPago = 'Transferencia'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT Matricula, IDDiplomado) AS TotalPagos
-            FROM pagadiplomado 
+            FROM pagaDiplomado 
             WHERE metodoPago = 'Transferencia'
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras)+
             (SELECT COUNT(DISTINCT IDLiquida) AS TotalPagos
-            FROM liquida 
+            FROM Liquida 
             WHERE metodoPago = 'Transferencia'
             AND Pagado = 1
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras
@@ -77,7 +77,7 @@ module.exports = class Reporte {
 
     static async fetchIngresosColegiatura(fechaInicio,fechaFin){
         const [rows] = await db.execute(`SELECT ROUND(SUM(pago.montoPagado),2) AS totalColegiatura
-        FROM pago
+        FROM Pago
         WHERE fechaPago >= ? AND fechaPago <= ?`,[fechaInicio,fechaFin]);
         const montoColegiatura = rows[0].montoColegiatura;
         return montoColegiatura;
@@ -86,10 +86,10 @@ module.exports = class Reporte {
     static async fetchIngresosPeriodo(fechaInicio, fechaFin) {
         const [rows] = await db.execute(`
             SELECT
-                (SELECT ROUND(SUM(montoPagado),2) FROM pago WHERE fechaPago >= ? AND fechaPago <= ?) AS montoColegiatura,
-                (SELECT ROUND(SUM(montoPagado),2) FROM pagadiplomado WHERE fechaPago >= ? AND fechaPago <= ?) AS montoDiplomado,
+                (SELECT ROUND(SUM(montoPagado),2) FROM Pago WHERE fechaPago >= ? AND fechaPago <= ?) AS montoColegiatura,
+                (SELECT ROUND(SUM(montoPagado),2) FROM pagaDiplomado WHERE fechaPago >= ? AND fechaPago <= ?) AS montoDiplomado,
                 (SELECT ROUND(SUM(pagosextras.montoPagar),2)
-                 FROM liquida
+                 FROM Liquida
                  JOIN pagosextras ON liquida.IDPagosExtras = pagosextras.IDPagosExtras
                  WHERE liquida.Pagado = 1
                  AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras;`, 

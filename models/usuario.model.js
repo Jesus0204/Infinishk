@@ -111,7 +111,7 @@ module.exports = class Usuario {
         return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?', [token, id])
     }
 
-    static fetchCorreo(matricula) {
-        return db.execute('SELECT correoElectronico FROM usuario WHERE IDUsuario = ?', [matricula]);
+    static fetchCorreo(matricula){
+        return db.execute('SELECT correoElectronico FROM Usuario WHERE IDUsuario = ?',[matricula]);
     }
 }

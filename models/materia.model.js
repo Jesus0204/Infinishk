@@ -25,7 +25,7 @@ module.exports = class Materia {
     }
 
     static fetchID(idexterna) {
-        return db.execute(`SELECT IDMateria FROM materia WHERE IDMateriaExterna = ?`, [idexterna]);
+        return db.execute(`SELECT IDMateria FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
     }
 
 }

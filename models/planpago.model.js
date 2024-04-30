@@ -28,6 +28,6 @@ module.exports = class PlanPago{
     }
 
     static fetchAllActivePlans(){
-        return db.execute('SELECT nombrePlan, IDPlanPago FROM Planpago WHERE planPagoActivo = 1');
+        return db.execute('SELECT nombrePlan, IDPlanPago FROM planPago WHERE planPagoActivo = 1');
     }
 }
