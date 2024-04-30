@@ -28,6 +28,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             deuda: deuda,
             pagosExtra: cargosExtra,
             pagadosExtra: pagosExtra,
+            matricula: matricula,
             rol: request.session.rol || ""
         });
     } catch (error) {

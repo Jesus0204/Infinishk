@@ -4,9 +4,11 @@ function deuda() {
     const tab_pagos = document.querySelector('#nav_pagos');
     const tab_extras = document.querySelector('#nav_extras');
 
+    if (tab_deuda){
+        tab_deuda.classList.add('is-active');
+    }
     tab_pagos.classList.remove('is-active');
     tab_extras.classList.remove('is-active');
-    tab_deuda.classList.add('is-active');
 
     // Quitar la tabla de pagos
     const tabla_pagos = document.querySelector('#pagos');
@@ -18,7 +20,10 @@ function deuda() {
 
     // Poner la tabla de deuda
     const tabla_deuda = document.querySelector('#deuda');
-    tabla_deuda.classList.remove('is-hidden');
+
+    if (tabla_deuda){
+        tabla_deuda.classList.remove('is-hidden');
+    }
 }
 
 function pagos() {
@@ -27,13 +32,18 @@ function pagos() {
     const tab_pagos = document.querySelector('#nav_pagos');
     const tab_extras = document.querySelector('#nav_extras');
 
-    tab_deuda.classList.remove('is-active');
+    if (tab_deuda){
+        tab_deuda.classList.remove('is-active');
+    }
     tab_extras.classList.remove('is-active');
     tab_pagos.classList.add('is-active');
 
     // Quitar la tabla con deudas
     const tabla_deuda = document.querySelector('#deuda');
-    tabla_deuda.classList.add('is-hidden');
+
+    if (tabla_deuda){
+        tabla_deuda.classList.add('is-hidden');
+    }
 
     // Quitar la tabla de extras
     const tabla_extras = document.querySelector('#extras');
@@ -50,7 +60,9 @@ function extras() {
     const tab_pagos = document.querySelector('#nav_pagos');
     const tab_extras = document.querySelector('#nav_extras');
 
-    tab_deuda.classList.remove('is-active');
+    if (tab_deuda){
+        tab_deuda.classList.remove('is-active');
+    }
     tab_pagos.classList.remove('is-active');
     tab_extras.classList.add('is-active');
 
@@ -60,7 +72,10 @@ function extras() {
 
     // Quitar la tabla de deudas
     const tabla_deuda = document.querySelector('#deuda');
-    tabla_deuda.classList.add('is-hidden');
+
+    if (tabla_deuda){
+        tabla_deuda.classList.add('is-hidden');
+    }
 
     // Poner la tabla de extras
     const tabla_extras = document.querySelector('#extras');
