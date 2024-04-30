@@ -53,6 +53,12 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td style="color: #ffffff">
+                                    $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </td>
                                 <td>
                                     $<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toLocaleString('mx', {
                                         minimumFractionDigits: 2,
@@ -61,12 +67,6 @@
                                 </td>
                                 <td>
                                     $<%= deuda[0].montoPagado.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %>
-                                </td>
-                                <td style="color: #ffffff">
-                                    $<%= deuda[0].montoAPagar.toLocaleString('mx', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
@@ -96,9 +96,23 @@
                                 Diplomado:
                             </strong>
                         </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Nombre
+                            </th>
+                            <th style="color: #ffffff">
+                                Total
+                            </th>
+                        </thead>
                         <tbody>
                             <td>
                                 <%= diplomado[0].nombreDiplomado %>
+                            </td>
+                            <td>
+                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                             </td>
                         </tbody>
                     </table>
@@ -270,7 +284,8 @@
                                             </span>
                                             <% } else { %>
                                             <input name="monto" class="input is-medium" type="number" step="any"
-                                                id="monto_col" placeholder="Monto pagado">
+                                                id="monto_col" placeholder="Monto pagado"
+                                                value="<%= diplomado[0].precioDiplomado.toFixed(2) %>">
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                             </span>
