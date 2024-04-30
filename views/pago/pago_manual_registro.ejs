@@ -45,29 +45,52 @@
                                 Fecha Límite
                             </th>
                             <th style="color: #ffffff">
-                                Monto a Pagar
+                                Mensualidad
+                            </th>
+                        </thead>
+                        <tbody>
+                            <td style="color: #ffffff">
+                                <%= deuda[0].fechaLimitePago %>
+                            </td>
+                            <td style="color: #ffffff">
+                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
+                            </td>
+                        </tbody>
+                    </table>
+                    <table class="table is-bordered Pago-de-Colegiatura"
+                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Saldo:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Pendiente
                             </th>
                             <th style="color: #ffffff">
                                 Monto Pagado
                             </th>
-                        <tbody>
-                            <td>
-                                <%= deuda[0].fechaLimitePago %>
-                            </td>
-                            <td>
-                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
-                            </td>
-                            <td>
-                                $<%= deuda[0].montoPagado.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
-                            </td>
-                        </tbody>
                         </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    $<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                    }) %>
+                                </td>
+                                <td>
+                                    $<%= deuda[0].montoPagado.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                     }) %>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     <% } %>
                     <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
@@ -246,7 +269,7 @@
                                             <% if (pago_col == true) { %>
                                             <input name="monto" class="input is-medium" type="number" step="any"
                                                 id="monto_col" placeholder="Monto pagado"
-                                                value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
+                                                value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toFixed(2) %>">
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                             </span>
