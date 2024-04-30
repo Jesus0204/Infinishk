@@ -46,7 +46,7 @@
                 <table class="table is-bordered is-hoverable is-fullwidth">
                     <tbody>
                     <% for (let count = 0; count < schedule[0].length; count = count + 2) { %>
-                    <% if (count + 1 == schedule.length) { %>
+                    <% if (count + 1 == schedule[0].length) { %>
                         <tr>
                             <td>
                                 <div class="column">
@@ -243,8 +243,8 @@
                 </tbody>
             </table>
             <% } %>
-            <h3 class="title is-4" style="text-align: center;">Costo total(MXN): $
-                <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+            <h3 class="title is-4" style="text-align: center;">
+                Costo total(MXN): $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                                 maximumFractionDigits: 2 }) %>
             </h3>
             <br>
