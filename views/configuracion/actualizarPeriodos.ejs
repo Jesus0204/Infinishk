@@ -1,133 +1,141 @@
 <%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
 
-    <style>
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 8%;
-            max-width: 50%;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 8%;
+        max-width: 50%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-        table {
-            width: 100%;
-        }
+    table {
+        width: 100%;
+    }
 
-        td {
-            border: 5px solid rgb(255, 255, 255);
-            /* Líneas más oscuras para la tabla */
-            padding: 10px;
-            font-size: 19px;
-            color: white;
-        }
+    td {
+        border: 5px solid rgb(255, 255, 255);
+        /* Líneas más oscuras para la tabla */
+        padding: 10px;
+        font-size: 19px;
+        color: white;
+    }
 
-        th {
-            border: 5px solid rgb(255, 255, 255);
-            padding: 10px;
-            font-size: 19px;
-            background-color: rgb(0, 0, 0);
-            color: white;
-        }
+    th {
+        border: 5px solid rgb(255, 255, 255);
+        padding: 10px;
+        font-size: 19px;
+        background-color: rgb(0, 0, 0);
+        color: white;
+    }
 
-        thead {
-            background-color: black;
-            font-style: italic;
-        }
+    thead {
+        background-color: black;
+        font-style: italic;
+    }
 
-        .form-enviar-datos select {
-            margin-left: 50%;
-            margin-right: 50%;
-            margin-top: 0px;
-            margin-bottom: 0px;
-        }
-    </style>
+    .form-enviar-datos select {
+        margin-left: 50%;
+        margin-right: 50%;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+</style>
 
-    <body>
-        <!-- Verifica si hay periodos para mostrar -->
-        <% if (periodos.length> 0) { %>
-            <section class="section">
-                <div class="table-container">
-                    <h3 class="title is-3">Revisión de datos de Periodos</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="has-text-white">ID</th>
-                                <th class="has-text-white">Nombre</th>
-                                <th class="has-text-white">Inicio</th>
-                                <th class="has-text-white">Fin</th>
-                                <th class="has-text-white">Estado</th>
-                                <th class="has-text-white">Registrar</th>
-                            </tr>
-                        </thead>
+<body>
+    <!-- Verifica si hay periodos para mostrar -->
+    <section class="section">
+    <% if (periodos.length> 0) { %>
+        <div class="table-container">
+            <h3 class="title is-3">Revisión de datos de Periodos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="has-text-white">ID</th>
+                        <th class="has-text-white">Nombre</th>
+                        <th class="has-text-white">Inicio</th>
+                        <th class="has-text-white">Fin</th>
+                        <th class="has-text-white">Estado</th>
+                        <th class="has-text-white">Registrar</th>
+                    </tr>
+                </thead>
 
-                        <tbody>
-                            <% periodos.forEach((periodo, index)=> { %>
-                                <tr id="fila<%= index %>">
+                <tbody>
+                    <% periodos.forEach((periodo, index)=> { %>
+                    <tr id="fila<%= index %>">
 
-                                    <td class="has-text-black">
-                                        <%= periodo.id %>
-                                    </td>
+                        <td class="has-text-black">
+                            <%= periodo.id %>
+                        </td>
 
-                                    <td class="has-text-black">
-                                        <%= periodo.name %>
-                                    </td>
+                        <td class="has-text-black">
+                            <%= periodo.name %>
+                        </td>
 
-                                    <td class="has-text-black">
-                                        <%= periodo.start %>
-                                    </td>
+                        <td class="has-text-black">
+                            <%= periodo.start %>
+                        </td>
 
-                                    <td class="has-text-black">
-                                        <%= periodo.end %>
-                                    </td>
+                        <td class="has-text-black">
+                            <%= periodo.end %>
+                        </td>
 
-                                    <td class="has-text-black">
-                                        <%= periodo.status %>
-                                        <form action="/configuracion/actualizarPeriodos" method="POST"
-                                            id="form<%= index %>" class="form-enviar-datos">
-                                    </td>
+                        <td class="has-text-black">
+                            <%= periodo.status %>
+                            <form action="/configuracion/actualizarPeriodos" method="POST" id="form<%= index %>"
+                                class="form-enviar-datos">
+                        </td>
 
-                                    <td style="width:auto">
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" name="id" value="<%= periodo.id %>">
-                                            <input type="hidden" name="nombre" value="<%= periodo.name %>">
-                                            <input type="hidden" name="inicio" value="<%= periodo.start %>">
-                                            <input type="hidden" name="fin" value="<%= periodo.end %>">
-                                            <input type="hidden" name="status" value="<%= periodo.status %>">
-                                            <button type="submit"
-                                                class="button my-button is-medium is-rounded is-responsive">
-                                                Registrar Periodo
-                                                <span class="icon is-large" style="margin-left: 0.4em;">
-                                                    <i class="fa-solid fa-circle-chevron-right"
-                                                        style="color: #ffffff;"></i>
-                                                </span>
-                                            </button>
-                                    </td>
+                        <td style="width:auto">
+                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" name="id" value="<%= periodo.id %>">
+                            <input type="hidden" name="nombre" value="<%= periodo.name %>">
+                            <input type="hidden" name="inicio" value="<%= periodo.start %>">
+                            <input type="hidden" name="fin" value="<%= periodo.end %>">
+                            <input type="hidden" name="status" value="<%= periodo.status %>">
+                            <button type="submit" class="button my-button is-medium is-rounded is-responsive">
+                                Registrar Periodo
+                                <span class="icon is-large" style="margin-left: 0.4em;">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </td>
 
-                                    </form>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                    <br>
-                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
-                        <a class="pagination-next" id="next-button-2">Siguiente</a>
-                        <ul class="pagination-list" id="pagination-list-2">
-                            <div id="pagination-numbers-2">
+                        </form>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <br>
+            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                <a class="pagination-next" id="next-button-2">Siguiente</a>
+                <ul class="pagination-list" id="pagination-list-2">
+                    <div id="pagination-numbers-2">
 
-                            </div>
-                        </ul>
-                    </nav>
-            </section>
-            <% } else { %>
-                <p>No hay periodos para mostrar.</p>
-                <% } %>
                     </div>
-                    <script type="text/javascript" src="/js/pagination_datos.js"></script>
-                    <script type="text/javascript" src="/js/actualizarPeriodos.js"></script> 
-    </body>
+                </ul>
+            </nav>
+            <% } else { %>
+                <h3 class="title is-3">Revisión de datos de Periodos</h3>
+                <br>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-8">
+                        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                           Actualmente todos los periodos del sistema administrativo están registrados en el sistema.por
+                           lo que no hay periodos nuevos que registrar.
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/pagination_datos.js"></script>
+    <script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
+</body>
 
-    </html>
+</html>

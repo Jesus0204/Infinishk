@@ -17,15 +17,15 @@ module.exports = class Periodo {
     }
 
     static updatePeriodo(id,inicio,fin,nombre,status) {
-        return db.execute('UPDATE periodo SET IDPeriodo=?, fechaInicio=?, fechaFin=?, Nombre=?, periodoActivo=?  WHERE IDPeriodo=?', [id,inicio,fin,nombre,status,id])
+        return db.execute('UPDATE periodo SET IDPeriodo=?, fechaInicio=?, fechaFin=?, Nombre=?, periodoActivo=?  WHERE IDPeriodo=?', [id.toString(), inicio, fin, nombre, status, id.toString()])
     }
 
     static savePeriodo(id,inicio,fin,nombre,status){
         return db.execute('INSERT INTO `periodo`(`IDPeriodo`, `fechaInicio`, `fechaFin`, `Nombre`, `periodoActivo`) VALUES (?,?,?,?,?)',[id,inicio,fin,nombre,status])
     }
 
-    static fetchActivo(){
-        return db.execute('SELECT IDPeriodo where periodoActivo = 1');
+    static fetchActivo() {
+        return db.execute(`SELECT IDPeriodo From Periodo WHERE periodoActivo = 1`);
     }
 
 }

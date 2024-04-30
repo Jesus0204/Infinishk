@@ -17,6 +17,8 @@ module.exports = class estudianteProfesional {
         return db.execute('INSERT INTO `estudianteprofesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
     }
 
-
-
+    static fetchBeca(matricula){
+        return db.execute('SELECT porcBeca FROM estudianteprofesional WHERE Matricula = ?',[matricula])
+    }
+    
 }

@@ -73,8 +73,8 @@
 <body>
     <!-- Verifica si hay usuarios para mostrar -->
     <p class="is-hidden" id="usuarios_length"><%= usuarios.length %></p>
-    <% if (usuarios.length > 0) { %>
     <section class="section">
+    <% if (usuarios.length > 0) { %>
         <div class="table-container">
             <h3 class="title is-3">Revisión de datos de Alumnos</h3>
             <table>
@@ -201,7 +201,17 @@
             </nav>
     </section>
     <% } else { %>
-    <p>No hay usuarios para mostrar.</p>
+        <h3 class="title is-3">Revisión de datos de Alumnos</h3>
+        <br>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Actualmente todos las alumnos del sistema administrativo están registrados en el sistema, por lo
+                    que no hay alumnos nuevos que registrar.
+                </div>
+            </div>
+        </div>
     <% } %>
     </div>
     <script type="text/javascript" src="/js/pagination_datos.js"></script>
