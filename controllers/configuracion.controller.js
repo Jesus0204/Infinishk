@@ -504,7 +504,7 @@ exports.get_alumnos = async (request, response, next) => {
                     console.log(`IDUsuario inválido`);
                 }
                 
-                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester, user.planEstudio)
+                await EstudianteProfesional.update_alumno_profesional(user.ivd_id, user.semester)
                 updatedUsers.push({ ...user, updated: true });
             } else {
                 updatedUsers.push({ ...user, updated: false });
@@ -568,7 +568,7 @@ exports.get_materias = async (request, response, next) => {
             const courseExistente = await Materia.fetchOne(course.id)
             if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
                 // Si la comparación devuelve resultados, actualiza el usuario
-                await Materia.updateMateria(course.sep_id,course.name,course.carrera,course.semestre,course.credits,course.id)
+                await Materia.updateMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id)
                 updatedCourses.push({ ...course, updated: true });
             } else {
                 updatedCourses.push({ ...course, updated: false });
@@ -690,7 +690,7 @@ exports.post_alumnos = async (request,response,next) => {
     const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
 
     await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
-    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca)
+    await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
     await Usuario.saveUsuario(matricula,email);
     await Posee.savePosee(matricula,3);
 
@@ -712,36 +712,56 @@ exports.post_alumnos = async (request,response,next) => {
         console.error('Error al enviar el correo electrónico:', error.toString());
     }
 
-    response.json({success:success})
+    response.json({
+        success: success
+    });
     
 }
 
 exports.post_materias = async (request,response,next) => {
-    let success = true;
-    const idMateria= request.body.id;
-    const idSep = request.body.idsep;
-    const nombre = request.body.nombre;
-    const creditos = request.body.creditos;
-    const semestre = request.body.semestre;
-    const planEstudio = request.body.carrera;
-
-    await Materia.saveMateria(idSep,nombre,planEstudio,semestre,creditos,idMateria)
+    try {
+        let success = true;
+        const idMateria= request.body.id;
+        const idSep = request.body.idsep;
+        const nombre = request.body.nombre;
+        const creditos = request.body.creditos;
+        const semestre = request.body.semestre;
+        const planEstudio = request.body.carrera;
     
-
-    response.json({success:success})
+        await Materia.saveMateria(idMateria, nombre, planEstudio, semestre, creditos, idSep);
+    
+        response.json({
+            success: success
+        });
+    } catch (error) {
+        let success = false;
+        console.log(error);
+        response.json({
+            success: success
+        });
+    }
     
 }
 
 exports.post_periodos = async (request,response,next) => {
-    let success = true;
-    const idPeriodo= request.body.id;
-    const nombre = request.body.nombre;
-    const inicio = request.body.inicio;
-    const fin = request.body.fin;
-    const status = request.body.status;
-
-    await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+    try {
+        let success = true;
+        const idPeriodo= request.body.id;
+        const nombre = request.body.nombre;
+        const inicio = request.body.inicio;
+        const fin = request.body.fin;
+        const status = request.body.status;
     
-    response.json({success:success})
-    
+        await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
+        
+        response.json({
+            success: success
+        });
+    } catch {
+        let success = false;
+        console.log(error);
+        response.json({
+            success: success
+        });
+    };
 }

@@ -11,21 +11,17 @@ module.exports = class Materia {
         this.IDMateriaExterna = mi_IDMateriaExterna;
     }
 
-    static fetchOne(idexterna) {
+    static fetchOne(idmateria) {
         return db.execute(`SELECT IDMateria, Nombre, planEstudios, Creditos,IDMateriaExterna
-        FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
+        FROM Materia WHERE IDMateria = ? `, [idmateria]);
     }
 
     static updateMateria(id,nombre,planEstudios,semestre,creditos,idexterno) {
-        return db.execute('UPDATE Materia SET IDMateria=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateriaExterna=?', [id,nombre,planEstudios,semestre,creditos,idexterno])
+        return db.execute('UPDATE Materia SET IDMateriaExterna=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateria=?', [idexterno.toString(), nombre, planEstudios, semestre, creditos, id.toString()])
     }
 
     static saveMateria(id,nombre,plan,semestre,creditos,idexterno){
         return db.execute('INSERT INTO `Materia`(`IDMateria`, `Nombre`, `planEstudios`, `semestreImpartido`, `Creditos`, `IDMateriaExterna`) VALUES (?,?,?,?,?,?)', [id,nombre,plan,semestre,creditos,idexterno])
-    }
-
-    static fetchID(idexterna) {
-        return db.execute(`SELECT IDMateria FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
     }
 
 }
