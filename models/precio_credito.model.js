@@ -20,4 +20,8 @@ module.exports = class PrecioCredito {
     static update(monto) {
         return db.execute(`CALL InsertarPrecioCredito(?)`, [monto]);
     }
+
+    static fetchIDActual(){
+        return db.execute(`SELECT IDPrecioCredito FROM precioCredito WHERE precioActivo = 1`);
+    }
 };
