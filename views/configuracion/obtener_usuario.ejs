@@ -1,0 +1,68 @@
+<%- include('../includes/head', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-7">
+                <h3 class="title is-3">Registrar Usuario desde la Base</h3>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <form action="/configuracion/obtener_usuario" method="POST">
+                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                    <label for="user" class="label is-medium">
+                        Matrícula:
+                    </label>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_buscar" style="padding: 0.5em; margin-top: -1em;">
+                        Por favor ingresa a un usuario.
+                    </p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_usuario" style="padding: 0.5em; margin-top: -1em;">
+                        Por favor selecciona a un usuario de la lista.
+                    </p>
+                    <p class="help is-hidden has-text-danger-dark" id="ayuda_vacio" style="padding: 0.5em; margin-top: -1em;">
+                        No existe un usuario con esa matrícula. Favor de intentar de nuevo.
+                    </p>
+                    <div id="ayuda_registrado" class="notification is-hidden"
+                        style="background-color: #5a6581; color:#ffffff;">
+                        Este usuario ya esta registrado en el sistema.
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input name="user" class="input is-medium" type="text" id="user"
+                                placeholder="Matrícula del Usuario" />
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <button id="registrarAdmin" type="submit" class="button is-rounded is-medium is-responsive"
+                        style="font-size: large; margin: 8px 2px;" disabled>
+                        <span> 
+                            Obtener Usuario
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+
+<script type="text/javascript" src="/js/obtener_usuario.js"></script>
+
+</html>

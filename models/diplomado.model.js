@@ -8,7 +8,6 @@ module.exports = class Diplomado{
         this.nombreDiplomado = mi_nombreDiplomado;
     }
 
-
     static save(duracion,precio,nombre) {
         return db.execute(
             `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
@@ -16,36 +15,36 @@ module.exports = class Diplomado{
     }
 
     static fetchAllActives() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1')
+        return db.execute('SELECT * FROM Diplomado WHERE diplomadoActivo = 1')
     }
 
     static fetchAllNoActives() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 0')
+        return db.execute('SELECT * FROM Diplomado WHERE diplomadoActivo = 0')
     }
 
     static fetchAllInProgress() {
-        return db.execute('Select * from diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)')
+        return db.execute('SELECT * FROM Diplomado WHERE diplomadoActivo = 1 AND IDDiplomado IN (SELECT IDDiplomado FROM Cursa WHERE Now() > fechainicio AND Now() < fechafin)')
     }
 
     static fetchOne(nombre){
-        return db.execute('Select * from diplomado WHERE nombreDiplomado = ?',[nombre]);
+        return db.execute('Select * FROM Diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
     static update(id,duracion,precio,nombre,status){
-        return db.execute('UPDATE diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=?, diplomadoActivo=? WHERE IDDiplomado=?',
+        return db.execute('UPDATE Diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=?, diplomadoActivo=? WHERE IDDiplomado=?',
         [duracion,precio,nombre,status,id]);
     }
 
     static buscar(consulta) {
         return db.execute(
-            'SELECT diplomado.* FROM diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
+            'SELECT diplomado.* FROM Diplomado LEFT JOIN cursa ON diplomado.idDiplomado = cursa.idDiplomado WHERE cursa.idDiplomado IS NULL AND nombreDiplomado LIKE ? AND diplomadoActivo = 1;',
             [`%${consulta}%`]
         );
     }
 
     static buscar_noactivo(consulta) {
         return db.execute(
-            'SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
+            'SELECT diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 0;',
             [`%${consulta}%`]
         );
     }
