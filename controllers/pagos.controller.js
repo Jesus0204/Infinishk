@@ -439,7 +439,6 @@ exports.post_metodo_pago = async (request, response, next) => {
             metodoPagoData.Noviembre = await Reporte.fetchMetodosPagoMes(11, fechaInicio, fechaFin);
             metodoPagoData.Diciembre = await Reporte.fetchMetodosPagoMes(12, fechaInicio, fechaFin);
         }
-        console.log(metodoPagoData)
         response.send({
             metodoPagoData
         });
