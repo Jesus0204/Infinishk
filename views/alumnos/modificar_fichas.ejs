@@ -79,6 +79,7 @@
                                         <input type="hidden" name="alumno" id="alumno"
                                             value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
+                                        <p id="montoPagar<%= display1 %>" class="is-hidden"><%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
                                         <strong>Total: </strong>
                                         $<%- ficha1.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
@@ -122,6 +123,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El descuento no puede tener exponentes.</p>
+                                        <p id="ayuda_descuento_deuda<%=display1%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El descuento no puede ser mayor al total a pagar.</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha1.Descuento.toLocaleString('mx', {
@@ -186,6 +191,7 @@
                                         <input type="hidden" name="alumno" id="alumno"
                                             value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha2.IDDeuda %>">
+                                        <p id="montoPagar<%= display2 %>" class="is-hidden"><%= (ficha2.montoAPagar - ficha2.montoPagado).toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
                                         <strong>Total: </strong>
                                         $<%- ficha2.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
@@ -230,6 +236,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El descuento no puede tener exponentes.</p>
+                                        <p id="ayuda_descuento_deuda<%=display2%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El descuento no puede ser mayor al total a pagar.</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha2.Descuento.toLocaleString('mx', {
