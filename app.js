@@ -93,6 +93,9 @@ app.locals.contienePermiso = (permisos, casoUso) => {
     return contains;
 };
 
+let moment = require('moment-timezone');
+app.locals.moment = moment;
+
 const scheduleController = require('./controllers/schedule.controller');
 
 const cron = require('node-cron');

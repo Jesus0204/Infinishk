@@ -18,19 +18,19 @@
             <p id="fichas_length" class="is-hidden"><%=fichas.length %></p>
 
             <% if (fichas.length === 0) { %>
-                <div class="columns">
-                    <div class="column is-6">
-                        <h3 class="subtitle">No se encontraron deudas recientes</h3>
-                    </div>
+            <div class="columns">
+                <div class="column is-6">
+                    <h3 class="subtitle">No se encontraron deudas recientes</h3>
                 </div>
+            </div>
             <% } %>
 
             <table class="table is-bordered is-hoverable is-fullwidth">
-                 <div id="modificacion_ficha" class="notification is-hidden"
-                            style="background-color: #5a6581; color:#ffffff;">
-                            <button id="btn_eliminar_estatus" class="delete"></button>
-                            ¡Ficha modificada! Recargando datos...
-                    </div> 
+                <div id="modificacion_ficha" class="notification is-hidden"
+                    style="background-color: #5a6581; color:#ffffff;">
+                    <button id="btn_eliminar_estatus" class="delete"></button>
+                    ¡Ficha modificada! Recargando datos...
+                </div>
                 <% if (fichas.length > 0) { %>
                 <thead>
                     <tr>
@@ -60,11 +60,11 @@
                             <div class="columns is-vcentered">
                                 <div class="column is-2" style="text-align: center; margin-bottom: -3em;">
                                     <% if (ficha1.Pagado == 1) { %>
-                                        <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                                    <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                                     <% } else if (currentDate < ficha1.fechaLimitePago) { %>
-                                        <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
+                                    <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                     <% } else { %>
-                                        <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
+                                    <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
                                     <% } %>
                                 </div>
                                 <div class="column is-offset-3">
@@ -76,7 +76,8 @@
                                     <!-- Resto de la información para el primer pago -->
                                     <form action="/alumnos/fichas/modify" method="POST" class="form-modificar">
                                         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                        <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
+                                        <input type="hidden" name="alumno" id="alumno"
+                                            value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
                                         <strong>Total: </strong>
                                         $<%- ficha1.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -90,18 +91,23 @@
                                         <br>
                                         <strong>Fecha Limite Pago:</strong>
                                         <br>
+                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
                                         <p id="ayuda_fecha_vacia<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark"
-                                            style="padding: 0.5em;">
+                                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
                                             Por favor escoge una fecha límite.</p>
-                                            <input id="fecha_lim<%=display1%>" name="fecha_lim"
-                                                class="fecha-limite input is-medium" type="date"
-                                                placeholder="<%= ficha1.fechaLimitePago %>">
+                                        <input id="fecha_lim<%=display1%>" name="fecha_lim"
+                                            class="fecha-limite input is-medium" type="date"
+                                            placeholder="<%= ficha1.fechaLimitePago %>">
                                         <br>
+                                        <% } else { %>
+                                            <%= moment(ficha1.fechaLimitePago).format('LL') %>
+                                            <br>
+                                            <br>
+                                        <% } %>
                                         <strong>Descuento:</strong>
-                                        <input
-                                            id="descuento<%=display1%>" name="descuento" class="input is-medium" type="number"
-                                            step="any" value="<%= ficha1.Descuento %>">
+                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
+                                        <input id="descuento<%=display1%>" name="descuento" class="input is-medium"
+                                            type="number" step="any" value="<%= ficha1.Descuento %>">
                                         <p id="ayuda_descuento_vacio<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
@@ -117,15 +123,33 @@
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El descuento no puede tener exponentes.</p>
                                         <br>
+                                        <% } else { %>
+                                        $<%= ficha1.Descuento.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }) %>
+                                        <br>
+                                        <br>
+                                        <% } %>
+                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
                                         <strong>Nota:</strong>
-                                        <p id="ayuda_nota<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark"
+                                        <p id="ayuda_nota<%=display1%>" class="help is-hidden has-text-danger-dark"
                                             style="padding-bottom: 0.6em;">
                                             Por favor escribe una nota.</p>
-                                        <textarea id="nota<%=display1%>" name="nota" class="input is-medium" value="<%= ficha1.notaModificacion %>"
+                                        <textarea id="nota<%=display1%>" name="nota" class="input is-medium"
+                                            value="<%= ficha1.notaModificacion %>"
                                             placeholder="Escribe tu nota"></textarea>
+                                        <% } else { %>
+                                            <% if (ficha1.notaModificacion.length != 0) { %>
+                                                <strong>Nota:</strong>
+                                                <%= ficha1.notaModificacion %>
+                                                <br>
+                                                <br>
+                                            <% } %>
+                                        <% } %>
+                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
                                         <button id="Boton_modificar<%=display1%>" type="submit"
-                                            class="button is-rounded is-medium is-responsive" 
+                                            class="button is-rounded is-medium is-responsive"
                                             onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
                                             style="font-size: medium;" disabled>
                                             <span>Modificar</span>
@@ -133,6 +157,7 @@
                                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                             </span>
                                         </button>
+                                        <% } %>
                                     </form>
                                 </div>
                             </div>
@@ -158,7 +183,8 @@
                                     <!-- Resto de la información para el segundo pago -->
                                     <form action="/alumnos/fichas/modify" method="POST" class="form-modificar">
                                         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                        <input type="hidden" name="alumno" id="alumno" value="<%= alumno[0].Matricula %>">
+                                        <input type="hidden" name="alumno" id="alumno"
+                                            value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha2.IDDeuda %>">
                                         <strong>Total: </strong>
                                         $<%- ficha2.montoAPagar.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -172,18 +198,24 @@
                                         <br>
                                         <strong>Fecha Limite Pago:</strong>
                                         <br>
+                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
                                         <p id="ayuda_fecha_vacia<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-fecha"
                                             style="padding: 0.5em;">
                                             Por favor escoge una fecha límite.</p>
-                                            <input name="fecha_lim" id="fecha_lim<%=display2%>"
-                                                class="fecha-limite input is-medium" type="date"
-                                                placeholder="<%= ficha2.fechaLimitePago %>">
+                                        <input name="fecha_lim" id="fecha_lim<%=display2%>"
+                                            class="fecha-limite input is-medium" type="date"
+                                            placeholder="<%= ficha2.fechaLimitePago %>">
                                         <br>
+                                        <% } else { %>
+                                        <%= moment(ficha2.fechaLimitePago).format('LL') %>
+                                        <br>
+                                        <br>
+                                        <% } %>
                                         <strong>Descuento:</strong>
+                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
                                         <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
-                                            type="number"
-                                            step="any" value="<%= ficha2.Descuento %>">
+                                            type="number" step="any" value="<%= ficha2.Descuento %>">
                                         <p id="ayuda_descuento_vacio<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
@@ -199,28 +231,50 @@
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El descuento no puede tener exponentes.</p>
                                         <br>
+                                        <% } else { %>
+                                        $<%= ficha2.Descuento.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }) %>
+                                        <br>
+                                        <br>
+                                        <% } %>
+                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
                                         <strong>Nota:</strong>
                                         <p id="ayuda_nota<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-nota"
                                             style="padding-bottom: 0.6em;">
                                             Por favor escribe una nota.</p>
-                                        <textarea id="nota<%=display2%>" name="nota" class="input is-medium" value="<%= ficha2.notaModificacion %>"
+                                        <textarea id="nota<%=display2%>" name="nota" class="input is-medium"
+                                            value="<%= ficha2.notaModificacion %>"
                                             placeholder="Escribe tu nota"></textarea>
+                                        <% } else { %>
+                                            <% if (ficha2.notaModificacion.length != 0) { %>
+                                                <strong>Nota:</strong>
+                                                <%= ficha2.notaModificacion %>
+                                                <br>
+                                                <br>
+                                            <% } %>
+                                        <% } %>
+                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
                                         <button id="Boton_modificar<%=display2%>" type="submit"
-                                            class="button is-rounded is-medium is-responsive" 
-                                            onclick="modificar('<%= ficha2.descuento %>', '<%= ficha2.fecha_lim %>', '<%= ficha2.nota %>', '<%= ficha2.IDDeuda %>', '<%= display2 %>')" 
+                                            class="button is-rounded is-medium is-responsive"
+                                            onclick="modificar('<%= ficha2.descuento %>', '<%= ficha2.fecha_lim %>', '<%= ficha2.nota %>', '<%= ficha2.IDDeuda %>', '<%= display2 %>')"
                                             style="font-size: medium;" disabled>
                                             <span>Modificar</span>
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                             </span>
                                         </button>
+                                         <% } else { %>
+                                            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                                ¡Esta ficha ya esta pagada!
+                                            </div>
+                                        <% } %>
                                     </form>
                                 </div>
                             </div>
                         </td>
-                        <% } else { %>
-                        <td></td> <!-- Si no hay segundo pago, se añade una celda vacía -->
                         <% } %>
                     </tr>
                 </tbody>
