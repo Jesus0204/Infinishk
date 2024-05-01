@@ -78,15 +78,19 @@
                             <p id="ayuda_beca_negativa"
                                 class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
                                 style="padding: 0.5em; margin-bottom: -2em;">
-                                La beca no puede ser negativa.</p>
+                                El porcentaje de beca no puede ser negativo.</p>
                             <p id="ayuda_beca_exponente"
                                 class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
                                 style="padding: 0.5em; margin-bottom: -2em;">
-                                La beca no puede tener exponentes.</p>
+                                El porcentaje de beca no puede tener exponentes.</p>
+                            <p id="ayuda_beca_rango"
+                                class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                                style="padding: 0.5em; margin-bottom: -2em;">
+                                El porcentaje de beca no puede ser mayor a 100.</p>
                       </div>
                     </div>
                     <div class="column is-narrow">
-                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarProf('<%= alumnoConsulta[0].referenciaBancaria %>, <%= alumnoConsulta[0].porcBeca%>')">Guardar Cambios</button>
+                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarProf()">Guardar Cambios</button>
                     </div>
                     <% } else { %>
                     <div class="column is-3">
@@ -99,7 +103,7 @@
                     </div>
                     </div>
                     <div class="column is-narrow">
-                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarDip('<%= alumnoConsulta[0].referenciaBancaria %>')">Guardar Cambios</button>
+                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarDip()">Guardar Cambios</button>
                     </div>
                     <% } %>
                 </div>

@@ -56,7 +56,9 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 }
 
 exports.post_datos_modify_prof = async (request, response, next) => { 
-    const { ref, beca, alumno } = request.body;
+    const { ref, beca, alumno, csrf } = request.body;
+
+    console.log('data (prof): ', {ref, beca, alumno, csrf});
 
     try {
         const data = await EstudianteProfesional.update(alumno, ref, beca);
@@ -67,7 +69,9 @@ exports.post_datos_modify_prof = async (request, response, next) => {
 };
 
 exports.post_datos_modify_dip = async (request, response, next) => { 
-    const { ref, alumno } = request.body;
+    const { ref, alumno, csrf } = request.body;
+
+    console.log('data (dip): ', {ref, alumno, csrf});
 
     try {
         const data = await EstudianteDiplomado.update(alumno, ref);

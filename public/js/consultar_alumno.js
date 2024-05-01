@@ -9,6 +9,7 @@ const ayuda_ref_exponente = document.querySelector('#ayuda_ref_exponente');
 const ayuda_beca_vacia = document.querySelector('#ayuda_beca_vacia');
 const ayuda_beca_negativa = document.querySelector('#ayuda_beca_negativa');
 const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente');
+const ayuda_beca_rango = document.querySelector('#ayuda_beca_rango');
 
 // Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
@@ -63,6 +64,13 @@ function mensaje_beca() {
     } else {
         ayuda_beca_exponente.classList.add('is-hidden');
     }
+
+    if (beca.value > 100) {
+        bt_Modificar.disabled = true;
+        ayuda_beca_rango.classList.remove('is-hidden');
+    } else {
+        ayuda_beca_rango.classList.add('is-hidden');
+    }
 }
 
 ref.addEventListener('input', checar_contenido);
@@ -73,9 +81,11 @@ if (beca){
     beca.addEventListener('input', mensaje_beca);
 }
 
-function modificarProf(ref, beca) {
+function modificarProf() {
     const csrf = document.getElementById('_csrf').value;
     const alumno = document.getElementById('alumno').value;
+    const ref = document.getElementById('ref').value;
+    const beca = document.getElementById('beca').value;
 
     console.log('Data to be sent:', { ref, beca, alumno });
 
@@ -86,7 +96,7 @@ function modificarProf(ref, beca) {
     // Desplazar la página hacia arriba
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetch('/alumnos/datos_alumno/modify', {
+    fetch('/alumnos/datos_alumno/modify_prof', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -95,7 +105,8 @@ function modificarProf(ref, beca) {
         body: JSON.stringify({
             ref : ref,
             beca : beca,
-            alumno : alumno
+            alumno : alumno,
+            csrf : csrf
         })
     }) 
     .then(response => response.json())
@@ -120,9 +131,10 @@ function modificarProf(ref, beca) {
     });   
 }
 
-function modificarDip(ref) {
+function modificarDip() {
     const csrf = document.getElementById('_csrf').value;
     const alumno = document.getElementById('alumno').value;
+    const ref = document.getElementById('ref').value;
 
     console.log('Data to be sent:', { ref, alumno });
 
@@ -133,7 +145,7 @@ function modificarDip(ref) {
     // Desplazar la página hacia arriba
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetch('/alumnos/datos_alumno/modify', {
+    fetch('/alumnos/datos_alumno/modify_dip', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -141,7 +153,8 @@ function modificarDip(ref) {
         },
         body: JSON.stringify({
             ref : ref,
-            alumno : alumno
+            alumno : alumno,
+            csrf : csrf
         })
     }) 
     .then(response => response.json())
@@ -152,7 +165,7 @@ function modificarDip(ref) {
             // Recargar la página después de mostrar la notificación durante unos segundos
             setTimeout(() => {
                 window.location.reload();
-            }, 2000); // 3000 milisegundos = 3 segundos
+            }, 3000); // 3000 milisegundos = 3 segundos
         } else {
             console.error('Error en la modificación: ', data.message);
             // Reactivar el botón en caso de error para permitir nuevos intentos
