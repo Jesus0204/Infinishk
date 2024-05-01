@@ -38,7 +38,7 @@ module.exports = class pagoDiplomado {
 
     static fetchPagosDiplomado(matricula){
         return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, P.Motivo, P.metodoPago, P.Nota, D.nombreDiplomado
-        FROM pagadiplomado AS P, diplomado AS D 
+        FROM pagaDiplomado AS P, Diplomado AS D 
         WHERE P.IDDiplomado = D.IDDiplomado AND Matricula = ?
         ORDER BY P.fechaPago ASC
         LIMIT 0, 1000`, [matricula]);
