@@ -34,6 +34,17 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     const { IDGrupo, matricula} = request.body;
     console.log(IDGrupo)
     console.log(matricula)
+    // Configuras a moment con el locale.
+    const moment = require('moment-timezone');
+    moment.locale('es-mx');
+
+    // Obtienes la fecha y hora actual
+    const fecha_hora = new Date();
+
+    // Formateas la fecha y hora en el formato deseado
+    const fecha_actual = moment(fecha_hora).tz('America/Mexico_City');
+
+    console.log(fechaModificacion);
     
     try {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
@@ -42,6 +53,8 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca
+        //AGREGAR CUANDO SE HAGA DEPLOY
+        //await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca);
         console.log('exito :)')
 
