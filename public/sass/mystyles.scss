@@ -42,6 +42,8 @@ $navbar-dropdown-arrow: $blanco;
 $navbar-dropdown-item-hover-color: $blanco;
 $navbar-dropdown-item-hover-background-color: $rojo;
 
+$table-cell-text-align: center;
+
 .current-page {
     background-color: black; /* Cambia el color de fondo a negro */
     color: white !important; /* Cambia el color del texto a blanco */
@@ -62,17 +64,6 @@ $navbar-dropdown-item-hover-background-color: $rojo;
   margin-bottom: 20px;
   border: 5px solid #910106;
 }
-
-.ui-menu-item{
-  font-family: "Poppins", sans-serif;
-}
-
-.ui-menu-item .ui-menu-item-wrapper.ui-state-active{
-  background-color: $negro;
-  color: $blanco;
-  border-color: $vino;
-}
-
 
 
 // Import only what you need from Bulma
@@ -98,3 +89,6 @@ $switch-focus: none;
 @import "../../node_modules/bulma-switch/src/sass/index.sass";
 
 @import "checkbox.sass";
+
+/* Bulma Calendar */
+@import "bulma-calendar.sass";
