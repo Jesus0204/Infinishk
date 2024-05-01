@@ -7,8 +7,6 @@
 <body>
     <section class="section">
         <div class="container">
-            <input type="hidden" id="_csrf" value="<%= csrfToken %>">
-            <input type="hidden" id="alumnoConsulta" value="<%= alumnoConsulta[0].Matricula %>">
             
             <div class="columns">
                 <div class="column is-6">
@@ -89,9 +87,6 @@
                                 El porcentaje de beca no puede ser mayor a 100.</p>
                       </div>
                     </div>
-                    <div class="column is-narrow">
-                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarProf()">Guardar Cambios</button>
-                    </div>
                     <% } else { %>
                     <div class="column is-3">
                         <label class="block font-semibold"><strong>Diplomado:</strong></label>
@@ -102,10 +97,11 @@
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].fechaInscripcion %></div>
                     </div>
                     </div>
-                    <div class="column is-narrow">
-                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarDip()">Guardar Cambios</button>
-                    </div>
                     <% } %>
+                    <div class="column is-narrow">
+                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificar()">Guardar Cambios</button>
+                    </div>
+                </form>
                 </div>
             </div>
             

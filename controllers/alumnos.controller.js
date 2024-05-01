@@ -55,28 +55,26 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     // response.redirect('/alumnos/datos_alumno');
 }
 
-exports.post_datos_modify_prof = async (request, response, next) => { 
+
+exports.post_datos_modify = async (request, response, next) => { 
     const { ref, beca, alumno, csrf } = request.body;
 
-    console.log('data (prof): ', {ref, beca, alumno, csrf});
+    console.log('data: ', {ref, beca, alumno, csrf});
 
     try {
-        const data = await EstudianteProfesional.update(alumno, ref, beca);
+        let data;
+        if (alumno.startsWith("1")) {
+            data = await EstudianteProfesional.update(alumno, ref, beca);
+        } else if (alumno.startsWith("8")) {
+            data = await EstudianteDiplomado.update(alumno, ref);
+        } else {
+            // Manejar otros casos según sea necesario
+            response.status(500).json({ success: false, message: 'Matrícula no válida' });
+            return;
+        }
         response.status(200).json({ success: true, data: data });
     } catch (error) {
-        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
-    }
-};
-
-exports.post_datos_modify_dip = async (request, response, next) => { 
-    const { ref, alumno, csrf } = request.body;
-
-    console.log('data (dip): ', {ref, alumno, csrf});
-
-    try {
-        const data = await EstudianteDiplomado.update(alumno, ref);
-        response.status(200).json({ success: true, data: data });
-    } catch (error) {
+        console.log(error);
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
 };

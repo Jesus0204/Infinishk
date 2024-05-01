@@ -20,7 +20,12 @@ module.exports = class EstudianteProfesional{
     }
 
     static async update(id, ref, beca){
-        const [rows, fieldData] = db.execute(`CALL updateDatosAlumno(?,?,?)`, [id, ref, beca]);
-        return rows;
-    }
+        try {
+            const [rows, fieldData] = await db.execute(`CALL updateDatosAlumno(?,?,?)`, [id, ref, beca]);
+            return rows;
+        } catch (error) {
+            console.error("Error executing query:", error);
+            throw error; // Re-throw the error to be caught by the caller
+        }
+    }    
 };
