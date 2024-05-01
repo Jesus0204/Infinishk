@@ -112,4 +112,10 @@ function pagosextra() {
     // Poner la tabla de pagos extras
     const tabla_extras = document.querySelector('#pagosextra');
     tabla_extras.classList.remove('is-hidden');
+
+    // Quitar la tabla de pagos colegiatura dip
+    const tabla_pagosdip = document.querySelector('#pagosdip');
+    tabla_pagosdip.classList.add('is-hidden');
+
+    
 }

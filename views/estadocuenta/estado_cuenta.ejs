@@ -37,8 +37,8 @@
                     </a>
                 </li>
                 <% } %>
-                <li id="nav_extras">
-                    <a onclick="extras()">
+                <li id="nav_extras" <% if(matricula[0] == '8') { %>class="is-active" <%  }%>>
+                    <a onclick="extras()" >
                         <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
                         <span>Cargos extras</span>
                     </a>
@@ -93,11 +93,7 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= new Date(deuda[count].fechaLimitePago).toLocaleDateString('es-MX', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit'
-                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
+                                    <%= deuda[count].fechaLimitePago %>
                                 </div>
                             </div>
                         </td>
@@ -136,11 +132,7 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= new Date(deuda[count].fechaLimitePago).toLocaleDateString('es-MX', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit'
-                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
+                                    <%= deuda[count].fechaLimitePago %>
                                 </div>
                             </div>
                         </td>
@@ -177,11 +169,7 @@
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
                                     <br>
-                                    <%= new Date(deuda[count + 1].fechaLimitePago).toLocaleDateString('es-MX', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit'
-                                      }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3/$1/$2') %>                                      
+                                    <%= deuda[count + 1].fechaLimitePago %>
                                 </div>
                             </div>
                         </td>
@@ -192,6 +180,21 @@
             </table>
         </div>
         <% } %>
+        
+        <div <% if(matricula[0] == '1') { %>class="is-hidden" <% } %> id="extras">
+            <% pagosExtra.forEach(pagosExtra => { %>
+            <% if(pagosExtra.montoPagar !== 0) { %>
+            <div class="box">
+                <div class="columns is-vcentered">
+                    <div class="column">
+                        <p><strong>Monto a pagar:</strong> <%= pagosExtra.montoPagar.toFixed(2) %> </p>
+                        <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% }); %>
+        </div>
 
         <div class="is-hidden" id="pagos">
             <div class="tabs is-boxed">
@@ -210,25 +213,34 @@
                 </ul>
             </div>
 
-            <div class="" id="pagoscol">
-                <% pagos.forEach(pagos => { %>
-                <% if(pagos.montoPagado !== 0) { %>
-                <div class="box">
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
-                            <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
-                            <p><strong>Motivo de pago:</strong> <%= pagos.motivo %> </p>
-                            <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
-                            <% if(pagos.nota !== '') { %>
-                            <p><strong>Nota:</strong> <%= pagos.nota %> </p>
-                            <% } %>
+  
+                <div id="pagoscol">
+                    <% if(matricula[0] == '1') { %>
+                    <% pagos.forEach(pagos => { %>
+                    <% if(pagos.montoPagado !== 0) { %>
+                    <div class="box">
+                        <div class="columns is-vcentered">
+                            <div class="column">
+                                <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
+                                <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
+                                <p><strong>Motivo de pago:</strong> <%= pagos.motivo %> </p>
+                                <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
+                                <% if(pagos.nota !== '') { %>
+                                <p><strong>Nota:</strong> <%= pagos.nota %> </p>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
+                    <% } %>
+                    <% } )%>
+                    <% } else if(matricula[0] == '8') { %> 
+                        <p><strong>pagos col dpilomado</strong>
+
+                    <%}; %> 
                 </div>
-                <% } %>
-                <% }); %>
-            </div>
+
+            
+                
 
             <div class="is-hidden" id="pagosextra">
                 <% pagadosExtra.forEach(pagadosExtra => { %>
@@ -252,20 +264,7 @@
         </div>
 
 
-        <div class="is-hidden" id="extras">
-            <% pagosExtra.forEach(pagosExtra => { %>
-            <% if(pagosExtra.montoPagar !== 0) { %>
-            <div class="box">
-                <div class="columns is-vcentered">
-                    <div class="column">
-                        <p><strong>Monto a pagar:</strong> <%= pagosExtra.montoPagar.toFixed(2) %> </p>
-                        <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
-                    </div>
-                </div>
-            </div>
-            <% } %>
-            <% }); %>
-        </div>
+        
 
 </section>
 
