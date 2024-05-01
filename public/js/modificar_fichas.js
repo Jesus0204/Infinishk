@@ -33,7 +33,7 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     function checar_contenido() {
         bt_Modificar.disabled = descuento.value.length === 0 || nota.value.length === 0 ||
             parseFloat(descuento.value) < 0 || descuento.value.trim().toLowerCase().includes('e') ||
-                fecha_lim.value.length === 0 || descuento.value > deuda;
+                fecha_lim.value.length === 0 || descuento.value > Number(deuda_no_comma);
     }
 
     const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
