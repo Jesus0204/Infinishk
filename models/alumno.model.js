@@ -51,6 +51,6 @@ module.exports = class Alumno {
     }
 
     static fetchCredito(matricula){
-        return db.execute(`SELECT CAST(credito AS CHAR(20)) FROM alumno WHERE Matricula = ?`,[matricula]);
+        return db.execute(`SELECT CAST(credito AS CHAR(20)) FROM Alumno WHERE Matricula = ?`,[matricula]);
     }
 }

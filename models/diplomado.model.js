@@ -10,7 +10,7 @@ module.exports = class Diplomado{
 
     static save(duracion,precio,nombre) {
         return db.execute(
-            `INSERT INTO diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
+            `INSERT INTO Diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
                 [duracion,precio,nombre]);
     }
 
@@ -51,7 +51,7 @@ module.exports = class Diplomado{
 
     static buscar_en_curso(consulta)
     {
-        return db.execute('SELECT diplomado.* FROM diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
+        return db.execute('SELECT diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
     );
     }
 
