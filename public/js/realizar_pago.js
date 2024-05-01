@@ -178,6 +178,7 @@ function pagar() {
         body: JSON.stringify({
             monto: monto,
             test: test,
+            matricula: matricula,
         })
     }).then((result) => {
         return result.json();
@@ -185,7 +186,7 @@ function pagar() {
         // Aquí puedes hacer algo con la respuesta si es necesario
     }).catch(err => {
         console.log(err);
-    }); // 5000 milisegundos equivalen a 5 segundos
+    }); 
 }
 
 if (boton_pagar) {

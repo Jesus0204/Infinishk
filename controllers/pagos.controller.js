@@ -7,6 +7,7 @@ const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
 const Periodo = require('../models/periodo.model');
 const Colegiatura = require('../models/colegiatura.model');
+const Usuario = require('../models/usuario.model')
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -558,12 +559,14 @@ exports.post_respuesta_pago = async (request, response, next) => {
     let test = request.body.test;
     let monto = request.body.monto;
 
+    let correo = await Usuario.fetchCorreo(request.body.matricula);
+
     if (test === 0) {
-        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&operacion=100300421938&fecha=30%2F04%2F24%2020%3A42%3A53&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=FONDOS+INSUFICIENTES&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
+        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
     }
 
     if (test === 1) {
-        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
+        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
     }
 
     if (test === 2) {
@@ -679,12 +682,13 @@ exports.post_recibir_pago = async (request, response, next) => {
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
                     await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra exitoso")
-                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
-                }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra exitoso")
+                await Liquida.updateExitoso(nota, fechaUsar, liquida);
+            }
+        }
 
             else if (status === 'denied') {
                 if (tipo === 'Normal') {
@@ -725,10 +729,8 @@ exports.post_recibir_pago = async (request, response, next) => {
                     await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
                 }
             }
-        }
 
         return response.status(200).json({ responseText });
-
     }
 
     if (test === 1) {
@@ -819,12 +821,13 @@ exports.post_recibir_pago = async (request, response, next) => {
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
                     await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra exitoso")
-                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
-                }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra exitoso")
+                await Liquida.updateExitoso(nota, fechaUsar, liquida);
+            }
+        }
 
             else if (status === 'denied') {
                 if (tipo === 'Normal') {
@@ -865,11 +868,10 @@ exports.post_recibir_pago = async (request, response, next) => {
                     await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
                 }
             }
-        }
 
         return response.status(200).json({ responseText });
-
     }
+
 
 
 
@@ -962,12 +964,13 @@ exports.post_recibir_pago = async (request, response, next) => {
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
                     await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra exitoso")
-                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
-                }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra exitoso")
+                await Liquida.updateExitoso(nota, fechaUsar, liquida);
+            }
+        }
 
             else if (status === 'denied') {
                 if (tipo === 'Normal') {
@@ -1008,10 +1011,8 @@ exports.post_recibir_pago = async (request, response, next) => {
                     await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
                 }
             }
-        }
 
         return response.status(200).json({ responseText });
-
     }
 
 }

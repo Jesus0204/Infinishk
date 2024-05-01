@@ -31,6 +31,11 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE IDUsuario = ?',
             [IDUsuario]);
     }
+
+    static fetchCorreo(IDUsuario) {
+        return db.execute('SELECT correoElectronico FROM Usuario WHERE IDUsuario = ?',
+            [IDUsuario]);
+    }
     static getPermisos(IDUsuario) {
         return db.execute(
             `SELECT funcion
