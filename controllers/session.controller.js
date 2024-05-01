@@ -141,12 +141,12 @@ exports.get_reset_password = (request,response,next) => {
 }
 
 exports.post_reset_password = async (request, response, next) => {
-    const correo = request.body.correo;
-    const matricula = await Usuario.fetchUser(correo);
+    const matricula = request.body.username;
+    const correoElectronico = await Usuario.fetchCorreo(matricula);
+    const correo = correoElectronico[0][0].correoElectronico;
 
-    if (matricula && matricula[0] && matricula[0][0] && typeof matricula[0][0].IDUsuario !== 'undefined') {
-        const user = matricula[0][0].IDUsuario;
-        console.log(user);
+    if (correoElectronico && correoElectronico[0] && correoElectronico[0][0] && typeof correoElectronico[0][0].correoElectronico !== 'undefined') {
+        const user = request.body.username;
 
         // Generar token JWT con la matrícula del usuario
         const token = jwt.sign({ matricula: user }, secretKey, { expiresIn: '1h' });
