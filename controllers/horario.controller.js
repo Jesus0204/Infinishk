@@ -99,7 +99,6 @@ exports.get_propuesta_horario = async (request, response, next) => {
 
                             const fechaInicio = moment(startDate).format('LT');
                             const fechaTermino = moment(endDate).format('LT');
-                            console.log(fechaInicio);
 
                             return {
                                 diaSemana: weekday,
@@ -220,8 +219,8 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const profesor = nombreProfesorCompleto[i];
             const salonCurso = salon[i];
             let horarioCurso = grupoHorarioValidado[i];
-            const fechaInicioCurso = fechaInicio[i];
-            const fechaFinCurso = fechaFin[i];
+            const fechaInicioCurso = moment(fechaInicio[i], 'LL').format();
+            const fechaFinCurso = moment(fechaFin[i], 'LL').format();
             const IDMateria = idMateria[i];
         
             // Si horarioCurso es undefined, establecerlo en una cadena vacía
