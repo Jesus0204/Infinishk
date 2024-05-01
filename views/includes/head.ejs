@@ -70,13 +70,12 @@
                 <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                        contienePermiso(permisos, 'Modificar diplomado') == true || 
                        contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                    <a class="navbar-item desktop_menu" style="padding-right: 2.1em;"
-                        href="/diplomado/consultar_diplomado">
-                        <span class="icon is-large" style="margin-left: -0.5em;">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </span>
-                        Diplomado
-                    </a>
+                <a class="navbar-item desktop_menu" style="padding-right: 2.1em;" href="/diplomado/consultar_diplomado">
+                    <span class="icon is-large" style="margin-left: -0.5em;">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </span>
+                    Diplomado
+                </a>
                 <% } %>
 
                 <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
@@ -260,7 +259,7 @@
                                         Ingresos
                                     </a>
                                     <hr class="navbar-divider">
-                                    <a class="navbar-item"  href="/pagos/reporte_metodo_pago">
+                                    <a class="navbar-item" href="/pagos/reporte_metodo_pago">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-chart-column"></i>
                                         </span>
@@ -355,66 +354,68 @@
                         <% } %>
                         <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
                                 contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-                            <div class="nested dropdown has-dropdown is-hoverable">
-                                <a class="navbar-item" style="padding-right: 3.9em;">
+                        <div class="nested dropdown has-dropdown is-hoverable">
+                            <a class="navbar-item" style="padding-right: 3.9em;">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-globe"></i>
+                                </span>
+                                Datos
+                                <span class="icon is-large ">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item" style="padding-right: 2.8em;"
+                                        href="/configuracion/actualizarBase">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-database"></i>
+                                        </span>
+                                        Sincronizar
+                                        <br>
+                                        Base Datos
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" href="/configuracion/exportarDatos">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </span>
+                                        Exportar
+                                        <br>
+                                        Datos a CSV
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="navbar-divider">
+                        <div class="mobile">
+                            <div data-target="datos" class="navbar-item has-dropdown">
+                                <a class="navbar-link" onclick="click_target(this.parentElement)">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-globe"></i>
                                     </span>
                                     Datos
-                                    <span class="icon is-large ">
-                                        <i class="fas fa-angle-right"></i>
-                                    </span>
                                 </a>
-                                <div class="dropdown-menu">
-                                    <div class="navbar-dropdown">
-                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-database"></i>
-                                            </span>
-                                            Sincronizar
-                                            <br>
-                                            Base Datos
-                                        </a>
-                                        <hr class="navbar-divider">
-                                        <a class="navbar-item" href="/configuracion/exportarDatos">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-file-excel"></i>
-                                            </span>
-                                            Exportar 
-                                            <br>
-                                            Datos a CSV
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="navbar-divider">
-                            <div class="mobile">
-                                <div data-target="datos" class="navbar-item has-dropdown">
-                                    <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                <div class="navbar-dropdown" id="datos">
+                                    <a class="navbar-item" style="padding-right: 2.8em;"
+                                        href="/configuracion/actualizarBase">
                                         <span class="icon is-large">
-                                            <i class="fa-solid fa-globe"></i>
+                                            <i class="fa-solid fa-database"></i>
                                         </span>
-                                        Datos
+                                        Sincronizar Base Datos
                                     </a>
-                                    <div class="navbar-dropdown" id="datos">
-                                        <a class="navbar-item" style="padding-right: 2.8em;" href="/configuracion/actualizarBase">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-database"></i>
-                                            </span>
-                                            Sincronizar Base Datos
-                                        </a>
-                                        <hr class="navbar-divider">
-                                        <a class="navbar-item" href="/configuracion/exportarDatos">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-file-excel"></i>
-                                            </span>
-                                            Exportar datos a CSV
-                                        </a>
-                                    </div>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" href="/configuracion/exportarDatos">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </span>
+                                        Exportar datos a CSV
+                                    </a>
                                 </div>
                             </div>
+                        </div>
                         <% } %>
-                        
+
                         <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                         <a class="navbar-item" href="/configuracion/precio_credito">
                             <span class="icon is-large">

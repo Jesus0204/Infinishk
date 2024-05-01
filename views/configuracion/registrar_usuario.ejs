@@ -1,0 +1,225 @@
+<%- include('../includes/head', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6" style="text-align: center;">
+                <h3 class="title is-3">Registrar Usuario Nuevo</h3>
+            </div>
+        </div>
+        <form action="/configuracion/registrar_usuario" method="POST">
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <% if (error) { %>
+            <div class="columns is-vcentered">
+                <div class="column is-2"></div>
+                <div class="column is-8">
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        Ese usuario ya existe. Por favor intenta con otra Matrícula.
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <div class="columns is-vcentered">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="roles">Tipo de usuario:</label>
+                    <div class="control has-icons-left">
+                        <div class="select is-medium" style="width: 110%;">
+                            <select name="roles" id="roles" style="width: 110%;">
+                                <% for (let roles of roles_disponibles) { %>
+                                <option data-nombre="<%= roles.nombreRol %>">
+                                    <%= roles.nombreRol%>
+                                </option>
+                                <%}%>
+                            </select>
+                        </div>
+                        <div class="icon is-medium is-left">
+                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="noAlumnoFields">
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="IDUsuario_NoAlumno" class="label is-medium">
+                            Matrícula:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_matricula_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Matrícula.
+                        </p>
+                         <p class="control has-icons-left">
+                             <input type="text" id="IDUsuario_NoAlumno" name="IDUsuario_NoAlumno"
+                                 class="input is-medium" placeholder="Matrícula del Nuevo Administrador">
+                             <span class="icon is-small is-left">
+                                <i class="fa-regular fa-id-badge" style="color: #95404c;"></i>
+                            </span>
+                         </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3"></div>
+                    <div class="column is-6">
+                        <label for="correoElectronico_NoAlumno" class="label is-medium">
+                            Correo Electrónico:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_correo_noAlumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un Correo Electrónico.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="email" id="correoElectronico_NoAlumno" name="correoElectronico_NoAlumno"
+                                class="input is-medium" placeholder="Correo del Nuevo Administrador">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-at" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campos para Alumno -->
+            <div id="alumnoFields" style="display: none;">
+                <div class="columns">
+                    <div class="column is-6">
+                        <label for="nombre" class="label is-medium">
+                            Nombre:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe el Nombre del Alumno.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="text" id="nombre" name="nombre" class="input is-medium"
+                                placeholder="Nombre(s) del Alumno de Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-regular fa-user" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="column is-6">
+                        <label for="apellidos" class="label is-medium">
+                            Apellidos:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_apellidos"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe Apellidos del Alumno.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="text" id="apellidos" name="apellidos" class="input is-medium"
+                                placeholder="Apellidos del Alumno de Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-signature" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-6">
+                        <label for="IDUsuario" class="label is-medium">
+                            Matrícula:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_matricula_Alumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Matrícula.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="text" id="IDUsuario" name="IDUsuario" class="input is-medium"
+                                placeholder="Matrícula del Alumno de Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-regular fa-id-badge" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="column is-6">
+                        <label for="correoElectronico" class="label is-medium">
+                            Correo Electrónico:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_correo_Alumno"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un Correo Electrónico.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="email" id="correoElectronico" name="correoElectronico" 
+                            class="input is-medium" placeholder="Correo del Alumno de Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-at" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-6">
+                        <label for="referenciaBancaria" class="label is-medium">
+                            Referencia Bancaria:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe una Referencia Bancaria.
+                        </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia_negativo"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un número mayor a 0.
+                        </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_referencia_exponente"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor escribe un motivo sin exponente.
+                        </p>
+                        <p class="control has-icons-left">
+                            <input type="number" id="referenciaBancaria" name="referenciaBancaria" class="input is-medium"
+                                placeholder="Referencia del Alumno de Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-building-columns" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="column is-6">
+                        <label for="fechaInscripcion" class="label is-medium">
+                            Fecha de Inscripción:
+                        </label>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor elige una Fecha.
+                        </p>
+                        <input type="date" id="fechaInscripcion" name="fechaInscripcion"
+                            class="input is-medium">
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-6">
+                    <div id="boton_no_Alumno">
+                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
+                            <span>Registrar Usuario</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div id="boton_Alumno" class="is-hidden">
+                        <button class="button is-rounded is-medium is-responsive" type="submit"
+                            style="font-size: large; margin: 8px 2px;" id="Boton_registrar_alumno" disabled>
+                            <span>Registrar Usuario</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</section>
+
+<script type="text/javascript" src="/js/registrar_usuario.js"></script>
