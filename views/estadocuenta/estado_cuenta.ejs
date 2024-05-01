@@ -233,10 +233,27 @@
                     </div>
                     <% } %>
                     <% } )%>
-                    <% } else if(matricula[0] == '8') { %> 
-                        <p><strong>pagos col dpilomado</strong>
 
-                    <%}; %> 
+                    <% } else if(matricula[0] == '8') { %> 
+                            <% pagosDiplomado.forEach(pagos => { %>
+                                <% if(pagos.montoPagado !== 0) { %>
+                                <div class="box">
+                                    <div class="columns is-vcentered">
+                                        <div class="column">
+                                            <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
+                                            <p><strong>Nombre del diplomado:</strong> <%= pagos.nombreDiplomado %> </p>
+                                            <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
+                                            <p><strong>Motivo de pago:</strong> <%= pagos.Motivo %> </p>
+                                            <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
+                                            <% if(pagos.Nota !== '') { %>
+                                            <p><strong>Nota:</strong> <%= pagos.Nota %> </p>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <% }) %>
+                                <% }; %>
                 </div>
 
             
@@ -262,13 +279,8 @@
                 <% }); %>
             </div>
         </div>
-
-
         
 
 </section>
-
-
 </html>
-
 <script type="text/javascript" src="/js/estado_cuenta.js"></script>
