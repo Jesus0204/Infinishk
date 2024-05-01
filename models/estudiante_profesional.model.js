@@ -20,5 +20,10 @@ module.exports = class estudianteProfesional {
     static fetchBeca(matricula){
         return db.execute('SELECT porcBeca FROM estudianteProfesional WHERE Matricula = ?', [matricula])
     }
+
+    static fetchOne(matricula) {
+        return db.execute(`SELECT Matricula, semestreActual, porcBeca 
+        FROM estudianteProfesional WHERE Matricula = ?`, [matricula]);
+    }
     
 }

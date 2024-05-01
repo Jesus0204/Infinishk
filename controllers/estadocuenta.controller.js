@@ -3,11 +3,12 @@ const Pago = require('../models/pago.model');
 const PagoExtra = require('../models/pago_extra.model');
 const Alumno = require('../models/alumno.model');
 const Periodo = require('../models/periodo.model');
-const EstudianteProfesional = require('../models/estudianteprofesional.model');
+const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
+const estudianteProfesional = require('../models/estudiante_profesional.model');
 moment.locale('es-mx');
 
 exports.get_estado_cuenta = async (request, response, next) => {
@@ -27,7 +28,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             // Consultas para estudiante
             
             const [pagos] = await Pago.fetchOne(matricula);
-            const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username); 
+            const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username);
             const [deuda] = await Deuda.fetchDeudaEstado(matricula);
             
             // Formatear fechas
@@ -77,7 +78,13 @@ exports.get_estado_cuenta = async (request, response, next) => {
 
         
     } catch (error) {
-        response.status(500).send("Error en la obtención del estado de cuenta: " + error);
+        console.log(error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
     }
 }
 
