@@ -84,7 +84,7 @@ const rutasAlumno = require('./routes/alumnos.routes');
 app.use('/alumnos', rutasAlumno);
 
 const rutasEstadoCuenta = require('./routes/estadocuenta.routes');
-app.use('/estadocuenta', rutasEstadoCuenta);
+app.use('/estado_cuenta', rutasEstadoCuenta);
 
 // Agregar funcion para iterar la lista del ejs, y que el codigo se vea limpio
 app.locals.contienePermiso = (permisos, casoUso) => {
