@@ -7,20 +7,19 @@ const EstudianteProfesional = require('../models/estudianteprofesional.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 
 // Configuras a moment con el locale. 
-const moment = require('moment');
+const moment = require('moment-timezone');
 moment.locale('es-mx');
 
 exports.get_estado_cuenta = async (request, response, next) => {
     try {
 
-        
         const matricula = request.session.username;
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
         
         // Formatear fechas
         for (let count = 0; count < pagosExtra.length; count++) {
-            pagosExtra[count].fechaPago = moment(pagosExtra[count].fechaPago).format('LL');
+            pagosExtra[count].fechaPago = moment(pagosExtra[count].fechaPago).tz('America/Mexico_City').format('LL');
         }
         
         if(matricula[0] == '1') {
@@ -37,7 +36,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             }
 
             for (let count = 0; count < pagos.length; count++) {
-                pagos[count].fechaPago = moment(pagos[count].fechaPago).format('LL');
+                pagos[count].fechaPago = moment(pagos[count].fechaPago).tz('America/Mexico_City').format('LL');
             }
 
             response.render('estadocuenta/estado_cuenta', {
@@ -59,7 +58,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
 
         // Formatear fechas
         for (let count = 0; count < pagosDiplomado.length; count++) {
-            pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).format('LL');
+            pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
         }
 
         response.render('estadocuenta/estado_cuenta', {
