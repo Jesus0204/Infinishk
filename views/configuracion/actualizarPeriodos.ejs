@@ -13,7 +13,7 @@
     }
 
     table {
-        width: 100%;
+        width: 80%;
     }
 
     td {
@@ -51,7 +51,7 @@
     <% if (periodos.length> 0) { %>
         <div class="table-container">
             <h3 class="title is-3">Revisión de datos de Periodos</h3>
-            <table>
+            <table style="margin-left: auto; margin-right: auto">
                 <thead>
                     <tr>
                         <th class="has-text-white">ID</th>
@@ -110,15 +110,20 @@
                 </tbody>
             </table>
             <br>
-            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" id="prev-button-2">Anterior</a>
-                <a class="pagination-next" id="next-button-2">Siguiente</a>
-                <ul class="pagination-list" id="pagination-list-2">
-                    <div id="pagination-numbers-2">
-
-                    </div>
-                </ul>
-            </nav>
+            <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column" style="text-align: center;">
+                    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous" id="prev-button-2">Anterior</a>
+                        <a class="pagination-next" id="next-button-2">Siguiente</a>
+                        <ul class="pagination-list" id="pagination-list-2">
+                            <div id="pagination-numbers-2">
+        
+                            </div>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
             <% } else { %>
                 <h3 class="title is-3">Revisión de datos de Periodos</h3>
                 <br>

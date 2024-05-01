@@ -5,7 +5,15 @@
     <body>
         <section class="section">
             <div class="container">
-                <h3 id="title" class="title"> Actualizar Base de Datos</h3>
+                <h3 id="title" class="title"> Sincronizar Base de Datos</h3>
+                <br>
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Por favor, elige el tipo de dato que se va a sincronizar con el sistema administrativo.
+                    Solo se va a mostrar cualquier dato que no este registrado en la base, ya que todo lo demás al
+                    sincronizar
+                    es actualizado automáticamente.
+                </div>
+                <br>
                 <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
                     <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
                         <span>

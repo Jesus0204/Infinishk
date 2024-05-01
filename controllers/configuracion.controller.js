@@ -651,6 +651,11 @@ exports.get_periodos = async (request, response, next) => {
         // Filtra los usuarios que no fueron actualizados
         const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
 
+        for (let count = 0; count < periodosSinActualizar.length; count++){
+            periodosSinActualizar[count].start = moment(periodosSinActualizar[count].start, 'YYYY-MM-DD').format('LL');
+            periodosSinActualizar[count].end = moment(periodosSinActualizar[count].end, 'YYYY-MM-DD').format('LL');
+        }
+
         response.render('configuracion/actualizarPeriodos', {
             periodos: periodosSinActualizar,
             username: request.session.username || '',
@@ -756,9 +761,12 @@ exports.post_periodos = async (request,response,next) => {
         let success = true;
         const idPeriodo= request.body.id;
         const nombre = request.body.nombre;
-        const inicio = request.body.inicio;
-        const fin = request.body.fin;
+        let inicio_string = request.body.inicio;
+        let fin_string = request.body.fin;
         const status = request.body.status;
+
+        const inicio = moment(inicio_string, 'LL').format();
+        const fin = moment(fin_string, 'LL').format();
     
         await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
         
