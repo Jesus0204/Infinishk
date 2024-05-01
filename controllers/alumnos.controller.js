@@ -44,7 +44,8 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     // Formateas la fecha y hora en el formato deseado
     const fecha_actual = moment(fecha_hora).tz('America/Mexico_City');
 
-    console.log(fechaModificacion);
+    console.log(fecha_actual);
+
     
     try {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
