@@ -115,8 +115,18 @@ function pagar() {
     const motivo = document.getElementById('motivo').value;
     const csrf = document.getElementById('_csrf').value;
     const matricula = document.getElementById('matricula').value;
-    const deuda = document.getElementById('deuda').value;
-    const liquida = document.getElementById('liquida').value;
+    const deuda = document.getElementById('deuda');
+
+    let deuda_mandar = '';
+    if (deuda){
+        deuda_mandar = deuda.value;
+    }
+
+    let liquida_mandar= '';
+    const liquida = document.getElementById('liquida')
+    if (liquida){
+        liquida_mandar = liquida.value;
+    }
     const nota = document.getElementById('nota').value;
     const test = 0;
 
@@ -156,7 +166,7 @@ function pagar() {
             motivo: motivo,
             tipo: tipo,
             test: test,
-            deuda: deuda,
+            deuda: deuda_mandar,
             nota: nota,
             liquida: liquida,
         })
