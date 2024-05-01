@@ -120,7 +120,7 @@ function pagar() {
     const deuda = document.getElementById('deuda').value;
     const liquida = document.getElementById('liquida').value;
     const nota = document.getElementById('nota').value;
-    const test = 2;
+    const test = 0;
 
     fetch('/pagos/mandar_pago', {
         method: 'POST',

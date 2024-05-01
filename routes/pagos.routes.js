@@ -53,7 +53,10 @@ router.post('/registrar_solicitud', isAuth, can_RegistrarSolicitud, pagosControl
 router.get('/pagar', isAuth, can_RealizarPago, pagosController.get_pago_alumno);
 router.post('/mandar_pago', isAuth, can_RealizarPago, pagosController.post_mandar_pago);
 
+router.get('/recibir_pago',pagosController.get_recibir_pago);
 router.post('/recibir_pago',pagosController.post_recibir_pago);
+
+router.post('/respuesta_pago',pagosController.post_respuesta_pago);
 
 router.get('/', isAuth, pagosController.get_pago);
 

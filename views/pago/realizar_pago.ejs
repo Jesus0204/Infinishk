@@ -178,7 +178,7 @@
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any" id="monto"
                                         placeholder="Monto a Pagar"
-                                        value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado) %>">
+                                        value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toFixed(2) %>">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                     </span>

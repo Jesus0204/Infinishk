@@ -504,6 +504,8 @@ exports.post_mandar_pago = (request, response, next) => {
 
     let key = '5DCC67393750523CD165F17E1EFADD21';
 
+    console.log(originalString);
+
     // Lo cifras con las funciones del github de documentación
     let cipherText = cipher.cifrarAES(originalString, key);
 
@@ -531,6 +533,40 @@ exports.post_mandar_pago = (request, response, next) => {
         console.log(error);
     })
 };
+
+exports.get_recibir_pago = async (request, response, next) => {
+    // Obtén los parámetros de la URL
+    var params = request.query;
+
+    // Aquí puedes procesar los parámetros según tus necesidades.
+    // Por ejemplo, puedes verificar si el pago fue exitoso, registrar la transacción en tu base de datos, etc.
+
+    // Renderiza la vista 'miVista.ejs' y pasa los datos que quieres mostrar
+    response.render('pago/recibir_pago', {
+        params: params,
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    });
+}
+
+exports.post_respuesta_pago = async (request, response, next, test, monto) => {
+    // Usa test y monto aquí para generar la redirección
+    if(test === 0){
+        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&operacion=100300421938&fecha=30%2F04%2F24%2020%3A42%3A53&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=FONDOS+INSUFICIENTES&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
+    }
+
+    if(test === 1){
+        response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
+    }
+
+    if(test === 2){
+        response.redirect(`http://localhost:4000/pagos/recibir_pago`);
+    }
+};
+
+
 
 const xml2js = require('xml2js');
 
@@ -564,17 +600,17 @@ exports.post_recibir_pago = async (request, response, next) => {
             // Accede a cada campo del XML y guárdalo en una variable
             status = result.CENTEROFPAYMENTS.response[0];
 
-            if(result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
-                let currentdate = new Date(); 
+            if (result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
+                let currentdate = new Date();
                 let datetime = currentdate.getFullYear() + "-"
-                            + (currentdate.getMonth()+1)  + "-" 
-                            + currentdate.getDate() + " "  
-                            + currentdate.getHours() + ":"  
-                            + currentdate.getMinutes() + ":" 
-                            + currentdate.getSeconds();
+                    + (currentdate.getMonth() + 1) + "-"
+                    + currentdate.getDate() + " "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
                 fecha = datetime;
                 monto = 0;
-            } 
+            }
             else {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
@@ -670,6 +706,7 @@ exports.post_recibir_pago = async (request, response, next) => {
         }
 
         return response.status(200).json({ responseText });
+
     }
 
     if (test === 1) {
@@ -688,24 +725,24 @@ exports.post_recibir_pago = async (request, response, next) => {
 
             console.log(status);
 
-            if(result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
-                let currentdate = new Date(); 
+            if (result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
+                let currentdate = new Date();
                 let datetime = currentdate.getFullYear() + "-"
-                            + (currentdate.getMonth()+1)  + "-" 
-                            + currentdate.getDate() + " "  
-                            + currentdate.getHours() + ":"  
-                            + currentdate.getMinutes() + ":" 
-                            + currentdate.getSeconds();
+                    + (currentdate.getMonth() + 1) + "-"
+                    + currentdate.getDate() + " "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
                 fecha = datetime;
                 monto = 0;
-            } 
+            }
             else {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
                 time = result.CENTEROFPAYMENTS.time[0];
                 fecha = date + time;
             }
-            
+
         });
 
         if (status === 'approved') {
@@ -790,17 +827,17 @@ exports.post_recibir_pago = async (request, response, next) => {
 
             console.log(status);
 
-            if(result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
-                let currentdate = new Date(); 
+            if (result.CENTEROFPAYMENTS == null || result.CENTEROFPAYMENTS.date == null || result.CENTEROFPAYMENTS.time == null || result.CENTEROFPAYMENTS.amount == null) {
+                let currentdate = new Date();
                 let datetime = currentdate.getFullYear() + "-"
-                            + (currentdate.getMonth()+1)  + "-" 
-                            + currentdate.getDate() + " "  
-                            + currentdate.getHours() + ":"  
-                            + currentdate.getMinutes() + ":" 
-                            + currentdate.getSeconds();
+                    + (currentdate.getMonth() + 1) + "-"
+                    + currentdate.getDate() + " "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
                 fecha = datetime;
                 importe = 0;
-            } 
+            }
             else {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
@@ -871,5 +908,6 @@ exports.post_recibir_pago = async (request, response, next) => {
         return response.status(200).json({ responseText });
     }
 
+    return exports.post_respuesta_pago(request, response, next, test, monto);
 
 }
