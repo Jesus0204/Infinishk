@@ -89,120 +89,16 @@ exports.post_fetch_datos = async (request, response, next) => {
         const confirmacion = conf[0][0].horarioConfirmado
         const planesPago = planes[0]
         if (confirmacion === 0) {
-            const periodo = await Periodo.fetchActivo();
-            if(periodo[0].length === 0){
-                response.render('alumnos/consultar_alumno', {
-                    alumnoConsulta: alumnoConsulta[0],
-                    username: request.session.username || '',
-                    permisos: request.session.permisos || [],
-                    rol: request.session.rol || "",
-                    csrfToken: request.csrfToken()
-                });
-            } else {
-                const periodoActivo = periodo[0][0].IDPeriodo;
-                const precioCredito = await PrecioCredito.fetchPrecioActual();
-                const precioActual = precioCredito[0][0].precioPesos;
-                try {
-                    const schedule = await getUserGroups(periodoActivo, matricula);
-        
-                    if (!schedule || !schedule.data) {
-                        throw new Error('No existen user groups para ese usuario');
-                    }
-        
-                    const cursos = schedule.data.map(schedule => {
-                        const {
-                            room = '',
-                            name: nameSalon = '',
-                            schedules = [],
-                            course = {},
-                            professor = {},
-                            school_cycle = {}
-                        } = schedule;
-        
-                        const {
-                            id = periodoActivo,
-                            name = '',
-                            credits = ''
-                        } = course;
-        
-                        const {
-                            name: nombreProfesor = '',
-                            first_surname = '',
-                            second_surname = ''
-                        } = professor;
-        
-                        const {
-                            start_date = '',
-                            end_date = '',
-                        } = school_cycle;
-        
-                        const startDate = new Date(start_date);
-                        const endDate = new Date(end_date);
-        
-                        const startDateFormat = `${startDate.getFullYear()}-${startDate.getMonth() + 1 < 10 ? '0' : ''}${startDate.getMonth() + 1}-${startDate.getDate() < 10 ? '0' : ''}${startDate.getDate()}`;
-                        const endDateFormat = `${endDate.getFullYear()}-${endDate.getMonth() + 1 < 10 ? '0' : ''}${endDate.getMonth() + 1}-${endDate.getDate() < 10 ? '0' : ''}${endDate.getDate()}`;
-        
-                        const nombreSalon = `${room} ${nameSalon}`;
-                        const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
-        
-                        const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
-        
-                        const precioMateria = credits * precioActual;
-        
-                        const horarios = schedules.map(schedule => {
-                            const {
-                                weekday = '',
-                                start_hour = '',
-                                end_hour = '',
-                            } = schedule;
-        
-                            // Crear objetos Date a partir de las horas de inicio y final
-                            const startDate = new Date(start_hour);
-                            const endDate = new Date(end_hour);
-        
-                            const fechaInicio = `${startDate.getHours()}:${startDate.getMinutes() < 10 ? '0' : ''}${startDate.getMinutes()}`;
-                            const fechaTermino = `${endDate.getHours()}:${endDate.getMinutes() < 10 ? '0' : ''}${endDate.getMinutes()}`;
-        
-                            return {
-                                diaSemana: weekday,
-                                fechaInicio,
-                                fechaTermino
-                            };
-                        });
-        
-                        return {
-                            idMateria: id,
-                            nombreMat: name,
-                            creditos: credits,
-                            nombreProfesorCompleto,
-                            nombreSalon,
-                            semestre,
-                            precioMateria,
-                            horarios,
-                            startDateFormat,
-                            endDateFormat,
-                        }
-                    });
-        
-                    const precioTotal = cursos.reduce((total, curso) => total + curso.precioMateria, 0);
-        
-                    response.render('alumnos/consultar_alumno', {
-                        schedule: cursos,
-                        confirmacion: confirmacion,
-                        planesPago: planesPago,
-                        precioTotal: precioTotal,
-                        alumnoConsulta: alumnoConsulta[0],
-                        username: request.session.username || '',
-                        permisos: request.session.permisos || [],
-                        rol: request.session.rol || "",
-                        csrfToken: request.csrfToken()
-                    });
-                    
-                }
-                catch (error) {
-                    console.error('Error realizando operaciones:', error);
-                }
-            }
+            response.render('alumnos/consultar_alumno', {
+                error:true,
+                confirmacion: confirmacion,
+                planesPago: planesPago,
+                alumnoConsulta: alumnoConsulta[0],
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                csrfToken: request.csrfToken()
+            });
         }
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(matricula)
@@ -212,6 +108,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             const precioTotal = (precio[0][0].Preciototal - desc)
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
+                error:false,
                 periodoExistente: periodoExistente,
                 schedule: schedule,
                 precioTotal: precioTotal,
@@ -225,6 +122,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             });
         }
     } catch(error) {
+        console.log(error);
         response.status(500).render('500', {
             username: request.session.username || '',
             permisos: request.session.permisos || [],

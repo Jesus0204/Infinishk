@@ -153,10 +153,14 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
                     <div id="diplomados_activos" class="container">
+                        <% if (error) { %>
+                            <div id="errorNotification" class="notification is-danger">
+                                <button id="closeNotification" class="delete" type="button"></button>
+                                Este alumno aun no ha confirmado su horario.
+                            </div>
+                        <% } %>
                         <% if(confirmacion){%>
                             <h3 class="title is-2">Consultar horario</h3>
-                            <%}else{%>
-                                <h3 class="title is-2">Confirmar horario</h3>
                                 <%}%>
                                     <% if(confirmacion===1){%>
                                         <% if (schedule[0].length===0) { %>
