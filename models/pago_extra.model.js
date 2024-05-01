@@ -2,7 +2,7 @@ const db = require('../util/database');
 
 module.exports = class PagoExtra {
 
-    constructor(mi_motivoPago, mi_montoPagar, mi_fecha) {
+    constructor(mi_motivoPago, mi_montoPagar) {
         this.motivoPago = mi_motivoPago;
         this.montoPagar = mi_montoPagar;
     }
@@ -49,4 +49,11 @@ module.exports = class PagoExtra {
         return db.execute('Select IDPagosExtras from pagosextras WHERE montoPagar = ?',[importe]);
     }
 
-};
+    static fetchSinPagar(matricula){
+        return db.execute('SELECT * FROM pagosextras AS P, liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 0 AND Matricula = ?', [matricula]);
+    }
+
+    static fetchPagados(matricula){
+        return db.execute('SELECT * FROM pagosextras AS P, liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 1 AND Matricula = ?', [matricula]);
+    }
+}

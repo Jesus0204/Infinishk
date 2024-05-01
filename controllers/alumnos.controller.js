@@ -8,7 +8,11 @@ const PrecioCredito = require('../models/precio_credito.model');
 const Materia = require('../models/materia.model');
 const Fichas = require('../models/fichas_pago.model');
 const EstudianteProfesional = require('../models/estudianteprofesional.model');
-const EstudianteDiplomado = require('../models/estudiantediplomado.model')
+const EstudianteDiplomado = require('../models/estudiantediplomado.model');
+const Deuda = require('../models/deuda.model');
+const Pago = require('../models/pago.model');
+const PagaDiplomado = require('../models/pagadiplomado.model');
+const PagoExtra = require('../models/pago_extra.model');
 const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
 const { request, response } = require('express');
 
@@ -79,6 +83,14 @@ exports.post_fetch_datos = async (request, response, next) => {
     try {
         let alumnoConsulta;
 
+        const [pagos] = await Pago.fetchOne(matricula);
+        const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
+        const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
+        const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username); 
+        const [deuda] = await Deuda.fetchDeuda(matricula);
+        const pagosDiplomado = await PagaDiplomado.fetchPagosDiplomado(matricula);
+        const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
+
         if(matricula.startsWith('100')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
         } else {
@@ -97,6 +109,14 @@ exports.post_fetch_datos = async (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                estudianteProfesional: estudianteProfesional[0][0],
+                estadoCuenta: estadoCuenta,
+                pagos: pagos,
+                deuda: deuda,
+                pagosExtra: cargosExtra,
+                pagadosExtra: pagosExtra,
+                matricula: matricula,
+                pagosDiplomado: pagosDiplomado[0],
                 csrfToken: request.csrfToken()
             });
         }
@@ -118,6 +138,14 @@ exports.post_fetch_datos = async (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                estudianteProfesional: estudianteProfesional[0][0],
+                estadoCuenta: estadoCuenta,
+                pagos: pagos,
+                deuda: deuda,
+                pagosExtra: cargosExtra,
+                pagadosExtra: pagosExtra,
+                matricula: matricula,
+                pagosDiplomado: pagosDiplomado[0],
                 csrfToken: request.csrfToken()
             });
         }
