@@ -453,6 +453,8 @@ exports.post_mandar_pago = (request, response, next) => {
     monto = monto.toFixed(2);
     let matricula = request.body.matricula;
 
+    console.log(monto,matricula);
+
     // Usar el paquete para facilidad y poner true para que este indentado
     var XMLWriter = require('xml-writer');
     xml = new XMLWriter(true);
