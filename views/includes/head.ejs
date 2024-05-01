@@ -15,6 +15,8 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script src="/js/bulma-calendar.min.js"></script>
 </head>
 
@@ -143,7 +145,7 @@
                         <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
                         <hr class="navbar-divider">
                         <div class="desktop">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/fetch_fichas">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>
@@ -153,7 +155,7 @@
                             </a>
                         </div>
                         <div class="mobile">
-                            <a class="navbar-item">
+                            <a class="navbar-item" href="/alumnos/fetch_fichas">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-money-check-dollar"></i>
                                 </span>

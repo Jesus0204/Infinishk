@@ -50,7 +50,6 @@ router.post('/reporte_ingresos', isAuth, can_ReportesIngresos, pagosController.p
 router.get('/reporte_metodo_pago', isAuth, can_ReportesMetodoPago, pagosController.get_metodo_pago);
 router.post('/reporte_metodo_pago', isAuth, can_ReportesMetodoPago, pagosController.post_metodo_pago);
 
-
 // Archivo Transferencia
 router.get('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_subir_archivo);

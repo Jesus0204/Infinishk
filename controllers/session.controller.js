@@ -96,32 +96,6 @@ exports.get_logout = (request, response, next) => {
     });
 };
 
-exports.get_signup = (request, response, next) => {
-    const error = request.session.error || '';
-    request.session.error = '';
-    response.render('login', {
-        username: request.session.username || '',
-        registrar: true,
-        error: error,
-        csrfToken: request.csrfToken(),
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-    });
-};
-
-exports.post_signup = (request, response, next) => {
-    const new_user = new Usuario(request.body.IDUsuario, request.body.password);
-    new_user.updateContra()
-        .then(([rows, fieldData]) => {
-            response.redirect('/auth/login');
-        })
-        .catch((error) => {
-            request.session.error = 'Nombre de usuario invalido.';
-            console.log(error)
-            response.redirect('/auth/signup');
-        })
-}
-
 exports.get_set_password = (request,response,next) =>{
     const token = request.query.token;
     const matricula = request.query.matricula; // Obtiene la matrícula de la URL
