@@ -61,8 +61,8 @@ function mensaje_beca() {
 
 ref.addEventListener('input', checar_contenido);
 beca.addEventListener('input', checar_contenido);
-ref.addEventListener('input', mensaje_descuento);
-beca.addEventListener('input', mensaje_nota);
+ref.addEventListener('input', mensaje_ref);
+beca.addEventListener('input', mensaje_beca);
 
 function modificarProf(ref, beca) {
     const csrf = document.getElementById('_csrf').value;

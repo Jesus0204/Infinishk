@@ -26,7 +26,7 @@
 
             <div class="notification">
                 <div class="columns is-vcentered">
-                    <div class="column is-3">
+                    <div class="column is-2">
                         <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
@@ -39,9 +39,9 @@
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Matricula %></div>
                     </div>
                     <!-- modificable -->
-                    <div class="column is-3">
+                    <div class="column is-2">
                         <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
-                        <input id="ref" name="ref" class="input is-medium" type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">%
+                        <input id="ref" name="ref" class="input is-small" type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
 
                         <p id="ayuda_ref_vacia"
                             class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
@@ -67,9 +67,9 @@
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].semestreActual %></div>
                     </div>
                     <!-- modificable -->
-                    <div class="column is-2">
-                        <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
-                            <input id="beca" name="beca" class="input is-medium" type="number" step="any" value="<%= alumnoConsulta[0].porcBeca %>">%
+                    <div class="column is-1">
+                        <label class="block font-semibold"><strong>% de Beca:</strong></label>
+                            <input id="beca" name="beca" class="input is-small" type="number" step="any" value="<%= alumnoConsulta[0].porcBeca %>">
 
                             <p id="ayuda_beca_vacia"
                                 class="help is-hidden has-text-danger-dark ayuda-beca-vacia"
