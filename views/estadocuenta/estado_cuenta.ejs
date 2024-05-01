@@ -37,6 +37,8 @@
                     </a>
                 </li>
                 <% } %>
+
+                <% if(matricula[0] == '1') { %>
                 <li id="nav_extras" <% if(matricula[0] == '8') { %>class="is-active" <%  }%>>
                     <a onclick="extras()" >
                         <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
@@ -49,6 +51,20 @@
                         <span>Historial pagos</span>
                     </a>
                 </li>
+                <% } else if(matricula[0] == '8') { %>
+                    <li id="nav_pagos" class="is-active">
+                        <a onclick="pagos()">
+                            <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
+                            <span>Historial pagos</span>
+                        </a>
+                    </li>
+                    <li id="nav_extras">
+                        <a onclick="extras()">
+                            <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
+                            <span>Cargos extras</span>
+                        </a>
+                    </li>
+                <% } %>
             </ul>
         </div>
 
@@ -82,13 +98,22 @@
                                 <% } %>
                                 <div class="column">
                                     <strong>Pendiente:</strong>
-                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx'); %>
+                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Total: </strong>
-                                    $<%= deuda[count].montoAPagar.toLocaleString('mx') %>
+                                    $<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Pagado:</strong>
-                                    $<%= deuda[count].montoPagado.toLocaleString('mx') %>
+                                    $<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
@@ -121,13 +146,22 @@
                                 <% } %>
                                 <div class="column">
                                     <strong>Pendiente:</strong>
-                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx'); %>
+                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Total: </strong>
-                                    $<%= deuda[count].montoAPagar.toLocaleString('mx') %>
+                                    $<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Pagado:</strong>
-                                    $<%= deuda[count].montoPagado.toLocaleString('mx') %>
+                                    $<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
@@ -158,13 +192,22 @@
                                 <% } %>
                                 <div class="column">
                                     <strong>Pendiente:</strong>
-                                    $<%= deuda[count + 1].saldoPendiente.toLocaleString('mx'); %>
+                                    $<%= deuda[count + 1].saldoPendiente.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Total: </strong>
-                                    $<%= deuda[count + 1].montoAPagar.toLocaleString('mx') %>
+                                    $<%= deuda[count + 1].montoAPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                     <br>
                                     <strong>Pagado:</strong>
-                                    $<%= deuda[count + 1].montoPagado.toLocaleString('mx') %>
+                                    $<%= deuda[count + 1].montoPagado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
@@ -181,13 +224,16 @@
         </div>
         <% } %>
         
-        <div <% if(matricula[0] == '1') { %>class="is-hidden" <% } %> id="extras">
+        <div class="is-hidden" id="extras">
             <% pagosExtra.forEach(pagosExtra => { %>
             <% if(pagosExtra.montoPagar !== 0) { %>
             <div class="box">
                 <div class="columns is-vcentered">
                     <div class="column">
-                        <p><strong>Monto a pagar:</strong> <%= pagosExtra.montoPagar.toFixed(2) %> </p>
+                        <p><strong>Monto a pagar:</strong> <%= pagosExtra.montoPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %> </p>
                         <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
                     </div>
                 </div>
@@ -196,17 +242,21 @@
             <% }); %>
         </div>
 
-        <div class="is-hidden" id="pagos">
+        <div <% if(matricula[0] == '1') { %>class="is-hidden" <% } %> id="pagos">
             <div class="tabs is-boxed">
                 <ul>
                     <li class="is-active" id="nav_pagoscol">
                         <a onclick="pagoscol()">
-                            <span>Pagos de colegiatura</span>
+                            <% if(matricula[0] == '1') { %>
+                                <span>Pagos de colegiatura</span>
+                            <% } else { %>
+                                <span>Pagos de Diplomado</span>
+                            <% } %>
                         </a>
                     </li>
                     <li id="nav_pagosextra">
                         <a onclick="pagosextra()">
-                            <span>Pagos extras</span>
+                            <span>Otros Pagos</span>
                         </a>
                     </li>
 
@@ -221,7 +271,11 @@
                     <div class="box">
                         <div class="columns is-vcentered">
                             <div class="column">
-                                <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
+                                <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %> 
+                                </p>
                                 <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
                                 <p><strong>Motivo de pago:</strong> <%= pagos.motivo %> </p>
                                 <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
@@ -240,7 +294,11 @@
                                 <div class="box">
                                     <div class="columns is-vcentered">
                                         <div class="column">
-                                            <p><strong>Monto Pagado:</strong> <%= pagos.montoPagado %> </p>
+                                            <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                 minimumFractionDigits: 2,
+                                                  maximumFractionDigits: 2
+                                                }) %> 
+                                            </p>
                                             <p><strong>Nombre del diplomado:</strong> <%= pagos.nombreDiplomado %> </p>
                                             <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
                                             <p><strong>Motivo de pago:</strong> <%= pagos.Motivo %> </p>
@@ -263,7 +321,10 @@
                 <div class="box">
                     <div class="columns is-vcentered">
                         <div class="column">
-                            <p><strong>Monto Pagado:</strong> <%= pagadosExtra.montoPagar %> </p>
+                            <p><strong>Monto Pagado:</strong> $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %> </p>
                             <p><strong>Fecha de pago:</strong> <%= pagadosExtra.fechaPago %> </p>
                             <p><strong>Motivo de pago:</strong> <%= pagadosExtra.motivoPago %> </p>
                             <p><strong>Método:</strong> <%= pagadosExtra.metodoPago %> </p>
