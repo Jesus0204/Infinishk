@@ -17,9 +17,20 @@
             </div>
 
             <!-- datos personales -->
+
+            <div id="modificacion_datos" class="notification is-hidden"
+                style="background-color: #5a6581; color:#ffffff;">
+                <button id="btn_eliminar_estatus" class="delete"></button>
+                ¡Datos modificados! Recargando datos...
+            </div> 
+
             <div class="notification">
                 <div class="columns is-vcentered">
                     <div class="column is-3">
+                        <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
+                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
+
                         <label class="block font-semibold"><strong>Nombre:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Nombre %> <%= alumnoConsulta[0].Apellidos %></div>
                     </div>
@@ -27,31 +38,70 @@
                         <label class="block font-semibold"><strong>Matrícula:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Matricula %></div>
                     </div>
+                    <!-- modificable -->
                     <div class="column is-3">
                         <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
-                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].referenciaBancaria %></div>
+                        <input id="ref" name="ref" class="input is-medium" type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">%
+
+                        <p id="ayuda_ref_vacia"
+                            class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor escribe una referencia bancaria.</p>
+                        <p id="ayuda_ref_negativa"
+                            class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            La referencia bancaria no puede ser negativa.</p>
+                        <p id="ayuda_ref_exponente"
+                            class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            La referencia bancaria no puede tener exponentes.</p>
+
                     </div>
                     <% if (alumnoConsulta[0].Matricula.startsWith('100')) { %>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Plan de Estudios:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].planEstudio %></div>
+                    </div>
                     <div class="column is-2">
                         <label class="block font-semibold"><strong>Semestre:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].semestreActual %></div>
                     </div>
-                      <% if (alumnoConsulta[0].porcBeca !== 0) { %>
+                    <!-- modificable -->
                     <div class="column is-2">
                         <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
-                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].porcBeca %>%</div>
+                            <input id="beca" name="beca" class="input is-medium" type="number" step="any" value="<%= alumnoConsulta[0].porcBeca %>">%
+
+                            <p id="ayuda_beca_vacia"
+                                class="help is-hidden has-text-danger-dark ayuda-beca-vacia"
+                                style="padding: 0.5em; margin-bottom: -2em;">
+                                Por favor escribe una beca. Si no deseas aplicar una beca, escribe 0.</p>
+                            <p id="ayuda_beca_negativa"
+                                class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
+                                style="padding: 0.5em; margin-bottom: -2em;">
+                                La beca no puede ser negativa.</p>
+                            <p id="ayuda_beca_exponente"
+                                class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                                style="padding: 0.5em; margin-bottom: -2em;">
+                                La beca no puede tener exponentes.</p>
                       </div>
-                    <% } %>
+                    </div>
+                    <div class="column is-narrow">
+                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarProf('<%= alumnoConsulta[0].referenciaBancaria %>, <%= alumnoConsulta[0].porcBeca%>')">Guardar Cambios</button>
+                    </div>
                     <% } else { %>
+                    <div class="column is-3">
+                        <label class="block font-semibold"><strong>Diplomado:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].nombreDiplomado %></div>
+                    </div>
                     <div class="column is-3">
                         <label class="block font-semibold"><strong>Fecha de Inscripción:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].fechaInscripcion %></div>
                     </div>
-                    <% } %>
                     </div>
                     <div class="column is-narrow">
-                        <button class="button is-primary">Guardar Cambios</button>
+                        <button id="Boton_modificar" type="submit" class="button is-primary is-responsive" onclick="modificarDip('<%= alumnoConsulta[0].referenciaBancaria %>')">Guardar Cambios</button>
                     </div>
+                    <% } %>
                 </div>
             </div>
             
@@ -91,7 +141,7 @@
                 </div>
 
                 <div id="otros_cargos" class="is-hidden">
-                    <p>Otros cargos</p>
+                    <p>Otros Cargos</p>
                 </div>
 
                 <div id="historial" class="is-hidden">

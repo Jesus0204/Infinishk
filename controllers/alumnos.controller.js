@@ -51,18 +51,27 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     // response.redirect('/alumnos/datos_alumno');
 }
 
-exports.post_fichas_modify = async (request, response, next) => { 
-    const { descuentoNum, fechaFormat, notaNum, id } = request.body;
-    const modificador = request.session.username;
+exports.post_datos_modify_prof = async (request, response, next) => { 
+    const { ref, beca, alumno } = request.body;
 
     try {
-        const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        const data = await EstudianteProfesional.update(alumno, ref, beca);
         response.status(200).json({ success: true, data: data });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
 };
 
+exports.post_datos_modify_dip = async (request, response, next) => { 
+    const { ref, alumno } = request.body;
+
+    try {
+        const data = await EstudianteDiplomado.update(alumno, ref);
+        response.status(200).json({ success: true, data: data });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
+};
 
 exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
@@ -271,4 +280,16 @@ exports.get_fichas = (request, response, next) => {
         rol: request.session.rol || "",
         csrfToken: request.csrfToken()
     });
+};
+
+exports.post_fichas_modify = async (request, response, next) => { 
+    const { descuentoNum, fechaFormat, notaNum, id } = request.body;
+    const modificador = request.session.username;
+
+    try {
+        const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
+        response.status(200).json({ success: true, data: data });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
 };
