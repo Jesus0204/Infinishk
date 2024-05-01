@@ -219,8 +219,8 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const profesor = nombreProfesorCompleto[i];
             const salonCurso = salon[i];
             let horarioCurso = grupoHorarioValidado[i];
-            const fechaInicioCurso = moment(fechaInicio[i], 'LL').format();
-            const fechaFinCurso = moment(fechaFin[i], 'LL').format();
+            const fechaInicioCurso = moment(fechaInicio[i], 'LL').format('YYYY-MM-DD');
+            const fechaFinCurso = moment(fechaFin[i], 'LL').format('YYYY-MM-DD');
             const IDMateria = idMateria[i];
         
             // Si horarioCurso es undefined, establecerlo en una cadena vacía
