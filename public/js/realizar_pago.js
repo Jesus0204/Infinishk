@@ -115,7 +115,7 @@ function pagar() {
     const motivo = document.getElementById('motivo').value;
     const csrf = document.getElementById('_csrf').value;
     const matricula = document.getElementById('matricula').value;
-    const deuda = document.getElementById('deuda');
+    const deuda = document.getElementById('deuda');  
 
     let deuda_mandar = '';
     if (deuda){
@@ -168,7 +168,7 @@ function pagar() {
             test: test,
             deuda: deuda_mandar,
             nota: nota,
-            liquida: liquida,
+            liquida: liquida_mandar,
         })
     }).then((result) => {
         return result.json();
@@ -193,7 +193,7 @@ function pagar() {
     }).then((result) => {
         return result.json();
     }).then((data) => {
-        // Aquí puedes hacer algo con la respuesta si es necesario
+        window.location.href = data.redirectUrl; 
     }).catch(err => {
         console.log(err);
     }); 

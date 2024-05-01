@@ -454,7 +454,7 @@ exports.post_mandar_pago = (request, response, next) => {
     monto = monto.toFixed(2);
     let matricula = request.body.matricula;
 
-    console.log(monto,matricula);
+    console.log(monto, matricula);
 
     // Usar el paquete para facilidad y poner true para que este indentado
     var XMLWriter = require('xml-writer');
@@ -559,7 +559,11 @@ exports.post_respuesta_pago = async (request, response, next) => {
     let test = request.body.test;
     let monto = request.body.monto;
 
-    let correo = await Usuario.fetchCorreo(request.body.matricula);
+    let mail = await Usuario.fetchCorreo(request.body.matricula);
+
+    let correo = mail[0][0].correoElectronico
+
+    console.log(test, monto, correo)
 
     if (test === 0) {
         response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
@@ -590,8 +594,6 @@ exports.post_recibir_pago = async (request, response, next) => {
     let monto = request.body.monto;
     let nota = request.body.nota;
     let tipo = request.body.tipo;
-    let IDColegiatura = await Colegiatura.fetchColegiaturaActiva(matricula);
-    let IDCol = IDColegiatura[0][0].IDColegiatura;
     let status = '';
     let date = '';
     let fecha = '';
@@ -647,6 +649,8 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (status === 'approved') {
             if (tipo === 'Normal') {
                 if (primerNumero === '1') {
+                    let IDColegiatura = await Colegiatura.fetchColegiaturaActiva(matricula);
+                    let IDCol = IDColegiatura[0][0].IDColegiatura;
                     console.log("Es un pago de colegiatura aceptado")
                     Deuda.fetchNoPagadas(IDCol)
                         .then(async ([deudas_noPagadas, fieldData]) => {
@@ -680,7 +684,7 @@ exports.post_recibir_pago = async (request, response, next) => {
                 else if (primerNumero === '8') {
                     console.log("Es un pago de diplomado aceptado")
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado[0][0].IDDiplomado, fechaUsar, monto, motivo, nota);
                 }
             }
 
@@ -690,45 +694,45 @@ exports.post_recibir_pago = async (request, response, next) => {
             }
         }
 
-            else if (status === 'denied') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura denegado")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
-                    }
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado denegado")
-                        const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
-                    }
+        else if (status === 'denied') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura denegado")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra denegado")
-                    await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado denegado")
+                    const IDDiplomado = await Cursa.fetchDiplomado(matricula);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
                 }
             }
 
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra denegado")
+                await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+            }
+        }
 
-            else if (status === 'error') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura con error")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    }
+        else if (status === 'error') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura con error")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado con error")
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
-                    }
                 }
 
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra con error")
-                    await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado con error")
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
                 }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra con error")
+                await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+            }
+        }
 
         return response.status(200).json({ responseText });
     }
@@ -786,6 +790,8 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (status === 'approved') {
             if (tipo === 'Normal') {
                 if (primerNumero === '1') {
+                    let IDColegiatura = await Colegiatura.fetchColegiaturaActiva(matricula);
+                    let IDCol = IDColegiatura[0][0].IDColegiatura;
                     console.log("Es un pago de colegiatura aceptado")
                     Deuda.fetchNoPagadas(IDCol)
                         .then(async ([deudas_noPagadas, fieldData]) => {
@@ -829,45 +835,45 @@ exports.post_recibir_pago = async (request, response, next) => {
             }
         }
 
-            else if (status === 'denied') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura denegado")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
-                    }
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado denegado")
-                        const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
-                    }
+        else if (status === 'denied') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura denegado")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra denegado")
-                    await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado denegado")
+                    const IDDiplomado = await Cursa.fetchDiplomado(matricula);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
                 }
             }
 
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra denegado")
+                await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+            }
+        }
 
-            else if (status === 'error') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura con error")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    }
+        else if (status === 'error') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura con error")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado con error")
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
-                    }
                 }
 
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra con error")
-                    await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado con error")
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
                 }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra con error")
+                await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+            }
+        }
 
         return response.status(200).json({ responseText });
     }
@@ -929,6 +935,8 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (status === 'approved') {
             if (tipo === 'Normal') {
                 if (primerNumero === '1') {
+                    let IDColegiatura = await Colegiatura.fetchColegiaturaActiva(matricula);
+                    let IDCol = IDColegiatura[0][0].IDColegiatura;
                     console.log("Es un pago de colegiatura aceptado")
                     Deuda.fetchNoPagadas(IDCol)
                         .then(async ([deudas_noPagadas, fieldData]) => {
@@ -972,45 +980,45 @@ exports.post_recibir_pago = async (request, response, next) => {
             }
         }
 
-            else if (status === 'denied') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura denegado")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
-                    }
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado denegado")
-                        const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
-                    }
+        else if (status === 'denied') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura denegado")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
                 }
-
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra denegado")
-                    await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado denegado")
+                    const IDDiplomado = await Cursa.fetchDiplomado(matricula);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
                 }
             }
 
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra denegado")
+                await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
+            }
+        }
 
-            else if (status === 'error') {
-                if (tipo === 'Normal') {
-                    if (primerNumero === 1) {
-                        console.log("Es un pago de colegiatura con error")
-                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    }
+        else if (status === 'error') {
+            if (tipo === 'Normal') {
+                if (primerNumero === 1) {
+                    console.log("Es un pago de colegiatura con error")
+                    await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-                    else if (primerNumero === 8) {
-                        console.log("Es un pago de diplomado con error")
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
-                    }
                 }
 
-                else if (tipo === 'Otro') {
-                    console.log("Es un pago extra con error")
-                    await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                else if (primerNumero === 8) {
+                    console.log("Es un pago de diplomado con error")
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
                 }
             }
+
+            else if (tipo === 'Otro') {
+                console.log("Es un pago extra con error")
+                await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+            }
+        }
 
         return response.status(200).json({ responseText });
     }
