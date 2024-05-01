@@ -61,10 +61,10 @@ exports.post_registrar_pago_extra = (request, response, next) => {
 
                     Pago_Extra.fetchNoAsignados()
                         .then(([pagosExtraNoAsignados, fieldData]) => {
-                             // Conviertes las fechas a tu zona horaria con moment
-                             for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
-                                 pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).tz('America/Mexico_City').format('LL');
-                             };
+                            // Conviertes las fechas a tu zona horaria con moment
+                            for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
+                                pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).tz('America/Mexico_City').format('LL');
+                            };
 
                             response.render('pago/pagos_extra', {
                                 pagosNoAsignados: pagosExtraNoAsignados,
@@ -117,11 +117,11 @@ exports.get_pago_extra = (request, response, next) => {
 
             Pago_Extra.fetchNoAsignados()
                 .then(([pagosExtraNoAsignados, fieldData]) => {
-                        // Conviertes las fechas a tu zona horaria con moment
-                        for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
-                            pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).tz('America/Mexico_City').format('LL');
-                        };
-                        
+                    // Conviertes las fechas a tu zona horaria con moment
+                    for (let count = 0; count < pagosExtraNoAsignados.length; count++) {
+                        pagosExtraNoAsignados[count].createdAt = moment(new Date(pagosExtraNoAsignados[count].createdAt)).tz('America/Mexico_City').format('LL');
+                    };
+
                     response.render('pago/pagos_extra', {
                         pagosNoAsignados: pagosExtraNoAsignados,
                         pagos: pagosExtra,
@@ -231,8 +231,8 @@ exports.get_solicitudes = (request, response, next) => {
 exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
-        solicitud_pago: true, 
-        consultar_alumno: false, 
+        solicitud_pago: true,
+        consultar_alumno: false,
         fichas_pago: false,
         username: request.session.username || '',
         permisos: request.session.permisos || [],
@@ -327,7 +327,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
 exports.get_ingresos = async (request, response, next) => { 
     try {
         const [periodos, fieldData] = await Reporte.fetchPeriodos();
-        
+
         let ingresosData = {};
 
         response.render('pago/reporte_ingresos', {
@@ -350,11 +350,11 @@ exports.get_ingresos = async (request, response, next) => {
 };
 
 exports.post_ingresos = async (request, response, next) => {
-    try{
+    try {
         const periodoSelect = request.body.periodo;
         const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
         const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
-        
+
         let ingresosData = {};
 
         if (fechaInicio.getMonth() >= 0 && fechaInicio.getMonth() <= 5) {
@@ -374,7 +374,9 @@ exports.post_ingresos = async (request, response, next) => {
             ingresosData.Noviembre = await Reporte.fetchIngresosMes(11, fechaInicio, fechaFin);
             ingresosData.Diciembre = await Reporte.fetchIngresosMes(12, fechaInicio, fechaFin);
         }
-        response.send({ingresosData});
+        response.send({
+            ingresosData
+        });
     } catch (error) {
         response.status(500).render('500', {
             username: request.session.username || '',
@@ -389,7 +391,7 @@ exports.post_ingresos = async (request, response, next) => {
 exports.get_metodo_pago = async (request, response, next) => {
     try {
         const [periodos, fieldData] = await Reporte.fetchPeriodos();
-        
+
         let metodoPagoData = {};
 
         response.render('pago/reporte_metodo_pago', {
@@ -412,12 +414,12 @@ exports.get_metodo_pago = async (request, response, next) => {
 };
 
 exports.post_metodo_pago = async (request, response, next) => {
-    try{
+    try {
         const periodoSelect = request.body.periodo;
         const tipoSelect = request.body.tipo;
         const fechaInicio = await Reporte.fetchFechaInicio(periodoSelect);
         const fechaFin = await Reporte.fetchFechaFin(periodoSelect);
-        
+
         let metodoPagoData = {};
 
         if (fechaInicio.getMonth() >= 0 && fechaInicio.getMonth() <= 5) {
@@ -438,7 +440,9 @@ exports.post_metodo_pago = async (request, response, next) => {
             metodoPagoData.Diciembre = await Reporte.fetchMetodosPagoMes(12, fechaInicio, fechaFin);
         }
         console.log(metodoPagoData)
-        response.send({metodoPagoData});
+        response.send({
+            metodoPagoData
+        });
     } catch (error) {
         response.status(500).render('500', {
             username: request.session.username || '',
@@ -755,7 +759,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
 exports.get_registro_transferencias = (request, response, next) => {
     response.render('pago/registro_transferencia', {
         subir: true,
-        error:false,
+        error: false,
         revisar: false,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
@@ -780,7 +784,12 @@ exports.post_subir_archivo = (request, response, next) => {
     const parser = fileStream.pipe(csvParser());
 
     parser.on('data', (data) => {
-        const { Fecha, Hora, Importe, Concepto } = data;
+        const {
+            Fecha,
+            Hora,
+            Importe,
+            Concepto
+        } = data;
         const Referencia = Concepto.substring(0, 7);
         const Matricula = Concepto.substring(0, 6);
         const inicioRef = Concepto.substring(0, 1);
@@ -788,7 +797,14 @@ exports.post_subir_archivo = (request, response, next) => {
         const mes = Fecha.substring(3, 5);
         const anio = Fecha.substring(5, 9);
         const fechaFormato = `${anio}-${mes}-${dia} ${Hora}`;
-        filas.push({ fechaFormato, Hora, Importe, Referencia, Matricula, inicioRef });
+        filas.push({
+            fechaFormato,
+            Hora,
+            Importe,
+            Referencia,
+            Matricula,
+            inicioRef
+        });
     });
 
     parser.on('end', async () => {
@@ -806,8 +822,7 @@ exports.post_subir_archivo = (request, response, next) => {
                 if (nombreCompleto && nombreCompleto[0] && nombreCompleto[0][0] && nombreCompleto[0][0].Nombre !== undefined) {
                     nombre = String(nombreCompleto[0][0].Nombre);
                     apellidos = String(nombreCompleto[0][0].Apellidos);
-                }
-                else {
+                } else {
                     tipoPago = "Pago no Reconocido"
                 }
             }
@@ -820,9 +835,7 @@ exports.post_subir_archivo = (request, response, next) => {
 
                 if (deuda && deuda[0] && deuda[0].length === 0) {
                     montoAPagar = 0;
-                }
-
-                else {
+                } else {
                     montoAPagar = deuda && deuda[0] && deuda[0][0] && deuda[0][0].montoAPagar !== undefined ?
                         Number(deuda[0][0].montoAPagar.toFixed(2)) :
                         Number(deudaPagada[0][0].montoAPagar.toFixed(2));
@@ -858,11 +871,9 @@ exports.post_subir_archivo = (request, response, next) => {
                     if (tipoPago === 'Pago Completo') {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
-                    }
-                    else if (tipoPago === 'Pago no Reconocido') {
+                    } else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
-                    }
-                    else {
+                    } else {
                         tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
                         deudaEstudiante = montoAPagar;
                     }
@@ -891,8 +902,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     if (tipoPago === 'Pago Completo') {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 'N/A';
-                    }
-                    else if (tipoPago === 'Pago no Reconocido') {
+                    } else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
                     } else {
                         tipoPago = 'Pago de Diplomado'; // Si el importe no coincide con el monto a pagar
@@ -902,7 +912,13 @@ exports.post_subir_archivo = (request, response, next) => {
                 tipoPago = 'Pago a Ignorar';
             }
 
-            resultados.push({ ...fila, tipoPago, deudaEstudiante, nombre, apellidos });
+            resultados.push({
+                ...fila,
+                tipoPago,
+                deudaEstudiante,
+                nombre,
+                apellidos
+            });
         }
 
         // Renderizar la vista con los resultados
@@ -930,7 +946,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const tipoPago = request.body.tipoPago;
     const fecha = request.body.fecha;
     const nota = request.body.nota;
-    
+
     if (tipoPago === 'Pago de Colegiatura') {
         let diferencia = 0;
         let montoAPagar = 0;
@@ -940,9 +956,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
 
         if (deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
             montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
-        }
-        
-        else{
+        } else {
             success = false;
             response.json({
                 success: success,
@@ -950,7 +964,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             });
             return;
         }
-        
+
         const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
         const idColegiatura = colegiatura[0][0].IDColegiatura;
 
@@ -968,43 +982,45 @@ exports.post_registrar_transferencia = async (request, response, next) => {
 
             if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
                 await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
-            }
-
-            else {
+            } else {
                 await Alumno.update_credito(matricula, diferencia);
             }
 
         }
-    }
-    else if (tipoPago === 'Pago de Diplomado') {
+    } else if (tipoPago === 'Pago de Diplomado') {
         const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
         PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
-    }
-    else if (tipoPago === 'Pago a Registrar') {
-        pagosRegistrar.push({ nombre, matricula, referencia, importe, deuda, tipoPago, fecha });
-    }
-    else if (tipoPago === 'Pago Extra') {
+    } else if (tipoPago === 'Pago a Registrar') {
+        pagosRegistrar.push({
+            nombre,
+            matricula,
+            referencia,
+            importe,
+            deuda,
+            tipoPago,
+            fecha
+        });
+    } else if (tipoPago === 'Pago Extra') {
         const idLiquida = await Liquida.fetchID(matricula);
 
         if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
             const idPagoExtra = await Pago_Extra.fetchID(importe);
             if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
                 Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
-            }
-            else {
+            } else {
                 success = false;
             }
-        }
-        else {
+        } else {
             const idPagoExtra = await Pago_Extra.fetchID(importe);
             if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
                 Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
-            }
-            else {
+            } else {
                 success = false;
             }
         }
     }
 
-    response.json({ success: success });
+    response.json({
+        success: success
+    });
 }

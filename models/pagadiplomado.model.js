@@ -35,4 +35,12 @@ module.exports = class pagoDiplomado {
         JOIN Diplomado AS D ON PD.IDDiplomado = D.IDDiplomado JOIN Cursa AS C ON D.IDDiplomado = C.IDDiplomado 
         WHERE PD.fechaPago BETWEEN ? AND ? ORDER BY PD.Matricula ASC`,[fechaInicio,fechaFin]);
     }
-}
+
+    static fetchPagosDiplomado(matricula){
+        return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, P.Motivo, P.metodoPago, P.Nota, D.nombreDiplomado
+        FROM pagadiplomado AS P, diplomado AS D 
+        WHERE P.IDDiplomado = D.IDDiplomado AND Matricula = ?
+        ORDER BY P.fechaPago ASC
+        LIMIT 0, 1000`, [matricula]);
+    }
+};

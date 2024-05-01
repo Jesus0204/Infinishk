@@ -1089,7 +1089,7 @@ exports.post_periodos = async (request,response,next) => {
         response.json({
             success: success
         });
-    } catch {
+    } catch(error) {
         let success = false;
         console.log(error);
         response.json({
