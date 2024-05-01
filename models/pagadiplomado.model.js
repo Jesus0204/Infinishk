@@ -18,10 +18,10 @@ module.exports = class pagoDiplomado {
                 [matricula,id,fecha,monto,nota]);
     }
 
-    static save_tarjeta(matricula,id,fecha,monto,nota) {
+    static save_tarjeta(matricula,id,fecha,monto,motivo,nota) {
         return db.execute(
-            `CALL insertarPagoDiplomado (?,?,?,?, '', ?, 'Tarjeta');`, 
-                [matricula,id,fecha,monto,nota]);
+            `CALL insertarPagoDiplomado (?,?,?,?,?, ?, 'Tarjeta');`, 
+                [matricula,id,fecha,monto,motivo,nota]);
     }
         
 }

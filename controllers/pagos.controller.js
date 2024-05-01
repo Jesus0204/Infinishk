@@ -551,17 +551,20 @@ exports.get_recibir_pago = async (request, response, next) => {
     });
 }
 
-exports.post_respuesta_pago = async (request, response, next, test, monto) => {
-    // Usa test y monto aquí para generar la redirección
-    if(test === 0){
+exports.post_respuesta_pago = async (request, response, next) => {
+
+    let test = request.body.test;
+    let monto = request.body.monto;
+
+    if (test === 0) {
         response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&operacion=100300421938&fecha=30%2F04%2F24%2020%3A42%3A53&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=FONDOS+INSUFICIENTES&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
     }
 
-    if(test === 1){
+    if (test === 1) {
         response.redirect(`http://localhost:4000/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=nospam%40gmail.com`);
     }
 
-    if(test === 2){
+    if (test === 2) {
         response.redirect(`http://localhost:4000/pagos/recibir_pago`);
     }
 };
@@ -573,6 +576,7 @@ const xml2js = require('xml2js');
 exports.post_recibir_pago = async (request, response, next) => {
 
     let test = request.body.test;
+    let motivo = request.body.motivo;
     let matricula = request.body.matricula;
     let matriculaComoCadena = matricula.toString();
     let primerNumero = matriculaComoCadena.charAt(0);
@@ -586,6 +590,7 @@ exports.post_recibir_pago = async (request, response, next) => {
     let status = '';
     let date = '';
     let fecha = '';
+    let fechaUsar = '';
 
     if (test === 0) {
         const strResponse = decodeURIComponent("yO3hhCLQmgOr2R6j1WHzb5S5IL5raWDL4zSTFIc6VcZOEGQXi4SFK5EDATyDAHQZalBxRhZDJZ46FAFpltJ95CCo59pYVDqpFjmIcqePs4FiUx3BEcRkrjVeqwUyJUILxtlLBOgm9YbYqT%2F%2Fbe8nYCW8sj%2FOH%2BIvXKcxojy%2BljqlZn4Mqi1dsStM%2FSCQa%2BSFLOJ%2FJXcSuAjhu7i7Sj%2BNxrqB5mAicNlZ3SoZv2z3MULe9MIuyzgYNg6bUC%2BCHMRiujhoUXOs55gts7kAVdEasRiNl0LFWw8neGCB%2FYKWk6n3Xw2moBrIylqGI6yM1p49c2fQBs6FHsGKWtc%2BkP9nbWBy25HtrnWdQmgXbanJV4MoXqivlhrOSkDFi0qYzVzI%2BlhYLGYq6zF23u%2BIhsM4szG1qiMocOymkTrqWU7Ns7WWqCzYYX1N3WUVIzpFiJKKJ4gymbIwbvBel5HKy6ZUDxgvpPLGLl1KfzuhNzYg%2F%2FklGpEDxPmZf9km0exPcSKJQGphpj%2BW8LH3Jo0BqIE6qRW434E6LLbmyGyd8AOHlQX%2BZ2a17VBkTR%2BqDz6Ca%2FEwf0aMaDQIQam5zIrqHzL5xPwQgXl0RH66IUM%2FeSpE4h2PeTPY11qEL7Pvyf5bXbuCGFss4GPT0Mj7OiSq6x%2FgHNWjFiHLzPXqOita%2B1PXQu5VNO2VAjZMCSK6XU1LQELDdo4MUtBB6%2BCU16gz5vc6F%2FSwtllu3tbMB4jNGjk6Y9kvvg%2BoHCWSmI2mX0JHDySajJC23tOHW2vO1D%2B9xsM2k%2BwQ8f9xjKjeIXkA2qoPHlgUfDavufWKTyuGWutGKZCCPvvFRTHJoUxpbMYTZQo%2BArsczE4IYkSIHk2FUVDTfRddpuOuoLdBXJQPSHxIruv4OcvsXQnEuknd06zdGYEgM0eyMWfMaSaWIuKJFzuf9p3mQznV8OXA%2F1aNyCOsh90AvHt%2FOPKOi1xwrQU7d9iiNiufr%2FzE4lp%2FmWY6s6TQbZAAyphkqxfwmeNg6Ogsg9hq48RP%2FwjyFdnZwplF8GBgFARBWhy22d8r8vGWVijbYbRYcBnWNtF1GTmWsET7lEzXJfGODOLSZoEQUn%2Fw2%2BfIl4kPx%2F0ycK7yeXC39zpj04hf3bTFuYchz%2BKjzuvHYeDE");
@@ -615,7 +620,22 @@ exports.post_recibir_pago = async (request, response, next) => {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
                 time = result.CENTEROFPAYMENTS.time[0];
-                fecha = date + time;
+
+                let adjustedTime = time.split(':').map(unit => unit.padStart(2, '0')).join(':');
+                let adjustedDate = date.split('/').map(unit => unit.padStart(2, '0')).join('/');
+
+                let fecha = adjustedDate + adjustedTime;
+
+                // Usamos una expresión regular para separar las partes de la fecha y la hora
+                let parts = fecha.match(/(\d{2})\/(\d{2})\/(\d{2})(\d{2}):(\d{2}):(\d{2})/);
+
+                // Reorganizamos las partes en el formato que queremos
+                let formattedDate = moment(`${parts[3]}/${parts[2]}/${parts[1]} ${parts[4]}:${parts[5]}:${parts[6]}`, 'YY/MM/DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+
+                // Convertimos la fecha formateada a un objeto Date de JavaScript
+                let dateObject = new Date(formattedDate);
+
+                fechaUsar = moment(dateObject).format('YYYY-MM-DD HH:mm:ss')
             }
         });
 
@@ -626,7 +646,7 @@ exports.post_recibir_pago = async (request, response, next) => {
                     Deuda.fetchNoPagadas(IDCol)
                         .then(async ([deudas_noPagadas, fieldData]) => {
                             // Guardas el pago completo del alumno
-                            await Pago.save_tarjeta(IDdeuda, monto, nota, fecha);
+                            await Pago.save_tarjeta(IDdeuda, motivo, monto, nota, fechaUsar);
 
                             for (let deuda of deudas_noPagadas) {
                                 if (monto <= 0) {
@@ -655,12 +675,12 @@ exports.post_recibir_pago = async (request, response, next) => {
                 else if (primerNumero === '8') {
                     console.log("Es un pago de diplomado aceptado")
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, monto, nota);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
                 }
 
                 else if (tipo === 'Otro') {
                     console.log("Es un pago extra exitoso")
-                    await Liquida.updateExitoso(nota, fecha, liquida);
+                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
                 }
             }
 
@@ -668,12 +688,12 @@ exports.post_recibir_pago = async (request, response, next) => {
                 if (tipo === 'Normal') {
                     if (primerNumero === 1) {
                         console.log("Es un pago de colegiatura denegado")
-                        await Pago.save_tarjeta(IDdeuda, 0, 'PAGO DECLINADO', fecha);
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
                     }
                     else if (primerNumero === 8) {
                         console.log("Es un pago de diplomado denegado")
                         const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO DECLINADO');
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
                     }
                 }
 
@@ -688,13 +708,13 @@ exports.post_recibir_pago = async (request, response, next) => {
                 if (tipo === 'Normal') {
                     if (primerNumero === 1) {
                         console.log("Es un pago de colegiatura con error")
-                        await Pago.save_tarjeta(IDdeuda, 0, 'PAGO CON ERROR', fecha);
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
                     }
 
                     else if (primerNumero === 8) {
                         console.log("Es un pago de diplomado con error")
-                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO CON ERROR');
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
                     }
                 }
 
@@ -740,74 +760,115 @@ exports.post_recibir_pago = async (request, response, next) => {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
                 time = result.CENTEROFPAYMENTS.time[0];
-                fecha = date + time;
-            }
 
+                let adjustedTime = time.split(':').map(unit => unit.padStart(2, '0')).join(':');
+                let adjustedDate = date.split('/').map(unit => unit.padStart(2, '0')).join('/');
+
+                let fecha = adjustedDate + adjustedTime;
+
+                // Usamos una expresión regular para separar las partes de la fecha y la hora
+                let parts = fecha.match(/(\d{2})\/(\d{2})\/(\d{2})(\d{2}):(\d{2}):(\d{2})/);
+
+                // Reorganizamos las partes en el formato que queremos
+                let formattedDate = moment(`${parts[3]}/${parts[2]}/${parts[1]} ${parts[4]}:${parts[5]}:${parts[6]}`, 'YY/MM/DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+
+                // Convertimos la fecha formateada a un objeto Date de JavaScript
+                let dateObject = new Date(formattedDate);
+
+                fechaUsar = moment(dateObject).format('YYYY-MM-DD HH:mm:ss')
+            }
         });
 
         if (status === 'approved') {
             if (tipo === 'Normal') {
                 if (primerNumero === '1') {
                     console.log("Es un pago de colegiatura aceptado")
-                    await Pago.save_tarjeta(IDdeuda, monto, nota, fecha);
+                    Deuda.fetchNoPagadas(IDCol)
+                        .then(async ([deudas_noPagadas, fieldData]) => {
+                            // Guardas el pago completo del alumno
+                            await Pago.save_tarjeta(IDdeuda, motivo, monto, nota, fechaUsar);
+
+                            for (let deuda of deudas_noPagadas) {
+                                if (monto <= 0) {
+                                    break;
+                                } else if ((deuda.montoAPagar - deuda.montoPagado) < monto) {
+                                    // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                                    await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), IDdeuda);
+                                    await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), IDCol);
+                                } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto) {
+                                    // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                                    await Deuda.update_Deuda(monto, IDdeuda);
+                                    await Colegiatura.update_Colegiatura(monto, IDCol);
+                                }
+
+                                // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
+                                monto = monto - deuda.montoAPagar;
+                            }
+
+                            // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
+                            if (monto > 0) {
+                                await Alumno.update_credito(matricula, monto);
+                            }
+                        })
                 }
+
                 else if (primerNumero === '8') {
                     console.log("Es un pago de diplomado aceptado")
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, monto, nota);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
+                }
+
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra exitoso")
+                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
                 }
             }
 
-            else if (tipo === "Otro") {
-                console.log("Es un pago extra exitoso")
-                await Liquida.updateExitoso(nota, fecha, liquida);
-            }
-        }
-
-
-        else if (status === 'denied') {
-            console.log('Es denied');
-            if (tipo === 'Normal') {
-                if (primerNumero === '1') {
-                    console.log("Es un pago de colegiatura denegado")
-                    await Pago.save_tarjeta(IDdeuda, 0, 'PAGO DECLINADO', fecha);
+            else if (status === 'denied') {
+                if (tipo === 'Normal') {
+                    if (primerNumero === 1) {
+                        console.log("Es un pago de colegiatura denegado")
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
+                    }
+                    else if (primerNumero === 8) {
+                        console.log("Es un pago de diplomado denegado")
+                        const IDDiplomado = await Cursa.fetchDiplomado(matricula);
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
+                    }
                 }
-                else if (primerNumero === '8') {
-                    console.log("Es un pago de diplomado denegado")
-                    const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO DECLINADO');
+
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra denegado")
+                    await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
                 }
             }
 
-            else if (tipo === 'Otro') {
-                console.log("Es un pago extra denegado")
-                await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
-            }
-        }
 
+            else if (status === 'error') {
+                if (tipo === 'Normal') {
+                    if (primerNumero === 1) {
+                        console.log("Es un pago de colegiatura con error")
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
 
-        else if (status === 'error') {
-            if (tipo === 'Normal') {
-                if (primerNumero === '1') {
-                    console.log("Es un pago de colegiatura con error")
-                    await Pago.save_tarjeta(IDdeuda, 0, 'PAGO CON ERROR', fecha);
+                    }
 
+                    else if (primerNumero === 8) {
+                        console.log("Es un pago de diplomado con error")
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
+                    }
                 }
-                else if (primerNumero === '8') {
-                    console.log("Es un pago de diplomado con error")
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO CON ERROR');
-                }
-            }
 
-            else if (tipo === 'Otro') {
-                console.log("Es un pago extra con error")
-                await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra con error")
+                    await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                }
             }
         }
 
         return response.status(200).json({ responseText });
 
     }
+
 
 
 
@@ -842,7 +903,22 @@ exports.post_recibir_pago = async (request, response, next) => {
                 importe = result.CENTEROFPAYMENTS.amount[0];
                 date = result.CENTEROFPAYMENTS.date[0];
                 time = result.CENTEROFPAYMENTS.time[0];
-                fecha = date + time;
+
+                let adjustedTime = time.split(':').map(unit => unit.padStart(2, '0')).join(':');
+                let adjustedDate = date.split('/').map(unit => unit.padStart(2, '0')).join('/');
+
+                let fecha = adjustedDate + adjustedTime;
+
+                // Usamos una expresión regular para separar las partes de la fecha y la hora
+                let parts = fecha.match(/(\d{2})\/(\d{2})\/(\d{2})(\d{2}):(\d{2}):(\d{2})/);
+
+                // Reorganizamos las partes en el formato que queremos
+                let formattedDate = moment(`${parts[3]}/${parts[2]}/${parts[1]} ${parts[4]}:${parts[5]}:${parts[6]}`, 'YY/MM/DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+
+                // Convertimos la fecha formateada a un objeto Date de JavaScript
+                let dateObject = new Date(formattedDate);
+
+                fechaUsar = moment(dateObject).format('YYYY-MM-DD HH:mm:ss')
             }
         });
 
@@ -850,64 +926,90 @@ exports.post_recibir_pago = async (request, response, next) => {
             if (tipo === 'Normal') {
                 if (primerNumero === '1') {
                     console.log("Es un pago de colegiatura aceptado")
-                    await Pago.save_tarjeta(IDdeuda, monto, nota, fecha);
+                    Deuda.fetchNoPagadas(IDCol)
+                        .then(async ([deudas_noPagadas, fieldData]) => {
+                            // Guardas el pago completo del alumno
+                            await Pago.save_tarjeta(IDdeuda, motivo, monto, nota, fechaUsar);
+
+                            for (let deuda of deudas_noPagadas) {
+                                if (monto <= 0) {
+                                    break;
+                                } else if ((deuda.montoAPagar - deuda.montoPagado) < monto) {
+                                    // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                                    await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), IDdeuda);
+                                    await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), IDCol);
+                                } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto) {
+                                    // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                                    await Deuda.update_Deuda(monto, IDdeuda);
+                                    await Colegiatura.update_Colegiatura(monto, IDCol);
+                                }
+
+                                // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
+                                monto = monto - deuda.montoAPagar;
+                            }
+
+                            // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
+                            if (monto > 0) {
+                                await Alumno.update_credito(matricula, monto);
+                            }
+                        })
                 }
+
                 else if (primerNumero === '8') {
                     console.log("Es un pago de diplomado aceptado")
                     const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, monto, nota);
+                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fechaUsar, monto, motivo, nota);
+                }
+
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra exitoso")
+                    await Liquida.updateExitoso(nota, fechaUsar, liquida);
                 }
             }
 
-            else if (tipo === 'Otro') {
-                console.log('Es un pago extra exitoso')
-                await Liquida.updateExitoso(nota, fecha, liquida);
-            }
-        }
-
-
-        else if (status === 'denied') {
-            if (tipo === 'Normal') {
-                if (primerNumero === '1') {
-                    console.log("Es un pago de colegiatura denegado")
-                    await Pago.save_tarjeta(IDdeuda, 0, 'PAGO DECLINADO', fecha);
+            else if (status === 'denied') {
+                if (tipo === 'Normal') {
+                    if (primerNumero === 1) {
+                        console.log("Es un pago de colegiatura denegado")
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO DECLINADO', fecha);
+                    }
+                    else if (primerNumero === 8) {
+                        console.log("Es un pago de diplomado denegado")
+                        const IDDiplomado = await Cursa.fetchDiplomado(matricula);
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO DECLINADO');
+                    }
                 }
-                else if (primerNumero === '8') {
-                    console.log("Es un pago de diplomado denegado")
-                    const IDDiplomado = await Cursa.fetchDiplomado(matricula);
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO DECLINADO');
-                }
-            }
 
-            else if (tipo === 'Otro') {
-                console.log("Es un pago extra denegado")
-                await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
-            }
-        }
-
-
-        else if (status === 'error') {
-            if (tipo === 'Normal') {
-                if (primerNumero === '1') {
-                    console.log("Es un pago de colegiatura con error")
-                    await Pago.save_tarjeta(IDdeuda, 0, 'PAGO CON ERROR', fecha);
-
-                }
-                else if (primerNumero === '8') {
-                    console.log("Es un pago de diplomado con error")
-                    await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, 'PAGO CON ERROR');
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra denegado")
+                    await Liquida.updateDeclinado('PAGO DECLINADO', fecha, liquida);
                 }
             }
 
-            else if (tipo === 'Otro') {
-                console.log("Es un pago extra con error")
-                await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+
+            else if (status === 'error') {
+                if (tipo === 'Normal') {
+                    if (primerNumero === 1) {
+                        console.log("Es un pago de colegiatura con error")
+                        await Pago.save_tarjeta(IDdeuda, motivo, 0, 'PAGO CON ERROR', fecha);
+
+                    }
+
+                    else if (primerNumero === 8) {
+                        console.log("Es un pago de diplomado con error")
+                        await PagoDiplomado.save_tarjeta(matricula, IDDiplomado, fecha, 0, monto, 'PAGO CON ERROR');
+                    }
+                }
+
+                else if (tipo === 'Otro') {
+                    console.log("Es un pago extra con error")
+                    await Liquida.updateDeclinado('PAGO CON ERROR', fecha, liquida);
+                }
             }
         }
 
         return response.status(200).json({ responseText });
-    }
 
-    return exports.post_respuesta_pago(request, response, next, test, monto);
+    }
 
 }

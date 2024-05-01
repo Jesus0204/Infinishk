@@ -110,11 +110,9 @@ $('.motivo_extra').change(function () {
 });
 
 function pagar() {
-    // Sacas el que tiene el monto actual
     const tipo = document.getElementById('tipo').value;
     const monto = document.getElementById('monto').value;
     const motivo = document.getElementById('motivo').value;
-    //El token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
     const matricula = document.getElementById('matricula').value;
     const deuda = document.getElementById('deuda').value;
@@ -133,9 +131,8 @@ function pagar() {
             matricula: matricula
         })
     }).then((result) => {
-        return result.json(); //Regresa otra promesa
+        return result.json();
     }).then((data) => {
-
         parser = new DOMParser();
         xmlDoc = parser.parseFromString(data.respuestaXML, "text/xml");
 
@@ -147,7 +144,6 @@ function pagar() {
         console.log(err);
     });
 
-    // Enviar solicitud al endpoint para recibir el pago
     fetch('/pagos/recibir_pago', {
         method: 'POST',
         headers: {
@@ -157,12 +153,12 @@ function pagar() {
         body: JSON.stringify({
             matricula: matricula,
             monto: monto,
-            motivo:motivo,
-            tipo:tipo,
-            test:test,
-            deuda:deuda,
-            nota:nota,
-            liquida:liquida,
+            motivo: motivo,
+            tipo: tipo,
+            test: test,
+            deuda: deuda,
+            nota: nota,
+            liquida: liquida,
         })
     }).then((result) => {
         return result.json();
@@ -171,6 +167,25 @@ function pagar() {
     }).catch(err => {
         console.log(err);
     });
+
+
+    fetch('/pagos/respuesta_pago', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            monto: monto,
+            test: test,
+        })
+    }).then((result) => {
+        return result.json();
+    }).then((data) => {
+        // Aquí puedes hacer algo con la respuesta si es necesario
+    }).catch(err => {
+        console.log(err);
+    }); // 5000 milisegundos equivalen a 5 segundos
 }
 
 if (boton_pagar) {
@@ -178,6 +193,7 @@ if (boton_pagar) {
         pagar();
     });
 }
+
 
 const boton_tarjeta = document.querySelector('#boton_tarjeta');
 const boton_efectivo = document.querySelector('#boton_efectivo');
