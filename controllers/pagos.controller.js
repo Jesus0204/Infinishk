@@ -30,6 +30,7 @@ exports.get_registrar_pago_manual = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: true,
         solicitud_pago: false,
+        fichas_pago: false,
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
@@ -231,8 +232,8 @@ exports.get_registrar_solicitud = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
         solicitud_pago: true, 
-        consultar_alumno: false,
-        modificar_fichas: false,
+        consultar_alumno: false, 
+        fichas_pago: false,
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",

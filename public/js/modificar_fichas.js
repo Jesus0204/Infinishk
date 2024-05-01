@@ -106,13 +106,9 @@ function modificar(descuento, fecha_lim, nota, id, count) {
     const fechaNum = document.getElementById('fecha_lim' + count).value; 
     const notaNum = document.getElementById('nota' + count).value;
 
-    console.log('Iniciando modificación con los siguientes datos: ', descuentoNum, fechaNum, notaNum, id);
-
     // formato de fecha de DD/MM/YYYY -> YYYY-MM-DD para SQL
     const parts = fechaNum.split('/');
     const fechaFormat = `${parts[2]}-${parts[1]}-${parts[0]}`;
-
-    console.log('Data to be sent:', { descuentoNum, fechaFormat, notaNum, id });
 
     // Desactivar el botón después de hacer clic en él para evitar múltiples envíos
     document.getElementById('Boton_modificar' + count).setAttribute('disabled', 'disabled');
@@ -139,13 +135,12 @@ function modificar(descuento, fecha_lim, nota, id, count) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Response from server:', data);
         if(data.success){
             console.log('Modificación exitosa: ', data);
             // Recargar la página después de mostrar la notificación durante unos segundos
             setTimeout(() => {
                 window.location.reload();
-            }, 2000); // 3000 milisegundos = 3 segundos
+            }, 2000); // 2000 milisegundos = 2 segundos
         } else {
             console.error('Error en la modificación: ', data.message);
             // Reactivar el botón en caso de error para permitir nuevos intentos
