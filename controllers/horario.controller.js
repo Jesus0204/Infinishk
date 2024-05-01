@@ -21,7 +21,6 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const planes = await PlanPago.fetchAllActivePlans();
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
-        console.log(planesPago)
         var periodoExistente = 1;
 
         if (confirmacion === 0) {

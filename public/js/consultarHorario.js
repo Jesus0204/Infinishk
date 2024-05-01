@@ -1,5 +1,10 @@
-const select_plan = document.querySelector('#IDPlanPago');
+const select_plan = document.querySelector('#PlanPagoOption');
 
-let numPagos = $('#IDPlanPago').find(':selected').data('numPagos');
+$('#IDPlanPago').change(function () {
+    let numPagos = $(this).find(':selected').data('num');
 
-console.log(numPagos);
+    // Mostrar la tabla de pagos dependiendo del número
+    if (numPagos != 2){
+
+    }
+});

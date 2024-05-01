@@ -294,7 +294,7 @@
                         <select name="IDPlanPago" id="IDPlanPago">
                             <% for (let plan of planesPago){%>
                             <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
-                                data-numPagos="<%= plan.numeroPagos %>">
+                                data-num="<%= plan.numeroPagos %>">
                                 <%= plan.nombrePlan %>
                             </option>
                             <% } %>
