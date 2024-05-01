@@ -1081,8 +1081,8 @@ exports.post_periodos = async (request,response,next) => {
         let fin_string = request.body.fin;
         const status = request.body.status;
 
-        const inicio = moment(inicio_string, 'LL').format();
-        const fin = moment(fin_string, 'LL').format();
+        const inicio = moment(inicio_string, 'LL').format('YYYY-MM-DD');
+        const fin = moment(fin_string, 'LL').format('YYYY-MM-DD');
     
         await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
         
