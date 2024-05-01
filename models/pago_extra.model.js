@@ -49,4 +49,11 @@ module.exports = class PagoExtra {
         return db.execute('SELECT IDPagosExtras FROM pagosExtras WHERE CAST(montoPagar AS DECIMAL(10,2)) = CAST(? AS DECIMAL(10,2)) AND pagoExtraActivo = 1', [importe]);
     }
 
-};
+    static fetchSinPagar(matricula){
+        return db.execute('SELECT * FROM pagosExtras AS P, Liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 0 AND Matricula = ?', [matricula]);
+    }
+
+    static fetchPagados(matricula){
+        return db.execute('SELECT * FROM pagosExtras AS P, Liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 1 AND Matricula = ?', [matricula]);
+    }
+}

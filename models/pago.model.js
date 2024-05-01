@@ -21,10 +21,19 @@ module.exports = class Pago {
         return db.execute(`CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
                 [id, monto, nota,fecha]);
     }
-
     static save_pago_manual(idDeuda, motivo, monto, nota, metodo, fecha) {
         return db.execute(`CALL insertar_Pago(?, ?, ?, ?, ?, ?);`,
             [idDeuda, motivo, monto, nota, metodo, fecha]);
+    }
+
+    static fetchOne(matricula){
+        return db.execute(`SELECT P.motivo, P.montoPagado, P.nota, P.metodoPago, P.fechaPago
+        FROM Deuda AS D, Pago AS P
+        WHERE D.IDDeuda = P.IDDeuda
+        AND D.matricula = ?
+        ORDER BY P.fechaPago DESC
+        LIMIT 0, 1000`, 
+        [matricula]);
     }
     
     

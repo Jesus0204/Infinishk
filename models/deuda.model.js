@@ -26,10 +26,28 @@ module.exports = class Deuda {
             [matricula]);
     };
 
-    static fetchDeuda(matricula){
-        return db.execute('SELECT (montoAPagar-Descuento) AS "montoAPagar" FROM deuda WHERE Matricula = ?',
+    static fetchDeudaEstado(matricula) {
+        return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
+        (D.montoAPagar - D.Descuento) AS 'montoAPagar',
+        ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.pagado
+        FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
+        WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
+        C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`, 
         [matricula]);
+    }
+
+    static fetchEstadoDeCuenta(matricula){
+        return db.execute(`SELECT D.montoAPagar, D.montoPagado, D.fechaLimitePago, D.descuento, D.pagado, P.motivo, 
+        P.montoPagado, P.nota, P.metodoPago, P.fechaPago
+        FROM Deuda AS D, Pago AS P, Alumno AS A, Colegiatura AS C, Periodo AS Pe
+        WHERE D.matricula = A.matricula AND D.IDDeuda = P.IDDeuda AND   
+        C.IDPeriodo = Pe.IDPeriodo AND D.IDColegiatura = C.IDColegiatura AND Pe.periodoActivo = True   
+        AND D.matricula = ?
+        ORDER BY D.pagado ASC
+        LIMIT 0, 1000`, [matricula]);
     }
+
 
     static fetchEstado(matricula){
         return db.execute('SELECT Pagado FROM Deuda WHERE Matricula = ?',
