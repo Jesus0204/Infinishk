@@ -12,7 +12,13 @@ const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente');
 
 // Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
-    bt_Modificar.disabled = ref.value.length === 0 || beca.value.length === 0;
+    if (ref.value.length === 0) {
+        bt_Modificar.disabled = true;
+    } else if (beca && beca.value.length === 0) {
+        bt_Modificar.disabled = true;
+    } else {
+        bt_Modificar.disabled = false;
+    }
 }
 
 function mensaje_ref() {
@@ -60,9 +66,12 @@ function mensaje_beca() {
 }
 
 ref.addEventListener('input', checar_contenido);
-beca.addEventListener('input', checar_contenido);
 ref.addEventListener('input', mensaje_ref);
-beca.addEventListener('input', mensaje_beca);
+
+if (beca){
+    beca.addEventListener('input', checar_contenido);
+    beca.addEventListener('input', mensaje_beca);
+}
 
 function modificarProf(ref, beca) {
     const csrf = document.getElementById('_csrf').value;
