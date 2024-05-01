@@ -17,10 +17,10 @@ moment.locale('es-mx');
 exports.get_propuesta_horario = async (request, response, next) => {
 
     try {
-        const conf = await Alumno.fetchHorarioConfirmado(request.session.username)
-        const planes = await PlanPago.fetchAllActivePlans()
-        const confirmacion = conf[0][0].horarioConfirmado
-        const planesPago = planes[0]
+        const conf = await Alumno.fetchHorarioConfirmado(request.session.username);
+        const planes = await PlanPago.fetchAllActivePlans();
+        const confirmacion = conf[0][0].horarioConfirmado;
+        const planesPago = planes[0];
         var periodoExistente = 1;
 
         if (confirmacion === 0) {

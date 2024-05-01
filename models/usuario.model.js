@@ -17,7 +17,7 @@ module.exports = class Usuario {
             .then((password_cifrado) => {
                 return db.execute(
                     'UPDATE Usuario SET `Contraseña`=?,`usuarioActivo`=1 WHERE IDUsuario=?',
-                    [password_cifrado, this.IDUsuario]
+                    [password_cifrado,this.IDUsuario]
                 );
             })
             .catch((error) => {
@@ -83,7 +83,7 @@ module.exports = class Usuario {
 
     static buscarActivos(consulta) {
         return db.execute(
-            'SELECT Usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 1',
+            'SELECT usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 1',
             [`%${consulta}%`]
         );
     }
@@ -95,20 +95,20 @@ module.exports = class Usuario {
         );
     }
 
-    static updateUsuario(id, correo) {
-        return db.execute('UPDATE Usuario SET IDUsuario=?, correoElectronico=? WHERE IDUsuario=?', [id, correo, id])
+    static updateUsuario(id,correo){
+        return db.execute('UPDATE Usuario SET correoElectronico=? WHERE IDUsuario=?', [correo, id.toString()])
     }
 
-    static saveUsuario(id, correo) {
-        return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)', [id, correo])
+    static saveUsuario(id,correo){
+        return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo]);
     }
 
     static fetchUser(correo) {
         return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?', [correo]);
     }
 
-    static updateToken(token, id) {
-        return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?', [token, id])
+    static updateToken(token,id){
+        return db.execute('UPDATE Usuario SET token=? WHERE IDUsuario=?',[token,id]);
     }
 
     static fetchCorreo(matricula){

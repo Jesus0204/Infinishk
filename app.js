@@ -18,7 +18,7 @@ app.use(cookieParser('Un secreto'))
 const session = require('express-session');
 
 app.use(session({
-    secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste',
+    secret: 's&xYnn9oVRuo3*0@sBA&SedkdMGoM!&e%kASzFfZ6537MqWruvYe27X=7hQUdktRRxYQHDjWtW7veznF',
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
 }));

@@ -1,10 +1,10 @@
-// //Constantes para acceder al HTML
-// const bt_Confirmar = document.querySelector('#Boton_confirmar');
-// const IDPlanPago = doument.querySelector('#IDPlan');
+const select_plan = document.querySelector('#PlanPagoOption');
 
-// function mensaje_IDPlanPago() {
-    
-// }
+$('#IDPlanPago').change(function () {
+    let numPagos = $(this).find(':selected').data('num');
 
-// // Detectar si el usuario maneja select y llamar las funciones anteriores
-// IDPlanPago.addEventListener('select', mensaje_IDPlanPago)
+    // Mostrar la tabla de pagos dependiendo del número
+    if (numPagos != 2){
+
+    }
+});

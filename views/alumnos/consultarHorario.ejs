@@ -293,8 +293,9 @@
                     <div class="select is-medium">
                         <select name="IDPlanPago" id="IDPlanPago">
                             <% for (let plan of planesPago){%>
-                            <option value="<%=plan.IDPlanPago%>" data-nombre="<%=plan.nombrePlan%>">
-                                <%=plan.nombrePlan%>
+                            <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
+                                data-num="<%= plan.numeroPagos %>">
+                                <%= plan.nombrePlan %>
                             </option>
                             <% } %>
                         </select>
@@ -563,5 +564,7 @@
         <% } %>
     </div>
 </section>
+<script type="text/javascript" src="/js/consultarHorario.js"></script>
+</body>
 
 </html>
