@@ -121,15 +121,25 @@
                         </td>
 
                         <% if(usuario.planEstudio !== null) { %>
-                        <td class="has-text-black">
-                            <%= usuario.planEstudio %>
-                            <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>">
-                        </td>
-                        <% } else { %>
-                        <td class="has-text-black">
-                            <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudio"></textarea>
-                        </td>
-                        <% } %>
+                            <td class="has-text-black">
+                                <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                    id="ayuda_plan<%= count %>">
+                                    Por favor escribe un plan de estudios. 
+                                </p>
+                                <%= usuario.planEstudio %>
+                                <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>"
+                                id="planEstudio<%= count %>">
+                            </td>
+                            <% } else { %>
+                                <td class="has-text-black">
+                                    <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
+                                        id="ayuda_plan<%= count %>">
+                                        Por favor escribe un plan de estudios.
+                                    </p>
+                                    <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudio"
+                                    id="planEstudio<%= count %>"></textarea>
+                                </td>
+                                <% } %>
 
                         <td>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark" id="ayuda_referencia_vacio<%= count %>">
@@ -156,7 +166,7 @@
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_beca_negativo<%= count %>">
-                                Por favor escribe solo números positivos.
+                                Por favor escribe un número entre 0 y 100. 
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_beca_exponente<%= count %>">
