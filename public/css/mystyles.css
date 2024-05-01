@@ -15515,6 +15515,12 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   border-radius: 4px;
   color: hsl(0, 0%, 21%);
   box-shadow: none;
+  cursor: pointer;
+  display: flex;
+  flex: 1 100%;
+  flex-wrap: nowrap;
+  height: 100%;
+  max-width: 100%;
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper::-moz-placeholder {
   color: rgba(54, 54, 54, 0.3);
@@ -15555,12 +15561,6 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[readonly] {
   box-shadow: none;
-  cursor: pointer;
-  display: flex;
-  flex: 1 100%;
-  flex-wrap: nowrap;
-  height: 100%;
-  max-width: 100%;
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy .datetimepicker-dummy-wrapper::before {
   content: "";
