@@ -77,7 +77,7 @@ function modificarProf(ref, beca) {
     // Desplazar la página hacia arriba
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetch('/alumnos/datos_alumno/modify_prof', {
+    fetch('/alumnos/datos_alumno/modify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ function modificarDip(ref) {
     // Desplazar la página hacia arriba
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetch('/alumnos/datos_alumno/modify_dip', {
+    fetch('/alumnos/datos_alumno/modify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
