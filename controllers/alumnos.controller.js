@@ -10,7 +10,7 @@ exports.get_alumnos_atrasados = (request, response, next) => {
             let deudas = [];
             // Para cada alumno atrasado sacas todos los datos
             for (let alumno of alumnos_atrasados) {
-                const [deuda, fieldData] = await Deuda.fetchDeuda(alumno.matricula);
+                const [deuda, fieldData] = await Deuda.fetchDeudaDatos(alumno.matricula);
                 deudas.push(deuda);
             }
 
