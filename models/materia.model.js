@@ -24,10 +24,6 @@ module.exports = class Materia {
         return db.execute('INSERT INTO `Materia`(`IDMateria`, `Nombre`, `planEstudios`, `semestreImpartido`, `Creditos`, `IDMateriaExterna`) VALUES (?,?,?,?,?,?)', [id,nombre,plan,semestre,creditos,idexterno])
     }
 
-    static fetchID(idexterna) {
-        return db.execute(`SELECT IDMateria FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
-    }
-
     static fetchIDPorGrupo(IDGrupo){
         return db.execute(`SELECT IDMateria FROM Grupo WHERE IDGrupo = ?`, [IDGrupo]);
     }
