@@ -15,7 +15,8 @@ moment.locale('es-mx');
 exports.get_estado_cuenta = async (request, response, next) => {
     try {
 
-        const now = moment().tz('America/Mexico_City').format();
+        const now = moment().tz('America/Mexico_City').startOf('day').format();
+        console.log(now)
         const matricula = request.session.username;
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
