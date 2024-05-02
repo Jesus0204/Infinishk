@@ -100,6 +100,7 @@
 
         <% if(matricula[0] == '1') { %>
         <div id="deuda">
+            <% if (deuda.length != 0) { %>
             <h4 class="title is-4">Resumen de Pagos</h4>
             <table class="table is-bordered is-hoverable is-fullwidth">
                 <tbody>
@@ -252,6 +253,15 @@
                     <% } %>
                 </tbody>
             </table>
+            <% } else { %>
+                <div class="notification is-danger">
+                    <p>
+                        Todavía no se crea tu Colegiatura para este periodo.
+                        Si estas en la fecha de inscripción, por favor entra a Inscripción para confirmar tu horario y
+                        que se creen tus fichas de pago.
+                    </p>
+                </div>
+            <% } %>
         </div>
         <% } %>
         
