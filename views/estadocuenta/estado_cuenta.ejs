@@ -162,6 +162,8 @@
                                     <strong>Pago #<%= count + 1 %></strong>
                                 </div>
                             </div>
+                            <%= currentDate %>
+                            <%= moment(deuda[count + 1].fechaLimitePago, 'LL').format() %>
                             <div class="columns is-vcentered">
                                 <% if (deuda[count].pagado == 1) { %>
                                 <div class="column is-narrow">
