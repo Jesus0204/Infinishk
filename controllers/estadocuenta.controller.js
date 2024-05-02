@@ -5,6 +5,7 @@ const Alumno = require('../models/alumno.model');
 const Periodo = require('../models/periodo.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
+const Cursa = require('../models/cursa.model')
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
@@ -56,10 +57,19 @@ exports.get_estado_cuenta = async (request, response, next) => {
         } else if (matricula[0] == '8') {
 
         const [pagosDiplomado] = await PagaDiplomado.fetchPagosDiplomado(matricula);
+        const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula);
 
         // Formatear fechas
         for (let count = 0; count < pagosDiplomado.length; count++) {
             pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
+        }
+
+        for (let count = 0; count < diplomadoCursando.length; count++) {
+            diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
+        }
+
+        for (let count = 0; count < diplomadoCursando.length; count++) {
+            diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
         }
 
         response.render('estadocuenta/estado_cuenta', {
@@ -69,6 +79,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             pagosExtra: cargosExtra,
             pagadosExtra: pagosExtra,
             matricula: matricula,
+            diplomados: diplomadoCursando,
             rol: request.session.rol || "",
             pagosDiplomado: pagosDiplomado,
             
