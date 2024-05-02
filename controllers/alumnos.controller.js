@@ -3,6 +3,10 @@ const Alumno = require('../models/alumno.model');
 const Fichas = require('../models/fichas_pago.model');
 const Grupo = require('../models/grupo.model');
 
+// Configuras a moment con el locale. 
+const moment = require('moment-timezone');
+moment.locale('es-mx');
+
 exports.get_alumnos_atrasados = (request, response, next) => {
     // Primero sacas las matriculas de alumnos que estan atrasados
     Deuda.fetchNoPagados()
