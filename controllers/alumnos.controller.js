@@ -33,6 +33,12 @@ exports.get_alumnos_atrasados = (request, response, next) => {
         })
         .catch((error) => {
             console.log(error);
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                error_alumno: false
+            });
         });
 };
 
@@ -43,6 +49,11 @@ exports.post_fetch_fichas = (request, response, next) => {
         .then(([alumno, fieldData]) => {
             Fichas.fetch(matches[0])
                 .then(([fichas, fieldData]) => {
+                    // Conviertes la fecha si existe
+                    for (let count = 0; count < fichas.length; count++) {
+                        fichas[count].fechaLimitePago = moment(new Date(fichas[count].fechaLimitePago)).format();
+                    }
+
                     response.render('alumnos/modificar_fichas', {
                         alumno: alumno,
                         fichas: fichas, 
@@ -58,6 +69,7 @@ exports.post_fetch_fichas = (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
+                        error_alumno: false
                     });
                     console.log(error);
                 });
@@ -67,6 +79,7 @@ exports.post_fetch_fichas = (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
+                error_alumno: false
             });
             console.log(error)
         });
