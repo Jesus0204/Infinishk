@@ -27,12 +27,13 @@
 
 <section class="section">
     <div class="container">
-        <% if (actuales[0].length == 0){ %>
+        <% if (actuales[0].alumnosTotales == 0){ %>
         <div class="columns">
             <div class="column is-7">
                 <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
             </div>
         </div>
+        <br>
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
@@ -56,6 +57,16 @@
         <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
         <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
         <% } else { %>
+            <div class="columns">
+                <div class="column is-7">
+                    <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                </div>
+                <div class="column is-5">
+                    <div class="ct-chart ct-golden-section ct-slice-pie ct-series-x" id="bar-chart"></div>
+                </div>
+            </div>
+        <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
+        <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
             <% for (let deudas_atrasadas of pagos_atrasados) { %>
         <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>

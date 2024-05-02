@@ -21,6 +21,8 @@ exports.get_alumnos_atrasados = (request, response, next) => {
 
             const [alumnos_actuales, fieldData_2] = await Deuda.fetchAlumnos_DeudaActual();
             const [atrasados, fieldData_3] = await Deuda.fetchAlumnos_Atrasados(now);
+
+            console.log(alumnos_actuales)
             // Pasas a plantilla deudas de alumnos que tienen pago atrasado
             response.render('alumnos/alumnos_atrasados', {
                 pagos_atrasados: deudas, 
