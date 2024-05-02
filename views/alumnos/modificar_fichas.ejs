@@ -53,7 +53,7 @@
                 <% let display2 = i + 2; %>
                 <% let ficha1 = fichas[i]; %>
                 <% let ficha2 = i + 1 < fichas.length ? fichas[i + 1] : null; %>
-                <% let currentDate = new Date(); %>
+                <% let currentDate = fechaActual %>
                 <tbody>
                     <tr>
                         <td class="pago-info" style="width: 50%">
@@ -61,7 +61,7 @@
                                 <div class="column is-2" style="text-align: center; margin-bottom: -3em;">
                                     <% if (ficha1.Pagado == 1) { %>
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                                    <% } else if (currentDate < ficha1.fechaLimitePago) { %>
+                                    <% } else if (currentDate <= ficha1.fechaLimitePago) { %>
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                     <% } else { %>
                                     <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
@@ -177,7 +177,7 @@
                                 <div class="column is-2" style="text-align: center; margin-bottom: -3em;">
                                     <% if (ficha2.Pagado == 1) { %>
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                                    <% } else if (currentDate < ficha2.fechaLimitePago) { %>
+                                    <% } else if (currentDate <= ficha2.fechaLimitePago) { %>
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                     <% } else { %>
                                     <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
