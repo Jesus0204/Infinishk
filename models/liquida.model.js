@@ -92,4 +92,11 @@ module.exports = class Liquida {
         WHERE L.fechaPago >= ? AND L.fechaPago <= ? ORDER BY L.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
+    static update(id, pago) {
+            return db.execute(`UPDATE Liquida 
+        SET IDPagosExtras = ? 
+        WHERE IDLiquida = ?`,
+                [pago, id]);
+    }
+
 }
