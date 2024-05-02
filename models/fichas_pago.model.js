@@ -23,12 +23,8 @@ module.exports = class Fichas {
         return rows;
     }
     // AGREGAR CUANDO SE HAGA DEPLOY
-    // static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, ufechaActual){
-    //     console.log(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca)
-    //     db.execute(`CALL dar_baja_materia(?, ?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, ufechaActual])
-    // }
-    static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca){
+    static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, ufechaActual){
         console.log(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca)
-        db.execute(`CALL delete_grupo_update_fichas(?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca])
+        db.execute(`CALL dar_baja_grupo(?, ?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, ufechaActual])
     }
 } 

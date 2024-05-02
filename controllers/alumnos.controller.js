@@ -55,8 +55,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca
         //AGREGAR CUANDO SE HAGA DEPLOY
-        //await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
-        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca);
+        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
         console.log('exito :)')
 
         // Función Modificar fichas de pago
