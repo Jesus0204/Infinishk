@@ -232,7 +232,7 @@ exports.post_fetch_fichas = (request, response, next) => {
     const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
-            Fichas.fetch(matricula)
+            Fichas.fetch(matches[0])
                 .then(([fichas, fieldData]) => {
                     response.render('alumnos/modificar_fichas', {
                         alumno: alumno,

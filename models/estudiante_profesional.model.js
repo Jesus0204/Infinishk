@@ -27,7 +27,7 @@ module.exports = class estudianteProfesional {
     }
 
     static fetchDatos(matricula) {
-        return db.execute(`SELECT Alumno.Matricula, Alumno.Nombre, Alumno.Apellidos, Alumno.referenciaBancaria, estudianteprofesional.semestreActual, 
+        return db.execute(`SELECT Alumno.Matricula, Alumno.Nombre, Alumno.Apellidos, Alumno.referenciaBancaria, estudianteProfesional.semestreActual, 
         estudianteProfesional.porcBeca, estudianteProfesional.planEstudio
         FROM Alumno JOIN estudianteProfesional on Alumno.Matricula = estudianteProfesional.Matricula 
         WHERE Alumno.Matricula = ?;`, [matricula]);
