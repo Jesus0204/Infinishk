@@ -11,9 +11,9 @@ module.exports = class Materia {
         this.IDMateriaExterna = mi_IDMateriaExterna;
     }
 
-    static fetchOne(idexterna) {
+    static fetchOne(idmateria) {
         return db.execute(`SELECT IDMateria, Nombre, planEstudios, Creditos,IDMateriaExterna
-        FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
+        FROM Materia WHERE IDMateria = ? `, [idmateria]);
     }
 
     static updateMateria(id,nombre,planEstudios,semestre,creditos,idexterno) {
