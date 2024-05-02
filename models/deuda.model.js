@@ -12,10 +12,10 @@ module.exports = class Deuda {
         this.Pagado = mi_Pagado;
     }
 
-    static fetchNoPagados() {
+    static fetchNoPagados(fecha_actual) {
         return db.execute(`SELECT DISTINCT (matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P
         WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
-        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1`);
+        Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1 `, [fecha_actual]);
     }
 
     static fetchDeuda(matricula) {
@@ -142,10 +142,10 @@ module.exports = class Deuda {
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     };
 
-    static fetchAlumnos_Atrasados() {
+    static fetchAlumnos_Atrasados(fecha_actual) {
         return db.execute(`SELECT COUNT(DISTINCT(Matricula)) AS 'alumnosAtrasados' FROM Deuda AS D, Colegiatura AS C, Periodo As P
         WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
-        Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1`);
+        Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1`, [fecha_actual]);
     };
 
     static fetchIDColegiatura(matricula) {

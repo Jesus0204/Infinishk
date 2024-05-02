@@ -8,8 +8,9 @@ const moment = require('moment-timezone');
 moment.locale('es-mx');
 
 exports.get_alumnos_atrasados = (request, response, next) => {
+    const now = moment().tz('America/Mexico_City').startOf('day').format('YYYY-MM-DD');
     // Primero sacas las matriculas de alumnos que estan atrasados
-    Deuda.fetchNoPagados()
+    Deuda.fetchNoPagados(now)
         .then(async ([alumnos_atrasados, fieldData]) => {
             let deudas = [];
             // Para cada alumno atrasado sacas todos los datos
@@ -19,7 +20,7 @@ exports.get_alumnos_atrasados = (request, response, next) => {
             }
 
             const [alumnos_actuales, fieldData_2] = await Deuda.fetchAlumnos_DeudaActual();
-            const [atrasados, fieldData_3] = await Deuda.fetchAlumnos_Atrasados();
+            const [atrasados, fieldData_3] = await Deuda.fetchAlumnos_Atrasados(now);
             // Pasas a plantilla deudas de alumnos que tienen pago atrasado
             response.render('alumnos/alumnos_atrasados', {
                 pagos_atrasados: deudas, 
