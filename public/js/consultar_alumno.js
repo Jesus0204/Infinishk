@@ -81,7 +81,6 @@ if (beca) {
     beca.addEventListener('input', mensaje_beca);
 }
 
-
 function modificar() {
     // Desactivar el botón para evitar envíos duplicados
     document.getElementById('Boton_modificar').setAttribute('disabled', 'disabled');
@@ -168,18 +167,32 @@ function muestra_otros_cargos() {
     const tab_horario = document.querySelector('#nav_horario');
 
     tab_historial_pagos.classList.remove('is-active');
-    tab_horario.classList.remove('is-active');
-    tab_estado.classList.remove('is-active');
+
+    if (tab_horario) {
+        tab_horario.classList.remove('is-active');
+
+    }
+
+    if (tab_estado) {
+        tab_estado.classList.remove('is-active');
+    }
+
     tab_otros_cargos.classList.add('is-active');
 
     const historial = document.querySelector('#historial');
     historial.classList.add('is-hidden');
 
     const horario = document.querySelector('#horario');
-    horario.classList.add('is-hidden');
+
+    if (horario) {
+        horario.classList.add('is-hidden');
+    }
 
     const estado_cuenta = document.querySelector('#estado_cuenta');
-    estado_cuenta.classList.add('is-hidden');
+
+    if (estado_cuenta) {
+        estado_cuenta.classList.add('is-hidden');
+    }
 
     const otros_cargos = document.querySelector('#otros_cargos');
     otros_cargos.classList.remove('is-hidden');
@@ -191,16 +204,28 @@ function muestra_historial_de_pagos() {
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
     const tab_horario = document.querySelector('#nav_horario');
 
-    tab_horario.classList.remove('is-active');
-    tab_estado.classList.remove('is-active');
+    if (tab_horario) {
+        tab_horario.classList.remove('is-active');
+    }
+
+    if (tab_estado) {
+        tab_estado.classList.remove('is-active');
+    }
+
     tab_otros_cargos.classList.remove('is-active');
     tab_historial_pagos.classList.add('is-active');
 
     const horario = document.querySelector('#horario');
-    horario.classList.add('is-hidden');
+
+    if (horario) {
+        horario.classList.add('is-hidden');
+    }
 
     const estado_cuenta = document.querySelector('#estado_cuenta');
-    estado_cuenta.classList.add('is-hidden');
+
+    if (estado_cuenta) {
+        estado_cuenta.classList.add('is-hidden');
+    }
 
     const otros_cargos = document.querySelector('#otros_cargos');
     otros_cargos.classList.add('is-hidden');
