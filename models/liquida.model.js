@@ -55,6 +55,13 @@ module.exports = class Liquida {
         WHERE Matricula = ? AND IDPagosExtras = ? AND IDLiquida = ?`, 
         [fecha, metodo, nota, matricula, pago, idliquida]);
     }
+
+    static fetch_Pendientes(matricula) {
+        return db.execute(`SELECT IDLiquida, motivoPago, montoPagar From Liquida AS L, pagosExtras AS P
+        WHERE L.IDPagosExtras = P.IDPagosExtras AND L.Matricula = ? AND L.Pagado = 0`,
+            [matricula]);
+    }
+    
     static fetchNoPagados() {
         return db.execute(`SELECT L.IDLiquida, A.Nombre, A.Apellidos, 
         L.Matricula, P.IDPagosExtras, P.motivoPago, P.montoPagar
@@ -64,11 +71,14 @@ module.exports = class Liquida {
         AND Pagado = 0`);
     }
 
-   static update(id, pago) {
-        return db.execute(`UPDATE Liquida 
-        SET IDPagosExtras = ? 
-        WHERE IDLiquida = ?`,
-        [pago, id]);
+    static updateExitoso(nota,fecha,id){
+        return db.execute('UPDATE liquida SET Pagado = 1, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        [fecha,nota, id]);
+    }
+
+    static updateDeclinado(nota,fecha,id){
+        return db.execute('UPDATE liquida SET Pagado = 0, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        [fecha,nota, id]);
     }
 
     static delete(id) {
