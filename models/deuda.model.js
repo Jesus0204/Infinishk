@@ -30,7 +30,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar - D.Descuento) AS 'montoAPagar',
         ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.pagado
+        D.montoPagado, D.fechaLimitePago, D.Pagado
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -41,7 +41,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar - D.Descuento) AS 'montoAPagar',
         ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.pagado
+        D.montoPagado, D.fechaLimitePago, D.Pagado
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -54,7 +54,7 @@ module.exports = class Deuda {
         FROM Deuda AS D, Pago AS P, Alumno AS A, Colegiatura AS C, Periodo AS Pe
         WHERE D.matricula = A.matricula AND D.IDDeuda = P.IDDeuda AND   
         C.IDPeriodo = Pe.IDPeriodo AND D.IDColegiatura = C.IDColegiatura AND Pe.periodoActivo = True   
-        AND D.matricula = ?
+        AND D.Matricula = ?
         ORDER BY D.pagado ASC
         LIMIT 0, 1000`, [matricula]);
     }
@@ -84,7 +84,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar - D.Descuento) AS 'montoAPagar',
         ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.pagado
+        D.montoPagado, D.fechaLimitePago, D.Pagado
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,

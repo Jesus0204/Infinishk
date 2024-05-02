@@ -10,7 +10,7 @@ module.exports = class Alumno {
     }
 
     static fetchNombre(matricula) {
-        return db.execute('SELECT Nombre,Apellidos FROM alumno WHERE Matricula = ?',
+        return db.execute('SELECT Nombre,Apellidos FROM Alumno WHERE Matricula = ?',
             [matricula]);
     }
 
@@ -60,7 +60,7 @@ module.exports = class Alumno {
             WHEN porcBeca > 0 THEN (1 - (porcBeca / 100)) 
             ELSE 1 
         END AS beca
-        FROM estudianteprofesional 
+        FROM estudianteProfesional 
         WHERE Matricula = ?`, [matricula])
     }
 }

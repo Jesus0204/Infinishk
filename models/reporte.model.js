@@ -77,7 +77,7 @@ module.exports = class Reporte {
 
     static async fetchIngresosColegiatura(fechaInicio,fechaFin){
         const [rows] = await db.execute(`SELECT ROUND(SUM(pago.montoPagado),2) AS totalColegiatura
-        FROM pago
+        FROM Pago
         WHERE fechaPago >= ? AND fechaPago <= ?`,[fechaInicio,fechaFin]);
         const montoColegiatura = rows[0].montoColegiatura;
         return montoColegiatura;
@@ -86,12 +86,12 @@ module.exports = class Reporte {
     static async fetchIngresosPeriodo(fechaInicio, fechaFin) {
         const [rows] = await db.execute(`
             SELECT
-                (SELECT ROUND(SUM(montoPagado),2) FROM pago WHERE fechaPago >= ? AND fechaPago <= ?) AS montoColegiatura,
-                (SELECT ROUND(SUM(montoPagado),2) FROM pagadiplomado WHERE fechaPago >= ? AND fechaPago <= ?) AS montoDiplomado,
-                (SELECT ROUND(SUM(pagosextras.montoPagar),2)
-                 FROM liquida
-                 JOIN pagosextras ON liquida.IDPagosExtras = pagosextras.IDPagosExtras
-                 WHERE liquida.Pagado = 1
+                (SELECT ROUND(SUM(montoPagado),2) FROM Pago WHERE fechaPago >= ? AND fechaPago <= ?) AS montoColegiatura,
+                (SELECT ROUND(SUM(montoPagado),2) FROM pagaDiplomado WHERE fechaPago >= ? AND fechaPago <= ?) AS montoDiplomado,
+                (SELECT ROUND(SUM(pagosExtras.montoPagar), 2)
+                 FROM Liquida
+                 JOIN pagosExtras ON Liquida.IDPagosExtras = pagosExtras.IDPagosExtras
+                 WHERE Liquida.Pagado = 1
                  AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras;`, 
                  [fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin]);
     
