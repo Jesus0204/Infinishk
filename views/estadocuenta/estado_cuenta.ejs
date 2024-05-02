@@ -1,10 +1,14 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol })
+    %>
 
 <section class="section">
     <div class="container">
         <h2 class="title">Estado de Cuenta</h2>
 
-        <div class="notification">
+        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
             <div class="columns is-vcentered">
                 <% if(matricula[0] == '1') { %>
                     <div class="column">
@@ -12,16 +16,42 @@
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.semestreActual %>
                         </div>
                     </div>
-                <% if(estudianteProfesional.porcBeca !== 0) { %>
-                <div class="column">
-                    <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
-                    <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.porcBeca %>%</div>
-                </div>
-                <% } %>
+                    <% if(estudianteProfesional.porcBeca !== 0) { %>
+                    <div class="column">
+                        <label class="block font-semibold"><strong>Porcentaje de Beca:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.porcBeca %>%</div>
+                    </div>
+                    <% } %>
+                <% } else if (matricula[0] == '8') { %>
+                    <div class="column">
+                         <label class="block"><strong>Diplomado:</strong></label>
+                         <div class="rounded border">
+                            <%= diplomados[0].nombreDiplomado %>
+                         </div>
+                    </div>
+                    <div class="column">
+                        <label class="block"><strong>Fecha Inicio:</strong></label>
+                        <div class="rounded border">
+                            <%= diplomados[0].fechaInicio %>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <label class="block"><strong>Fecha Fin:</strong></label>
+                        <div class="rounded border">
+                            <%= diplomados[0].fechaFin %>
+                        </div>
+                    </div>
                 <% } %>
                 <div class="column is-narrow">
                     <a href="/pago/realizar_pago">
-                        <button class="button is-primary">Realizar pago</button>
+                        <button class="button is-rounded is-responsive">
+                            <span>
+                                Realizar pago
+                            </span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
                     </a>
                 </div>
             </div>
@@ -69,7 +99,8 @@
         </div>
 
         <% if(matricula[0] == '1') { %>
-        <div class="notification" id="deuda">
+        <div id="deuda">
+            <h4 class="title is-4">Resumen de Pagos</h4>
             <table class="table is-bordered is-hoverable is-fullwidth">
                 <tbody>
                     <% let currentDate = new Date(); %>
@@ -313,10 +344,7 @@
   
                 <div id="pagoscol">
                     <% if(matricula[0] == '1') { %>
-                        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                            Estos son los pagos realizados para este periodo:
-                        </div>
-                    <% if (pagos.length != 0) { %> 
+                        <% if (pagos.length != 0) { %> 
                         <% for (let count = 0; count < pagos.length; count = count + 2) { %>
                             <% if(pagos[count].montoPagado !== 0) { %>
                                 <div class="columns">

@@ -28,8 +28,9 @@ module.exports = class Pago {
 
     static fetchOne(matricula){
         return db.execute(`SELECT P.motivo, P.montoPagado, P.nota, P.metodoPago, P.fechaPago
-        FROM Deuda AS D, Pago AS P
-        WHERE D.IDDeuda = P.IDDeuda
+        FROM Deuda AS D, Pago AS P, Colegiatura AS C, Periodo AS Pe
+        WHERE D.IDDeuda = P.IDDeuda AND D.IDColegiatura = C.IDColegiatura AND
+        C.IDPeriodo = Pe.IDPeriodo AND periodoActivo = 1
         AND D.matricula = ?
         ORDER BY P.fechaPago ASC
         LIMIT 0, 1000`, 
