@@ -61,7 +61,7 @@
                                 <div class="column is-2" style="text-align: center; margin-bottom: -3em;">
                                     <% if (ficha1.Pagado == 1) { %>
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                                    <% } else if (currentDate <= ficha1.fechaLimitePago) { %>
+                                    <% } else if (moment(ficha1.fechaLimitePago).isAfter(currentDate)) { %>
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                     <% } else { %>
                                     <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
@@ -177,7 +177,7 @@
                                 <div class="column is-2" style="text-align: center; margin-bottom: -3em;">
                                     <% if (ficha2.Pagado == 1) { %>
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
-                                    <% } else if (currentDate <= ficha2.fechaLimitePago) { %>
+                                    <% } else if (moment(ficha2.fechaLimitePago).isAfter(currentDate)) { %>
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                     <% } else { %>
                                     <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #910106;"></i>
@@ -218,7 +218,7 @@
                                             placeholder="<%= ficha2.fechaLimitePago %>">
                                         <br>
                                         <% } else { %>
-                                        <%= moment(ficha2.fechaLimitePago).format('LL') %>
+                                            <%= moment(ficha2.fechaLimitePago).format('LL') %>
                                         <br>
                                         <br>
                                         <% } %>
