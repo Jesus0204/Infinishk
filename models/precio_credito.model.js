@@ -10,7 +10,7 @@ module.exports = class PrecioCredito {
     }
 
     static fetchCreditoActivo(){
-        return db.execute(`SELECT precioPesos FROM preciocredito WHERE precioActivo = 1`);
+        return db.execute(`SELECT precioPesos FROM precioCredito WHERE precioActivo = 1`);
     }
 
     static fetchAnios() {

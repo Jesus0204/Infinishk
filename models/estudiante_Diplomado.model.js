@@ -15,12 +15,12 @@ module.exports = class estudianteDiplomado {
 
     static fetchDatos(matricula) {
         return db.execute(`SELECT Alumno.Matricula, Alumno.Nombre, Alumno.Apellidos, Alumno.referenciaBancaria, 
-        estudiantediplomado.fechaInscripcion, diplomado.nombreDiplomado 
+        estudianteDiplomado.fechaInscripcion, Diplomado.nombreDiplomado 
         FROM Alumno 
-        JOIN estudiantediplomado on Alumno.Matricula = estudiantediplomado.Matricula 
-        JOIN cursa on estudiantediplomado.Matricula = cursa.Matricula 
-        JOIN diplomado on cursa.IDDiplomado = diplomado.IDDiplomado 
-        WHERE Alumno.Matricula = ? and diplomado.diplomadoActivo = 1;`, [matricula]);
+        JOIN estudianteDiplomado on Alumno.Matricula = estudianteDiplomado.Matricula 
+        JOIN cursa on estudianteDiplomado.Matricula = cursa.Matricula 
+        JOIN Diplomado on Cursa.IDDiplomado = Diplomado.IDDiplomado 
+        WHERE Alumno.Matricula = ? and Diplomado.diplomadoActivo = 1;`, [matricula]);
     }
 
     static async update(id, ref) {

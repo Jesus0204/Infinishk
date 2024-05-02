@@ -17,19 +17,19 @@ module.exports = class Materia {
     }
 
     static updateMateria(id,nombre,planEstudios,semestre,creditos,idexterno) {
-        return db.execute('UPDATE materia SET IDMateria=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateriaExterna=?', [id,nombre,planEstudios,semestre,creditos,idexterno])
+        return db.execute('UPDATE Materia SET IDMateria=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateriaExterna=?', [id,nombre,planEstudios,semestre,creditos,idexterno])
     }
 
     static saveMateria(id,nombre,plan,semestre,creditos,idexterno){
-        return db.execute('INSERT INTO `materia`(`IDMateria`, `Nombre`, `planEstudios`, `semestreImpartido`, `Creditos`, `IDMateriaExterna`) VALUES (?,?,?,?,?,?)', [id,nombre,plan,semestre,creditos,idexterno])
+        return db.execute('INSERT INTO `Materia`(`IDMateria`, `Nombre`, `planEstudios`, `semestreImpartido`, `Creditos`, `IDMateriaExterna`) VALUES (?,?,?,?,?,?)', [id,nombre,plan,semestre,creditos,idexterno])
     }
 
     static fetchID(idexterna) {
-        return db.execute(`SELECT IDMateria FROM materia WHERE IDMateriaExterna = ?`, [idexterna]);
+        return db.execute(`SELECT IDMateria FROM Materia WHERE IDMateriaExterna = ?`, [idexterna]);
     }
 
     static fetchIDPorGrupo(IDGrupo){
-        return db.execute(`SELECT IDMateria FROM grupo WHERE IDGrupo = ?`, [IDGrupo]);
+        return db.execute(`SELECT IDMateria FROM Grupo WHERE IDGrupo = ?`, [IDGrupo]);
     }
 
 }
