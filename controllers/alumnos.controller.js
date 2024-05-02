@@ -34,6 +34,7 @@ exports.get_alumnos_atrasados = (request, response, next) => {
 
 exports.post_fetch_fichas = (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
+    const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
     Alumno.fetchOne(matches[0])
         .then(([alumno, fieldData]) => {
             Fichas.fetch(matches[0])
@@ -41,6 +42,7 @@ exports.post_fetch_fichas = (request, response, next) => {
                     response.render('alumnos/modificar_fichas', {
                         alumno: alumno,
                         fichas: fichas, 
+                        fechaActual: now,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
