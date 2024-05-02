@@ -101,8 +101,6 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => { 
     const { ref, beca, alumno, csrf } = request.body;
 
-    console.log('data: ', {ref, beca, alumno, csrf});
-
     try {
         let data;
         if (alumno.startsWith("1")) {
