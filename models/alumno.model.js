@@ -53,4 +53,14 @@ module.exports = class Alumno {
     static fetchCredito(matricula){
         return db.execute(`SELECT CAST(credito AS CHAR(20)) FROM Alumno WHERE Matricula = ?`,[matricula]);
     }
+
+    static fetchBeca(matricula) {
+        return db.execute(`SELECT 
+        CASE 
+            WHEN porcBeca > 0 THEN (1 - (porcBeca / 100)) 
+            ELSE 1 
+        END AS beca
+        FROM estudianteprofesional 
+        WHERE Matricula = ?`, [matricula])
+    }
 }

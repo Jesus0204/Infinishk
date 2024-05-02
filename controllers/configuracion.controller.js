@@ -9,7 +9,7 @@ const Colegiatura = require('../models/colegiatura.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/liquida.model');
 const Usuario = require('../models/usuario.model')
-const estudianteDiplomado = require('../models/estudianteDiplomado.model');
+const estudianteDiplomado = require('../models/estudiante_Diplomado.model');
 const Diplomado = require('../models/diplomado.model');
 const Rol = require('../models/rol.model');
 
