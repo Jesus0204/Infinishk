@@ -37,6 +37,8 @@
     "chartjs": "^0.3.24",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "csurf": "^1.11.0",
     "csv": "^6.3.8",
     "csv-parser": "^3.0.0",
@@ -60,6 +62,9 @@
     "postcss": "^8.4.35",
     "sass": "^1.75.0",
     "writer": "^1.0.0",
+    "uuid": "^9.0.1",
+    "xml-writer": "^1.7.0",
+    "xml2js": "^0.6.2",
     "yarn": "^1.22.22"
   },
   "devDependencies": {

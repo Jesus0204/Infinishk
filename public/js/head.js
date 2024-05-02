@@ -86,7 +86,7 @@ if (window.matchMedia("(max-width: 1023px)").matches) {
 
 window.addEventListener('resize', () => {
     const configuracion = document.getElementById('configuracion');
-    if (configuracion){
+    if (configuracion) {
         if (window.innerWidth >= 1024) {
             configuracion.style.width = '115%';
             navbar_desktop();

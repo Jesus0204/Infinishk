@@ -37,5 +37,10 @@ module.exports = class Pago {
         [matricula]);
     }
     
+    static save_tarjeta(id,motivo,monto,nota,fecha) {
+        return db.execute(
+            `CALL insertar_Pago(?, ?, ?, ?, 'Tarjeta', ?);`, 
+                [id,motivo, monto, nota,fecha]);
+    }
     
 }

@@ -42,7 +42,7 @@ router.post('/fetch_registrar_pago_manual', isAuth, can_RegistrarPagoManual, pag
 router.post('/registrar_pago_manual/pago_extra', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_pago_extra);
 router.post('/registrar_pago_manual/diplomado', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_diplomado);
 router.post('/registrar_pago_manual/colegiatura', isAuth, can_RegistrarPagoManual, pagosController.post_registrar_pago_manual_colegiatura);
-router.get('/', isAuth, pagosController.get_pago);
+
 
 // Reportes
 router.get('/reporte_ingresos', isAuth, can_ReportesIngresos, pagosController.get_ingresos);
@@ -54,5 +54,7 @@ router.post('/reporte_metodo_pago', isAuth, can_ReportesMetodoPago, pagosControl
 router.get('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_subir_archivo);
 router.post('/resultadoTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_registrar_transferencia);
+
+router.get('/', isAuth, pagosController.get_pago);
 
 module.exports = router;

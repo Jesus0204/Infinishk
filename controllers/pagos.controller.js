@@ -5,9 +5,10 @@ const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
 const Cursa = require('../models/cursa.model');
-const Reporte = require('../models/reporte.model');
 const Periodo = require('../models/periodo.model');
 const Colegiatura = require('../models/colegiatura.model');
+const Usuario = require('../models/usuario.model');
+const Reporte = require('../models/reporte.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');

@@ -147,4 +147,9 @@ module.exports = class Deuda {
         WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
         Pagado = 0 AND Now() > fechaLimitePago AND P.periodoActivo = 1`);
     };
+
+    static fetchIDColegiatura(matricula) {
+        return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
+            [matricula]);
+    }
 }

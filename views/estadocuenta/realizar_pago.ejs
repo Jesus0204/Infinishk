@@ -1,0 +1,453 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<section class="section">
+    <div class="container">
+        <h1 class="title"> Realizar Pago</h1>
+        <br>
+        <div class="columns">
+            <div class="column is-4">
+                <p>
+                    Selecciona el tipo de pago que vas a realizar:
+                </p>
+                <br>
+                <div class="control has-icons-left">
+                    <div class="select is-medium" style="width: 110%;">
+                        <select name="tipo" id="tipo" style="width: 110%;">
+                            <option value="Normal">
+                                <% if (alumno[0].Matricula[0] == '1') { %>
+                                Colegiatura
+                                <% } else if (alumno[0].Matricula[0] == '8') { %>
+                                Diplomado
+                                <% } %>
+                            </option>
+                            <% if (solicitudes.length != 0){ %>
+                            <option value="Otro">
+                                Otro Pago
+                            </option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="icon is-medium is-left">
+                        <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                    </div>
+                </div>
+                <br>
+                <div id="info_pago_normal">
+                    <% if (alumno[0].Matricula[0] == '1' && deuda.length != 0) { %>
+                    <% let porPagar = 0 %>
+                    <% for (let deudas of totales) { %>
+                    <% porPagar += deudas.montoAPagar %>
+                    <% } %>
+                    <p class="is-size-5" style="text-align: center;">
+                        <strong>Saldo Pendiente: </strong>
+                        $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                     }) %>
+                    </p>
+                    <br>
+                    <table class="table is-bordered Pago-de-Colegiatura"
+                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Ficha Actual a Pagar:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Fecha Límite
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto a Pagar
+                            </th>
+                            <th style="color: #ffffff">
+                                Monto Pagado
+                            </th>
+                        <tbody>
+                            <td>
+                                <%= deuda[0].fechaLimitePago %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                            </td>
+                            <td>
+                                $<%= deuda[0].montoPagado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                            </td>
+                        </tbody>
+                        </thead>
+                    </table>
+                    <% } %>
+                    <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
+                    <table class="table is-bordered Pago-de-Diplomado"
+                        style="color: #ffffff; margin-left: auto; margin-right: auto;">
+                        <caption class="is-size-5">
+                            <strong>
+                                Cursando:
+                            </strong>
+                        </caption>
+                        <thead>
+                            <th style="color: #ffffff">
+                                Diplomado
+                            </th>
+                            <th style="color: #ffffff">
+                                Precio
+                            </th>
+                        </thead>
+                        <tbody>
+                            <td>
+                                <%= diplomado[0].nombreDiplomado %>
+                            </td>
+                            <td>
+                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                 }) %>
+                            </td>
+                        </tbody>
+                    </table>
+                    <% } %>
+                    <% if (deuda.length == 0 && colegiatura.length != 0) { %>
+                    <div style="text-align: center;">
+                        <span>
+                            <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
+                        </span>
+                        <span class="is-size-5">
+                            <strong>
+                                Pagos Completos
+                            </strong>
+                        </span>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="column is-offset-1">
+                <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
+                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
+                    <% if (alumno[0].Matricula[0] == '1') { %>
+                    <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
+                    <% } %>
+                    <% if (solicitudes.length != 0){ %>
+                    <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
+                    <% } %>
+                <div id="pago_colegiatura">
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="motivo">Motivo: </label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
+                                style="padding: 0.5em; margin-top: -1em;">Por favor
+                                escribe un motivo del pago del alumno</p>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                        placeholder="Concepto del pago">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="monto">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor escribe un monto válido del Pago.
+                            </p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor escribe un número mayor a 0.
+                            </p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor escribe un monto sin exponente.
+                            </p>
+                            <div class="field">
+                                <% if (pago_col == true) { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                        placeholder="Monto a Pagar"
+                                        value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toFixed(2) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } else { %>
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                        placeholder="Monto a Pagar"
+                                        value="<%= diplomado[0].precioDiplomado.toFixed(2) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="is-hidden" id="pago_extra">
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="motivo_no_usar">Motivo: </label>
+                        </div>
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <div class="select is-medium" style="width: 110%;">
+                                    <select class="motivo_extra" name="motivo" id="motivo_no_usar" style="width: 110%;">
+                                        <% for (let solicitud of solicitudes) { %>
+                                        <option value="<%= solicitud.motivoPago %>"
+                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>">
+                                            <%= solicitud.motivoPago %>
+                                        </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="icon is-medium is-left">
+                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="monto_no_usar">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <% if (solicitudes.length) { %> 
+                                        <input name="monto" class="input is-medium" type="number" step="any"
+                                            id="monto_no_usar" placeholder="Monto pagado" value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
+                                    <% } else { %>
+                                        <input name="monto" class="input is-medium" type="number" step="any"
+                                            id="monto_no_usar" placeholder="Monto pagado"
+                                            value="" readonly>
+                                    <% } %>
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="columns">
+                    <div class="column is-5">
+                        <label class="label is-medium" for="metodo">Método de Pago: </label>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <div class="select is-medium" style="width: 110%;">
+                                <select name="metodo" id="metodo" style="width: 110%;">
+                                    <option value="Web Tarjeta">
+                                        Tarjeta
+                                    </option>
+                                    <option value="Efectivo">
+                                        Efectivo o TPV
+                                    </option>
+                                    <option value="Transferencia">
+                                        Transferencia
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="icon is-medium is-left">
+                                <i class="fa-solid fa-credit-card" style="color: #95404c;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="columns">
+                    <div class="column is-5">
+                        <label class="label is-medium" for="nota">Nota: </label>
+                    </div>
+                    <div class="column">
+                        <textarea name="nota" id="nota" class="input is-medium"
+                            placeholder="Escribe tu nota aquí."></textarea>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-2"></div>
+                    <div class="column is-8">
+                        <div id="boton_tarjeta">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_1"
+                                data-target="modal-pago-tarjeta" disabled>
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="boton_efectivo" class="is-hidden">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_2"
+                                data-target="modal-pago-efectivo" disabled>
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="boton_transferencia" class="is-hidden">
+                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_3"
+                                data-target="modal-pago-transferencia" disabled>
+                                <span>Realizar Pago</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <% } else if (diplomado.length == 0 && pago_col == false) { %>
+                <article id="no_cursa_diplomado" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        No te encuentras cursando un diplomado actualmente, por lo que no puedes pagar ningún diplomado.
+                    </div>
+                </article>
+                <% } else if (colegiatura.length == 0 && pago_col == true) { %>
+                <article id="no_colegiatura" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        No cuentas con una colegiatura para el periodo <%= periodo[0].Nombre %>.
+                    </div>
+                </article>
+                <% } else if (pago_col == true && deuda.length == 0) {%>
+                <article id="no_colegiatura" class="message"
+                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                        <p>No se puede realizar un pago</p>
+                    </div>
+                    <div class="message-body" style="color:#ffffff;">
+                        ¡Ya pagaste todos los meses de la colegiatura del periodo
+                        <%= periodo[0].Nombre %>!
+                    </div>
+                </article>
+                <% } %>
+            </div>
+        </div>
+        <div id="modal-pago-tarjeta" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal_title" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                            <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                            <strong>Pago de Diplomado</strong>
+                        <% } %>
+                    </p>
+                    <button type="button" class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <iframe width="100%" height="470px" id="frame_pago"></iframe>
+                </section>
+            </div>
+        </div>
+        <div id="modal-pago-efectivo" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal_title_2" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                        <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                        <strong>Pago de Diplomado</strong>
+                        <% } %>
+                    </p>
+                    <button type="button" class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p> 
+                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina:
+                    </p>
+                    <br>
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        <p>
+                            - Lunes a viernes (a excepción de días festivos).
+                        </p>
+                        <p>
+                            - Horario 8:00 a 15:00 hrs.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div id="modal-pago-transferencia" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal_title_3" class="modal-card-title" style="text-align: center;">
+                        <% if (pago_col == true) { %>
+                        <strong>Pago de Colegiatura</strong>
+                        <% } else { %>
+                        <strong>Pago de Diplomado</strong>
+                        <% } %>
+                    </p>
+                    <button type="button" class="delete" aria-label="delete"></button>
+                </header>
+                <section class="modal-card-body">
+                    <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                        <div class="message-header"
+                            style="background-color: #3e4d72; color:#ffffff; text-align: center;">
+                            <p>Datos a usar</p>
+                        </div>
+                        <div class="message-body" style="color:#ffffff;">
+                            <p>
+                                - Banco: SANTANDER
+                            </p>
+                            <p>
+                                - Número de cuenta: 65508892112
+                            </p>
+                            <p>
+                                - CLABE: 0146 8065 5088 9211 24
+                            </p>
+                            <p>
+                                - Nombre del Beneficiario: VIA VESTIRE SC
+                            </p>
+                            <p class="is-size-5">
+                                - <strong>
+                                    Referencia: <%= alumno[0].referenciaBancaria %>
+                                </strong>
+                            </p>
+                        </div>
+                    </article>
+                    <div id="errorNotification" class="notification is-danger">
+                        <p>
+                            Es muy importante colocar correctamente la REFERENCIA como el concepto de la transferencia,
+                            utilizando la REFERENCIA NUMÉRICA que tienes asignada, ya que de ser incorrectos se genera un reembolso automático, sin
+                            realizarse el pago.
+                        </p>
+                    </div>
+                </section>
+            </div>
+    </div>
+</section>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
+<script type="text/javascript" src="/js/realizar_pago.js"></script>
