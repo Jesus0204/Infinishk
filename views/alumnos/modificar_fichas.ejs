@@ -92,7 +92,7 @@
                                         <br>
                                         <strong>Fecha Limite Pago:</strong>
                                         <br>
-                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
+                                        <% if (ficha1.Pagado != 1) { %>
                                         <p id="ayuda_fecha_vacia<%=display1%>"
                                             class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
                                             Por favor escoge una fecha límite.</p>
@@ -106,7 +106,7 @@
                                             <br>
                                         <% } %>
                                         <strong>Descuento:</strong>
-                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
+                                        <% if (ficha1.Pagado != 1) { %>
                                         <input id="descuento<%=display1%>" name="descuento" class="input is-medium"
                                             type="number" step="any" value="<%= ficha1.Descuento %>">
                                         <p id="ayuda_descuento_vacio<%=display1%>"
@@ -136,7 +136,7 @@
                                         <br>
                                         <br>
                                         <% } %>
-                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
+                                        <% if (ficha1.Pagado != 1) { %>
                                         <strong>Nota:</strong>
                                         <p id="ayuda_nota<%=display1%>" class="help is-hidden has-text-danger-dark"
                                             style="padding-bottom: 0.6em;">
@@ -152,7 +152,7 @@
                                                 <br>
                                             <% } %>
                                         <% } %>
-                                        <% if (ficha1.Pagado != 1 || currentDate < ficha1.fechaLimitePago) { %>
+                                        <% if (ficha1.Pagado != 1) { %>
                                         <button id="Boton_modificar<%=display1%>" type="submit"
                                             class="button is-rounded is-medium is-responsive"
                                             onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
@@ -208,7 +208,7 @@
                                         <br>
                                         <strong>Fecha Limite Pago:</strong>
                                         <br>
-                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
+                                        <% if (ficha2.Pagado != 1) { %>
                                         <p id="ayuda_fecha_vacia<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-fecha"
                                             style="padding: 0.5em;">
@@ -223,7 +223,7 @@
                                         <br>
                                         <% } %>
                                         <strong>Descuento:</strong>
-                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
+                                        <% if (ficha2.Pagado != 1) { %>
                                         <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
                                             type="number" step="any" value="<%= ficha2.Descuento %>">
                                         <p id="ayuda_descuento_vacio<%=display2%>"
@@ -253,7 +253,7 @@
                                         <br>
                                         <br>
                                         <% } %>
-                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
+                                        <% if (ficha2.Pagado != 1) { %>
                                         <strong>Nota:</strong>
                                         <p id="ayuda_nota<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-nota"
@@ -270,7 +270,7 @@
                                                 <br>
                                             <% } %>
                                         <% } %>
-                                        <% if (ficha2.Pagado != 1 || currentDate < ficha2.fechaLimitePago) { %>
+                                        <% if (ficha2.Pagado != 1) { %>
                                         <button id="Boton_modificar<%=display2%>" type="submit"
                                             class="button is-rounded is-medium is-responsive"
                                             onclick="modificar('<%= ficha2.descuento %>', '<%= ficha2.fecha_lim %>', '<%= ficha2.nota %>', '<%= ficha2.IDDeuda %>', '<%= display2 %>')"
