@@ -98,7 +98,7 @@
                                             Por favor escoge una fecha límite.</p>
                                         <input id="fecha_lim<%=display1%>" name="fecha_lim"
                                             class="fecha-limite input is-medium" type="date"
-                                            placeholder="<%= moment(ficha2.fechaLimitePago).format() %>">
+                                            placeholder="<%= moment(ficha1.fechaLimitePago).format() %>">
                                         <br>
                                         <% } else { %>
                                             <%= moment(ficha1.fechaLimitePago).format('LL') %>
