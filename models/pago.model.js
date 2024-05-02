@@ -31,7 +31,7 @@ module.exports = class Pago {
         FROM Deuda AS D, Pago AS P
         WHERE D.IDDeuda = P.IDDeuda
         AND D.matricula = ?
-        ORDER BY P.fechaPago DESC
+        ORDER BY P.fechaPago ASC
         LIMIT 0, 1000`, 
         [matricula]);
     }
