@@ -119,7 +119,7 @@
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                                 </div>
-                                <% } else if (currentDate < moment(deuda[count].fechaLimitePago, 'LL').format()) { %>
+                                <% } else if (currentDate <= moment(deuda[count].fechaLimitePago, 'LL').format()) { %>
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                 </div>
@@ -167,7 +167,7 @@
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                                 </div>
-                                <% } else if (currentDate < moment(deuda[count].fechaLimitePago, 'LL').format()) { %>
+                                <% } else if (currentDate <= moment(deuda[count].fechaLimitePago, 'LL').format()) { %>
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                 </div>
@@ -213,7 +213,7 @@
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-circle-check fa-2xl" style="color: #17b585;"></i>
                                 </div>
-                                <% } else if (currentDate < moment(deuda[count + 1].fechaLimitePago, 'LL').format()){ %>
+                                <% } else if (currentDate <= moment(deuda[count + 1].fechaLimitePago, 'LL').format()){ %>
                                 <div class="column is-narrow">
                                     <i class="fa-solid fa-clock fa-2xl" style="color: #ffc800;"></i>
                                 </div>
