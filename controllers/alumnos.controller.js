@@ -82,8 +82,8 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
-        const Beca = resultfetchBeca[0][0].beca
-        //AGREGAR CUANDO SE HAGA DEPLOY
+        const Beca = resultfetchBeca[0][0].beca;
+
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
         console.log('exito :)')
 
@@ -135,7 +135,27 @@ exports.post_fetch_datos = async (request, response, next) => {
         const pagosDiplomado = await PagaDiplomado.fetchPagosDiplomado(matricula);
         const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
 
-        if(matricula.startsWith('100')) {
+        // Conviertes la fecha si existe
+        for (let count = 0; count < deuda.length; count++) {
+            deuda[count].fechaLimitePago = moment(new Date(deuda[count].fechaLimitePago)).format('LL');
+        }
+
+        // Conviertes la fecha si existe
+        for (let count = 0; count < pagos.length; count++) {
+            pagos[count].fechaPago = moment(new Date(pagos[count].fechaPago)).format('LL');
+        }
+
+        // Conviertes la fecha si existe
+        for (let count = 0; count < pagosDiplomado.length; count++) {
+            pagosDiplomado[count].fechaPago = moment(new Date(pagosDiplomado[count].fechaPago)).format('LL');
+        }
+
+        // Conviertes la fecha si existe
+        for (let count = 0; count < pagosExtra.length; count++) {
+            pagosExtra[count].fechaPago = moment(new Date(pagosExtra[count].fechaPago)).format('LL');
+        }
+
+        if(matricula.startsWith('1')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
@@ -199,6 +219,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
+            error_alumno: false
         });
     }
 };
