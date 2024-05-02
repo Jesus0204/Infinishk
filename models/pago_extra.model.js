@@ -2,7 +2,7 @@ const db = require('../util/database');
 
 module.exports = class PagoExtra {
 
-    constructor(mi_motivoPago, mi_montoPagar, mi_fecha) {
+    constructor(mi_motivoPago, mi_montoPagar) {
         this.motivoPago = mi_motivoPago;
         this.montoPagar = mi_montoPagar;
     }
