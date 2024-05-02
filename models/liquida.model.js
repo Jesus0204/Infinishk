@@ -28,21 +28,21 @@ module.exports = class Liquida {
     }
 
     static fetchIDPagado(matricula, fecha) {
-        return db.execute('Select fechaPago, IDLiquida from liquida WHERE Matricula = ? AND Pagado = 1 AND fechaPago = ?', [matricula, fecha]);
+        return db.execute('Select fechaPago, IDLiquida from Liquida WHERE Matricula = ? AND Pagado = 1 AND fechaPago = ?', [matricula, fecha]);
     }
 
     static fetchStatus(matricula) {
-        return db.execute('Select Pagado from liquida WHERE Matricula = ?', [matricula]);
+        return db.execute('Select Pagado from Liquida WHERE Matricula = ?', [matricula]);
     }
 
     static save_transferencia(matricula, id, fecha, nota) {
         return db.execute(
-            `INSERT INTO liquida ( Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`,
+            `INSERT INTO Liquida ( Matricula, IDPagosExtras, fechaPago, metodoPago, Pagado, Nota) VALUES (?,?,?,'Transferencia','1',?)`,
             [matricula, id, fecha, nota]);
     }
 
     static update_transferencia(nota, fecha, id) {
-        return db.execute('UPDATE liquida SET Pagado = 1, metodoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        return db.execute('UPDATE Liquida SET Pagado = 1, metodoPago= "Transferencia", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
             [fecha, nota, id]);
     }
 
@@ -72,12 +72,12 @@ module.exports = class Liquida {
     }
 
     static updateExitoso(nota,fecha,id){
-        return db.execute('UPDATE liquida SET Pagado = 1, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        return db.execute('UPDATE Liquida SET Pagado = 1, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
         [fecha,nota, id]);
     }
 
     static updateDeclinado(nota,fecha,id){
-        return db.execute('UPDATE liquida SET Pagado = 0, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
+        return db.execute('UPDATE Liquida SET Pagado = 0, metodoPago= "Tarjeta", fechaPago=?, Nota = ? WHERE IDLiquida = ?',
         [fecha,nota, id]);
     }
 
