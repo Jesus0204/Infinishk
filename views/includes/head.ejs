@@ -182,61 +182,14 @@
                     </a>
                     <div class="navbar-dropdown" id="pagos">
                         <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true && 
-                            contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
-                        <div class="nested dropdown has-dropdown is-hoverable">
-                            <a class="navbar-item" style="padding-right: 1.3em;">
+                        contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
+                            <a class="navbar-item" href="/pagos/registroTransferencia">
                                 <span class="icon is-large">
-                                    <i class="fa-solid fa-file-invoice"></i>
+                                    <i class="fa-solid fa-file-csv"></i>
                                 </span>
-                                Registros
-                                <span class="icon is-large ">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
+                                Transferencia
                             </a>
-                            <div class="dropdown-menu">
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-cash-register"></i>
-                                        </span>
-                                        Pago Manual
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/pagos/registroTransferencia">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-file-csv"></i>
-                                        </span>
-                                        Transferencia
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <hr class="navbar-divider">
-                        <div class="mobile">
-                            <div data-target="registros" class="navbar-item has-dropdown">
-                                <a class="navbar-link" onclick="click_target(this.parentElement)">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-file-invoice"></i>
-                                    </span>
-                                    Registros
-                                </a>
-                                <div class="navbar-dropdown" id="registros">
-                                    <a class="navbar-item" href="/pagos/registrar_pago_manual">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-cash-register"></i>
-                                        </span>
-                                        Pago Manual
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/pagos/registroTransferencia">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-file-csv"></i>
-                                        </span>
-                                        Transferencia
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <% } %>
                         <% if (contienePermiso(permisos, 'Consultar Reporte Ingresos') == true && 
                             contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>

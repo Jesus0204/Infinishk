@@ -337,7 +337,9 @@ function pagosextra() {
 
     // Quitar la tabla de pagos colegiatura dip
     const tabla_pagosdip = document.querySelector('#pagosdip');
-    tabla_pagosdip.classList.add('is-hidden');
 
+    if (tabla_pagosdip){
+        tabla_pagosdip.classList.add('is-hidden');
+    }
 
 }
