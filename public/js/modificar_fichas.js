@@ -41,11 +41,8 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const placeholderDate_check = document.getElementById('fecha_lim' + count)
 
     if (placeholderDate_check){
-        const placeholderDate = placeholderDate_check.getAttribute('placeholder');
-        const startDate = new Date(placeholderDate);
-
+        const startDate = placeholderDate_check.getAttribute('placeholder');
         console.log(startDate);
-
 
         const calendars = bulmaCalendar.attach('[id=fecha_lim' + count + ']', {
             startDate: startDate,
