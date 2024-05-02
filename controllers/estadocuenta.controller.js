@@ -340,7 +340,7 @@ exports.post_recibir_pago = async (request, response, next) => {
                                     }
     
                                     // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                                    monto = monto - deuda.montoAPagar;
+                                    monto = monto - (deuda.montoAPagar - deuda.montoPagado);
                                 }
     
                                 // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
@@ -466,7 +466,7 @@ exports.post_recibir_pago = async (request, response, next) => {
                                     }
     
                                     // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                                    monto = monto - deuda.montoAPagar;
+                                    monto = monto - (deuda.montoAPagar - deuda.montoPagado);
                                 }
     
                                 // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
@@ -593,7 +593,7 @@ exports.post_recibir_pago = async (request, response, next) => {
                                     }
     
                                     // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                                    monto = monto - deuda.montoAPagar;
+                                    monto = monto - (deuda.montoAPagar - deuda.montoPagado);
                                 }
     
                                 // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
@@ -701,7 +701,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             });
         } else if (matricula[0] == '8') {
 
-        const [pagosDiplomado] = await PagaDiplomado.fetchPagosDiplomado(matricula);
+        const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
         const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula);
 
         // Formatear fechas
