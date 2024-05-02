@@ -15,6 +15,7 @@ moment.locale('es-mx');
 exports.get_estado_cuenta = async (request, response, next) => {
     try {
 
+        const now = moment().tz('America/Mexico_City').format();
         const matricula = request.session.username;
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
@@ -48,6 +49,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 estudianteProfesional: estudianteProfesional[0][0],
                 pagos: pagos,
                 deuda: deuda,
+                fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
@@ -78,6 +80,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             csrfToken: request.csrfToken(),
             pagosExtra: cargosExtra,
             pagadosExtra: pagosExtra,
+            fechaActual: now,
             matricula: matricula,
             diplomados: diplomadoCursando,
             rol: request.session.rol || "",

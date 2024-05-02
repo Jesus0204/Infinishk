@@ -524,7 +524,7 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
 
                             // Conviertes la fecha si existe
                             for (let count = 0; count < infoDeuda.length; count++) {
-                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).tz('America/Mexico_City').format('LL');
+                                infoDeuda[count].fechaLimitePago = moment(new Date(infoDeuda[count].fechaLimitePago)).format('LL');
                             }
                             info_Deuda = infoDeuda;
                         };
