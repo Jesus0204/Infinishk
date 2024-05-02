@@ -18,15 +18,6 @@ const stream = require('stream');
 const moment = require('moment-timezone');
 moment.locale('es-mx');
 
-exports.get_pago = (request, response, next) => {
-    response.render('pago/pago', {
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-        csrfToken: request.csrfToken()
-    });
-};
-
 exports.get_registrar_pago_manual = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: true,

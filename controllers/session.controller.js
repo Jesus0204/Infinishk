@@ -48,14 +48,7 @@ exports.post_login = (request, response, next) => {
                                                 request.session.rol = rol[0].IDRol;
                                                 request.session.username = user.IDUsuario;
                                                 return request.session.save(err => {
-
-                                                    if(rol[0].IDRol === 3){
-                                                        response.redirect('/estado_cuenta/estado_cuenta');
-                                                    }
-
-                                                    else{
-                                                        response.redirect('/alumnos/alumnos_atrasados');
-                                                    }
+                                                    response.redirect('/');
                                                 })
                                             })
                                             .catch((error) => {
