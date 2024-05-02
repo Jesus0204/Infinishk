@@ -140,13 +140,16 @@
                     </ul>
                 </div>
 
+                <div container>
+                    <div class="columns is-vcentered is-centered">
+                    <div class="column is-6">
                 <div id="otros_cargos" class="is-hidden">
                         <% pagosExtra.forEach(pagosExtra => { %>
                         <% if(pagosExtra.montoPagar !== 0) { %>
                         <div class="box">
                             <div class="columns is-vcentered">
                                 <div class="column">
-                                    <p><strong>Monto a pagar:</strong> <%= pagosExtra.montoPagar.toFixed(2) %> </p>
+                                    <p><strong>Monto a Pagar:</strong> <%= pagosExtra.montoPagar.toFixed(2) %> </p>
                                     <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
                                 </div>
                             </div>
@@ -155,7 +158,13 @@
                         <% }); %>
                     </div>
                 </div>
+                </div>
+                </div>
+                </div>
 
+                <div container>
+                    <div class="columns is-vcentered is-centered">
+                    <div class="column is-8">
                 <div id="historial" class="is-hidden">
                     <div id="pagos">
                         <div class="tabs is-boxed">
@@ -240,6 +249,9 @@
                             <% }); %>
                         </div>
                     </div>
+                </div>
+                </div>
+                </div>
                 </div>
 
                 <section id="horario" class="section is-hidden">
@@ -473,6 +485,8 @@
                 </section>
 
                 <div id="estado_cuenta" class="is-active">
+                    <div class="columns is-vcentered is-centered">
+                        <div class="column is-8">
                     <div class="notification" id="deuda">
                         <table class="table is-bordered is-hoverable is-fullwidth">
                             <tbody>
@@ -599,6 +613,8 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                </div>
                 </div>
 
             </div>
