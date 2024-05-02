@@ -790,7 +790,7 @@ exports.get_alumnos = async (request, response, next) => {
                 degree_name,
             } = user;
 
-            const apellidos = ` ${first_surname} ${second_surname}`;
+            const apellidos = `${first_surname} ${second_surname}`;
             return {
                 ivd_id: ivd_id,
                 name: name,
