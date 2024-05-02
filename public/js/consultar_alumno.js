@@ -287,10 +287,16 @@ function darDeBajaGrupo(IDGrupo, matricula) {
                 console.error(`No se encontró la fila ${id}.`);
             }
 
+            // Mostrar la notificación de eliminación
             document.getElementById('eliminacion').classList.remove('is-hidden');
-            $('html, body').animate({
-                scrollTop: 0
-            }, 'slow');
+            
+            // Desplazar la página hacia arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Recargar la página después de mostrar la notificación durante unos segundos
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // 2000 milisegundos = 2 segundos
         })
         .catch(error => {
             console.error('Error en la petición fetch:', error);
