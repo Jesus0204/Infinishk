@@ -736,7 +736,17 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
             if (monto_a_usar > 0) {
                 await Alumno.update_credito(matricula, monto_a_usar);
             }
-            response.redirect('/alumnos/fetch_datos');
+
+            // Make a POST request to another route
+            fetch('https://ivd-pagos-infinishk-f243bfbb50c7.herokuapp.com/alumnos/datos_alumno', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    buscar: matricula, 
+                })
+            })
         })
         .catch((error) => {
             response.status(500).render('500', {
