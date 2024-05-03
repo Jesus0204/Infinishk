@@ -707,7 +707,6 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const matricula = request.body.matricula;
-    const _csrf = request.body._csrf;
 
     Deuda.fetchNoPagadas(request.body.IDColegiatura)
         .then(async ([deudas_noPagadas, fieldData]) => {
@@ -743,7 +742,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'csrf-token': _csrf
+                    'csrf-token': request.csrfToken(),
                 },
                 body: JSON.stringify({
                     buscar: matricula, 
