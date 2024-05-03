@@ -318,7 +318,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
         });
 };
 
-exports.get_ingresos = async (request, response, next) => {
+exports.get_ingresos = async (request, response, next) => { 
     try {
         const [periodos, fieldData] = await Reporte.fetchPeriodos();
 
@@ -647,7 +647,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                 if (update == false) {
                     Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
                         .then(([rows, fieldData]) => {
-                            response.redirect('/pagos/registrar_pago_manual');
+                            response.redirect('/alumnos/fetch_datos');
                         })
                         .catch((error) => {
                             response.status(500).render('500', {
@@ -685,7 +685,7 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
 
     PagoDiplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
         .then(([rows, fieldData]) => {
-            response.redirect('/pagos/registrar_pago_manual');
+            response.redirect('/alumnos/fetch_datos');
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -736,7 +736,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
             if (monto_a_usar > 0) {
                 await Alumno.update_credito(matricula, monto_a_usar);
             }
-            response.redirect('/pagos/registrar_pago_manual');
+            response.redirect('/alumnos/fetch_datos');
         })
         .catch((error) => {
             response.status(500).render('500', {
