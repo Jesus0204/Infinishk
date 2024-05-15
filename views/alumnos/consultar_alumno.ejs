@@ -10,9 +10,10 @@
 
             <div class="columns">
                 <div class="column is-8">
-                    <h3 class="title is-3">Alumno: <%= alumnoConsulta[0].Nombre %>
-                        <%= alumnoConsulta[0].Apellidos %> - 
+                    <h3 class="title is-3">Alumno: 
                         <br>
+                        <%= alumnoConsulta[0].Nombre %>
+                        <%= alumnoConsulta[0].Apellidos %> - 
                         <%= alumnoConsulta[0].Matricula %>
                     </h3>
                 </div>
@@ -96,7 +97,7 @@
                     </div>
                 </div>
                 <% } else { %>
-                <div class="column is-3">
+                <div class="column is-5">
                     <label class="block font-semibold"><strong>Diplomado:</strong></label>
                     <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].nombreDiplomado %>
                     </div>
@@ -144,7 +145,7 @@
                     <li id="nav_horario">
                         <a onclick="muestra_horario()">
                             <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
-                            <span>Horario</span>
+                            <span>Materias</span>
                         </a>
                     </li>
                     <% } %>
@@ -270,7 +271,7 @@
             <div id="diplomados_activos" class="container">
                 <% if (error) { %>
                 <div id="errorNotification" class="notification is-danger">
-                    Este alumno aun no ha confirmado su horario.
+                    Este alumno aun no ha confirmado sus materias.
                 </div>
                 <% } %>
                 <% if(confirmacion){%>
