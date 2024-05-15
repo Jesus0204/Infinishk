@@ -9,11 +9,15 @@
         <div class="container">
 
             <div class="columns">
-                <div class="column is-6">
-                    <h3 class="title is-3">Consultar Alumno</h3>
+                <div class="column is-8">
+                    <h3 class="title is-3">Alumno: <%= alumnoConsulta[0].Nombre %>
+                        <%= alumnoConsulta[0].Apellidos %> - 
+                        <br>
+                        <%= alumnoConsulta[0].Matricula %>
+                    </h3>
                 </div>
                 <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true) { %>
-                    <div class="column is-offset-2">
+                    <div class="column">
                         <form method="POST" action="/pagos/fetch_registrar_pago_manual">
                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
@@ -42,21 +46,10 @@
 
             <div class="notification">
                 <div class="columns is-vcentered">
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
-
-                            <label class="block font-semibold"><strong>Nombre:</strong></label>
-                            <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Nombre %>
-                                <%= alumnoConsulta[0].Apellidos %></div>
-                    </div>
-                    <div class="column is-2">
-                        <label class="block font-semibold"><strong>Matrícula:</strong></label>
-                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].Matricula %></div>
-                    </div>
-                    <!-- modificable -->
-                    <div class="column is-2">
                         <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
                         <input id="ref" name="ref" class="input is-small" type="number" step="any"
                             value="<%= alumnoConsulta[0].referenciaBancaria %>">
@@ -73,18 +66,17 @@
 
                     </div>
                     <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                    <div class="column is-3">
+                    <div class="column is-4">
                         <label class="block font-semibold"><strong>Plan de Estudios:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].planEstudio %>
                         </div>
                     </div>
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <label class="block font-semibold"><strong>Semestre:</strong></label>
                         <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].semestreActual %>
                         </div>
                     </div>
-                    <!-- modificable -->
-                    <div class="column is-1">
+                    <div class="column is-2">
                         <label class="block font-semibold"><strong>% de Beca:</strong></label>
                         <input id="beca" name="beca" class="input is-small" type="number" step="any"
                             value="<%= alumnoConsulta[0].porcBeca %>">
