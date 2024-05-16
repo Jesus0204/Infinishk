@@ -202,8 +202,8 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %> </p>
-                                    <p><strong>Fecha de pago:</strong> <%= pagos.fechaPago %> </p>
-                                    <p><strong>Motivo de pago:</strong> <%= pagos.motivo %> </p>
+                                    <p><strong>Fecha de Pago:</strong> <%= pagos.fechaPago %> </p>
+                                    <p><strong>Motivo de Pago:</strong> <%= pagos.motivo %> </p>
                                     <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
                                     <% if(pagos.nota !== '') { %>
                                     <p><strong>Nota:</strong> <%= pagos.nota %> </p>
@@ -249,8 +249,8 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %> </p>
-                                    <p><strong>Fecha de pago:</strong> <%= pagadosExtra.fechaPago %> </p>
-                                    <p><strong>Motivo de pago:</strong> <%= pagadosExtra.motivoPago %> </p>
+                                    <p><strong>Fecha de Pago:</strong> <%= pagadosExtra.fechaPago %> </p>
+                                    <p><strong>Motivo de Pago:</strong> <%= pagadosExtra.motivoPago %> </p>
                                     <p><strong>Método:</strong> <%= pagadosExtra.metodoPago %> </p>
                                     <% if(pagadosExtra.Nota !== '') { %>
                                     <p><strong>Nota:</strong> <%= pagadosExtra.Nota %> </p>
@@ -312,20 +312,6 @@
                                         </span>
                                         <strong>Salón: </strong>
                                         <%= grupo.Salon %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de Inicio: </strong>
-                                        <%= grupo.fechaInicio %>
-                                    </p>
-                                    <p>
-                                        <span class="icon is-small">
-                                            <i class="fa-regular fa-calendar"></i>
-                                        </span>
-                                        <strong>Fecha de Término: </strong>
-                                        <%= grupo.fechaTermino %>
                                     </p>
                                     <p>
                                         <span class="icon is-small">
@@ -395,14 +381,6 @@
                                             </p>
                                             <p class="is-size-5" style="text-align: center;">
                                                 <strong>Salón: </strong><%= grupo.Salon %>
-                                            </p>
-                                            <p class="is-size-5" style="text-align: center;">
-                                                <strong>Fecha de Inicio:
-                                                </strong><%= grupo.fechaInicio %>
-                                            </p>
-                                            <p class="is-size-5" style="text-align: center;">
-                                                <strong>Fecha de Término:
-                                                </strong><%= grupo.fechaTermino %>
                                             </p>
                                             <p class="is-size-5" style="text-align: center;">
                                                 <strong>Créditos: </strong>
@@ -504,7 +482,7 @@
                                     }) %>
                                     </div>
                                     <div class="column">
-                                        <strong>Fecha Limite Pago:</strong>
+                                        <strong>Fecha Límite Pago:</strong>
                                         <br>
                                         <%= deuda[count].fechaLimitePago %>
                                     </div>
@@ -552,7 +530,7 @@
                                     }) %>
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deuda[count].fechaLimitePago %>
                                 </div>
@@ -598,7 +576,7 @@
                                     }) %>
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deuda[count + 1].fechaLimitePago %>
                                 </div>
