@@ -58,7 +58,7 @@
                 <tr>
                     <td colspan="2">
                         <div class="column">
-                            <p>Unidad de formación:
+                            <p>Unidad de Formación:
                             </p>
                             <h3 class="title is-5">
                                 <%= schedule[0][count].Nombre %>
@@ -86,20 +86,6 @@
                             </p>
                             <p>
                                 <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de inicio: </strong>
-                                <%= schedule[0][count].fechaInicio %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de termino: </strong>
-                                <%= schedule[0][count].fechaTermino %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
                                     <i class="fas fa-graduation-cap"></i>
                                 </span>
                                 <strong>Créditos: </strong>
@@ -111,7 +97,7 @@
                                 <span class="icon is-small">
                                     <i class="fa-solid fa-tags"></i>
                                 </span>
-                                <strong>Costo(MXN): </strong>
+                                <strong>Costo (MXN): </strong>
                                 $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2
                                     }) %>
@@ -123,7 +109,7 @@
                 <tr>
                     <td>
                         <div class="column">
-                            <p>Unidad de formación:
+                            <p>Unidad de Formación:
                             </p>
                             <h3 class="title is-5">
                                 <%= schedule[0][count].Nombre %>
@@ -151,20 +137,6 @@
                             </p>
                             <p>
                                 <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de inicio: </strong>
-                                <%= schedule[0][count].fechaInicio %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de termino: </strong>
-                                <%= schedule[0][count].fechaTermino %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
                                     <i class="fas fa-graduation-cap"></i>
                                 </span>
                                 <strong>Créditos: </strong>
@@ -176,7 +148,7 @@
                                 <span class="icon is-small">
                                     <i class="fa-solid fa-tags"></i>
                                 </span>
-                                <strong>Costo(MXN): </strong>
+                                <strong>Costo (MXN): </strong>
                                 $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2
                                     }) %>
@@ -185,7 +157,7 @@
                     </td>
                     <td>
                         <div class="column">
-                            <p>Unidad de formación:
+                            <p>Unidad de Formación:
                             </p>
                             <h3 class="title is-5">
                                 <%= schedule[0][count + 1].Nombre %>
@@ -213,20 +185,6 @@
                             </p>
                             <p>
                                 <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de inicio: </strong>
-                                <%= schedule[0][count + 1].fechaInicio %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
-                                    <i class="fa-regular fa-calendar"></i>
-                                </span>
-                                <strong>Fecha de termino: </strong>
-                                <%= schedule[0][count + 1].fechaTermino %>
-                            </p>
-                            <p>
-                                <span class="icon is-small">
                                     <i class="fas fa-graduation-cap"></i>
                                 </span>
                                 <strong>Créditos: </strong>
@@ -238,7 +196,7 @@
                                 <span class="icon is-small">
                                     <i class="fa-solid fa-tags"></i>
                                 </span>
-                                <strong>Costo(MXN): </strong>
+                                <strong>Costo (MXN): </strong>
                                 $<%= schedule[0][count + 1].Precio_materia.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2
                                     }) %>
@@ -284,7 +242,7 @@
                 <div class="column is-1"></div>
                 <div class="column is-6">
                     <h3 class="title is-4">
-                        Costo total(MXN): $<%=
+                        Costo Total (MXN): $<%=
                         precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
                             maximumFractionDigits: 2 }) %>
                     </h3>
@@ -306,7 +264,7 @@
                     <br>
                     <button class="button is-rounded is-medium is-responsive" type="submit" style="font-size: large;"
                         id="Boton_confirmar">
-                        <span>Confirmar horario</span>
+                        <span>Confirmar Horario</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-check"></i>
                         </span>
@@ -327,7 +285,7 @@
                         <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
                         <td colspan="2">
                             <div class="column">
-                                <p>Unidad de formación: <%= schedule[count].idMateria %>
+                                <p>Unidad de Formación: <%= schedule[count].idMateria %>
                                 </p>
                                 <h3 class="title is-5">
                                     <%= schedule[count].nombreMat %>
@@ -366,20 +324,6 @@
                                 </p>
                                 <p>
                                     <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de inicio: </strong>
-                                    <%= schedule[count].startDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de termino: </strong>
-                                    <%= schedule[count].endDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
                                         <i class="fas fa-graduation-cap"></i>
                                     </span>
                                     <strong>Créditos: </strong>
@@ -389,7 +333,7 @@
                                     <span class="icon is-small">
                                         <i class="fa-solid fa-tags"></i>
                                     </span>
-                                    <strong>Costo(MXN):
+                                    <strong>Costo (MXN):
                                     </strong>$<%=
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -407,7 +351,7 @@
                         <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
                         <td>
                             <div class="column">
-                                <p>Unidad de formación: <%= schedule[count].idMateria %>
+                                <p>Unidad de Formación: <%= schedule[count].idMateria %>
                                 </p>
                                 <h3 class="title is-5">
                                     <%= schedule[count].nombreMat %>
@@ -446,20 +390,6 @@
                                 </p>
                                 <p>
                                     <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de inicio: </strong>
-                                    <%= schedule[count].startDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de termino: </strong>
-                                    <%= schedule[count].endDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
                                         <i class="fas fa-graduation-cap"></i>
                                     </span>
                                     <strong>Créditos: </strong>
@@ -469,7 +399,7 @@
                                     <span class="icon is-small">
                                         <i class="fa-solid fa-tags"></i>
                                     </span>
-                                    <strong>Costo(MXN):
+                                    <strong>Costo (MXN):
                                     </strong>$<%=
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -484,7 +414,7 @@
                         <input type="hidden" name="fechaFin[]" value="<%= schedule[count + 1].endDateFormat %>">
                         <td>
                             <div class="column">
-                                <p>Unidad de formación: <%= schedule[count + 1].idMateria %>
+                                <p>Unidad de Formación: <%= schedule[count + 1].idMateria %>
                                 </p>
                                 <h3 class="title is-5">
                                     <%= schedule[count + 1].nombreMat %>
@@ -523,20 +453,6 @@
                                 </p>
                                 <p>
                                     <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de inicio: </strong>
-                                    <%= schedule[count + 1].startDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                    <strong>Fecha de termino: </strong>
-                                    <%= schedule[count + 1].endDateFormat%>
-                                </p>
-                                <p>
-                                    <span class="icon is-small">
                                         <i class="fas fa-graduation-cap"></i>
                                     </span>
                                     <strong>Créditos: </strong>
@@ -546,7 +462,7 @@
                                     <span class="icon is-small">
                                         <i class="fa-solid fa-tags"></i>
                                     </span>
-                                    <strong>Costo(MXN):
+                                    <strong>Costo (MXN):
                                     </strong>$<%=
                                     schedule[count + 1].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
