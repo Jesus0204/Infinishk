@@ -72,26 +72,26 @@
                 <li id="nav_extras" <% if(matricula[0] == '8') { %>class="is-active" <%  }%>>
                     <a onclick="extras()" >
                         <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
-                        <span>Cargos extras</span>
+                        <span>Cargos Extras</span>
                     </a>
                 </li>
                 <li id="nav_pagos">
                     <a onclick="pagos()">
                         <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                        <span>Historial pagos</span>
+                        <span>Historial Pagos</span>
                     </a>
                 </li>
                 <% } else if(matricula[0] == '8') { %>
                     <li id="nav_pagos" class="is-active">
                         <a onclick="pagos()">
                             <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                            <span>Historial pagos</span>
+                            <span>Historial Pagos</span>
                         </a>
                     </li>
                     <li id="nav_extras">
                         <a onclick="extras()">
                             <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
-                            <span>Cargos extras</span>
+                            <span>Cargos Extras</span>
                         </a>
                     </li>
                 <% } %>
@@ -148,7 +148,7 @@
                                     }) %>
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deuda[count].fechaLimitePago %>
                                 </div>
@@ -196,7 +196,7 @@
                                     }) %>
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deuda[count].fechaLimitePago %>
                                 </div>
@@ -242,7 +242,7 @@
                                     }) %>
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deuda[count + 1].fechaLimitePago %>
                                 </div>
@@ -279,7 +279,7 @@
                             <div class="box">
                                 <div class="columns is-vcentered">
                                     <div class="column">
-                                        <p><strong>Monto a pagar:</strong>
+                                        <p><strong>Monto a Pagar:</strong>
                                             $<%= pagosExtra[count].montoPagar.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
@@ -294,7 +294,7 @@
                                 <div class="box">
                                     <div class="columns is-vcentered">
                                         <div class="column">
-                                            <p><strong>Monto a pagar:</strong>
+                                            <p><strong>Monto a Pagar:</strong>
                                                 $<%= pagosExtra[count].montoPagar.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
@@ -308,7 +308,7 @@
                                 <div class="box">
                                     <div class="columns is-vcentered">
                                         <div class="column">
-                                            <p><strong>Monto a pagar:</strong>
+                                            <p><strong>Monto a Pagar:</strong>
                                                 $<%= pagosExtra[count + 1].montoPagar.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
@@ -336,7 +336,7 @@
                     <li class="is-active" id="nav_pagoscol">
                         <a onclick="pagoscol()">
                             <% if(matricula[0] == '1') { %>
-                                <span>Pagos de colegiatura</span>
+                                <span>Pagos de Colegiatura</span>
                             <% } else { %>
                                 <span>Pagos de Diplomado</span>
                             <% } %>
@@ -369,8 +369,8 @@
                                                                 maximumFractionDigits: 2
                                                             }) %> 
                                                         </p>
-                                                        <p><strong>Fecha de pago:</strong> <%= pagos[count].fechaPago %> </p>
-                                                        <p><strong>Motivo de pago:</strong> <%= pagos[count].motivo %> </p>
+                                                        <p><strong>Fecha de Pago:</strong> <%= pagos[count].fechaPago %> </p>
+                                                        <p><strong>Motivo de Pago:</strong> <%= pagos[count].motivo %> </p>
                                                         <p><strong>Método:</strong> <%= pagos[count].metodoPago %> </p>
                                                         <% if(pagos[count].nota !== '') { %>
                                                         <p><strong>Nota:</strong> <%= pagos[count].nota %> </p>
@@ -390,9 +390,9 @@
                                                                 maximumFractionDigits: 2
                                                             }) %>
                                                         </p>
-                                                        <p><strong>Fecha de pago:</strong> <%= pagos[count].fechaPago %>
+                                                        <p><strong>Fecha de Pago:</strong> <%= pagos[count].fechaPago %>
                                                         </p>
-                                                        <p><strong>Motivo de pago:</strong> <%= pagos[count].motivo %>
+                                                        <p><strong>Motivo de Pago:</strong> <%= pagos[count].motivo %>
                                                         </p>
                                                         <p><strong>Método:</strong> <%= pagos[count].metodoPago %> </p>
                                                         <% if(pagos[count].nota !== '') { %>
@@ -412,10 +412,10 @@
                                                                 maximumFractionDigits: 2
                                                             }) %>
                                                         </p>
-                                                        <p><strong>Fecha de pago:</strong>
+                                                        <p><strong>Fecha de Pago:</strong>
                                                             <%= pagos[count + 1].fechaPago %>
                                                         </p>
-                                                        <p><strong>Motivo de pago:</strong>
+                                                        <p><strong>Motivo de Pago:</strong>
                                                             <%= pagos[count + 1].motivo %>
                                                         </p>
                                                         <p><strong>Método:</strong> <%= pagos[count + 1].metodoPago %>
@@ -453,12 +453,12 @@
                                                               maximumFractionDigits: 2
                                                             }) %>
                                                         </p>
-                                                        <p><strong>Nombre del diplomado:</strong>
+                                                        <p><strong>Nombre del Diplomado:</strong>
                                                             <%= pagosDiplomado[count].nombreDiplomado %> </p>
-                                                        <p><strong>Fecha de pago:</strong>
+                                                        <p><strong>Fecha de Pago:</strong>
                                                             <%= pagosDiplomado[count].fechaPago %>
                                                         </p>
-                                                        <p><strong>Motivo de pago:</strong>
+                                                        <p><strong>Motivo de Pago:</strong>
                                                             <%= pagosDiplomado[count].Motivo %> </p>
                                                         <p><strong>Método:</strong> <%= pagosDiplomado[count].metodoPago %>
                                                         </p>
@@ -480,11 +480,11 @@
                                                               maximumFractionDigits: 2
                                                             }) %> 
                                                         </p>
-                                                        <p><strong>Nombre del diplomado:</strong>
+                                                        <p><strong>Nombre del Diplomado:</strong>
                                                             <%= pagosDiplomado[count].nombreDiplomado %> </p>
-                                                        <p><strong>Fecha de pago:</strong> <%= pagosDiplomado[count].fechaPago %>
+                                                        <p><strong>Fecha de Pago:</strong> <%= pagosDiplomado[count].fechaPago %>
                                                         </p>
-                                                        <p><strong>Motivo de pago:</strong> <%= pagosDiplomado[count].Motivo %> </p>
+                                                        <p><strong>Motivo de Pago:</strong> <%= pagosDiplomado[count].Motivo %> </p>
                                                         <p><strong>Método:</strong> <%= pagosDiplomado[count].metodoPago %> </p>
                                                         <% if(pagosDiplomado[count].Nota !== '') { %>
                                                         <p><strong>Nota:</strong> <%= pagosDiplomado[count].Nota %> </p>
@@ -503,12 +503,12 @@
                                                               maximumFractionDigits: 2
                                                             }) %>
                                                         </p>
-                                                        <p><strong>Nombre del diplomado:</strong>
+                                                        <p><strong>Nombre del Diplomado:</strong>
                                                             <%= pagosDiplomado[count + 1].nombreDiplomado %> </p>
-                                                        <p><strong>Fecha de pago:</strong>
+                                                        <p><strong>Fecha de Pago:</strong>
                                                             <%= pagosDiplomado[count + 1].fechaPago %>
                                                         </p>
-                                                        <p><strong>Motivo de pago:</strong>
+                                                        <p><strong>Motivo de Pago:</strong>
                                                             <%= pagosDiplomado[count + 1].Motivo %> </p>
                                                         <p><strong>Método:</strong>
                                                             <%= pagosDiplomado[count + 1].metodoPago %>
@@ -526,7 +526,7 @@
                             <% } %>
                         <% } else { %> 
                             <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                                ¡Todavía no haz realizado ningún pago de un diplomado! Si requieres pagar, por favor da click en realizar pago para pagar.
+                                ¡Todavía no haz realizado ningún pago de un diplomado! Si requieres pagar, por favor dale click al botón de Realizar Pago.
                             </div>
                         <% } %>
                     <% } %>
@@ -548,8 +548,8 @@
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
                                                         }) %> </p>
-                                                <p><strong>Fecha de pago:</strong> <%= pagadosExtra[count].fechaPago %> </p>
-                                                <p><strong>Motivo de pago:</strong> <%= pagadosExtra[count].motivoPago %> </p>
+                                                <p><strong>Fecha de Pago:</strong> <%= pagadosExtra[count].fechaPago %> </p>
+                                                <p><strong>Motivo de Pago:</strong> <%= pagadosExtra[count].motivoPago %> </p>
                                                 <p><strong>Método:</strong> <%= pagadosExtra[count].metodoPago %> </p>
                                                 <% if(pagadosExtra[count].Nota !== '') { %>
                                                 <p><strong>Nota:</strong> <%= pagadosExtra[count].Nota %> </p>
@@ -568,8 +568,8 @@
                                                                 minimumFractionDigits: 2,
                                                                 maximumFractionDigits: 2
                                                             }) %> </p>
-                                                <p><strong>Fecha de pago:</strong> <%= pagadosExtra[count].fechaPago %> </p>
-                                                <p><strong>Motivo de pago:</strong> <%= pagadosExtra[count].motivoPago %>
+                                                <p><strong>Fecha de Pago:</strong> <%= pagadosExtra[count].fechaPago %> </p>
+                                                <p><strong>Motivo de Pago:</strong> <%= pagadosExtra[count].motivoPago %>
                                                 </p>
                                                 <p><strong>Método:</strong> <%= pagadosExtra[count].metodoPago %> </p>
                                                 <% if(pagadosExtra[count].Nota !== '') { %>
@@ -588,10 +588,10 @@
                                                                 minimumFractionDigits: 2,
                                                                 maximumFractionDigits: 2
                                                             }) %> </p>
-                                                <p><strong>Fecha de pago:</strong>
+                                                <p><strong>Fecha de Pago:</strong>
                                                     <%= pagadosExtra[count + 1].fechaPago %>
                                                 </p>
-                                                <p><strong>Motivo de pago:</strong>
+                                                <p><strong>Motivo de Pago:</strong>
                                                     <%= pagadosExtra[count + 1].motivoPago %>
                                                 </p>
                                                 <p><strong>Método:</strong> <%= pagadosExtra[count + 1].metodoPago %>
@@ -609,7 +609,7 @@
                     <% } %>
                 <% } else { %>
                     <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                        ¡Todavía no haz realizado ningún pago de Otros Pagos! Si tienes una solicitud existente, por favor para pagar dale click al botón de Realizar Pago.
+                        ¡Todavía no haz realizado ningún pago de Otros Pagos! Si tienes una solicitud existente, por favor dale click al botón de Realizar Pago.
                     </div>
                 <% } %>
             </div>
