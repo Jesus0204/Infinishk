@@ -126,6 +126,9 @@ cron.schedule('0 9 * * *', () => {
     timezone: "America/Mexico_City"
 });
 
+const home_root = require('./util/home');
+app.get('/', home_root);
+
 //Para error 404
 app.use((request, response, next) => {
     response.status(404);
@@ -135,9 +138,6 @@ app.use((request, response, next) => {
         rol: request.session.rol || "",
     });
 });
-
-const home_root = require('./util/home');
-app.use('/', home_root);
 
 // Para que el servidor este activo
 app.listen(process.env.PORT || 4000);
