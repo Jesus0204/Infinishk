@@ -88,9 +88,6 @@ app.use('/alumnos', rutasAlumno);
 const rutasEstadoCuenta = require('./routes/estadocuenta.routes');
 app.use('/estado_cuenta', rutasEstadoCuenta);
 
-const home_root = require('./util/home');
-app.use('/', home_root);
-
 // Agregar funcion para iterar la lista del ejs, y que el codigo se vea limpio
 app.locals.contienePermiso = (permisos, casoUso) => {
 
@@ -138,6 +135,9 @@ app.use((request, response, next) => {
         rol: request.session.rol || "",
     });
 });
+
+const home_root = require('./util/home');
+app.use('/', home_root);
 
 // Para que el servidor este activo
 app.listen(process.env.PORT || 4000);
