@@ -29,6 +29,10 @@ exports.get_alumnos_atrasados = (request, response, next) => {
             // Para cada alumno atrasado sacas todos los datos
             for (let alumno of alumnos_atrasados) {
                 const [deuda, fieldData] = await Deuda.fetchDeudaDatos(alumno.matricula);
+                // Conviertes la fecha si existe
+                for (let count = 0; count < deuda.length; count++) {
+                    deuda[count].fechaLimitePago = moment(new Date(deuda[count].fechaLimitePago)).format('LL');
+                }
                 deudas.push(deuda);
             }
 
