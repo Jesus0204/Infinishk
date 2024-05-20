@@ -14,7 +14,7 @@ module.exports = class estudianteProfesional {
     }
 
     static save_alumno_profesional(matricula,semestre,plan,beca){
-        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
+        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`, `horarioConfirmado`) VALUES (?,?,?,?, 0)',[matricula,semestre,beca,plan])
     }
 
     static fetchBeca(matricula){

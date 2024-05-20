@@ -34,7 +34,7 @@ module.exports = class Alumno {
     }
 
     static save_alumno(matricula, nombre, apellidos, referencia) {
-        return db.execute('INSERT INTO `Alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito`, `horarioConfirmado`) VALUES (?,?,?,?,0,0)', [matricula, nombre, apellidos, referencia])
+        return db.execute('INSERT INTO `Alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito``) VALUES (?,?,?,?,0)', [matricula, nombre, apellidos, referencia])
     }
 
     static update_credito(matricula, credito) {

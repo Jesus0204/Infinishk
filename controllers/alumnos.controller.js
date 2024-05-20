@@ -165,7 +165,7 @@ exports.post_fetch_datos = async (request, response, next) => {
 
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
         }
-        const conf = await Alumno.fetchHorarioConfirmado(matricula)
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
         const planes = await PlanPago.fetchAllActivePlans()
         const confirmacion = conf[0][0].horarioConfirmado
         const planesPago = planes[0]
