@@ -15,9 +15,8 @@ const moment = require('moment-timezone');
 moment.locale('es-mx');
 
 exports.get_propuesta_horario = async (request, response, next) => {
-
     try {
-        const conf = await Alumno.fetchHorarioConfirmado(request.session.username);
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username);
         const planes = await PlanPago.fetchAllActivePlans();
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
@@ -241,7 +240,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
 
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-        await Alumno.updateHorarioAccepted(request.session.username);
+        await EstudianteProfesional.updateHorarioAccepted(request.session.username);
 
         response.redirect('/horario/consultaHorario');
     }
