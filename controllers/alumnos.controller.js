@@ -126,6 +126,7 @@ exports.post_datos_modify = async (request, response, next) => {
 exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     const matricula = matches[0];
+    const periodo = await Periodo.fetchActivo();
     try {
         let alumnoConsulta;
 
@@ -164,13 +165,14 @@ exports.post_fetch_datos = async (request, response, next) => {
 
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
         }
-        const conf = await Alumno.fetchHorarioConfirmado(matricula)
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
         const planes = await PlanPago.fetchAllActivePlans()
         const confirmacion = conf[0][0].horarioConfirmado
         const planesPago = planes[0]
         if (confirmacion === 0) {
             response.render('alumnos/consultar_alumno', {
                 error:true,
+                periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 alumnoConsulta: alumnoConsulta[0],
@@ -197,6 +199,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
                 error:false,
+                periodo: periodo[0][0],
                 periodoExistente: periodoExistente,
                 schedule: schedule,
                 precioTotal: precioTotal,

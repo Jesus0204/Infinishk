@@ -15,13 +15,13 @@ const moment = require('moment-timezone');
 moment.locale('es-mx');
 
 exports.get_propuesta_horario = async (request, response, next) => {
-
     try {
-        const conf = await Alumno.fetchHorarioConfirmado(request.session.username);
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username);
         const planes = await PlanPago.fetchAllActivePlans();
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
         var periodoExistente = 1;
+        const periodo = await Periodo.fetchActivo();
 
         if (confirmacion === 0) {
             const matricula = request.session.username;
@@ -30,6 +30,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 periodoExistente = 0;
                 response.render('alumnos/consultarHorario', {
                     periodoExistente: periodoExistente,
+                    periodo: periodo[0][0],
                     username: request.session.username || '',
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
@@ -134,6 +135,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                     response.render('alumnos/consultarHorario', {
                         periodoExistente: periodoExistente,
                         schedule: cursos,
+                        periodo: periodo[0][0],
                         confirmacion: confirmacion,
                         planesPago: planesPago,
                         precioTotal: precioTotal,
@@ -178,6 +180,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 periodoExistente: periodoExistente,
                 schedule: schedule,
                 precioTotal: precioTotal,
+                periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 username: request.session.username || '',
@@ -241,7 +244,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
 
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-        await Alumno.updateHorarioAccepted(request.session.username);
+        await EstudianteProfesional.updateHorarioAccepted(request.session.username);
 
         response.redirect('/horario/consultaHorario');
     }

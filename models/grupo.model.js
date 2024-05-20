@@ -24,12 +24,12 @@ module.exports = class Alumno {
         const porcbeca = porcbecaResult[0][0].porcbeca;
 
         const schedule = await db.execute(`SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
-                G.fechaInicio, G.fechaTermino, A.horarioConfirmado, M.Creditos,
+                G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
                 ((P.precioPesos * M.Creditos)*?) AS Precio_materia
                 FROM Grupo AS G
                 JOIN Materia AS M ON G.IDMateria = M.IDMateria
                 JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
-                JOIN Alumno AS A ON G.Matricula = A.Matricula
+                JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
                 WHERE P.precioActivo = 1
                 AND G.Matricula = ?`, [porcbeca, matricula]);
 
