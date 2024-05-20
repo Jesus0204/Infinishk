@@ -2745,7 +2745,7 @@ table th {
 }
 
 .navbar {
-  background-color: #95404c;
+  background-color: #000000;
   min-height: 3.25rem;
   position: relative;
   z-index: 30;
@@ -3519,7 +3519,7 @@ a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-i
     display: none;
   }
   .navbar-menu {
-    background-color: #95404c;
+    background-color: #000000;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
     padding: 0.5rem 0;
   }
@@ -8917,7 +8917,7 @@ button.dropdown-item.is-active {
 }
 
 .navbar {
-  background-color: #95404c;
+  background-color: #000000;
   min-height: 3.25rem;
   position: relative;
   z-index: 30;
@@ -9691,7 +9691,7 @@ a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-i
     display: none;
   }
   .navbar-menu {
-    background-color: #95404c;
+    background-color: #000000;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
     padding: 0.5rem 0;
   }
