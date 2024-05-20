@@ -254,7 +254,7 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
-                                    <% if(deuda[count].Descuento !== 0) { %>
+                                    <% if(deuda[count + 1].Descuento !== 0) { %>
                                         <strong>Descuento:</strong>
                                         $<%= deuda[count].Descuento.toLocaleString('mx', {
                                             minimumFractionDigits: 2,

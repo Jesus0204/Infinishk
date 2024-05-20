@@ -167,6 +167,13 @@
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
+                                    <br>
+                                    <strong>Descuento:</strong>
+                                    $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                    
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Limite Pago:</strong>
@@ -207,6 +214,12 @@
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
+                                    <br>
+                                    <strong>Descuento:</strong>
+                                    $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
                                     <strong>Fecha Limite Pago:</strong>
@@ -244,6 +257,12 @@
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count + 1].montoPagado.toLocaleString('mx') %>
+                                    <br>
+                                    <strong>Descuento:</strong>
+                                    $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
                                     <strong>Fecha Limite Pago:</strong>
