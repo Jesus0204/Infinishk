@@ -22,12 +22,12 @@
                         <% if(matricula[0] == '1') { %>
                             <div class="box has-background-light">
                                 <p>Ciclo escolar</p>
-                                <p class="title is-1"><%= periodo.Nombre %></p>
+                                <p class="title is-2"><%= periodo.Nombre %></p>
                             </div>
                             <% if(estudianteProfesional.porcBeca !== 0) { %>
                                 <div class="box has-background-light">
                                     <p>Porcentaje de Beca</p>
-                                    <p class="title is-1"><%= estudianteProfesional.porcBeca %>%</p>
+                                    <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
                                 </div>
                         <% } %>
                         <% } else if (matricula[0] == '8') { %>
@@ -468,15 +468,15 @@
                     <% if(matricula[0] == '1') { %>
                     <div id="deuda">
                         <% if (deuda.length != 0) { %>
-                            <table class="table is-fullwidth is-striped" style="text-align: center;">
+                            <table class="table is-fullwidth is-striped is-hoverable">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Pendiente</th>
-                                        <th>Total</th>
-                                        <th>Pagado</th>
-                                        <th>Fecha Límite de Pago</th>
-                                        <th>Status</th>
+                                        <th style="text-align: left;">#</th>
+                                        <th style="text-align: left;">Pendiente</th>
+                                        <th style="text-align: left;">Total</th>
+                                        <th style="text-align: left;">Pagado</th>
+                                        <th style="text-align: left;">Fecha Límite de Pago</th>
+                                        <th style="text-align: left;">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -499,7 +499,7 @@
                                         <td><%= deuda[count].fechaLimitePago %></td>
                                         <% if (deuda[count].Pagado == 1) { %>
                                             <td>
-                                                <span class="tag is-success">
+                                                <span class="tag is-success is-size-6">
                                                      <span class="icon is-small">
                                                          <i class="fa-solid fa-circle-check"></i>
                                                      </span>
@@ -510,7 +510,7 @@
                                             </td>
                                         <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
                                             <td>
-                                                <span class="tag is-warning">
+                                                <span class="tag is-warning is-size-6">
                                                      <span class="icon is-small">
                                                          <i class="fa-solid fa-clock"></i>
                                                      </span>
@@ -521,7 +521,7 @@
                                             </td>
                                         <% } else { %>
                                             <td>
-                                                <span class="tag is-danger">
+                                                <span class="tag is-danger is-size-6">
                                                     <span class="icon is-small">
                                                         <i class="fa-solid fa-circle-xmark"></i>
                                                     </span>
