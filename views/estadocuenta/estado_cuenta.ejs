@@ -12,8 +12,8 @@
             <div class="columns is-vcentered">
                 <% if(matricula[0] == '1') { %>
                     <div class="column">
-                        <label class="block font-semibold"><strong>Semestre:</strong></label>
-                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= estudianteProfesional.semestreActual %>
+                        <label class="block font-semibold"><strong>Ciclo escolar:</strong></label>
+                        <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= periodo.Nombre %>
                         </div>
                     </div>
                     <% if(estudianteProfesional.porcBeca !== 0) { %>
@@ -46,7 +46,7 @@
                     <a href="/estado_cuenta/pagar">
                         <button class="button is-rounded is-responsive">
                             <span>
-                                Realizar pago
+                                Realizar Pago
                             </span>
                             <span class="icon is-large">
                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -146,6 +146,13 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
+                                    <% if(deuda[count].Descuento !== 0) { %>
+                                        <strong>Descuento:</strong>
+                                        $<%= deuda[count].Descuento.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %>
+                                    <% } %>
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Límite Pago:</strong>
@@ -194,6 +201,13 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
+                                    <% if(deuda[count].Descuento !== 0) { %>
+                                        <strong>Descuento:</strong>
+                                        $<%= deuda[count].Descuento.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %>
+                                    <% } %>
                                 </div>
                                 <div class="column">
                                     <strong>Fecha Límite Pago:</strong>
@@ -240,7 +254,15 @@
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
+                                    <% if(deuda[count + 1].Descuento !== 0) { %>
+                                        <strong>Descuento:</strong>
+                                        $<%= deuda[count].Descuento.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %>
+                                    <% } %>
                                 </div>
+                                
                                 <div class="column">
                                     <strong>Fecha Límite Pago:</strong>
                                     <br>

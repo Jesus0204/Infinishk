@@ -126,6 +126,7 @@ exports.post_datos_modify = async (request, response, next) => {
 exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     const matricula = matches[0];
+    const periodo = await Periodo.fetchActivo();
     try {
         let alumnoConsulta;
 
@@ -171,6 +172,7 @@ exports.post_fetch_datos = async (request, response, next) => {
         if (confirmacion === 0) {
             response.render('alumnos/consultar_alumno', {
                 error:true,
+                periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 alumnoConsulta: alumnoConsulta[0],
@@ -197,6 +199,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
                 error:false,
+                periodo: periodo[0][0],
                 periodoExistente: periodoExistente,
                 schedule: schedule,
                 precioTotal: precioTotal,

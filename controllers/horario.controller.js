@@ -22,6 +22,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
         var periodoExistente = 1;
+        const periodo = await Periodo.fetchActivo();
 
         if (confirmacion === 0) {
             const matricula = request.session.username;
@@ -30,6 +31,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 periodoExistente = 0;
                 response.render('alumnos/consultarHorario', {
                     periodoExistente: periodoExistente,
+                    periodo: periodo[0][0],
                     username: request.session.username || '',
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
@@ -134,6 +136,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                     response.render('alumnos/consultarHorario', {
                         periodoExistente: periodoExistente,
                         schedule: cursos,
+                        periodo: periodo[0][0],
                         confirmacion: confirmacion,
                         planesPago: planesPago,
                         precioTotal: precioTotal,
@@ -178,6 +181,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 periodoExistente: periodoExistente,
                 schedule: schedule,
                 precioTotal: precioTotal,
+                periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 username: request.session.username || '',
