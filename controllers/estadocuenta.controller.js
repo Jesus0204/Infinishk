@@ -662,6 +662,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
         const matricula = request.session.username;
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
+        const periodo = await Periodo.fetchActivo();
         
         // Formatear fechas
         for (let count = 0; count < pagosExtra.length; count++) {
@@ -691,6 +692,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 csrfToken: request.csrfToken(),
                 estudianteProfesional: estudianteProfesional[0][0],
                 pagos: pagos,
+                periodo: periodo[0][0],
                 deuda: deuda,
                 fechaActual: now,
                 pagosExtra: cargosExtra,
@@ -722,6 +724,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
             permisos: request.session.permisos || [],
             csrfToken: request.csrfToken(),
             pagosExtra: cargosExtra,
+            periodo: periodo[0][0],
             pagadosExtra: pagosExtra,
             fechaActual: now,
             matricula: matricula,
