@@ -31,388 +31,390 @@
 </style>
 
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-img" href="/">
-                <img src="\images\logo.png" alt="ViaPago logo" width="100" height="100">
-            </a>
-            <% if (permisos.length != 0) { %>
-            <p class="control" style="margin-left: auto; margin-top: 1.5em; padding-right: 1em;">
-                <a class="button is-rounded is-responsive cerrar_sesion_mobile" style="font-size: large;"
-                    href="/auth/logout">
-                    <span>
-                        Cerrar Sesión
-                    </span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-arrow-right-from-bracket" style="padding-left: 1em;"></i>
-                    </span>
+    <section class="section" style="margin-top: -1.5em; margin-bottom: -3em;">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-img" href="/">
+                    <img src="\images\logo.png" alt="ViaPago logo" width="100" height="100">
                 </a>
-            </p>
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarViaDiseño"
-                style="margin-left: 0%;">
-                <span aria-hidden="true" style="color: #ffffff"></span>
-                <span aria-hidden="true" style="color: #ffffff"></span>
-                <span aria-hidden="true" style="color: #ffffff"></span>
-            </a>
-            <% } %>
-        </div>
-        <div id="navbarViaDiseño" class="navbar-menu">
-            <div class="navbar-start">
-                <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
-                <a class="navbar-item desktop_menu" href="/horario/consultahorario">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-calendar-week"></i>
-                    </span>
-                    Horario
-                </a>
-                <hr class="navbar-divider">
-                <% } %>
-                <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
-                       contienePermiso(permisos, 'Modificar diplomado') == true || 
-                       contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                <a class="navbar-item desktop_menu" style="padding-right: 2.1em;" href="/diplomado/consultar_diplomado">
-                    <span class="icon is-large" style="margin-left: -0.5em;">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </span>
-                    Diplomado
-                </a>
-                <% } %>
-
-                <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
-                <a class="navbar-item desktop_menu" href="/estado_cuenta/estado_cuenta">
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-money-check-dollar"></i>
-                    </span>
-                    Estado de Cuenta
-                </a>
-                <% } %>
-
-                <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
-                       contienePermiso(permisos, 'Consultar horario alumno') == true||
-                       contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
-                <div data-target="alumnos" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
-                        onclick="click_target(this.parentElement)">
-                        <span class="icon is-large" style="margin-left: -0.5em;">
-                            <i class="fa-solid fa-users"></i>
+                <% if (permisos.length != 0) { %>
+                <p class="control" style="margin-left: auto; margin-top: 1.5em; padding-right: 1em;">
+                    <a class="button is-rounded is-responsive cerrar_sesion_mobile" style="font-size: large;"
+                        href="/auth/logout">
+                        <span>
+                            Cerrar Sesión
                         </span>
-                        Alumnos
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-arrow-right-from-bracket" style="padding-left: 1em;"></i>
+                        </span>
                     </a>
-                    <div class="navbar-dropdown" id="alumnos">
-                        <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
-                        <div class="desktop">
-                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                                </span>
-                                Alumnos
-                                <br>
-                                Atrasados
-                            </a>
-                        </div>
-                        <div class="mobile">
-                            <a class="navbar-item" href="/alumnos/alumnos_atrasados">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                                </span>
-                                Alumnos Atrasados
-                            </a>
-                        </div>
+                </p>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarViaDiseño"
+                    style="margin-left: 0%;">
+                    <span aria-hidden="true" style="color: #ffffff"></span>
+                    <span aria-hidden="true" style="color: #ffffff"></span>
+                    <span aria-hidden="true" style="color: #ffffff"></span>
+                </a>
+                <% } %>
+            </div>
+            <div id="navbarViaDiseño" class="navbar-menu">
+                <div class="navbar-start">
+                    <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
+                    <a class="navbar-item desktop_menu" href="/horario/consultahorario">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-calendar-week"></i>
+                        </span>
+                        Horario
+                    </a>
+                    <hr class="navbar-divider">
+                    <% } %>
+                    <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
+                           contienePermiso(permisos, 'Modificar diplomado') == true || 
+                           contienePermiso(permisos, 'Consultar diplomado') == true) { %>
+                    <a class="navbar-item desktop_menu" style="padding-right: 2.1em;" href="/diplomado/consultar_diplomado">
+                        <span class="icon is-large" style="margin-left: -0.5em;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </span>
+                        Diplomado
+                    </a>
+                    <% } %>
+    
+                    <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
+                    <a class="navbar-item desktop_menu" href="/estado_cuenta/estado_cuenta">
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-money-check-dollar"></i>
+                        </span>
+                        Estado de Cuenta
+                    </a>
+                    <% } %>
+    
+                    <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
+                           contienePermiso(permisos, 'Consultar horario alumno') == true||
+                           contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
+                    <div data-target="alumnos" class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
+                            onclick="click_target(this.parentElement)">
+                            <span class="icon is-large" style="margin-left: -0.5em;">
+                                <i class="fa-solid fa-users"></i>
+                            </span>
+                            Alumnos
                         </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
-                        <div class="desktop">
-                            <a class="navbar-item" href="/alumnos/fetch_datos">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-regular fa-user"></i>
-                                </span>
-                                Consultar
-                                <br>
-                                Alumno
-                            </a>
-                        </div>
-                        <div class="mobile">
-                            <a class="navbar-item" href="/alumnos/fetch_datos">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-regular fa-user"></i>
-                                </span>
-                                Consultar Alumno
-                            </a>
-                        </div>
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
-                        <hr class="navbar-divider">
-                        <div class="desktop">
-                            <a class="navbar-item" href="/alumnos/fetch_fichas">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-solid fa-money-check-dollar"></i>
-                                </span>
-                                Modificar
-                                <br>
-                                Ficha Pago
-                            </a>
-                        </div>
-                        <div class="mobile">
-                            <a class="navbar-item" href="/alumnos/fetch_fichas">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
-                                    <i class="fa-solid fa-money-check-dollar"></i>
-                                </span>
-                                Modificar Ficha Pago
-                            </a>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-                <% } %>
-
-                <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
-                       contienePermiso(permisos, 'Administrar Solicitud de Pago') == true ||
-                       contienePermiso(permisos, 'Registrar Pago Manual') == true ||
-                       contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true ||
-                       contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
-                       contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
-                <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link desktop_menu" style="padding-right: 2.1em;"
-                        onclick="click_target(this.parentElement)">
-                        <span class="icon is-large" style="margin-left: -0.5em;">
-                            <i class="fa-solid fa-dollar-sign"></i>
-                        </span>
-                        Pagos
-                    </a>
-                    <div class="navbar-dropdown" id="pagos">
-                        <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true && 
-                        contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
-                            <a class="navbar-item" href="/pagos/registroTransferencia">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-file-csv"></i>
-                                </span>
-                                Transferencia
-                            </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Consultar Reporte Ingresos') == true && 
-                            contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
-                        <div class="nested dropdown has-dropdown is-hoverable">
-                            <a class="navbar-item" style="padding-right: 2em;">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </span>
-                                Reportes
-                                <span class="icon is-large ">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item" href="/pagos/reporte_ingresos">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-magnifying-glass-chart"></i>
-                                        </span>
-                                        Ingresos
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/pagos/reporte_metodo_pago">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-chart-column"></i>
-                                        </span>
-                                        Método
-                                        <br>
-                                        de Pagos
-                                    </a>
-                                </div>
+                        <div class="navbar-dropdown" id="alumnos">
+                            <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" href="/alumnos/alumnos_atrasados">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                    </span>
+                                    Alumnos
+                                    <br>
+                                    Atrasados
+                                </a>
                             </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/alumnos/alumnos_atrasados">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                    </span>
+                                    Alumnos Atrasados
+                                </a>
+                            </div>
+                            </a>
+                            <hr class="navbar-divider">
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" href="/alumnos/fetch_datos">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    Consultar
+                                    <br>
+                                    Alumno
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/alumnos/fetch_datos">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    Consultar Alumno
+                                </a>
+                            </div>
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
+                            <hr class="navbar-divider">
+                            <div class="desktop">
+                                <a class="navbar-item" href="/alumnos/fetch_fichas">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-money-check-dollar"></i>
+                                    </span>
+                                    Modificar
+                                    <br>
+                                    Ficha Pago
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/alumnos/fetch_fichas">
+                                    <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <i class="fa-solid fa-money-check-dollar"></i>
+                                    </span>
+                                    Modificar Ficha Pago
+                                </a>
+                            </div>
+                            <% } %>
                         </div>
-                        <hr class="navbar-divider">
-                        <div class="mobile">
-                            <div data-target="reportes" class="navbar-item has-dropdown">
-                                <a class="navbar-link" onclick="click_target(this.parentElement)">
+                    </div>
+                    <% } %>
+    
+                    <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
+                           contienePermiso(permisos, 'Administrar Solicitud de Pago') == true ||
+                           contienePermiso(permisos, 'Registrar Pago Manual') == true ||
+                           contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true ||
+                           contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
+                           contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
+                    <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link desktop_menu" style="padding-right: 2.1em;"
+                            onclick="click_target(this.parentElement)">
+                            <span class="icon is-large" style="margin-left: -0.5em;">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </span>
+                            Pagos
+                        </a>
+                        <div class="navbar-dropdown" id="pagos">
+                            <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true && 
+                            contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
+                                <a class="navbar-item" href="/pagos/registroTransferencia">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-file-csv"></i>
+                                    </span>
+                                    Transferencia
+                                </a>
+                            <hr class="navbar-divider">
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Consultar Reporte Ingresos') == true && 
+                                contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item" style="padding-right: 2em;">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-chart-line"></i>
                                     </span>
                                     Reportes
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
                                 </a>
-                                <div class="navbar-dropdown" id="reportes">
-                                    <a class="navbar-item" href="/pagos/reporte_ingresos">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-magnifying-glass-chart"></i>
-                                        </span>
-                                        Ingresos
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-chart-column"></i>
-                                        </span>
-                                        Método de Pagos
-                                    </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item" href="/pagos/reporte_ingresos">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                            </span>
+                                            Ingresos
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item" href="/pagos/reporte_metodo_pago">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-chart-column"></i>
+                                            </span>
+                                            Método
+                                            <br>
+                                            de Pagos
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Administrar Solicitud de Pago') == true) { %>
-                        <div class="desktop">
-                            <a class="navbar-item" href="/pagos/solicitudes">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-clipboard-question"></i>
-                                </span>
-                                Solicitudes
-                                <br>
-                                De Pago
-                            </a>
-                        </div>
-                        <div class="mobile">
-                            <a class="navbar-item" href="/pagos/solicitudes">
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-clipboard-question"></i>
-                                </span>
-                                Solicitudes De Pago
-                            </a>
+                            <hr class="navbar-divider">
+                            <div class="mobile">
+                                <div data-target="reportes" class="navbar-item has-dropdown">
+                                    <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-chart-line"></i>
+                                        </span>
+                                        Reportes
+                                    </a>
+                                    <div class="navbar-dropdown" id="reportes">
+                                        <a class="navbar-item" href="/pagos/reporte_ingresos">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                            </span>
+                                            Ingresos
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-chart-column"></i>
+                                            </span>
+                                            Método de Pagos
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Administrar Solicitud de Pago') == true) { %>
+                            <div class="desktop">
+                                <a class="navbar-item" href="/pagos/solicitudes">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-clipboard-question"></i>
+                                    </span>
+                                    Solicitudes
+                                    <br>
+                                    De Pago
+                                </a>
+                            </div>
+                            <div class="mobile">
+                                <a class="navbar-item" href="/pagos/solicitudes">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-clipboard-question"></i>
+                                    </span>
+                                    Solicitudes De Pago
+                                </a>
+                            </div>
+                            <% } %>
                         </div>
                         <% } %>
                     </div>
-                    <% } %>
-                </div>
-
-                <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
-                       contienePermiso(permisos, 'Consultar plan de pago') == true ||
-                       contienePermiso(permisos, 'Registrar Costo Credito') == true ||
-                       contienePermiso(permisos, 'Registrar Plan de Pago') == true ||
-                       contienePermiso(permisos, 'Registrar usuario') == true ||
-                       contienePermiso(permisos, 'Consultar Usuario') == true ||
-                       contienePermiso(permisos, 'Registrar Rol') == true || 
-                       contienePermiso(permisos, 'Registrar Pago Extra') == true ||
-                       contienePermiso(permisos, 'Administrar Pago Extra') == true || 
-                       contienePermiso(permisos, 'Actualizar Base de Datos') == true || 
-                       contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-
-                <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
-                        onclick="click_target(this.parentElement)">
-                        <span class="icon is-large" style="margin-left: -0.5em;">
-                            <i class="fa-solid fa-gear"></i>
-                        </span>
-                        Configuración
-                    </a>
-                    <div class="navbar-dropdown" id="configuracion" style="width: 110%">
-                        <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
-                            contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
-                        <a class="navbar-item" style="padding-right: 2.8em;" href="/pagos/pagos_extra">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-sliders"></i>
+    
+                    <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
+                           contienePermiso(permisos, 'Consultar plan de pago') == true ||
+                           contienePermiso(permisos, 'Registrar Costo Credito') == true ||
+                           contienePermiso(permisos, 'Registrar Plan de Pago') == true ||
+                           contienePermiso(permisos, 'Registrar usuario') == true ||
+                           contienePermiso(permisos, 'Consultar Usuario') == true ||
+                           contienePermiso(permisos, 'Registrar Rol') == true || 
+                           contienePermiso(permisos, 'Registrar Pago Extra') == true ||
+                           contienePermiso(permisos, 'Administrar Pago Extra') == true || 
+                           contienePermiso(permisos, 'Actualizar Base de Datos') == true || 
+                           contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
+    
+                    <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
+                            onclick="click_target(this.parentElement)">
+                            <span class="icon is-large" style="margin-left: -0.5em;">
+                                <i class="fa-solid fa-gear"></i>
                             </span>
-                            Otros Pagos
+                            Configuración
                         </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
-                                contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-                        <div class="nested dropdown has-dropdown is-hoverable">
-                            <a class="navbar-item" style="padding-right: 3.9em;">
+                        <div class="navbar-dropdown" id="configuracion" style="width: 110%">
+                            <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
+                                contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
+                            <a class="navbar-item" style="padding-right: 2.8em;" href="/pagos/pagos_extra">
                                 <span class="icon is-large">
-                                    <i class="fa-solid fa-globe"></i>
+                                    <i class="fa-solid fa-sliders"></i>
                                 </span>
-                                Datos
-                                <span class="icon is-large ">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
+                                Otros Pagos
                             </a>
-                            <div class="dropdown-menu">
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item" style="padding-right: 2.8em;"
-                                        href="/configuracion/actualizarBase">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-database"></i>
-                                        </span>
-                                        Sincronizar
-                                        <br>
-                                        Base Datos
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/configuracion/exportarDatos">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-file-excel"></i>
-                                        </span>
-                                        Exportar
-                                        <br>
-                                        Datos a CSV
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="navbar-divider">
-                        <div class="mobile">
-                            <div data-target="datos" class="navbar-item has-dropdown">
-                                <a class="navbar-link" onclick="click_target(this.parentElement)">
+                            <hr class="navbar-divider">
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
+                                    contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
+                            <div class="nested dropdown has-dropdown is-hoverable">
+                                <a class="navbar-item" style="padding-right: 3.9em;">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-globe"></i>
                                     </span>
                                     Datos
+                                    <span class="icon is-large ">
+                                        <i class="fas fa-angle-right"></i>
+                                    </span>
                                 </a>
-                                <div class="navbar-dropdown" id="datos">
-                                    <a class="navbar-item" href="/configuracion/actualizarBase">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-database"></i>
-                                        </span>
-                                        Sincronizar Base Datos
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/configuracion/exportarDatos">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-file-excel"></i>
-                                        </span>
-                                        Exportar Datos a CSV
-                                    </a>
+                                <div class="dropdown-menu">
+                                    <div class="navbar-dropdown">
+                                        <a class="navbar-item" style="padding-right: 2.8em;"
+                                            href="/configuracion/actualizarBase">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-database"></i>
+                                            </span>
+                                            Sincronizar
+                                            <br>
+                                            Base Datos
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item" href="/configuracion/exportarDatos">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-excel"></i>
+                                            </span>
+                                            Exportar
+                                            <br>
+                                            Datos a CSV
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
+                            <hr class="navbar-divider">
+                            <div class="mobile">
+                                <div data-target="datos" class="navbar-item has-dropdown">
+                                    <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-globe"></i>
+                                        </span>
+                                        Datos
+                                    </a>
+                                    <div class="navbar-dropdown" id="datos">
+                                        <a class="navbar-item" href="/configuracion/actualizarBase">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-database"></i>
+                                            </span>
+                                            Sincronizar Base Datos
+                                        </a>
+                                        <hr class="navbar-divider">
+                                        <a class="navbar-item" href="/configuracion/exportarDatos">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-file-excel"></i>
+                                            </span>
+                                            Exportar Datos a CSV
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+    
+                            <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
+                            <a class="navbar-item" href="/configuracion/precio_credito">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-money-bills"></i>
+                                </span>
+                                Precio Crédito
+                            </a>
+                            <hr class="navbar-divider">
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
+                            <a class="navbar-item" href="/configuracion/administrar_planpago">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-calendar-week"></i>
+                                </span>
+                                Plan de Pago
+                            </a>
+                            <% } %>
+                            <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" style="padding-right: 2.5em;" href="/configuracion/consultar_usuario">
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </span>
+                                Usuarios
+                            </a>
+                            <% } %>
                         </div>
-                        <% } %>
-
-                        <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
-                        <a class="navbar-item" href="/configuracion/precio_credito">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-money-bills"></i>
-                            </span>
-                            Precio Crédito
-                        </a>
-                        <hr class="navbar-divider">
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Consultar plan de pago') == true) { %>
-                        <a class="navbar-item" href="/configuracion/administrar_planpago">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-calendar-week"></i>
-                            </span>
-                            Plan de Pago
-                        </a>
-                        <% } %>
-                        <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item" style="padding-right: 2.5em;" href="/configuracion/consultar_usuario">
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-users-gear"></i>
-                            </span>
-                            Usuarios
-                        </a>
-                        <% } %>
                     </div>
+                    <% } %>
+                    <% if (permisos.length != 0) { %>
+                    <div class="navbar-end">
+                        <p class="control" style="margin-top: 1.5em; padding-right: 2em;">
+                            <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
+                                <span>
+                                    Cerrar Sesión
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-arrow-right-from-bracket" style="padding-left: 1em;"></i>
+                                </span>
+                            </a>
+                        </p>
+                    </div>
+                    <% } %>
                 </div>
-                <% } %>
-                <% if (permisos.length != 0) { %>
-                <div class="navbar-end">
-                    <p class="control" style="margin-top: 1.5em; padding-right: 2em;">
-                        <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
-                            <span>
-                                Cerrar Sesión
-                            </span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-arrow-right-from-bracket" style="padding-left: 1em;"></i>
-                            </span>
-                        </a>
-                    </p>
-                </div>
-                <% } %>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </section>
     <script type="text/javascript" src="/js/head.js"></script>
 </body>
