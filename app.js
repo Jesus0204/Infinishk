@@ -21,6 +21,9 @@ app.use(session({
     secret: 's&xYnn9oVRuo3*0@sBA&SedkdMGoM!&e%kASzFfZ6537MqWruvYe27X=7hQUdktRRxYQHDjWtW7veznF',
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+    cookie: {
+        maxAge: 60000 // Tiempo en milisegundos para que expire la sesión
+      }
 }));
 
 // La aplicacion va a tener acceso a todo lo que esta en public
