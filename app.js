@@ -22,7 +22,7 @@ app.use(session({
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
     cookie: {
-        maxAge: 60000 // Tiempo en milisegundos para que expire la sesión
+        maxAge: 900000 // Tiempo en milisegundos para que expire la sesión
       }
 }));
 
