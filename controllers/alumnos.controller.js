@@ -105,6 +105,10 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => { 
     const { ref, beca, alumno, csrf } = request.body;
 
+    if(beca == null){
+        beca == '0';
+    }
+
     try {
         let data;
         if (alumno.startsWith("1")) {
