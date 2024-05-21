@@ -129,6 +129,10 @@ cron.schedule('0 9 * * *', () => {
     timezone: "America/Mexico_City"
 });
 
+// cron.schedule('*/1 * 18 Jan,May,Jul *', () => {
+//     scheduleController.aceptar_horario_resagados();
+// });
+
 const home_root = require('./util/home');
 app.get('/', home_root);
 

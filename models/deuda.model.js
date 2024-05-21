@@ -164,5 +164,3 @@ module.exports = class Deuda {
             [matricula]);
     }
 }
-
-// Comentario para prueba commit

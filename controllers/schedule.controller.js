@@ -1,4 +1,9 @@
 const Deuda = require('../models/deuda.model');
+const Periodo = require('../models/periodo.model');
+const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const {
+    getUserGroups
+} = require('../util/adminApiClient');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
@@ -146,3 +151,17 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
         console.log(error);
     })
 };
+
+exports.aceptar_horario_resagados = async (request, response, next) => {
+    const [periodo, fieldData] = await Periodo.fetchActivo();
+    const periodoActivo = periodo[0].IDPeriodo;
+    console.log('Periodo Activo: '+ periodoActivo);
+
+    const [alumnosNoConfirmados, fieldData_2] = await EstudianteProfesional.fetchAlumnosNoConfirmados();
+
+    for (let count = 0; count < alumnosNoConfirmados.length; count++){
+        console.log('Alumnos no Confirmados: '+ alumnosNoConfirmados[count].Matricula);
+    }
+
+    //const schedule = await getUserGroups(periodoActivo, matricula);
+}

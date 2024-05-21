@@ -15,14 +15,17 @@ $gris-lighter: #eaeaea;
 $negro: #000000;
 $blanco: #ffffff;
 $azul: #5a6581;
+$verde: #17b585;
 
 // Update Bulma's global variables
 $family-sans-serif: "Poppins", sans-serif;
 $grey-dark: $gris-oscuro;
 $grey-light: $gris-claro;
-$primary: $vino;
-$link: $rojo;
-$danger: $vino;
+$primary: $rojo;
+$link: $vino;
+$danger: $rojo;
+$danger-dark: $vino;
+$success: $verde;
 $info: $azul;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
@@ -34,7 +37,7 @@ $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
 
-$navbar-background-color: $vino;
+$navbar-background-color: $negro;
 $navbar-item-hover-background-color: $rojo;
 $navbar-item-hover-color: $blanco;
 $navbar-item-color: $negro;

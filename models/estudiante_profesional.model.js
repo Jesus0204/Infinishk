@@ -14,7 +14,7 @@ module.exports = class estudianteProfesional {
     }
 
     static save_alumno_profesional(matricula,semestre,plan,beca){
-        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
+        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`, `horarioConfirmado`) VALUES (?,?,?,?, 0)',[matricula,semestre,beca,plan])
     }
 
     static fetchBeca(matricula){
@@ -42,5 +42,17 @@ module.exports = class estudianteProfesional {
             throw error; // Re-throw the error to be caught by the caller
         }
     }
+
+    static fetchHorarioConfirmado(matricula) {
+        return db.execute(`SELECT horarioConfirmado FROM estudianteProfesional WHERE Matricula = ?`, [matricula]);
+    }
+
+    static fetchAlumnosNoConfirmados() {
+        return db.execute(`SELECT Matricula FROM estudianteProfesional WHERE horarioConfirmado = 0`);
+    }
+
+     static updateHorarioAccepted(matricula) {
+         return db.execute(`UPDATE estudianteProfesional SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
+     }
     
 }

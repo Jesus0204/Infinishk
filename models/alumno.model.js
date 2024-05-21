@@ -34,20 +34,12 @@ module.exports = class Alumno {
     }
 
     static save_alumno(matricula, nombre, apellidos, referencia) {
-        return db.execute('INSERT INTO `Alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito`, `horarioConfirmado`) VALUES (?,?,?,?,0,0)', [matricula, nombre, apellidos, referencia])
+        return db.execute('INSERT INTO `Alumno`(`Matricula`, `Nombre`, `Apellidos`, `referenciaBancaria`, `Credito``) VALUES (?,?,?,?,0)', [matricula, nombre, apellidos, referencia])
     }
 
     static update_credito(matricula, credito) {
         return db.execute(`UPDATE Alumno SET Credito = Credito + ?
         WHERE Matricula = ?`, [credito, matricula]);
-    }
-
-    static fetchHorarioConfirmado(matricula){
-        return db.execute(`SELECT horarioConfirmado FROM Alumno WHERE Matricula = ?`, [matricula]);
-    }
-
-    static updateHorarioAccepted(matricula){
-        return db.execute(`UPDATE Alumno SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
     }
 
     static fetchCredito(matricula){
