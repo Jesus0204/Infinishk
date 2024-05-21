@@ -1434,17 +1434,17 @@ table th {
 }
 .button.is-danger.is-light {
   background-color: #ffebeb;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-danger.is-light:hover, .button.is-danger.is-light.is-hovered {
   background-color: #ffdedf;
   border-color: transparent;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-danger.is-light:active, .button.is-danger.is-light.is-active {
   background-color: #ffd1d3;
   border-color: transparent;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-small {
   font-size: 0.75rem;
@@ -5913,17 +5913,17 @@ a.box:active {
 }
 .button.is-danger.is-light {
   background-color: #ffebeb;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-danger.is-light:hover, .button.is-danger.is-light.is-hovered {
   background-color: #ffdedf;
   border-color: transparent;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-danger.is-light:active, .button.is-danger.is-light.is-active {
   background-color: #ffd1d3;
   border-color: transparent;
-  color: #fd1119;
+  color: #95404c;
 }
 .button.is-small {
   font-size: 0.75rem;
@@ -6504,7 +6504,7 @@ div.icon-text {
 }
 .notification.is-danger.is-light {
   background-color: #ffebeb;
-  color: #fd1119;
+  color: #95404c;
 }
 
 .progress {
@@ -6990,7 +6990,7 @@ div.icon-text {
 }
 .tag:not(body).is-danger.is-light {
   background-color: #ffebeb;
-  color: #fd1119;
+  color: #95404c;
 }
 .tag:not(body).is-normal {
   font-size: 0.75rem;
@@ -8780,7 +8780,7 @@ button.dropdown-item.is-active {
 }
 .message.is-danger .message-body {
   border-color: #910106;
-  color: #fd1119;
+  color: #95404c;
 }
 
 .message-header {
@@ -11890,15 +11890,15 @@ a.has-text-danger-light:hover, a.has-text-danger-light:focus {
 }
 
 .has-text-danger-dark {
-  color: #fd1119 !important;
+  color: #95404c !important;
 }
 
 a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
-  color: #fe444a !important;
+  color: #b55361 !important;
 }
 
 .has-background-danger-dark {
-  background-color: #fd1119 !important;
+  background-color: #95404c !important;
 }
 
 .has-text-black-bis {
