@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="column">
+        <div class="column is-three-quarters">
             <div class="card">
                 <div class="card-content">
                      <div class="tabs is-boxed">
@@ -468,73 +468,75 @@
                     <% if(matricula[0] == '1') { %>
                     <div id="deuda">
                         <% if (deuda.length != 0) { %>
-                            <table class="table is-fullwidth is-striped is-hoverable">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: left;">#</th>
-                                        <th style="text-align: left;">Pendiente</th>
-                                        <th style="text-align: left;">Total</th>
-                                        <th style="text-align: left;">Pagado</th>
-                                        <th style="text-align: left;">Fecha Límite de Pago</th>
-                                        <th style="text-align: left;">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% let currentDate = fechaActual %>
-                                    <% for (let count = 0; count < deuda.length; count++) { %>
-                                    <tr>
-                                        <td>Pago #<%= count + 1 %></td>
-                                        <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td><%= deuda[count].fechaLimitePago %></td>
-                                        <% if (deuda[count].Pagado == 1) { %>
-                                            <td>
-                                                <span class="tag is-success is-size-6">
-                                                     <span class="icon is-small">
-                                                         <i class="fa-solid fa-circle-check"></i>
-                                                     </span>
-                                                     <span>
-                                                        Pagado
-                                                     </span>
-                                                </span>
-                                            </td>
-                                        <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
-                                            <td>
-                                                <span class="tag is-warning is-size-6">
-                                                     <span class="icon is-small">
-                                                         <i class="fa-solid fa-clock"></i>
-                                                     </span>
-                                                     <span>
-                                                        Pendiente
-                                                     </span>
-                                                </span>
-                                            </td>
-                                        <% } else { %>
-                                            <td>
-                                                <span class="tag is-danger is-size-6">
-                                                    <span class="icon is-small">
-                                                        <i class="fa-solid fa-circle-xmark"></i>
+                            <div class="table-container">
+                                <table class="table is-fullwidth is-striped is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">#</th>
+                                            <th style="text-align: left;">Pendiente</th>
+                                            <th style="text-align: left;">Total</th>
+                                            <th style="text-align: left;">Pagado</th>
+                                            <th style="text-align: left;">Fecha Límite de Pago</th>
+                                            <th style="text-align: left;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let currentDate = fechaActual %>
+                                        <% for (let count = 0; count < deuda.length; count++) { %>
+                                        <tr>
+                                            <td>Pago #<%= count + 1 %></td>
+                                            <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td><%= deuda[count].fechaLimitePago %></td>
+                                            <% if (deuda[count].Pagado == 1) { %>
+                                                <td>
+                                                    <span class="tag is-success is-size-6">
+                                                         <span class="icon is-small">
+                                                             <i class="fa-solid fa-circle-check"></i>
+                                                         </span>
+                                                         <span>
+                                                            Pagado
+                                                         </span>
                                                     </span>
-                                                   <span>
-                                                       Atrasado
-                                                   </span> 
-                                                </span>
-                                            </td>
+                                                </td>
+                                            <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
+                                                <td>
+                                                    <span class="tag is-warning is-size-6">
+                                                         <span class="icon is-small">
+                                                             <i class="fa-solid fa-clock"></i>
+                                                         </span>
+                                                         <span>
+                                                            Pendiente
+                                                         </span>
+                                                    </span>
+                                                </td>
+                                            <% } else { %>
+                                                <td>
+                                                    <span class="tag is-danger is-size-6">
+                                                        <span class="icon is-small">
+                                                            <i class="fa-solid fa-circle-xmark"></i>
+                                                        </span>
+                                                       <span>
+                                                           Atrasado
+                                                       </span> 
+                                                    </span>
+                                                </td>
+                                            <% } %>
+                                        </tr>
                                         <% } %>
-                                    </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         <% } else { %>
                         <div class="notification is-danger">
                             <p>
