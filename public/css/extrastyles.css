@@ -35,6 +35,9 @@
   }
 }
 
+.is-fullheight-100vh {
+  height: 100vh;
+}
 
 .navbar-link:hover::after {
   border-color: #ffffff;
