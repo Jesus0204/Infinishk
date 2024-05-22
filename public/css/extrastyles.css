@@ -43,7 +43,7 @@
 .button {
   width: 100%;
   margin: 6px auto;
-  background-color: #910106;
+  background-color: #761D1F;
   color: #ffffff;
   border: solid #95404c;
   padding: 6px 6px;
@@ -52,7 +52,7 @@
 
 .button:disabled,
 button[disabled] {
-  border: 1px solid #910106;
+  border: 1px solid #761D1F;
   background-color: #95404c;
   color: #ffffff;
 }
@@ -70,7 +70,7 @@ button[disabled] {
 
 .button:focus {
   box-shadow: 0 0 0 4px #95404c;
-  background-color: #910106;
+  background-color: #761D1F;
   color: #ffffff;
 }
 
@@ -95,11 +95,11 @@ button[disabled] {
 }
 
 .checkbox:hover input~.checkmark {
-  background-color: #910106;
+  background-color: #761D1F;
 }
 
 .checkbox input:checked~.checkmark {
-  background-color: #910106;
+  background-color: #761D1F;
 }
 
 .checkbox .checkmark:after {

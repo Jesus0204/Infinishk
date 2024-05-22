@@ -6,7 +6,6 @@ const ayuda_ref_vacia = document.querySelector('#ayuda_ref_vacia');
 const ayuda_ref_negativa = document.querySelector('#ayuda_ref_negativa');
 const ayuda_ref_exponente = document.querySelector('#ayuda_ref_exponente');
 
-const ayuda_beca_vacia = document.querySelector('#ayuda_beca_vacia');
 const ayuda_beca_negativa = document.querySelector('#ayuda_beca_negativa');
 const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente');
 const ayuda_beca_rango = document.querySelector('#ayuda_beca_rango');
@@ -14,8 +13,6 @@ const ayuda_beca_rango = document.querySelector('#ayuda_beca_rango');
 // Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
     if (ref.value.length === 0) {
-        bt_Modificar.disabled = true;
-    } else if (beca && beca.value.length === 0) {
         bt_Modificar.disabled = true;
     } else {
         bt_Modificar.disabled = false;
