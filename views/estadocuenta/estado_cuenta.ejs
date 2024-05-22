@@ -20,18 +20,18 @@
                 <div class="card-content">
                     <div class="content">
                         <% if(matricula[0] == '1') { %>
-                            <div class="box has-background-light">
+                            <div class="box has-background-light" style="text-align: center;">
                                 <p>Ciclo escolar</p>
                                 <p class="title is-2"><%= periodo.Nombre %></p>
                             </div>
                             <% if(estudianteProfesional.porcBeca !== 0) { %>
-                                <div class="box has-background-light">
+                                <div class="box has-background-light" style="text-align: center;">
                                     <p>Porcentaje de Beca</p>
                                     <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
                                 </div>
                         <% } %>
                         <% } else if (matricula[0] == '8') { %>
-                            <div class="box has-background-light">
+                            <div class="box has-background-light" style="text-align: center;">
                                 <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
                             </div>
                             <div class="columns">
@@ -552,11 +552,6 @@
         </div>
     </div>
 </section>
- <span class="icon is-small">
-
-<section class="section">
-    <div class="container">
-
-</section>
+<%- include('../includes/foot.ejs') %>
 </html>
 <script type="text/javascript" src="/js/estado_cuenta.js"></script>
