@@ -6,6 +6,11 @@
   width: 100%;
 }
 
+#navbar_section {
+  position: fixed;
+  width: 100%;
+}
+
 @media (min-width: 1024px) {
   .dropdown-menu {
   top: -14px;

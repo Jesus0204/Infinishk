@@ -500,33 +500,33 @@
                                             <td><%= deuda[count].fechaLimitePago %></td>
                                             <% if (deuda[count].Pagado == 1) { %>
                                                 <td>
-                                                    <span class="tag is-success is-size-6">
-                                                         <span class="icon is-small">
+                                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                                         <span class="icon is-small" style="color: #21c85b">
                                                              <i class="fa-solid fa-circle-check"></i>
                                                          </span>
-                                                         <span>
+                                                         <span style="color: #21c85b">
                                                             Pagado
                                                          </span>
                                                     </span>
                                                 </td>
                                             <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
                                                 <td>
-                                                    <span class="tag is-warning is-size-6">
-                                                         <span class="icon is-small">
+                                                    <span class="tag is-size-6" style="background-color: #fdf2cc">
+                                                         <span class="icon is-small" style="color: #fec416">
                                                              <i class="fa-solid fa-clock"></i>
                                                          </span>
-                                                         <span>
+                                                         <span style="color: #fec416">
                                                             Pendiente
                                                          </span>
                                                     </span>
                                                 </td>
                                             <% } else { %>
                                                 <td>
-                                                    <span class="tag is-danger is-size-6">
-                                                        <span class="icon is-small">
+                                                    <span class="tag is-size-6" style="background-color: #f6d5d8">
+                                                        <span class="icon is-small" style="color: #f83362">
                                                             <i class="fa-solid fa-circle-xmark"></i>
                                                         </span>
-                                                       <span>
+                                                       <span style="color: #f83362">
                                                            Atrasado
                                                        </span> 
                                                     </span>
