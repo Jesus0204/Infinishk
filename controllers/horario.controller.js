@@ -98,8 +98,8 @@ exports.get_propuesta_horario = async (request, response, next) => {
                             const startDate = new Date(start_hour);
                             const endDate = new Date(end_hour);
 
-                            const fechaInicio = moment(startDate).format('LT');
-                            const fechaTermino = moment(endDate).format('LT');
+                            const fechaInicio = moment(startDate).format('HH:mm');
+                            const fechaTermino = moment(endDate).format('HH:mm');
 
                             return {
                                 diaSemana: weekday,
