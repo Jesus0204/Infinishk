@@ -169,7 +169,10 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
     for (let count = 0; count < alumnosNoConfirmados.length; count++){
         try {
+            console.log('Alumno: ' + alumnosNoConfirmados[count].Matricula);
             const schedule = await getUserGroups(periodoActivo, Number(alumnosNoConfirmados[count].Matricula));
+
+            console.log(schedule);
 
             if (schedule.data.length == 0) {
                 // Creas el mensaje para enviar el correo
