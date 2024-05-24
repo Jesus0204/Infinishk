@@ -331,8 +331,11 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         <br>
                         <br>
                         no pudo ser confirmado. 
-                        Este error fue ocasionado porque hubo algún error al establecer la conexión con el portal administrativo, 
-                        o porque el alumno que se intentó confirmar el horario no está registrado en el portal. 
+                        Este error puede suceder por tres razones: 
+                        <br>
+                        <ol> Hubo un error en la conexión con el portal administrativo </ol>
+                        <ol> Faltan materias de registrar en Via Pago (Por favor entra a Sincronizar base de datos). </ol>
+                        <ol> El alumno no esta registrado en el sistema administrativo. </ol>
                     </p>
                     <p>
                         Sentimos los inconvenientes que esto puede ocasionar. 

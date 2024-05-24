@@ -130,7 +130,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                     const beca = await EstudianteProfesional.fetchBeca(matricula);
                     const porcenBeca = beca[0][0].porcBeca / 100;
 
-                    precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito
+                    precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito;
 
                     response.render('alumnos/consultarHorario', {
                         periodoExistente: periodoExistente,
