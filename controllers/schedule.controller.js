@@ -169,10 +169,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
     for (let count = 0; count < alumnosNoConfirmados.length; count++){
         try {
-            console.log('Alumno: ' + alumnosNoConfirmados[count].Matricula);
             const schedule = await getUserGroups(periodoActivo, Number(alumnosNoConfirmados[count].Matricula));
-
-            console.log(schedule);
 
             if (schedule.data.length == 0) {
                 // Creas el mensaje para enviar el correo
@@ -336,9 +333,11 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         no pudo ser confirmado. 
                         Este error puede suceder por tres razones: 
                         <br>
-                        <ol> Hubo un error en la conexión con el portal administrativo </ol>
-                        <ol> Faltan materias de registrar en Via Pago (Por favor entra a Sincronizar base de datos). </ol>
-                        <ol> El alumno no esta registrado en el sistema administrativo. </ol>
+                        <ol>
+                            <li> Hubo un error en la conexión con el portal administrativo </li>
+                            <li> Faltan materias de registrar en Via Pago (Por favor entra a Sincronizar base de datos). </li>
+                            <li> El alumno no esta registrado en el sistema administrativo. </li>
+                        </ol>
                     </p>
                     <p>
                         Sentimos los inconvenientes que esto puede ocasionar. 
