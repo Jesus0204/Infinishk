@@ -129,7 +129,7 @@ cron.schedule('0 9 * * *', () => {
     timezone: "America/Mexico_City"
 });
 
-cron.schedule('*/1 * 23 Jan,May,Jul *', () => {
+cron.schedule('0 4 19 Jan,Jul *', () => {
     scheduleController.aceptar_horario_resagados();
 }, {
     scheduled: true,
