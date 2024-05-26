@@ -11,7 +11,7 @@ $(document).ready(function () {
 });
 
 const click_target = (element) => {
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 1088) {
         // Get the target from the "data-target" attribute
         const target = element.dataset.target;
         const $target = document.getElementById(target);
@@ -80,14 +80,14 @@ function navbar_desktop() {
     }
 }
 
-if (window.matchMedia("(max-width: 1023px)").matches) {
+if (window.matchMedia("(max-width: 1087px)").matches) {
     navbar_movil();
 };
 
 window.addEventListener('resize', () => {
     const configuracion = document.getElementById('configuracion');
     if (configuracion) {
-        if (window.innerWidth >= 1024) {
+        if (window.innerWidth >= 1088) {
             configuracion.style.width = '115%';
             navbar_desktop();
         } else {

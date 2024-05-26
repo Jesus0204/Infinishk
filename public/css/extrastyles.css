@@ -2,16 +2,12 @@
   font-size: 18px;
 }
 
-.navbar-start {
-  width: 100%;
-}
-
 #navbar_section {
   position: fixed;
   width: 100%;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1088px) {
   .dropdown-menu {
   top: -14px;
   margin-left: 100%;
@@ -24,9 +20,20 @@
   .cerrar_sesion_mobile {
       display: none;
   }
+
+  .navbar-start {
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 16%;
+  }
+
+  .navbar-end {
+    right: 0;
+    position: absolute;
+  }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1087px) {
   .nested {
       display: none;
   }
