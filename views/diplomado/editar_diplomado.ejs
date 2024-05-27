@@ -4,6 +4,8 @@
     rol: rol })
 %>
 
+<!-- <--Jesus se la come --> -->
+
 <body>
     <section class="section">
         <div class="container" style="display: flex; justify-content: center;">
@@ -12,14 +14,14 @@
                 style="width: 50%; margin-top: 50px;">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-                <label for="Duracion" class="label is-large">Duración:</label>
 
+                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                 <div class="field">
                     <p class="control has-icons-left">
-                        <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required
-                            class="input is-large">
+                        <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>"
+                            required class="input is-large">
                         <span class="icon is-small is-left">
-                            <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
+                            <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
                         </span>
                     </p>
                 </div>
@@ -36,16 +38,30 @@
                     </p>
                 </div>
 
-                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
+                <label for="Fecha Inicio" class="label is-large">Fecha Inicio:</label>
+
                 <div class="field">
                     <p class="control has-icons-left">
-                        <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>"
-                            required class="input is-large">
+                        <input type="date" id="Duracion" name="Duracion" value="<%= diplomado.fechaInicio %>" required
+                            class="input is-large">
                         <span class="icon is-small is-left">
-                            <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                            <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
                         </span>
                     </p>
                 </div>
+
+                <label for="Fecha Inicio" class="label is-large">Fecha Fin:</label>
+
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input type="date" id="Duracion" name="Duracion" value="<%= diplomado.fechaFin %>" required
+                            class="input is-large">
+                        <span class="icon is-small is-left">
+                            <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
+                        </span>
+                    </p>
+                </div>
+
                 <br>
                 <button type="submit" class="button is-rounded is-large is-responsive">
                     <span>Registrar Cambios</span>
