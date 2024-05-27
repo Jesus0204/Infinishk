@@ -45,7 +45,7 @@ exports.post_fetch_diplomado = (request, response, next) => {
                     rol: request.session.rol || "",
                     username: request.session.username || '',
                 });
-            } 
+            }
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -63,27 +63,14 @@ exports.get_consultar_diplomado = (request, response, next) => {
         .then(([diplomadosActivos, fieldData]) => {
             Diplomado.fetchAllNoActives()
                 .then(([diplomadosNoActivos, fieldData]) => {
-                    Diplomado.fetchAllInProgress()
-                    .then(([diplomadosProgreso, fieldData]) =>{
-                        response.render('diplomado/consultar_diplomado', {
-                            diplomadosProgreso: diplomadosProgreso,
-                            diplomadosActivos: diplomadosActivos,
-                            diplomadosNoActivos: diplomadosNoActivos,
-                            username: request.session.username || '',
-                            permisos: request.session.permisos || [],
-                            rol: request.session.rol || "",
-                            username: request.session.username || '',
-                            csrfToken: request.csrfToken(),
-                        });
-                    })
-                    .catch((error) => {
-                        response.status(500).render('500', {
-                            username: request.session.username || '',
-                            permisos: request.session.permisos || [],
-                            rol: request.session.rol || "",
-                            error_alumno: false
-                        });
-                        console.log(error)
+                    response.render('diplomado/consultar_diplomado', {
+                        diplomadosActivos: diplomadosActivos,
+                        diplomadosNoActivos: diplomadosNoActivos,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        username: request.session.username || '',
+                        csrfToken: request.csrfToken(),
                     });
                 })
                 .catch((error) => {
@@ -168,3 +155,40 @@ exports.post_registrar_diplomado = (request, response, next) => {
             console.log(error)
         });
 }
+
+exports.post_detalles_diplomado = (request, response, next) => {
+    const id = request.body.id
+    Diplomado.fetchDatos(id)
+        .then(([diplomadoInfo, fieldData]) => {
+            Diplomado.fetchAlumnos(id)
+                .then(([alumnosDiplomado, fieldData]) => {
+                    response.render('diplomado/detalles_diplomado', {
+                        diplomado: diplomadoInfo,
+                        alumnosDiplomado: alumnosDiplomado,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        username: request.session.username || '',
+                        csrfToken: request.csrfToken(),
+                    });
+                })
+                .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        error_alumno: false
+                    });
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                error_alumno: false
+            });
+            console.log(error)
+        });
+};

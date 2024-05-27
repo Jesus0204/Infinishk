@@ -15,11 +15,11 @@ module.exports = class Diplomado{
     }
 
     static fetchAllActives() {
-        return db.execute('SELECT * FROM Diplomado WHERE diplomadoActivo = 1')
+        return db.execute('SELECT * FROM Diplomado WHERE fechaFin >= now()')
     }
 
     static fetchAllNoActives() {
-        return db.execute('SELECT * FROM Diplomado WHERE diplomadoActivo = 0')
+        return db.execute('SELECT * FROM Diplomado WHERE fechaFin <= now()')
     }
 
     static fetchAllInProgress() {
@@ -54,6 +54,19 @@ module.exports = class Diplomado{
         return db.execute('SELECT Diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from Cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
     );
     }
+
+    static fetchDatos(id)
+    {
+        return db.execute('SELECT Diplomado.* FROM Diplomado WHERE IDDiplomado = ?',
+            [id]
+        );
+    }
+
+    static fetchAlumnos(id){
+        return db.execute('SELECT alumno.matricula, alumno.nombre, alumno.apellidos, estudiantediplomado.fechaInscripcion FROM alumno JOIN estudiantediplomado ON alumno.matricula = estudiantediplomado.matricula JOIN cursa ON estudiantediplomado.Matricula = cursa.Matricula JOIN diplomado ON cursa.IDDiplomado = diplomado.IDDiplomado WHERE diplomado.IDDiplomado = ?',
+        [id])
+    }
+
 
 };
 

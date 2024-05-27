@@ -1,0 +1,127 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<style>
+    .small-label {
+        font-size: 1.2em;
+        font-weight: normal;
+    }
+    .big-button {
+        font-size: 1.5em; /* Ajusta el tamaño a tu preferencia */
+        width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+    }
+</style>
+
+    <body>
+        <section class="section">
+            <div class="container">
+
+                <div class="columns">
+                    <div class="column is-8">
+                        <h3 class="title is-3">Información de Diplomado:
+                            <br>
+                            <%= diplomado[0].nombreDiplomado %>
+                            <%= diplomado[0].IDDiplomado %>
+                        </h3>
+                    </div>
+                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
+                        <div class="column">
+                            <form action="/diplomado/editar_diplomado" method="POST">
+                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
+                                <p class="control">
+                                    <button class="button is-rounded big-button" type="submit">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                        <span>
+                                            Modificar Diplomado
+                                        </span>
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <div class="notification">
+                    <div class="columns is-vcentered">
+                        <div class="column is-3">
+                            <label class="block font-semibold"><strong>Fecha Inicio:</strong></label>
+                            <p class="block small-label">
+                                <%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %>
+                                    </label>
+                        </div>
+                        <div class="column is-3">
+                            <label class="block font-semibold"><strong>Fecha Fin:</strong></label>
+                            <p class="block small-label">
+                                <%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %>
+                                    </label>
+                        </div>
+                        <div class="column is-3">
+                            <label class="block font-semibold"><strong>Precio:</strong></label>
+                            <p class="block small-label">
+                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 }) %>
+                                    </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tablaAlumnos" class="table-container">
+                <table class="table is-bordered is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                        <tr>
+                            <th>
+                                <p class="is-size-5"><strong>Matricula: </strong></p>
+                            </th>
+                            <th>
+                                <p class="is-size-5"><strong>Nombre: </strong></p>
+                            </th>
+                            <th>
+                                <p class="is-size-5"><strong>Apellidos: </strong></p>
+                            </th>
+                            <th>
+                                <p class="is-size-5"><strong>Fecha Inscripción: </strong></p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let alumno of alumnosDiplomado) { %>
+                            <tr id="pagination-content">
+                                <td>
+                                    <%= alumno.Matricula %>
+                                </td>
+                                <td>
+                                    <%= alumno.Nombre %>
+                                </td>
+                                <td>
+                                    <%= alumno.Apellidos %>
+                                </td>
+                                <td>
+                                    <%= new Date(alumno.fechaInscripcion).toLocaleDateString('es-MX', { year: 'numeric'
+                                        , month: 'long' , day: 'numeric' }) %>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+                <!-- <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" id="prev-button">Anterior</a>
+                    <a class="pagination-next" id="next-button">Siguiente</a>
+                    <ul class="pagination-list" id="pagination-list">
+                        <div id="pagination-numbers">
+                        </div>
+                    </ul>
+                </nav> -->
+            </div>
+            </div>
+    </body>
+    </section>
+    </body>
