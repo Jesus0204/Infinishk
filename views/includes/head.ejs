@@ -28,6 +28,15 @@
     .main_menu {
         color: #ffffff;
     }
+
+    .cerrar-sesion-button {
+        background-color: #000000;
+        border: solid #000000;
+    }
+
+    .cerrar-sesion-button:hover {
+    border: solid #ffffff;
+    }
 </style>
 
 <body>
@@ -61,7 +70,7 @@
                 <div id="navbarViaDiseño" class="navbar-menu">
                     <div class="navbar-start">
                         <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
-                        <a class="navbar-item desktop_menu" href="/horario/consultahorario">
+                        <a class="navbar-item desktop_menu navbar-redondo" href="/horario/consultahorario">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-calendar-week"></i>
                             </span>
@@ -72,7 +81,8 @@
                         <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                                contienePermiso(permisos, 'Modificar diplomado') == true || 
                                contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                        <a class="navbar-item desktop_menu" style="padding-right: 2.1em;" href="/diplomado/consultar_diplomado">
+                        <a class="navbar-item desktop_menu navbar-redondo" style="padding-right: 2.1em;"
+                            href="/diplomado/consultar_diplomado">
                             <span class="icon is-large" style="margin-left: -0.5em;">
                                 <i class="fa-solid fa-graduation-cap"></i>
                             </span>
@@ -81,7 +91,7 @@
                         <% } %>
         
                         <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
-                        <a class="navbar-item desktop_menu" href="/estado_cuenta/estado_cuenta">
+                        <a class="navbar-item desktop_menu navbar-redondo" href="/estado_cuenta/estado_cuenta">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-money-check-dollar"></i>
                             </span>
@@ -93,7 +103,7 @@
                                contienePermiso(permisos, 'Consultar horario alumno') == true||
                                contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
                         <div data-target="alumnos" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
+                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em"
                                 onclick="click_target(this.parentElement)">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-users"></i>
@@ -175,7 +185,7 @@
                                contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
                                contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
                         <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu" style="padding-right: 2.1em;"
+                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em;"
                                 onclick="click_target(this.parentElement)">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-dollar-sign"></i>
@@ -228,7 +238,8 @@
                                 <hr class="navbar-divider">
                                 <div class="mobile">
                                     <div data-target="reportes" class="navbar-item has-dropdown">
-                                        <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                        <a class="navbar-link navbar-redondo"
+                                            onclick="click_target(this.parentElement)">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-chart-line"></i>
                                             </span>
@@ -289,7 +300,7 @@
                                contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
         
                         <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu" style="padding-right: 2.1em"
+                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em"
                                 onclick="click_target(this.parentElement)">
                                 <span class="icon is-large" style="margin-left: -0.5em;">
                                     <i class="fa-solid fa-gear"></i>
@@ -310,7 +321,7 @@
                                 <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
                                         contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
                                 <div class="nested dropdown has-dropdown is-hoverable">
-                                    <a class="navbar-item" style="padding-right: 3.9em;">
+                                    <a class="navbar-item datos-navbar" style="padding-right: 3.9em;">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-globe"></i>
                                         </span>
@@ -345,7 +356,8 @@
                                 <hr class="navbar-divider">
                                 <div class="mobile">
                                     <div data-target="datos" class="navbar-item has-dropdown">
-                                        <a class="navbar-link" onclick="click_target(this.parentElement)">
+                                        <a class="navbar-link navbar-redondo"
+                                            onclick="click_target(this.parentElement)">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-globe"></i>
                                             </span>
@@ -402,7 +414,8 @@
                         <% if (permisos.length != 0) { %>
                         <div class="navbar-end">
                             <p class="control" style="margin-top: 1.5em; padding-right: 2em;">
-                                <a class="button is-rounded is-responsive" style="font-size: large;" href="/auth/logout">
+                                <a class="button is-rounded is-responsive cerrar-sesion-button"
+                                    style="font-size: large;" href="/auth/logout">
                                     <span>
                                         Cerrar Sesión
                                     </span>
