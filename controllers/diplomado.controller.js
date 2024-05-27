@@ -99,8 +99,7 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const precio = request.body.precioDiplomado;
     const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
-    const status = request.body.statusDiplomado === 'on' ? '1' : '0';
-    Diplomado.update(id, duracion, precio, nombre, status)
+    Diplomado.update(id, duracion, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
         })
