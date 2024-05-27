@@ -3,7 +3,6 @@
 }
 
 #navbar_section {
-  position: fixed;
   width: 100%;
 }
 
@@ -11,8 +10,14 @@
   border-radius: 30px;
 }
 
-.navbar-redondo:hover{
+.navbar-redondo:hover {
   border-radius: 30px;
+  border: solid #ffffff;
+}
+
+.navbar-redondo {
+  background-color: #000000;
+  border: solid transparent;
 }
 
 @media (min-width: 1088px) {
@@ -46,6 +51,10 @@
     margin-top: 1.2em;
   }
 
+  .navbar-redondo:has(+ .dropdown-hover:hover){
+    border: solid #ffffff;
+  }
+
 }
 
 @media (max-width: 1087px) {
@@ -59,6 +68,16 @@
 
   .navbar-end {
       display: none;
+  }
+
+  .mobile-hover{
+  border-radius: 30px;
+   border: solid transparent;
+  }
+
+  .mobile-hover:hover{
+    border-radius: 30px;
+    border: solid #ffffff;
   }
 }
 
