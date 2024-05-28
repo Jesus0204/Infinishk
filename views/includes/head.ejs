@@ -50,8 +50,7 @@
                     <% if (permisos.length != 0) { %>
                     <p class="control" style="margin-left: auto; margin-top: 1.5em; padding-right: 1em;">
                         <a class="button is-rounded is-responsive cerrar-sesion-button cerrar_sesion_mobile"
-                            style="font-size: large;"
-                            href="/auth/logout">
+                            style="font-size: large;" href="/auth/logout">
                             <span>
                                 Cerrar Sesión
                             </span>
@@ -60,8 +59,8 @@
                             </span>
                         </a>
                     </p>
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarViaDiseño"
-                        style="margin-left: 0%;">
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                        data-target="navbarViaDiseño" style="margin-left: 0%;">
                         <span aria-hidden="true" style="color: #ffffff"></span>
                         <span aria-hidden="true" style="color: #ffffff"></span>
                         <span aria-hidden="true" style="color: #ffffff"></span>
@@ -82,15 +81,14 @@
                         <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                                contienePermiso(permisos, 'Modificar diplomado') == true || 
                                contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                        <a class="navbar-item desktop_menu navbar-redondo"
-                            href="/diplomado/consultar_diplomado">
+                        <a class="navbar-item desktop_menu navbar-redondo" href="/diplomado/consultar_diplomado">
                             <span class="icon is-large" style="margin-left: -0.5em;">
                                 <i class="fa-solid fa-graduation-cap"></i>
                             </span>
                             Diplomado
                         </a>
                         <% } %>
-        
+
                         <% if (contienePermiso(permisos, 'Consultar estado de cuenta') == true && rol == 3) { %>
                         <a class="navbar-item desktop_menu navbar-redondo" href="/estado_cuenta/estado_cuenta">
                             <span class="icon is-large">
@@ -99,7 +97,7 @@
                             Estado de Cuenta
                         </a>
                         <% } %>
-        
+
                         <% if (contienePermiso(permisos, 'Consultar Alumno') == true || 
                                contienePermiso(permisos, 'Consultar horario alumno') == true||
                                contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
@@ -178,7 +176,7 @@
                             </div>
                         </div>
                         <% } %>
-        
+
                         <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true || 
                                contienePermiso(permisos, 'Administrar Solicitud de Pago') == true ||
                                contienePermiso(permisos, 'Registrar Pago Manual') == true ||
@@ -186,7 +184,7 @@
                                contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
                                contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
                         <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu navbar-redondo" 
+                            <a class="navbar-link desktop_menu navbar-redondo"
                                 onclick="click_target(this.parentElement)">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-dollar-sign"></i>
@@ -196,12 +194,12 @@
                             <div class="navbar-dropdown dropdown-hover" id="pagos">
                                 <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true && 
                                 contienePermiso(permisos, 'Registrar archivo de pagos por transferencia') == true) { %>
-                                    <a class="navbar-item mobile-hover" href="/pagos/registroTransferencia">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-file-csv"></i>
-                                        </span>
-                                        Transferencia
-                                    </a>
+                                <a class="navbar-item mobile-hover" href="/pagos/registroTransferencia">
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-file-csv"></i>
+                                    </span>
+                                    Transferencia
+                                </a>
                                 <hr class="navbar-divider">
                                 <% } %>
                                 <% if (contienePermiso(permisos, 'Consultar Reporte Ingresos') == true && 
@@ -239,8 +237,7 @@
                                 <hr class="navbar-divider">
                                 <div class="mobile">
                                     <div data-target="reportes" class="navbar-item has-dropdown">
-                                        <a class="navbar-link mobile-hover"
-                                            onclick="click_target(this.parentElement)">
+                                        <a class="navbar-link mobile-hover" onclick="click_target(this.parentElement)">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-chart-line"></i>
                                             </span>
@@ -287,7 +284,7 @@
                             </div>
                         </div>
                         <% } %>
-        
+
                         <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true || 
                                contienePermiso(permisos, 'Consultar plan de pago') == true ||
                                contienePermiso(permisos, 'Registrar Costo Credito') == true ||
@@ -299,9 +296,9 @@
                                contienePermiso(permisos, 'Administrar Pago Extra') == true || 
                                contienePermiso(permisos, 'Actualizar Base de Datos') == true || 
                                contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-        
+
                         <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu navbar-redondo" 
+                            <a class="navbar-link desktop_menu navbar-redondo"
                                 onclick="click_target(this.parentElement)">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-gear"></i>
@@ -311,8 +308,7 @@
                             <div class="navbar-dropdown dropdown-hover" id="configuracion" style="width: 85%;">
                                 <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
                                     contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
-                                <a class="navbar-item mobile-hover"
-                                    href="/pagos/pagos_extra">
+                                <a class="navbar-item mobile-hover" href="/pagos/pagos_extra">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-sliders"></i>
                                     </span>
@@ -336,8 +332,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <div class="navbar-dropdown">
-                                            <a class="navbar-item"
-                                                href="/configuracion/actualizarBase">
+                                            <a class="navbar-item" href="/configuracion/actualizarBase">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-database"></i>
                                                 </span>
@@ -364,8 +359,7 @@
                                 <hr class="navbar-divider">
                                 <div class="mobile">
                                     <div data-target="datos" class="navbar-item has-dropdown">
-                                        <a class="navbar-link mobile-hover"
-                                            onclick="click_target(this.parentElement)">
+                                        <a class="navbar-link mobile-hover" onclick="click_target(this.parentElement)">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-globe"></i>
                                             </span>
@@ -389,7 +383,7 @@
                                     </div>
                                 </div>
                                 <% } %>
-        
+
                                 <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                                 <a class="navbar-item mobile-hover" href="/configuracion/precio_credito">
                                     <span class="icon is-large" style="padding-left: 0.7em;">
@@ -413,8 +407,7 @@
                                 <% } %>
                                 <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item mobile-hover"
-                                    href="/configuracion/consultar_usuario">
+                                <a class="navbar-item mobile-hover" href="/configuracion/consultar_usuario">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-users-gear"></i>
                                     </span>
