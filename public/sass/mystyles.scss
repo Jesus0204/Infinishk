@@ -10,7 +10,7 @@
 $vino: #95404c;
 $gris-oscuro: #7c7f80;
 $gris-claro: #cdcccf;
-$rojo: #910106;
+$rojo: #761D1F;
 $gris-lighter: #eaeaea;
 $negro: #000000;
 $blanco: #ffffff;
@@ -29,21 +29,24 @@ $success: $verde;
 $info: $azul;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
-$desktop: 960px + (2 * $gap);
+$desktop: 1128px;
 
 // Update some of Bulma's component variables
-$body-background-color: $gris-lighter;
+$body-background-color: #f4f6f9;
 $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
 
 $navbar-background-color: $negro;
-$navbar-item-hover-background-color: $rojo;
+$navbar-item-hover-background-color: $negro;
 $navbar-item-hover-color: $blanco;
 $navbar-item-color: $negro;
 $navbar-dropdown-arrow: $blanco;
 $navbar-dropdown-item-hover-color: $blanco;
 $navbar-dropdown-item-hover-background-color: $rojo;
+$footer-background-color: $rojo;
+$footer-color: $blanco;
+$footer-padding: 25px;
 
 $table-cell-text-align: center;
 

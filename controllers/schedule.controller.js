@@ -1,6 +1,11 @@
 const Deuda = require('../models/deuda.model');
 const Periodo = require('../models/periodo.model');
+const PrecioCredito = require('../models/precio_credito.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const Grupo = require('../models/grupo.model');
+const Colegiatura = require('../models/colegiatura.model');
+const PlanPago = require('../models/planpago.model');
+
 const {
     getUserGroups
 } = require('../util/adminApiClient');
@@ -59,7 +64,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                     to: deudasRecordatorio[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: '27miguelb11@gmail.com',
+                        email: 'administracion@ivd.edu.mx',
                     },
                     subject: '¡Recuerda Pagar tu Colegiatura!',
                     html: `<p>¡Hola!</p>
@@ -115,7 +120,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     to: deudasNoPagadas[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: '27miguelb11@gmail.com',
+                        email: 'administracion@ivd.edu.mx',
                     },
                     subject: '¡El pago de tu Colegiatura ha vencido!',
                     html: `<p>¡Hola!</p>
@@ -155,13 +160,197 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
 exports.aceptar_horario_resagados = async (request, response, next) => {
     const [periodo, fieldData] = await Periodo.fetchActivo();
     const periodoActivo = periodo[0].IDPeriodo;
-    console.log('Periodo Activo: '+ periodoActivo);
+    const precioCredito = await PrecioCredito.fetchIDActual();
+    const precioActual = precioCredito[0][0].IDPrecioCredito;
+    const [plan6Pagos, fieldData_3] = await PlanPago.fetchOne(6);
+    const plan6PagosID = plan6Pagos[0].IDPlanPago;
 
     const [alumnosNoConfirmados, fieldData_2] = await EstudianteProfesional.fetchAlumnosNoConfirmados();
 
     for (let count = 0; count < alumnosNoConfirmados.length; count++){
-        console.log('Alumnos no Confirmados: '+ alumnosNoConfirmados[count].Matricula);
-    }
+        try {
+            const schedule = await getUserGroups(periodoActivo, Number(alumnosNoConfirmados[count].Matricula));
 
-    //const schedule = await getUserGroups(periodoActivo, matricula);
+            if (schedule.data.length == 0) {
+                // Creas el mensaje para enviar el correo
+                const msg = {
+                    to: 'jaczmx@gmail.com',
+                    from: {
+                        name: 'VIA PAGO',
+                        email: 'administracion@ivd.edu.mx',
+                    },
+                    subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
+                    html: `<p>¡Hola!</p>
+                    <p>
+                        Este es un correo automatizado para avisar que el horario de:
+                        <br>
+                        <br>
+                        <strong>Nombre: ${alumnosNoConfirmados[count].Nombre} ${alumnosNoConfirmados[count].Apellidos}</strong>
+                        <br>
+                        <strong>Matricula: ${alumnosNoConfirmados[count].Matricula}</strong>
+                        <br>
+                        <br>
+                        no pudo ser confirmado. 
+                        Este error fue ocasionado porque en el portal administrativo el alumno no tiene un horario asignado ni materias que registrar.
+                    </p>
+                    <p>
+                        Sentimos los inconvenientes que esto puede ocasionar. 
+                    <p>
+                        ¡Gracias!
+                    </p>`
+                };
+
+                try {
+                    await sgMail.send(msg);
+                } catch (error) {
+                    console.error('Error al enviar el correo electrónico:', error.toString());
+                }
+            } else {
+                const cursos = schedule.data.map(schedule => {
+                    const {
+                        room = '',
+                        name: nameSalon = '',
+                        schedules = [],
+                        course = {},
+                        professor = {},
+                        school_cycle = {}
+                    } = schedule;
+            
+                    const {
+                        id = periodoActivo,
+                        name = '',
+                        credits = ''
+                    } = course;
+            
+                    const {
+                        name: nombreProfesor = '',
+                        first_surname = '',
+                        second_surname = ''
+                    } = professor;
+            
+                    const {
+                        start_date = '',
+                        end_date = '',
+                    } = school_cycle;
+            
+                    const startDate = new Date(start_date);
+                    const endDate = new Date(end_date);
+            
+                    const startDateFormat = moment(startDate).format('YYYY-MM-DD');
+                    const endDateFormat = moment(endDate).format('YYYY-MM-DD');
+            
+                    const nombreSalon = `${room} ${nameSalon}`;
+                    const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
+            
+                    const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
+            
+                    const precioMateria = credits * precioActual;
+            
+                    const horarios = schedules.map(schedule => {
+                        const {
+                            weekday = '',
+                            start_hour = '',
+                            end_hour = '',
+                        } = schedule;
+            
+                        // Crear objetos Date a partir de las horas de inicio y final
+                        const startDate = new Date(start_hour);
+                        const endDate = new Date(end_hour);
+            
+                        const fechaInicio = moment(startDate).format('HH:mm');
+                        const fechaTermino = moment(endDate).format('HH:mm');
+            
+                        return {
+                            diaSemana: weekday,
+                            fechaInicio,
+                            fechaTermino
+                        };
+                    });
+            
+                    return {
+                        idMateria: id,
+                        nombreMat: name,
+                        creditos: credits,
+                        nombreProfesorCompleto,
+                        nombreSalon,
+                        semestre,
+                        precioMateria,
+                        horarios,
+                        startDateFormat,
+                        endDateFormat,
+                    }
+                });
+        
+                for (let curso of cursos) {
+                    // Agarrar el horario y formatearlo para la base
+                    const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
+                    let claseFormato = '';
+                    for (let countClase = 0; countClase < grupoHorarioValidado.length; countClase++) {
+                        if ((countClase + 1) == grupoHorarioValidado.length) {
+                            claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino;
+                        } else {
+                            claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino + ', ';
+                        }
+                    }
+                    // Guardar el grupo en la base de datos
+                    await Grupo.saveGrupo(
+                        alumnosNoConfirmados[count].Matricula,
+                        curso.idMateria,
+                        precioActual,
+                        curso.nombreProfesorCompleto,
+                        curso.nombreSalon,
+                        claseFormato,
+                        curso.startDateFormat,
+                        curso.endDateFormat
+                    );
+                }
+    
+                // Acciones adicionales después de manejar cada grupo
+                await Colegiatura.createColegiaturasFichas(plan6PagosID, alumnosNoConfirmados[count].Matricula, precioActual);
+                await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula);
+            }
+
+        } catch(error) {
+            console.log(error);
+            // Creas el mensaje para enviar el correo
+            const msg = {
+                to: 'jaczmx@gmail.com',
+                from: {
+                    name: 'VIA PAGO',
+                    email: 'administracion@ivd.edu.mx',
+                },
+                subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
+                html: `<p>¡Hola!</p>
+                    <p>
+                        Este es un correo automatizado para avisar que el horario de:
+                        <br>
+                        <br>
+                        <strong>Nombre: ${alumnosNoConfirmados[count].Nombre} ${alumnosNoConfirmados[count].Apellidos}</strong>
+                        <br>
+                        <strong>Matricula: ${alumnosNoConfirmados[count].Matricula}</strong>
+                        <br>
+                        <br>
+                        no pudo ser confirmado. 
+                        Este error puede suceder por tres razones: 
+                        <br>
+                        <ol>
+                            <li> Hubo un error en la conexión con el portal administrativo </li>
+                            <li> Faltan materias de registrar en Via Pago (Por favor entra a Sincronizar base de datos). </li>
+                            <li> El alumno no esta registrado en el sistema administrativo. </li>
+                        </ol>
+                    </p>
+                    <p>
+                        Sentimos los inconvenientes que esto puede ocasionar. 
+                    <p>
+                        ¡Gracias!
+                    </p>`
+            };
+
+            try {
+                await sgMail.send(msg);
+            } catch (error) {
+                console.error('Error al enviar el correo electrónico:', error.toString());
+            }
+        }
+    }
 }

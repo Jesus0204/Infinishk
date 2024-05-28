@@ -31,7 +31,4 @@ module.exports = class PlanPago{
         return db.execute('SELECT nombrePlan, IDPlanPago, numeroPagos FROM planPago WHERE planPagoActivo = 1 ORDER BY numeroPagos ASC');
     }
 
-    static fetchAllActivePlans(){
-        return db.execute('SELECT nombrePlan, IDPlanPago FROM planPago WHERE planPagoActivo = 1');
-    }
 }

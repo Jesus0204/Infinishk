@@ -48,7 +48,7 @@ module.exports = class estudianteProfesional {
     }
 
     static fetchAlumnosNoConfirmados() {
-        return db.execute(`SELECT Matricula FROM estudianteProfesional WHERE horarioConfirmado = 0`);
+        return db.execute(`SELECT E.Matricula, A.Nombre, A.Apellidos FROM estudianteProfesional AS E, Alumno AS A WHERE E.Matricula = A.Matricula AND horarioConfirmado = 0`);
     }
 
      static updateHorarioAccepted(matricula) {

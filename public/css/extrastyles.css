@@ -2,11 +2,25 @@
   font-size: 18px;
 }
 
-.navbar-start {
+#navbar_section {
   width: 100%;
 }
 
-@media (min-width: 1024px) {
+.navbar-item {
+  border-radius: 30px;
+}
+
+.navbar-redondo:hover {
+  border-radius: 30px;
+  border: solid #ffffff;
+}
+
+.navbar-redondo {
+  background-color: #000000;
+  border: solid transparent;
+}
+
+@media (min-width: 1128px) {
   .dropdown-menu {
   top: -14px;
   margin-left: 100%;
@@ -19,9 +33,31 @@
   .cerrar_sesion_mobile {
       display: none;
   }
+
+  .navbar-start {
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 16%;
+  }
+
+  .navbar-end {
+    right: 0;
+    position: absolute;
+  }
+
+  .navbar-redondo {
+    border-radius: 30px;
+    height: 60%;
+    margin-top: 1.2em;
+  }
+
+  .navbar-redondo:has(+ .dropdown-hover:hover){
+    border: solid #ffffff;
+  }
+
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1127px) {
   .nested {
       display: none;
   }
@@ -33,8 +69,21 @@
   .navbar-end {
       display: none;
   }
+
+  .mobile-hover{
+  border-radius: 30px;
+   border: solid transparent;
+  }
+
+  .mobile-hover:hover{
+    border-radius: 30px;
+    border: solid #ffffff;
+  }
 }
 
+.is-fullheight-100vh {
+  height: 100vh;
+}
 
 .navbar-link:hover::after {
   border-color: #ffffff;
@@ -43,7 +92,7 @@
 .button {
   width: 100%;
   margin: 6px auto;
-  background-color: #910106;
+  background-color: #761D1F;
   color: #ffffff;
   border: solid #95404c;
   padding: 6px 6px;
@@ -52,7 +101,7 @@
 
 .button:disabled,
 button[disabled] {
-  border: 1px solid #910106;
+  border: 1px solid #761D1F;
   background-color: #95404c;
   color: #ffffff;
 }
@@ -70,7 +119,7 @@ button[disabled] {
 
 .button:focus {
   box-shadow: 0 0 0 4px #95404c;
-  background-color: #910106;
+  background-color: #761D1F;
   color: #ffffff;
 }
 
@@ -95,11 +144,11 @@ button[disabled] {
 }
 
 .checkbox:hover input~.checkmark {
-  background-color: #910106;
+  background-color: #761D1F;
 }
 
 .checkbox input:checked~.checkmark {
-  background-color: #910106;
+  background-color: #761D1F;
 }
 
 .checkbox .checkmark:after {

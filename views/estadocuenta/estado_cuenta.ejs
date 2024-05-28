@@ -20,18 +20,18 @@
                 <div class="card-content">
                     <div class="content">
                         <% if(matricula[0] == '1') { %>
-                            <div class="box has-background-light">
+                            <div class="box has-background-light" style="text-align: center;">
                                 <p>Ciclo escolar</p>
                                 <p class="title is-2"><%= periodo.Nombre %></p>
                             </div>
                             <% if(estudianteProfesional.porcBeca !== 0) { %>
-                                <div class="box has-background-light">
+                                <div class="box has-background-light" style="text-align: center;">
                                     <p>Porcentaje de Beca</p>
                                     <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
                                 </div>
                         <% } %>
                         <% } else if (matricula[0] == '8') { %>
-                            <div class="box has-background-light">
+                            <div class="box has-background-light" style="text-align: center;">
                                 <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
                             </div>
                             <div class="columns">
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="column">
+        <div class="column is-three-quarters">
             <div class="card">
                 <div class="card-content">
                      <div class="tabs is-boxed">
@@ -468,73 +468,75 @@
                     <% if(matricula[0] == '1') { %>
                     <div id="deuda">
                         <% if (deuda.length != 0) { %>
-                            <table class="table is-fullwidth is-striped is-hoverable">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: left;">#</th>
-                                        <th style="text-align: left;">Pendiente</th>
-                                        <th style="text-align: left;">Total</th>
-                                        <th style="text-align: left;">Pagado</th>
-                                        <th style="text-align: left;">Fecha Límite de Pago</th>
-                                        <th style="text-align: left;">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% let currentDate = fechaActual %>
-                                    <% for (let count = 0; count < deuda.length; count++) { %>
-                                    <tr>
-                                        <td>Pago #<%= count + 1 %></td>
-                                        <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %></td>
-                                        <td><%= deuda[count].fechaLimitePago %></td>
-                                        <% if (deuda[count].Pagado == 1) { %>
-                                            <td>
-                                                <span class="tag is-success is-size-6">
-                                                     <span class="icon is-small">
-                                                         <i class="fa-solid fa-circle-check"></i>
-                                                     </span>
-                                                     <span>
-                                                        Pagado
-                                                     </span>
-                                                </span>
-                                            </td>
-                                        <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
-                                            <td>
-                                                <span class="tag is-warning is-size-6">
-                                                     <span class="icon is-small">
-                                                         <i class="fa-solid fa-clock"></i>
-                                                     </span>
-                                                     <span>
-                                                        Pendiente
-                                                     </span>
-                                                </span>
-                                            </td>
-                                        <% } else { %>
-                                            <td>
-                                                <span class="tag is-danger is-size-6">
-                                                    <span class="icon is-small">
-                                                        <i class="fa-solid fa-circle-xmark"></i>
+                            <div class="table-container">
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">#</th>
+                                            <th style="text-align: left;">Pendiente</th>
+                                            <th style="text-align: left;">Total</th>
+                                            <th style="text-align: left;">Pagado</th>
+                                            <th style="text-align: left;">Fecha Límite de Pago</th>
+                                            <th style="text-align: left;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let currentDate = fechaActual %>
+                                        <% for (let count = 0; count < deuda.length; count++) { %>
+                                        <tr>
+                                            <td>Pago #<%= count + 1 %></td>
+                                            <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td><%= deuda[count].fechaLimitePago %></td>
+                                            <% if (deuda[count].Pagado == 1) { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                                         <span class="icon is-small" style="color: #21c85b">
+                                                             <i class="fa-solid fa-circle-check"></i>
+                                                         </span>
+                                                         <span style="color: #21c85b">
+                                                            Pagado
+                                                         </span>
                                                     </span>
-                                                   <span>
-                                                       Atrasado
-                                                   </span> 
-                                                </span>
-                                            </td>
+                                                </td>
+                                            <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #fdf2cc">
+                                                         <span class="icon is-small" style="color: #fec416">
+                                                             <i class="fa-solid fa-clock"></i>
+                                                         </span>
+                                                         <span style="color: #fec416">
+                                                            Pendiente
+                                                         </span>
+                                                    </span>
+                                                </td>
+                                            <% } else { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #f6d5d8">
+                                                        <span class="icon is-small" style="color: #f83362">
+                                                            <i class="fa-solid fa-circle-xmark"></i>
+                                                        </span>
+                                                       <span style="color: #f83362">
+                                                           Atrasado
+                                                       </span> 
+                                                    </span>
+                                                </td>
+                                            <% } %>
+                                        </tr>
                                         <% } %>
-                                    </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         <% } else { %>
                         <div class="notification is-danger">
                             <p>
@@ -552,11 +554,5 @@
         </div>
     </div>
 </section>
- <span class="icon is-small">
-
-<section class="section">
-    <div class="container">
-
-</section>
-</html>
 <script type="text/javascript" src="/js/estado_cuenta.js"></script>
+<%- include('../includes/foot.ejs') %>

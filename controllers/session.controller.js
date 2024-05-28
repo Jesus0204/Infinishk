@@ -103,6 +103,7 @@ exports.get_set_password = (request,response,next) =>{
         token,
         matricula,
         csrfToken: request.csrfToken(),
+        username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
     }); // Renderiza la página para establecer la contraseña con la matrícula
@@ -135,6 +136,7 @@ exports.post_set_password = async (request, response, next) => {
 exports.get_reset_password = (request,response,next) => {
     response.render('reset_password', { 
         csrfToken: request.csrfToken(),
+        username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
     });
@@ -158,7 +160,7 @@ exports.post_reset_password = async (request, response, next) => {
             to: correo,
             from: {
                 name: 'VIA PAGO',
-                email: '27miguelb11@gmail.com',
+                email: 'administracion@ivd.edu.mx',
             },
             subject: 'Reestablecer contraseña de VIA Pago',
             html: `<p>Hola!</p><p>Por favor usa este link para restablecer tu contraseña. Toma en cuenta que la liga solo tiene validez de una hora: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
