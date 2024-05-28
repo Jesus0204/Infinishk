@@ -55,6 +55,10 @@
     border: solid #ffffff;
   }
 
+  .has-dropdown:hover > .navbar-redondo{
+    border: solid #ffffff;
+  }
+
 }
 
 @media (max-width: 1127px) {
