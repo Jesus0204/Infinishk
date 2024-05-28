@@ -20,7 +20,7 @@
   border: solid transparent;
 }
 
-@media (min-width: 1088px) {
+@media (min-width: 1128px) {
   .dropdown-menu {
   top: -14px;
   margin-left: 100%;
@@ -57,7 +57,7 @@
 
 }
 
-@media (max-width: 1087px) {
+@media (max-width: 1127px) {
   .nested {
       display: none;
   }

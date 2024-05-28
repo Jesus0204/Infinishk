@@ -82,7 +82,7 @@
                         <% if (contienePermiso(permisos, 'Registrar diplomado') == true || 
                                contienePermiso(permisos, 'Modificar diplomado') == true || 
                                contienePermiso(permisos, 'Consultar diplomado') == true) { %>
-                        <a class="navbar-item desktop_menu navbar-redondo" style="padding-right: 2.1em;"
+                        <a class="navbar-item desktop_menu navbar-redondo"
                             href="/diplomado/consultar_diplomado">
                             <span class="icon is-large" style="margin-left: -0.5em;">
                                 <i class="fa-solid fa-graduation-cap"></i>
@@ -104,9 +104,9 @@
                                contienePermiso(permisos, 'Consultar horario alumno') == true||
                                contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
                         <div data-target="alumnos" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em"
+                            <a class="navbar-link desktop_menu navbar-redondo"
                                 onclick="click_target(this.parentElement)">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
+                                <span class="icon is-large">
                                     <i class="fa-solid fa-users"></i>
                                 </span>
                                 Alumnos
@@ -115,7 +115,7 @@
                                 <% if (contienePermiso(permisos, 'Consultar a alumnos atrasados en pagos') == true) { %>
                                 <div class="desktop">
                                     <a class="navbar-item" href="/alumnos/alumnos_atrasados">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-solid fa-file-invoice-dollar"></i>
                                         </span>
                                         Alumnos
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="mobile">
                                     <a class="navbar-item mobile-hover" href="/alumnos/alumnos_atrasados">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-solid fa-file-invoice-dollar"></i>
                                         </span>
                                         Alumnos Atrasados
@@ -137,7 +137,7 @@
                                 <% if (contienePermiso(permisos, 'Consultar Alumno') == true) { %>
                                 <div class="desktop">
                                     <a class="navbar-item" href="/alumnos/fetch_datos">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-regular fa-user"></i>
                                         </span>
                                         Consultar
@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="mobile">
                                     <a class="navbar-item mobile-hover" href="/alumnos/fetch_datos">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-regular fa-user"></i>
                                         </span>
                                         Consultar Alumno
@@ -158,7 +158,7 @@
                                 <hr class="navbar-divider">
                                 <div class="desktop">
                                     <a class="navbar-item" href="/alumnos/fetch_fichas">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-solid fa-money-check-dollar"></i>
                                         </span>
                                         Modificar
@@ -168,7 +168,7 @@
                                 </div>
                                 <div class="mobile">
                                     <a class="navbar-item mobile-hover" href="/alumnos/fetch_fichas">
-                                        <span class="icon is-large" style="margin-left: -0.5em;">
+                                        <span class="icon is-large">
                                             <i class="fa-solid fa-money-check-dollar"></i>
                                         </span>
                                         Modificar Ficha Pago
@@ -186,9 +186,9 @@
                                contienePermiso(permisos, 'Consultar Reporte Ingresos') == true||
                                contienePermiso(permisos, 'Consultar Reporte Metodo de Pago') == true) { %>
                         <div data-target="pagos" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em;"
+                            <a class="navbar-link desktop_menu navbar-redondo" 
                                 onclick="click_target(this.parentElement)">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
+                                <span class="icon is-large">
                                     <i class="fa-solid fa-dollar-sign"></i>
                                 </span>
                                 Pagos
@@ -301,29 +301,31 @@
                                contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
         
                         <div data-target="configuracion" class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link desktop_menu navbar-redondo" style="padding-right: 2.1em"
+                            <a class="navbar-link desktop_menu navbar-redondo" 
                                 onclick="click_target(this.parentElement)">
-                                <span class="icon is-large" style="margin-left: -0.5em;">
+                                <span class="icon is-large">
                                     <i class="fa-solid fa-gear"></i>
                                 </span>
                                 Configuración
                             </a>
-                            <div class="navbar-dropdown dropdown-hover" id="configuracion" style="width: 110%">
+                            <div class="navbar-dropdown dropdown-hover" id="configuracion" style="width: 85%;">
                                 <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true && 
                                     contienePermiso(permisos, 'Administrar Pago Extra') == true) { %>
-                                <a class="navbar-item mobile-hover" style="padding-right: 2.8em;"
+                                <a class="navbar-item mobile-hover"
                                     href="/pagos/pagos_extra">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-sliders"></i>
                                     </span>
-                                    Otros Pagos
+                                    <span>
+                                        Otros Pagos
+                                    </span>
                                 </a>
                                 <hr class="navbar-divider">
                                 <% } %>
                                 <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true ||
                                         contienePermiso(permisos, 'Exportar Datos a Excel') == true) { %>
-                                <div class="nested dropdown has-dropdown is-hoverable">
-                                    <a class="navbar-item" style="padding-right: 3.9em;">
+                                <div class="nested dropdown has-dropdown is-hoverable" style="padding-right: 1.1em;">
+                                    <a class="navbar-item" style="width: 107%">
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-globe"></i>
                                         </span>
@@ -334,23 +336,27 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <div class="navbar-dropdown">
-                                            <a class="navbar-item" style="padding-right: 2.8em;"
+                                            <a class="navbar-item"
                                                 href="/configuracion/actualizarBase">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-database"></i>
                                                 </span>
-                                                Sincronizar
-                                                <br>
-                                                Base Datos
+                                                <span>
+                                                    Sincronizar
+                                                    <br>
+                                                    Base Datos
+                                                </span>
                                             </a>
                                             <hr class="navbar-divider">
                                             <a class="navbar-item" href="/configuracion/exportarDatos">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-file-excel"></i>
                                                 </span>
-                                                Exportar
-                                                <br>
-                                                Datos a CSV
+                                                <span>
+                                                    Exportar
+                                                    <br>
+                                                    Datos a CSV
+                                                </span>
                                             </a>
                                         </div>
                                     </div>
@@ -386,10 +392,12 @@
         
                                 <% if (contienePermiso(permisos, 'Consultar Costo Credito') == true) { %>
                                 <a class="navbar-item mobile-hover" href="/configuracion/precio_credito">
-                                    <span class="icon is-large">
+                                    <span class="icon is-large" style="padding-left: 0.7em;">
                                         <i class="fa-solid fa-money-bills"></i>
                                     </span>
-                                    Precio Crédito
+                                    <span style="padding-left: 0.7em;">
+                                        Precio Crédito
+                                    </span>
                                 </a>
                                 <hr class="navbar-divider">
                                 <% } %>
@@ -398,17 +406,21 @@
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-calendar-week"></i>
                                     </span>
-                                    Plan de Pago
+                                    <span>
+                                        Plan de Pago
+                                    </span>
                                 </a>
                                 <% } %>
                                 <% if (contienePermiso(permisos, 'Consultar Usuario') == true) { %>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item mobile-hover" style="padding-right: 2.5em;"
+                                <a class="navbar-item mobile-hover"
                                     href="/configuracion/consultar_usuario">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-users-gear"></i>
                                     </span>
-                                    Usuarios
+                                    <span>
+                                        Usuarios
+                                    </span>
                                 </a>
                                 <% } %>
                             </div>
