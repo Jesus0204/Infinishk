@@ -64,7 +64,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                     to: deudasRecordatorio[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: '27miguelb11@gmail.com',
+                        email: 'administracion@ivd.edu.mx',
                     },
                     subject: '¡Recuerda Pagar tu Colegiatura!',
                     html: `<p>¡Hola!</p>
@@ -120,7 +120,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     to: deudasNoPagadas[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: '27miguelb11@gmail.com',
+                        email: 'administracion@ivd.edu.mx',
                     },
                     subject: '¡El pago de tu Colegiatura ha vencido!',
                     html: `<p>¡Hola!</p>
@@ -177,7 +177,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     to: 'jaczmx@gmail.com',
                     from: {
                         name: 'VIA PAGO',
-                        email: '27miguelb11@gmail.com',
+                        email: 'administracion@ivd.edu.mx',
                     },
                     subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
                     html: `<p>¡Hola!</p>
@@ -317,7 +317,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                 to: 'jaczmx@gmail.com',
                 from: {
                     name: 'VIA PAGO',
-                    email: '27miguelb11@gmail.com',
+                    email: 'administracion@ivd.edu.mx',
                 },
                 subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
                 html: `<p>¡Hola!</p>
