@@ -432,6 +432,28 @@
         </div>
 
         <div id="estado_cuenta" class="is-active">
+
+            <div class="columns">
+                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true) { %>
+                        <div class="column is-4 is-offset-8">
+                            <form method="POST" action="/alumnos/fichas">
+                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                <p class="control">
+                                    <button class="button is-rounded is-responsive" style="font-size: large;" type="submit">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-plus"></i>
+                                        </span>
+                                        <span>
+                                            Modificar Fichas de Pago
+                                        </span>
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+            
             <div id="deuda">
                 <table class="table is-bordered is-hoverable is-fullwidth">
                     <tbody>
