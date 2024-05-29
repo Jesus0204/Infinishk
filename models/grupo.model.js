@@ -25,12 +25,12 @@ module.exports = class Alumno {
 
         const schedule = await db.execute(`SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
                 G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
-                ((P.precioPesos * M.Creditos)*?) AS Precio_materia
+                ((P.precioPesos * M.Creditos) * ?) AS Precio_materia
                 FROM Grupo AS G
                 JOIN Materia AS M ON G.IDMateria = M.IDMateria
-                JOIN Preciocredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
+                JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
                 JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
-                WHERE P.precioActivo = 1
+                WHERE G.IDPrecioCredito = P.IDPrecioCredito
                 AND G.Matricula = ?`, [porcbeca, matricula]);
 
         return schedule;
@@ -50,8 +50,8 @@ module.exports = class Alumno {
         const PrecioTotal = await db.execute(`SELECT (SUM(P.precioPesos * M.Creditos)*?) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
-        JOIN Preciocredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
-        WHERE P.precioActivo = 1
+        JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
+        WHERE G.IDPrecioCredito = P.IDPrecioCredito
         AND G.Matricula = ?`, [porcbeca, matricula]);
         return PrecioTotal;
     }
