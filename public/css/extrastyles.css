@@ -93,6 +93,28 @@
   border-color: #ffffff;
 }
 
+.confirmar-button {
+  text-align: center;
+  float: right;
+  border-radius: 10px;
+  width: 80%;
+  background-color: #000000;
+  color: #ffffff;
+  border: solid #95404c;
+}
+
+.confirmar-button:focus {
+  box-shadow: 0 0 0 2px #015fcc;
+  background-color: #761D1F;
+  color: #ffffff;
+}
+
+.confirmar-button:hover {
+  background-color: #761D1F;
+  color: #ffffff;
+  border: solid #95404c;
+}
+
 .button {
   width: 100%;
   margin: 6px auto;
@@ -122,7 +144,7 @@ button[disabled] {
 }
 
 .button:focus {
-  box-shadow: 0 0 0 4px #95404c;
+  box-shadow: 0 0 0 2px #015fcc;
   background-color: #761D1F;
   color: #ffffff;
 }

@@ -128,9 +128,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                     const valorCredito = credito[0][0]['CAST(credito AS CHAR(20))'];
 
                     const beca = await EstudianteProfesional.fetchBeca(matricula);
-                    const porcenBeca = beca[0][0].porcBeca / 100;
-
-                    precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito;
+                    const porcenBeca = beca[0][0].porcBeca;
 
                     response.render('alumnos/consultarHorario', {
                         periodoExistente: periodoExistente,
@@ -138,6 +136,8 @@ exports.get_propuesta_horario = async (request, response, next) => {
                         periodo: periodo[0][0],
                         confirmacion: confirmacion,
                         planesPago: planesPago,
+                        porcBeca: porcenBeca,
+                        credito: Number(valorCredito),
                         precioTotal: precioTotal,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
@@ -166,9 +166,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
             const valorCredito = credito[0][0]['CAST(credito AS CHAR(20))'];
 
             const beca = await EstudianteProfesional.fetchBeca(request.session.username);
-            const porcenBeca = beca[0][0].porcBeca / 100;
-
-            precioTotal = precioTotal - (precioTotal * porcenBeca) - valorCredito;
+            const porcenBeca = beca[0][0].porcBeca;
 
             for (let count = 0; count < schedule[0].length; count++) {
                 schedule[0][count].fechaInicio = moment(new Date(schedule[0][count].fechaInicio)).format('LL');
@@ -183,6 +181,8 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 planesPago: planesPago,
+                porcBeca: porcenBeca,
+                credito: Number(valorCredito),
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
