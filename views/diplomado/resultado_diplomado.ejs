@@ -15,18 +15,14 @@
                             <div class="media-content">
                                 <p class="title is-4 has-text-black">ID:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-4 has-text-black">Duración:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
-                                <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
-                                <p class="title is-4 has-text-black">Status:</p>
-                                <% if (diplomado.diplomadoActivo === 1) { %>
-                                    <p class="subtitle is-4 has-text-grey"> Activo</p>
-                                <% } else { %>
-                                    <p class="subtitle is-4 has-text-grey"> No Activo </p>
-                                <% } %>
+                                <p class="title is-4 has-text-black">Precio:</p>
+                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
+                                <p class="title is-4 has-text-black">Fecha Inicio:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                <p class="title is-4 has-text-black">Fecha Fin:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                             </div>
                         </div>
                     </div>
@@ -51,18 +47,14 @@
                             <div class="media-content">
                                 <p class="title is-4 has-text-black">ID:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-4 has-text-black">Duración:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.Duracion %></p>
-                                <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
                                 <p class="title is-4 has-text-black">Nombre:</p>
                                 <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
-                                <p class="title is-4 has-text-black">Status:</p>
-                                <% if (diplomado.diplomadoActivo === 1) { %>
-                                    <p class="subtitle is-4 has-text-grey"> Activo</p>
-                                <% } else { %>
-                                    <p class="subtitle is-4 has-text-grey"> No Activo </p>
-                                <% } %>
+                                <p class="title is-4 has-text-black">Precio:</p>
+                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
+                                <p class="title is-4 has-text-black">Fecha Inicio:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                <p class="title is-4 has-text-black">Fecha Fin:</p>
+                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                             </div>
                         </div>
                     </div>

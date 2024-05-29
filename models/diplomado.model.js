@@ -30,9 +30,9 @@ module.exports = class Diplomado{
         return db.execute('Select * FROM Diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
-    static update(id,duracion,precio,nombre){
-        return db.execute('UPDATE Diplomado SET Duracion=?, precioDiplomado=?, nombreDiplomado=? WHERE IDDiplomado=?',
-        [duracion,precio,nombre,id]);
+    static update(id,fechaInicio,fechaFin,precio,nombre){
+        return db.execute('UPDATE Diplomado SET fechaInicio=?, fechaFin=?, precioDiplomado=?, nombreDiplomado=? WHERE IDDiplomado=?',
+        [fechaInicio,fechaFin,precio,nombre,id]);
     }
 
     static buscar(consulta) {
