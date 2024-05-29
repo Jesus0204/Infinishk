@@ -140,9 +140,18 @@ exports.post_modificar_diplomado = (request, response, next) => {
 
 exports.post_registrar_diplomado = (request, response, next) => {
     const precio = request.body.precioDiplomado;
-    const duracion = request.body.Duracion;
     const nombre = request.body.nombreDiplomado;
-    Diplomado.save(duracion, precio, nombre)
+    const fechas = request.body.fecha.split("-");
+
+    const fechaInicio_temp = fechas[0];
+    const fechaFin_temp = fechas[1];
+    const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
+    const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
+
+    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    
+    Diplomado.save(fechaInicio,fechaFin, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
         })

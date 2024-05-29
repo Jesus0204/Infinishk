@@ -8,10 +8,10 @@ module.exports = class Diplomado{
         this.nombreDiplomado = mi_nombreDiplomado;
     }
 
-    static save(duracion,precio,nombre) {
+    static save(fechaInicio,fechaFin,precio,nombre) {
         return db.execute(
-            `INSERT INTO Diplomado (Duracion, precioDiplomado, nombreDiplomado) VALUES ( ?, ?, ?)`, 
-                [duracion,precio,nombre]);
+            `INSERT INTO Diplomado (fechaInicio, fechaFin, precioDiplomado, nombreDiplomado) VALUES ( ?,?,?,?)`, 
+                [fechaInicio,fechaFin,precio,nombre]);
     }
 
     static fetchAllActives() {
