@@ -1,292 +1,447 @@
-<%- include('../includes/head.ejs', 
-{ username: username, 
+<%- include('../includes/head.ejs',{ 
+    username: username, 
     permisos: permisos, 
-    rol: rol })
-    %>
+    rol: rol 
+}) %>
 
 <section class='section'>
     <% if (periodoExistente == 0) { %>
-    <div class="columns">
-        <div class="column is-2"></div>
-        <div class="column is-8">
-            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                Tú horario no está listo por el momento. Por favor intenta más tarde.
-            </div>
-        </div>
-    </div>
-    <% } else { %>
-    <% if (confirmacion === 1) { %>
-    <div class="columns">
-        <div class="column is-3"></div>
-        <div class="column is-7">
-            <h3 class="title is-3">Materias Inscritas: 
-                Ciclo <%= periodo.Nombre %></h3>
-        </div>
-    </div>
-    <% } else { %>
-    <div class="columns">
-        <div class="column is-4"></div>
-        <div class="column is-6">
-            <h3 class="title is-3">Confirmar Horario</h3>
-        </div>
-    </div>
-    <% } %>
-    <br>
-    <% if (confirmacion === 1) { %>
-    <% if (schedule[0].length === 0) { %>
-    <div class="columns">
-        <div class="column is-2"></div>
-        <div class="column is-8">
-            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                Tú horario no está disponible por el momento. Por favor intenta más tarde.
-            </div>
-        </div>
-    </div>
-    <% } else { %>
-        <div class="table-container">
-            <table class="table is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-solid fa-book"></i>
-                            </span>
-                            Materia
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                            Profesor
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-regular fa-clock"></i>
-                            </span>
-                            Horario
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-regular fa-building"></i>
-                            </span>
-                            Salón
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fas fa-graduation-cap"></i>
-                            </span>
-                            Créditos
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-solid fa-tags"></i>
-                            </span>
-                            Costo
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let count = 0; count < schedule[0].length; count++) { %>
-                        <tr>
-                            <td>
-                                <strong>
-                                    <%= schedule[0][count].Nombre %>
-                                </strong>
-                            </td>
-                            <td><%= schedule[0][count].Profesor %></td>
-                            <td>
-                                <%- schedule[0][count].Horario.replace(/, /g, '<br>') %>
-                                <br>
-                                <br>
-                            </td>
-                            <td style="padding-top: 0.7em;"><%= schedule[0][count].Salon %></td>
-                            <td>
-                                <span class="tag is-size-6" style="background-color: #ddf5e5;">
-                                    <span style="color: #21c85b">
-                                        <%= schedule[0][count].Creditos.toLocaleString('mx', {
-                                                    minimumFractionDigits: 1, maximumFractionDigits: 1
-                                                }) %>
-                                    </span>
-                                </span>
-                            </td>
-                            <td>
-                                $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
-                                            minimumFractionDigits: 2, maximumFractionDigits: 2
-                                        }) %>
-                            </td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        </div>
-    <% } %>
-    <h3 class="title is-4" style="text-align: center;">
-        Costo total(MXN): $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2 }) %>
-    </h3>
-    <br>
-    <% } %>
-    <% if(confirmacion!= 1) { %>
-    <% if (schedule.length === 0) { %>
-    <div class="columns">
-        <div class="column is-2"></div>
-        <div class="column is-8">
-            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                Tú horario no está disponible o listo por el momento. Por favor intenta más tarde.
-            </div>
-        </div>
-    </div>
-    <% } else { %>
-    <form action="/horario/confirmar_horario" method="POST">
         <div class="columns">
-            <div class="column">
+            <div class="column is-2"></div>
+            <div class="column is-8">
                 <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    ¡Bienvenido a ViaPago! 
-                    En esta sección puedes consultar las materias que tienes inscritas para el semestre en curso.
-                    También podrás elegir entre los distintos planes de pagos, para que elijas el que más
-                    te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
-                    innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador, para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                    ¡Gracias por tu comprensión!
                 </div>
             </div>
         </div>
+    <% } else { %>
+    <% if (confirmacion === 1) { %>
         <div class="columns">
-            <div class="column is-1"></div>
+            <div class="column is-3"></div>
+            <div class="column is-7">
+                <h3 class="title is-3">Materias Inscritas: 
+                    Ciclo <%= periodo.Nombre %></h3>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="columns">
+            <div class="column is-4"></div>
             <div class="column is-6">
-                <h3 class="title is-4">
-                    Costo Total (MXN): $<%=
-                    precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
-                        maximumFractionDigits: 2 }) %>
-                </h3>
-                <br>
-                <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
-                <div class="select is-medium">
-                    <select name="IDPlanPago" id="IDPlanPago">
-                        <% for (let plan of planesPago){%>
-                        <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
-                            data-num="<%= plan.numeroPagos %>">
-                            <%= plan.nombrePlan %>
-                        </option>
-                        <% } %>
-                    </select>
+                <h3 class="title is-3">Confirmar Horario</h3>
+            </div>
+        </div>
+    <% } %>
+    <br>
+    <% if (confirmacion === 1) { %>
+        <% if (schedule[0].length === 0) { %>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Tus materias no se encuentran disponibles actualmente. Por favor intenta más tarde o contacta a tu coordinador. 
                 </div>
             </div>
-            <div class="column is-5">
-                <br>
-                <br>
-                <button class="button is-rounded is-medium is-responsive" type="submit" style="font-size: large;"
-                    id="Boton_confirmar">
-                    <span>Confirmar Horario</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-check"></i>
-                    </span>
-                </button>
+        </div>
+        <% } else { %>
+            <div class="table-container">
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-book"></i>
+                                </span>
+                                Materia
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
+                                Profesor
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-clock"></i>
+                                </span>
+                                Horario
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-building"></i>
+                                </span>
+                                Salón
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                                Créditos
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                Costo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let count = 0; count < schedule[0].length; count++) { %>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <%= schedule[0][count].Nombre %>
+                                    </strong>
+                                </td>
+                                <td><%= schedule[0][count].Profesor %></td>
+                                <td>
+                                    <%- schedule[0][count].Horario.replace(/, /g, '<br>') %>
+                                    <br>
+                                    <br>
+                                </td>
+                                <td style="padding-top: 0.7em;"><%= schedule[0][count].Salon %></td>
+                                <td>
+                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                        <span style="color: #21c85b">
+                                            <%= schedule[0][count].Creditos.toLocaleString('mx', {
+                                                        minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                    }) %>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    $<%= schedule[0][count].Precio_materia.toLocaleString('mx', {
+                                                minimumFractionDigits: 2, maximumFractionDigits: 2
+                                            }) %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="columns">
+                <div class="column is-8"></div>
+                <div class="column">
+                    <div class="box">
+                        <% if (porcBeca || credito != 0) { %>
+                        <div class="columns is-mobile">
+                            <div class="column is-6">
+                                <p class="has-text-black has-text-weight-medium">
+                                    Subtotal
+                                </p>
+                            </div>
+                            <div class="column is-6">
+                                <p class="has-text-black">
+                                    <span class="has-text-weight-bold">
+                                        $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2 }) %>
+                                    </span>
+                                    <span class="has-text-weight-light is-size-7">
+                                        MXN
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <% if (porcBeca) { %>
+                        <div class="columns is-mobile" style="margin-top: -2em;">
+                            <div class="column is-6">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Porcentaje de Beca
+                                </p>
+                            </div>
+                            <div class="column is-6">
+                                <p class="has-text-black has-text-weight-medium">
+                                    <%= porcBeca %>%
+                                </p>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if (credito != 0) { %>
+                        <div class="columns is-mobile" style="margin-top: -2em;">
+                            <div class="column is-6">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Crédito
+                                </p>
+                            </div>
+                            <div class="column is-6">
+                                <p class="has-text-black">
+                                    <span class="has-text-weight-semibold">
+                                        -$<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2 }) %>
+                                    </span>
+                                    <span class="has-text-weight-light is-size-7">
+                                        MXN
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% } %>
+                        <div class="columns is-mobile">
+                            <div class="column is-6">
+                                <strong>
+                                    <p class="has-text-danger has-text-weight-semibold">
+                                        COSTO TOTAL
+                                    </p>
+                                </strong>
+                            </div>
+                            <div class="column is-6">
+                                <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
+                                <p class="has-text-danger">
+                                    <span class=" has-text-weight-bold">
+                                        $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2 }) %>
+                                    </span>
+                                    <span class="has-text-weight-light is-size-7">
+                                        MXN
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+    <% if (confirmacion != 1) { %>
+        <% if (schedule.length === 0) { %>
+        <div class="columns">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                    ¡Gracias por tu comprensión!
+                </div>
             </div>
         </div>
-        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-        <div class="table-container">
-            <table class="table is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-solid fa-book"></i>
-                            </span>
-                            Materia
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                            <i class="fa-regular fa-user"></i>
-                            </span>
-                            Profesor
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-regular fa-clock"></i>
-                            </span>
-                            Horario
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fa-regular fa-building"></i>
-                            </span>
-                            Salón
-                        </th>
-                        <th style="text-align: left;">
-                            <span class="icon is-small">
-                                <i class="fas fa-graduation-cap"></i>
-                            </span>
-                            Créditos
-                        </th>
-                        <th style="text-align: left;">
-                             <span class="icon is-small">
-                                 <i class="fa-solid fa-tags"></i>
-                             </span>
-                            Costo
-                        </th>
-                        <th style="text-align: left;">Eliminar Materia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let count = 0; count < schedule.length; count++) { %>
+        <% } else { %>
+        <form action="/horario/confirmar_horario" method="POST">
+            <div class="columns">
+                <div class="column">
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        ¡Bienvenido a ViaPago! 
+                        En esta sección puedes consultar las materias que tienes inscritas para el semestre en curso.
+                        También podrás elegir entre los distintos planes de pagos, para que elijas el que más
+                        te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
+                        innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador, para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column is-6">
+                    <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+                    <div class="select is-medium">
+                        <select name="IDPlanPago" id="IDPlanPago">
+                            <% for (let plan of planesPago){%>
+                            <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
+                                data-num="<%= plan.numeroPagos %>">
+                                <%= plan.nombrePlan %>
+                            </option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="column is-5"></div>
+            </div>
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <div class="table-container">
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
                         <tr>
-                            <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
-                            <input type="hidden" name="nombreProfesorCompleto[]"
-                                value="<%= schedule[count].nombreProfesorCompleto %>">
-                            <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
-                            <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
-                            <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
-                            <td>
-                                <strong>
-                                    <%= schedule[count].nombreMat %>
-                                </strong>
-                            </td>
-                            <td><%= schedule[count].nombreProfesorCompleto %></td>
-                            <td>
-                                <input type="hidden" name="grupoHorario[]"
-                                    value="<%= JSON.stringify(schedule[count].horarios) %> ">
-                                <% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
-                                <%= schedule[count].horarios[i].diaSemana %>
-                                <%= schedule[count].horarios[i].fechaInicio %> -
-                                <%= schedule[count].horarios[i].fechaTermino %>
-                                <br>
-                                <% } %>
-                                <br>
-                            </td>
-                            <td style="padding-top: 0.7em;">
-                                <%= schedule[count].nombreSalon%>
-                            </td>
-                            <td>
-                                <span class="tag is-size-6" style="background-color: #ddf5e5;">
-                                    <span style="color: #21c85b">
-                                        <%= schedule[count].creditos %>
-                                    </span>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-book"></i>
                                 </span>
-                            </td>
-                            <td>
-                                $<%=
-                                schedule[count].precioMateria.toLocaleString('mx', {
-                                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                            </td>
-                            <td>
-                                <span class="tag is-size-6" style="background-color: #f6d5d8;">
-                                    <span class="icon is-small" style="color: #f83362">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </span>
-                                    <span style="color: #f83362">
-                                        Eliminar
-                                    </span>
-                                </span>                
-                            </td>
+                                Materia
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                <i class="fa-regular fa-user"></i>
+                                </span>
+                                Profesor
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-clock"></i>
+                                </span>
+                                Horario
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-regular fa-building"></i>
+                                </span>
+                                Salón
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </span>
+                                Créditos
+                            </th>
+                            <th style="text-align: left;">
+                                <span class="icon is-small">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                Costo
+                            </th>
+                            <th style="text-align: left;">Eliminar Materia</th>
                         </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <% for (let count = 0; count < schedule.length; count++) { %>
+                            <tr>
+                                <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
+                                <input type="hidden" name="nombreProfesorCompleto[]"
+                                    value="<%= schedule[count].nombreProfesorCompleto %>">
+                                <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
+                                <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
+                                <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
+                                <td>
+                                    <strong>
+                                        <%= schedule[count].nombreMat %>
+                                    </strong>
+                                </td>
+                                <td><%= schedule[count].nombreProfesorCompleto %></td>
+                                <td>
+                                    <input type="hidden" name="grupoHorario[]"
+                                        value="<%= JSON.stringify(schedule[count].horarios) %> ">
+                                    <% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
+                                    <%= schedule[count].horarios[i].diaSemana %>
+                                    <%= schedule[count].horarios[i].fechaInicio %> -
+                                    <%= schedule[count].horarios[i].fechaTermino %>
+                                    <br>
+                                    <% } %>
+                                    <br>
+                                </td>
+                                <td style="padding-top: 0.7em;">
+                                    <%= schedule[count].nombreSalon%>
+                                </td>
+                                <td>
+                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                        <span style="color: #21c85b">
+                                            <%= schedule[count].creditos %>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    $<%=
+                                    schedule[count].precioMateria.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                </td>
+                                <td>
+                                    <span class="tag is-size-6" style="background-color: #f6d5d8;">
+                                        <span class="icon is-small" style="color: #f83362">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </span>
+                                        <span style="color: #f83362">
+                                            Eliminar
+                                        </span>
+                                    </span>                
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="columns">
+                <div class="column is-8"></div>
+                <div class="column">
+                    <div class="box">
+                        <% if (porcBeca || credito != 0) { %>
+                            <div class="columns is-mobile">
+                                <div class="column is-6">
+                                    <p class="has-text-black has-text-weight-medium">
+                                        Subtotal
+                                    </p>
+                                </div>
+                                <div class="column is-6">
+                                    <p class="has-text-black">
+                                        <span class="has-text-weight-bold">
+                                            $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                        </span>
+                                        <span class="has-text-weight-light is-size-7">
+                                            MXN
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <% if (porcBeca) { %> 
+                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                    <div class="column is-6">
+                                        <p class="has-text-weight-medium has-text-black">
+                                            Porcentaje de Beca
+                                        </p>
+                                    </div>
+                                    <div class="column is-6">
+                                        <p class="has-text-black has-text-weight-medium">
+                                            <%= porcBeca %>%
+                                        </p>
+                                    </div>
+                                </div>
+                            <% } %>
+                            <% if (credito != 0) { %> 
+                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                    <div class="column is-6">
+                                        <p class="has-text-weight-medium has-text-black">
+                                            Crédito
+                                        </p>
+                                    </div>
+                                    <div class="column is-6">
+                                        <p class="has-text-black">
+                                            <span class="has-text-weight-semibold">
+                                                -$<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                            </span>
+                                            <span class="has-text-weight-light is-size-7">
+                                                MXN
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } %>
+                        <div class="columns is-mobile">
+                            <div class="column is-6">
+                                <strong>
+                                    <p class="has-text-danger has-text-weight-semibold">
+                                        COSTO TOTAL
+                                    </p>
+                                </strong>
+                            </div>
+                            <div class="column is-6">
+                                <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
+                                <p class="has-text-danger">
+                                    <span class=" has-text-weight-bold">
+                                        $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                    </span>
+                                    <span class="has-text-weight-light is-size-7">
+                                        MXN
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="confirmar-button is-responsive" type="submit" style="font-size: large;"
+                        id="Boton_confirmar">
+                        <span>CONFIRMAR MATERIAS</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
         <% } %>
-    </form>
-    <% } %>
+        <% } %>
     <% } %>
 </section>
 <script type="text/javascript" src="/js/consultarHorario.js"></script>
-</body>
 <%- include('../includes/foot.ejs') %>

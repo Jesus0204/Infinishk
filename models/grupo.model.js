@@ -15,44 +15,27 @@ module.exports = class Alumno {
     }
 
     static async fetchSchedule(matricula) {
-        const porcbecaResult = await db.execute(`SELECT CASE
-                WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
-                ELSE 1
-                END AS porcbeca FROM estudianteprofesional
-                WHERE Matricula = ?`, [matricula]);
-
-        const porcbeca = porcbecaResult[0][0].porcbeca;
-
         const schedule = await db.execute(`SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
                 G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
-                ((P.precioPesos * M.Creditos) * ?) AS Precio_materia
+                (P.precioPesos * M.Creditos) AS Precio_materia
                 FROM Grupo AS G
                 JOIN Materia AS M ON G.IDMateria = M.IDMateria
                 JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
                 JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
                 WHERE G.IDPrecioCredito = P.IDPrecioCredito
-                AND G.Matricula = ?`, [porcbeca, matricula]);
+                AND G.Matricula = ?`, [matricula]);
 
         return schedule;
     }
     
 
     static async fetchPrecioTotal(matricula){
-
-        const porcbecaResult = await db.execute(`SELECT CASE
-                WHEN porcBeca > 0 THEN (1 - (porcBeca/100))
-                ELSE 1
-                END AS porcbeca FROM estudianteprofesional
-                WHERE Matricula = ?`, [matricula]);
-
-        const porcbeca = porcbecaResult[0][0].porcbeca;
-
-        const PrecioTotal = await db.execute(`SELECT (SUM(P.precioPesos * M.Creditos)*?) AS Preciototal
+        const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
         JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE G.IDPrecioCredito = P.IDPrecioCredito
-        AND G.Matricula = ?`, [porcbeca, matricula]);
+        AND G.Matricula = ?`, [matricula]);
         return PrecioTotal;
     }
 
