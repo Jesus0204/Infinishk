@@ -213,7 +213,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
     const fechaInicio = Array.isArray(request.body['fechaInicio[]']) ? request.body['fechaInicio[]'] : [];
     const fechaFin = Array.isArray(request.body['fechaFin[]']) ? request.body['fechaFin[]'] : [];
     const grupoHorario = Array.isArray(request.body['grupoHorario[]']) ? request.body['grupoHorario[]'] : [];
-    const grupoHorarioValidado = grupoHorario.map(item => item === '' ? null : item);
+    const grupoHorarioValidado = grupoHorario.map(item => JSON.parse(item));
 
     try {
         // Iterar sobre los cursos confirmados
@@ -225,9 +225,15 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const fechaInicioCurso = moment(fechaInicio[i], 'LL').format('YYYY-MM-DD');
             const fechaFinCurso = moment(fechaFin[i], 'LL').format('YYYY-MM-DD');
             const IDMateria = idMateria[i];
-        
-            // Si horarioCurso es undefined, establecerlo en una cadena vacía
-            horarioCurso = horarioCurso === undefined ? '' : horarioCurso;
+
+            let horarioBaseDatos = '';
+            for (let count = 0; count < horarioCurso.length; count++){
+                if ((count + 1) == horarioCurso.length){
+                    horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino;
+                } else {
+                     horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino + ', ';
+                }
+            }
         
             // Guardar el grupo en la base de datos
             await Grupo.saveGrupo(
@@ -236,7 +242,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 precioActual,
                 profesor,
                 salonCurso,
-                horarioCurso,
+                horarioBaseDatos,
                 fechaInicioCurso,
                 fechaFinCurso
             );
