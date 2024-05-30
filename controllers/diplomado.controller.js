@@ -124,8 +124,8 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
 
     Diplomado.update(id, fechaInicio,fechaFin, precio, nombre)
         .then(() => {
@@ -163,8 +163,8 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY MM DD').add(6, 'hours').format();
+    const fechaFin = moment(fechaFin_utc, 'YYYY MM DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
     
     Diplomado.save(fechaInicio,fechaFin, precio, nombre)
         .then(() => {
@@ -193,9 +193,16 @@ exports.post_registrar_diplomado = (request, response, next) => {
 }
 
 exports.post_detalles_diplomado = (request, response, next) => {
-    const id = request.body.id
+    const id = request.body.id;
     Diplomado.fetchDatos(id)
         .then(([diplomadoInfo, fieldData]) => {
+            // Formatear las fechas
+            diplomadoInfo = diplomadoInfo.map(diplomado => {
+                diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
+                diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                return diplomado;
+            });
+
             Diplomado.fetchAlumnos(id)
                 .then(([alumnosDiplomado, fieldData]) => {
                     response.render('diplomado/detalles_diplomado', {
@@ -215,7 +222,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                         rol: request.session.rol || "",
                         error_alumno: false
                     });
-                    console.log(error)
+                    console.log(error);
                 });
         })
         .catch((error) => {
@@ -225,6 +232,6 @@ exports.post_detalles_diplomado = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 };
