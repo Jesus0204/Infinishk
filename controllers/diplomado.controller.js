@@ -42,6 +42,10 @@ exports.post_fetch_diplomado = (request, response, next) => {
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
+                // Formatear las fechas
+                diplomados[0].fechaInicio = moment(diplomados[0].fechaInicio).format('LL');
+                diplomados[0].fechaFin = moment(diplomados[0].fechaFin).format('LL');
+
                 response.render('diplomado/editar_diplomado', {
                     diplomado: diplomados[0],
                     csrfToken: request.csrfToken(),
@@ -58,9 +62,10 @@ exports.post_fetch_diplomado = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 };
+
 
 exports.get_consultar_diplomado = (request, response, next) => {
     Diplomado.fetchAllActives()
