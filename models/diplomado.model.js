@@ -28,7 +28,7 @@ module.exports = class Diplomado{
     }
 
     static fetchOne(nombre){
-        return db.execute('Select * FROM Diplomado WHERE nombreDiplomado = ?',[nombre]);
+        return db.execute('Select Diplomado.* FROM Diplomado WHERE nombreDiplomado = ?',[nombre]);
     }
 
     static update(id,fechaInicio,fechaFin,precio,nombre){
