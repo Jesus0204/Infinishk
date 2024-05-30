@@ -1,14 +1,25 @@
 document.getElementById('formDiplomado').addEventListener('input', validateForm);
 document.getElementById('nombreDiplomado').addEventListener('blur', checkDiplomadoExists);
 
+// Initialize all input of date type.
+const calendars = bulmaCalendar.attach('[type="date"]', {
+    startDate: new Date(),
+    endDate: new Date(),
+    displayMode: 'dialog',
+    dateFormat: 'dd/MM/yyyy',
+    weekStart: 1,
+    lang: 'es',
+    showFooter: false, 
+    isRange: true
+});
+
 function validateForm() {
-    var duracion = document.getElementById("Duracion").value;
     var precio = document.getElementById("precioDiplomado").value;
     var nombre = document.getElementById("nombreDiplomado").value;
     var valor = document.getElementById('precioDiplomado').value;
     var formValid = true;
 
-    if (!duracion || !precio || !nombre) {
+    if (!precio || !nombre) {
         displayError("Por favor rellena todos los datos.", 'form');
         formValid = false;
     } else if (parseFloat(precio) <= 0) {

@@ -66,12 +66,6 @@
                     <span>Diplomados No Activos</span>
                 </a>
             </li>
-            <li id="nav_en_curso">
-                <a onclick="diplomados_en_curso()">
-                    <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                    <span>Diplomados en Curso</span>
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -94,13 +88,16 @@
                     <tr>
                     <tr>
                         <th>
-                            <p class="is-size-5"><strong>Nombre: </strong></p>
-                        </th>
-                        <th>
                             <p class="is-size-5"><strong>ID: </strong></p>
                         </th>
                         <th>
-                            <p class="is-size-5"><strong>Duración: </strong></p>
+                            <p class="is-size-5"><strong>Nombre: </strong></p>
+                        </th>
+                        <th>
+                            <p class="is-size-5"><strong>Fecha Inicio: </strong></p>
+                        </th>
+                        <th>
+                            <p class="is-size-5"><strong>Fecha Fin: </strong></p>
                         </th>
                         <th>
                             <p class="is-size-5"><strong>Precio: </strong></p>
@@ -116,14 +113,17 @@
                     <% for (let diplomado of diplomadosActivos) { %>
                     <tr id="pagination-content">
                         <td>
-                            <%= diplomado.nombreDiplomado %>
-                        </td>
-                        <td>
                             <%= diplomado.IDDiplomado %>
                         </td>
                         <td>
-                            <%= diplomado.Duracion %>
+                            <%= diplomado.nombreDiplomado %>
                         </td>
+                        <td>
+                            <%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </td>
+                        <td>
+                            <%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </td>                        
                         <td>
                             $<%= diplomado.precioDiplomado.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
@@ -132,12 +132,12 @@
                         </td>
                         <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <td>
-                            <form action="/diplomado/editar_diplomado" method="POST">
+                            <form action="/diplomado/detalles_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                <input type="hidden" value="<%= diplomado.nombreDiplomado %>" name="nombre" id="nombre">
-                                <button class="button is-rounded is-small is-responsive" type="sumbit">
+                                <input type="hidden" value="<%= diplomado.IDDiplomado %>" name="id" id="id">
+                                <button class="button is-rounded is-small is-responsive" type="sumbit" style="font-size:17px;">
                                     <span>
-                                        Modificar
+                                        Detalles
                                     </span>
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -182,13 +182,16 @@
                     <tr>
                     <tr>
                         <th>
-                            <p class="is-size-5"><strong>Nombre: </strong></p>
-                        </th>
-                        <th>
                             <p class="is-size-5"><strong>ID: </strong></p>
                         </th>
                         <th>
-                            <p class="is-size-5"><strong>Duración: </strong></p>
+                            <p class="is-size-5"><strong>Nombre: </strong></p>
+                        </th>
+                        <th>
+                            <p class="is-size-5"><strong>Fecha Inicio: </strong></p>
+                        </th>
+                        <th>
+                            <p class="is-size-5"><strong>Fecha Fin: </strong></p>
                         </th>
                         <th>
                             <p class="is-size-5"><strong>Precio: </strong></p>
@@ -204,14 +207,17 @@
                     <% for (let diplomado of diplomadosNoActivos) { %>
                     <tr id="pagination-content-2">
                         <td>
-                            <%= diplomado.nombreDiplomado %>
-                        </td>
-                        <td>
                             <%= diplomado.IDDiplomado %>
                         </td>
                         <td>
-                            <%= diplomado.Duracion %>
+                            <%= diplomado.nombreDiplomado %>
                         </td>
+                        <td>
+                            <%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </td>
+                        <td>
+                            <%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </td> 
                         <td>
                             $<%= diplomado.precioDiplomado.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
@@ -220,12 +226,12 @@
                         </td>
                         <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
                         <td>
-                            <form action="/diplomado/editar_diplomado" method="POST">
+                            <form action="/diplomado/detalles_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                <input type="hidden" value="<%= diplomado.nombreDiplomado %>" name="nombre" id="nombre">
-                                <button class="button is-rounded is-small is-responsive" type="sumbit">
+                                <input type="hidden" value="<%= diplomado.IDDiplomado %>" name="id" id="id">
+                                <button class="button is-rounded is-small is-responsive" type="sumbit" style="font-size:17px;">
                                     <span>
-                                        Modificar
+                                        Detalles
                                     </span>
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -244,95 +250,6 @@
                 <a class="pagination-next" id="next-button-2">Siguiente</a>
                 <ul class="pagination-list" id="pagination-list-2">
                     <div id="pagination-numbers-2">
-
-                    </div>
-                </ul>
-            </nav>
-        </div>
-        <% } %>
-    </div>
-
-    <div id="diplomados_en_curso" class="is-hidden">
-        <% let count_en_curso = 0 %>
-
-        <% if (diplomadosProgreso.length===0) { %>
-            <div class="columns">
-                <div class="column is-2"></div>
-                <div class="column is-8">
-                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                        No hay diplomados que se esten cursando por el momento. 
-                    </div>
-                </div>
-            </div>
-        <% } else { %>
-        <div id="tablaEnCurso" class="table-container">
-            <table class="table is-bordered is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                    <tr>
-                        <th>
-                            <p class="is-size-5"><strong>Nombre: </strong></p>
-                        </th>
-                        <th>
-                            <p class="is-size-5"><strong>ID: </strong></p>
-                        </th>
-                        <th>
-                            <p class="is-size-5"><strong>Duración: </strong></p>
-                        </th>
-                        <th>
-                            <p class="is-size-5"><strong>Precio: </strong></p>
-                        </th>
-                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
-                        <th>
-
-                        </th>
-                        <% } %>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let diplomado of diplomadosProgreso) { %>
-                    <tr id="pagination-content-3">
-                        <td>
-                            <%= diplomado.nombreDiplomado %>
-                        </td>
-                        <td>
-                            <%= diplomado.IDDiplomado %>
-                        </td>
-                        <td>
-                            <%= diplomado.Duracion %>
-                        </td>
-                        <td>
-                            $<%= diplomado.precioDiplomado.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
-                        </td>
-                        <% if (contienePermiso(permisos, 'Modificar diplomado') == true) { %>
-                        <td>
-                            <form action="/diplomado/editar_diplomado" method="POST">
-                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                <input type="hidden" value="<%= diplomado.nombreDiplomado %>" name="nombre" id="nombre">
-                                <button class="button is-rounded is-small is-responsive" type="sumbit">
-                                    <span>
-                                        Modificar
-                                    </span>
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                    </span>
-                                </button>
-                            </form>
-                        </td>
-                        <% } %>
-                    </tr>
-                    <% count_activos++ %>
-                    <% } %>
-                </tbody>
-            </table>
-            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                <a class="pagination-previous" id="prev-button-3">Anterior</a>
-                <a class="pagination-next" id="next-button-3">Siguiente</a>
-                <ul class="pagination-list" id="pagination-list-3">
-                    <div id="pagination-numbers-3">
 
                     </div>
                 </ul>
