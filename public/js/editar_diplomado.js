@@ -19,6 +19,9 @@ var fechaFin = new Date(document.getElementById('fechaFin').value);
 var fechaInicioFormateada = formatearFecha(fechaInicio);
 var fechaFinFormateada = formatearFecha(fechaFin);
 
+console.log(fechaFinFormateada);
+console.log(fechaFinFormateada);
+
 // Initialize all input of date type.
 const calendars = bulmaCalendar.attach('[type="date"]', {
     startDate: fechaInicioFormateada,
