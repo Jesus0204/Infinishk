@@ -125,7 +125,7 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
     const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD');
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
+    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(23, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
 
     Diplomado.update(id, fechaInicio,fechaFin, precio, nombre)
         .then(() => {
@@ -164,7 +164,7 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
     const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD');
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
+    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(23, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
     
     Diplomado.save(fechaInicio,fechaFin, precio, nombre)
         .then(() => {

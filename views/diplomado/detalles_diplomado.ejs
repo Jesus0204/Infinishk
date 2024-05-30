@@ -55,13 +55,15 @@
                         <div class="column is-3">
                             <label class="block font-semibold"><strong>Fecha Inicio:</strong></label>
                             <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaInicio) %>
+                                <%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %>
                                     </label>
                         </div>
                         <div class="column is-3">
                             <label class="block font-semibold"><strong>Fecha Fin:</strong></label>
                             <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaFin) %>
+                                <%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %>
                                     </label>
                         </div>
                         <div class="column is-3">
