@@ -30,7 +30,7 @@
                             <%= diplomado[0].IDDiplomado %>
                         </h3>
                     </div>
-                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
+                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < diplomado[0].fechaInicio { %> 
                         <div class="column">
                             <form action="/diplomado/editar_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -55,15 +55,13 @@
                         <div class="column is-3">
                             <label class="block font-semibold"><strong>Fecha Inicio:</strong></label>
                             <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
-                                    month: 'long' , day: 'numeric' }) %>
+                                <%= diplomado[0].fechaInicio %>
                                     </label>
                         </div>
                         <div class="column is-3">
                             <label class="block font-semibold"><strong>Fecha Fin:</strong></label>
                             <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
-                                    month: 'long' , day: 'numeric' }) %>
+                                <%= diplomado[0].fechaFin %>
                                     </label>
                         </div>
                         <div class="column is-3">
