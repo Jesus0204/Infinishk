@@ -1,11 +1,12 @@
 const db = require('../util/database');
 
 module.exports = class Diplomado{
-    constructor(mi_IDDiplomado,mi_Duracion,mi_precioDiplomado,mi_nombreDiplomado){
+    constructor(mi_IDDiplomado,mi_precioDiplomado,mi_nombreDiplomado,mi_fechaInicio,mi_fechaFin){
         this.IDDiplomado = mi_IDDiplomado;
-        this.Duracion = mi_Duracion;
         this.precioDiplomado = mi_precioDiplomado;
         this.nombreDiplomado = mi_nombreDiplomado;
+        this.fechaInicio = mi_fechaInicio;
+        this.fechaFin = mi_fechaFin;
     }
 
     static save(fechaInicio,fechaFin,precio,nombre) {
