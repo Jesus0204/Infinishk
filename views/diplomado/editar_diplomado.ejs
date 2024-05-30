@@ -8,11 +8,10 @@
                     style="width: 50%; margin-top: 50px;">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-                    <input type="hidden" id="fechaInicio" value="<%= diplomado.fechaInicio %>">
-                    <input type="hidden" id="fechaFin" value="<%= diplomado.fechaFin %>">
-
-                    <label for="nombreDiplomado" class="label is-large"><%= diplomado.fechaInicio %></label>
-                    <label for="nombreDiplomado" class="label is-large"><%= diplomado.fechaFin %></label>
+                    <input type="hidden" id="fechaInicio" value="<%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
+                    month: 'long' , day: 'numeric' }) %>">
+                    <input type="hidden" id="fechaFin" value="<%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
+                    month: 'long' , day: 'numeric' }) %>">
 
                     <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                     <div class="field">
