@@ -64,7 +64,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                     to: deudasRecordatorio[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: 'administracion@ivd.edu.mx',
+                        email: 'recordatorios@pagos.ivd.edu.mx',
                     },
                     subject: '¡Recuerda Pagar tu Colegiatura!',
                     html: `<p>¡Hola!</p>
@@ -74,7 +74,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         para no generar recargos en tu estado de cuenta. 
                     </p>
                     <p>
-                        Para pagar o consultar tu estado de cuenta, puedes entrar a <a href = "https://ivd-pagos-infinishk-f243bfbb50c7.herokuapp.com/auth/login" > ViaPago </a>
+                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "https://pagos.ivd.edu.mx/auth/login" > ViaPago < /a>
                     </p>
                     <p>
                         ¡Gracias y bonito día!
@@ -120,7 +120,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     to: deudasNoPagadas[count].correoElectronico,
                     from: {
                         name: 'VIA PAGO',
-                        email: 'administracion@ivd.edu.mx',
+                        email: 'recordatorios@pagos.ivd.edu.mx',
                     },
                     subject: '¡El pago de tu Colegiatura ha vencido!',
                     html: `<p>¡Hola!</p>
@@ -130,7 +130,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     </p>
                     <p>
                         Para pagar o consultar tu estado de cuenta, 
-                        puedes entrar a <a href = "https://ivd-pagos-infinishk-f243bfbb50c7.herokuapp.com/auth/login" > ViaPago </a>
+                        puedes entrar a < a href = "https://pagos.ivd.edu.mx/auth/login" > ViaPago < /a>
                     </p>
                     <p>
                         ¡Gracias y bonito día!
