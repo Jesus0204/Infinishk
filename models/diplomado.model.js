@@ -64,7 +64,7 @@ module.exports = class Diplomado{
     }
 
     static fetchAlumnos(id){
-        return db.execute('SELECT Alumno.Matricula, Alumno.Nombre, Alumno.Apellidos, estudianteDiplomado.fechaInscripcion FROM Alumno JOIN estudianteDiplomado ON Alumno.Matricula = estudianteDiplomado.Matricula JOIN Cursa ON estudianteDiplomado.Matricula = Cursa.Matricula JOIN Diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.IDDiplomado = ?',
+        return db.execute('SELECT Alumno.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM Alumno JOIN estudianteDiplomado ON Alumno.matricula = estudianteDiplomado.matricula JOIN Cursa ON estudianteDiplomado.matricula = Cursa.matricula JOIN Diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.IDDiplomado = ?',
         [id])
     }
 
