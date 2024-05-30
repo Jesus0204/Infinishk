@@ -3,8 +3,6 @@
 var fechaInicio = document.getElementById('fechaInicio').value;
 var fechaFin = document.getElementById('fechaFin').value;
 
-
-
 // Initialize all input of date type.
 const calendars = bulmaCalendar.attach('[type="date"]', {
     startDate: fechaInicio,

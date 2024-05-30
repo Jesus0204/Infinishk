@@ -37,12 +37,17 @@ exports.get_check_diplomado = (request, response, next) => {
         });
 };
 
+
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
-                // Formatear las fechas
+                // Guardar las fechas originales para las comparaciones
+                let fechaInicioOriginal = moment(diplomados[0].fechaInicio).format('YYYY-MM-DD');
+                let fechaFinOriginal = moment(diplomados[0].fechaFin).format('YYYY-MM-DD');
+
+                // Formatear las fechas para mostrarlas
                 diplomados[0].fechaInicio = moment(diplomados[0].fechaInicio).format('LL');
                 diplomados[0].fechaFin = moment(diplomados[0].fechaFin).format('LL');
 
@@ -52,6 +57,9 @@ exports.post_fetch_diplomado = (request, response, next) => {
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
                     username: request.session.username || '',
+                    // Pasar las fechas originales para las comparaciones
+                    fechaInicioOriginal: fechaInicioOriginal,
+                    fechaFinOriginal: fechaFinOriginal
                 });
             }
         })
