@@ -30,7 +30,7 @@
                             <%= diplomado[0].IDDiplomado %>
                         </h3>
                     </div>
-                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < diplomado[0].fechaInicio) { %> 
+                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(fechaInicioOriginal)) { %> 
                         <div class="column">
                             <form action="/diplomado/editar_diplomado" method="POST">
                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">

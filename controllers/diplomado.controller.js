@@ -124,8 +124,8 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'YYYY-MM-DD').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'YYYY-MM-DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY-MM-DD').add(6, 'hours').format('YYYY-MM-DD');
+    const fechaFin = moment(fechaFin_utc, 'YYYY-MM-DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
 
     Diplomado.update(id, fechaInicio,fechaFin, precio, nombre)
         .then(() => {
@@ -163,8 +163,8 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'YYYY-MM-DD').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'YYYY-MM-DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
+    const fechaInicio = moment(fechaInicio_utc, 'YYYY-MM-DD').add(6, 'hours').format('YYYY-MM-DD');
+    const fechaFin = moment(fechaFin_utc, 'YYYY-MM-DD').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format('YYYY-MM-DD');
     
     Diplomado.save(fechaInicio,fechaFin, precio, nombre)
         .then(() => {
@@ -196,10 +196,13 @@ exports.post_detalles_diplomado = (request, response, next) => {
     const id = request.body.id;
     Diplomado.fetchDatos(id)
         .then(([diplomadoInfo, fieldData]) => {
-            // Formatear las fechas
+            // Guardar las fechas originales para las comparaciones
+            let fechaInicioOriginal = diplomadoInfo[0].fechaInicio;
+
+            // Formatear las fechas para mostrarlas
             diplomadoInfo = diplomadoInfo.map(diplomado => {
-                diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
-                diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                diplomado.fechaInicioFormateada = moment(diplomado.fechaInicio).format('LL');
+                diplomado.fechaFinFormateada = moment(diplomado.fechaFin).format('LL');
                 return diplomado;
             });
 
@@ -213,6 +216,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                         rol: request.session.rol || "",
                         username: request.session.username || '',
                         csrfToken: request.csrfToken(),
+                        fechaInicioOriginal: fechaInicioOriginal,
                     });
                 })
                 .catch((error) => {
