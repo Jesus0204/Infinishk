@@ -65,8 +65,22 @@ exports.post_fetch_diplomado = (request, response, next) => {
 exports.get_consultar_diplomado = (request, response, next) => {
     Diplomado.fetchAllActives()
         .then(([diplomadosActivos, fieldData]) => {
+            // Formatear las fechas
+            diplomadosActivos = diplomadosActivos.map(diplomado => {
+                diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
+                diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                return diplomado;
+            });
+
             Diplomado.fetchAllNoActives()
                 .then(([diplomadosNoActivos, fieldData]) => {
+                    // Formatear las fechas
+                    diplomadosNoActivos = diplomadosNoActivos.map(diplomado => {
+                        diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
+                        diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                        return diplomado;
+                    });
+
                     response.render('diplomado/consultar_diplomado', {
                         diplomadosActivos: diplomadosActivos,
                         diplomadosNoActivos: diplomadosNoActivos,
@@ -97,6 +111,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
             console.log(error)
         });
 };
+
 
 exports.post_modificar_diplomado = (request, response, next) => {
     const id = request.body.IDDiplomado;
