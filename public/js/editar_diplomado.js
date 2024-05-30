@@ -1,3 +1,20 @@
+
+// Obtén las fechas de inicio y fin del diplomado
+var fechaInicio = new Date(document.getElementById('fechaInicio').value);
+var fechaFin = new Date(document.getElementById('fechaFin').value);
+
+// Initialize all input of date type.
+const calendars = bulmaCalendar.attach('[type="date"]', {
+    startDate: fechaInicio,
+    endDate: fechaFin,
+    displayMode: 'dialog',
+    dateFormat: 'dd/MM/yyyy',
+    weekStart: 1,
+    lang: 'es',
+    showFooter: false, 
+    isRange: true
+});
+
 $(document).ready(function () {
     // Inicializar el botón desactivado
     actualizarBotonYMensaje();
