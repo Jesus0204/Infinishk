@@ -1,28 +1,14 @@
-// Función para formatear la fecha al formato dd/MM/yyyy
-function formatearFecha(fecha) {
-    var dia = fecha.getDate();
-    var mes = fecha.getMonth() + 1; // Los meses en JavaScript empiezan en 0
-    var ano = fecha.getFullYear();
-
-    // Asegúrate de que el día y el mes sean de dos dígitos
-    if (dia < 10) dia = '0' + dia;
-    if (mes < 10) mes = '0' + mes;
-
-    return dia + '/' + mes + '/' + ano;
-}
 
 // Obtén las fechas de inicio y fin del diplomado
-var fechaInicio = new Date(document.getElementById('fechaInicio').value);
-var fechaFin = new Date(document.getElementById('fechaFin').value);
+var fechaInicio = document.getElementById('fechaInicio').value;
+var fechaFin = document.getElementById('fechaFin').value;
 
-// Formatea las fechas
-var fechaInicioFormateada = formatearFecha(fechaInicio);
-var fechaFinFormateada = formatearFecha(fechaFin);
+
 
 // Initialize all input of date type.
 const calendars = bulmaCalendar.attach('[type="date"]', {
-    startDate: fechaInicioFormateada,
-    endDate: fechaFinFormateada,
+    startDate: fechaInicio,
+    endDate: fechaFin,
     displayMode: 'dialog',
     dateFormat: 'dd/MM/yyyy',
     weekStart: 1,
