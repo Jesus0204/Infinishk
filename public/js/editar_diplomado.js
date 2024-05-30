@@ -15,6 +15,9 @@ function formatearFecha(fecha) {
 var fechaInicio = new Date(document.getElementById('fechaInicio').value);
 var fechaFin = new Date(document.getElementById('fechaFin').value);
 
+console.log(fechaInicio)
+console.log(fechaFin)
+
 // Formatea las fechas
 var fechaInicioFormateada = formatearFecha(fechaInicio);
 var fechaFinFormateada = formatearFecha(fechaFin);
