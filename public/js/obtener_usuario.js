@@ -24,6 +24,7 @@ function checar_usuario() {
 const getAdmins = () => { 
     //El token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
+    const admins = document.getElementById('admins').value;
     fetch('/configuracion/getAdmins/', {
         method: 'POST',
         headers: {
@@ -32,6 +33,7 @@ const getAdmins = () => {
         },
         body: JSON.stringify({
             input: user.value,
+            admins: admins
         })
     })
     .then((result) => {

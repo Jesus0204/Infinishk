@@ -284,9 +284,12 @@ exports.post_registrar_usuario = async (request, response, next) => {
     response.redirect('/configuracion/consultar_usuario');
 };
 
-exports.get_obtener_usuario = (request, response, next) => {
+exports.get_obtener_usuario = async (request, response, next) => {
+    const users = await getAllAdmins();
+
     response.render('configuracion/obtener_usuario', {
-        error:false,
+        error: false,
+        users: users,
         errorMensaje: '',
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
@@ -297,8 +300,8 @@ exports.get_obtener_usuario = (request, response, next) => {
 
 exports.post_getAdmins = async(request, response, next) => {
     let input = request.body.input;
+    const users = JSON.parse(request.body.admins);
     try {
-        const users = await getAllAdmins();
 
         let unregisteredAdmins = [];
         let registeredAdmins = [];
