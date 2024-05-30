@@ -159,7 +159,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
     });
 
     // Enlace con el token incluido
-    const setPasswordLinkNoAlumno = `http://localhost:4000/auth/set_password?token=${token_noAlumno}`;
+    const setPasswordLinkNoAlumno = `https://pagos.ivd.edu.mx/auth/set_password?token=${token_noAlumno}`;
 
     const msg_noAlumno = {
         to: correo,
@@ -261,7 +261,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
        });
 
        // Enlace con el token incluido
-       const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+       const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
 
        const msgAlumno = {
            to: correo,
@@ -382,7 +382,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -413,7 +413,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -1012,7 +1012,7 @@ exports.post_alumnos = async (request,response,next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
             
             // Enlace con el token incluido
-        const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
+        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
     
         await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
         await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
