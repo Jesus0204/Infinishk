@@ -703,8 +703,10 @@ exports.get_estado_cuenta = async (request, response, next) => {
             });
         } else if (matricula[0] == '8') {
 
-        const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
-        const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula);
+            let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
+
+            const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
+            const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula, fechaActual);
 
         // Formatear fechas
         for (let count = 0; count < pagosDiplomado.length; count++) {
