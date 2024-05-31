@@ -232,10 +232,9 @@
                     </div>
                 </div>
             </div>
+            <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
             <div class="columns">
-                <div class="column is-1"></div>
-                <div class="column is-6">
-                    <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+                <div class="column is-3">
                     <div class="select is-medium">
                         <select name="IDPlanPago" id="IDPlanPago">
                             <% for (let plan of planesPago){%>
@@ -247,7 +246,36 @@
                         </select>
                     </div>
                 </div>
-                <div class="column is-5"></div>
+                <div class="column" id="column_table1">
+                    <div class="table-container">
+                        <table class="table is-hoverable is-fullwidth is-hidden" id="table_1">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">#</th>
+                                    <th style="text-align: left;">Total</th>
+                                    <th style="text-align: left;">Fecha Límite de Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_1_body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column" id="column_table2">
+                    <div class="table-container">
+                        <table class="table is-hoverable is-fullwidth is-hidden" id="table_2">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">#</th>
+                                    <th style="text-align: left;">Total</th>
+                                    <th style="text-align: left;">Fecha Límite de Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_2_body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
             <div class="table-container">
@@ -417,6 +445,7 @@
                             </div>
                             <div class="column is-6">
                                 <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
+                                <p id="precioFinal"><%= precioFinal %></p>
                                 <p class="has-text-danger">
                                     <span class=" has-text-weight-bold">
                                         $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
