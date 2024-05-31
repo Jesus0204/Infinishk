@@ -18,7 +18,7 @@ module.exports = class estudianteDiplomado {
         estudianteDiplomado.fechaInscripcion, Diplomado.nombreDiplomado 
         FROM Alumno 
         JOIN estudianteDiplomado on Alumno.Matricula = estudianteDiplomado.Matricula 
-        JOIN cursa on estudianteDiplomado.Matricula = cursa.Matricula 
+        JOIN Cursa on estudianteDiplomado.Matricula = Cursa.Matricula 
         JOIN Diplomado on Cursa.IDDiplomado = Diplomado.IDDiplomado 
         WHERE Alumno.Matricula = ? and Diplomado.diplomadoActivo = 1;`, [matricula]);
     }
