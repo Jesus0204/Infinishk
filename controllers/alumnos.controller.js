@@ -162,23 +162,23 @@ exports.post_fetch_datos = async (request, response, next) => {
             pagosExtra[count].fechaPago = moment(new Date(pagosExtra[count].fechaPago)).format('LL');
         }
 
+        let confirmacion;
         if(matricula.startsWith('1')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
+            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
+            confirmacion = conf[0][0].horarioConfirmado;
         } else {
-            alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
+            let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
+            alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula, fechaActual);
 
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
+            confirmacion = 0;
         }
-        const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
-        const planes = await PlanPago.fetchAllActivePlans()
-        const confirmacion = conf[0][0].horarioConfirmado
-        const planesPago = planes[0]
         if (confirmacion === 0) {
             response.render('alumnos/consultar_alumno', {
                 error:true,
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
-                planesPago: planesPago,
                 alumnoConsulta: alumnoConsulta[0],
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
@@ -208,7 +208,6 @@ exports.post_fetch_datos = async (request, response, next) => {
                 schedule: schedule,
                 precioTotal: precioTotal,
                 confirmacion: confirmacion,
-                planesPago: planesPago,
                 alumnoConsulta: alumnoConsulta[0],
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
