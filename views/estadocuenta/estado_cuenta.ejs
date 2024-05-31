@@ -31,23 +31,43 @@
                                 </div>
                         <% } %>
                         <% } else if (matricula[0] == '8') { %>
-                            <div class="box has-background-light" style="text-align: center;">
-                                <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-offset-1">
-                                    <strong>
-                                        Fecha Inicio:
-                                    </strong>
-                                    <%= diplomados[0].fechaInicio %>
+                            <% if (diplomados.length != 0) { %> 
+                                <div class="box has-background-light" style="text-align: center;">
+                                    <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
                                 </div>
-                                <div class="column">
-                                    <strong>
-                                        Fecha Fin:
-                                    </strong>
-                                    <%= diplomados[0].fechaFin %>
+                                <div class="columns">
+                                    <div class="column is-offset-1">
+                                        <strong>
+                                            Fecha Inicio:
+                                        </strong>
+                                        <%= diplomados[0].fechaInicio %>
+                                    </div>
+                                    <div class="column">
+                                        <strong>
+                                            Fecha Fin:
+                                        </strong>
+                                        <%= diplomados[0].fechaFin %>
+                                    </div>
                                 </div>
-                            </div>
+                            <% } else { %>
+                                <div class="box has-background-light" style="text-align: center;">
+                                    <p class="title is-4">Cursando Ningún Diplomado</p>
+                                </div>
+                                <div class="columns">
+                                    <div class="column is-offset-1">
+                                        <strong>
+                                            Fecha Inicio:
+                                        </strong>
+                                        N/A
+                                    </div>
+                                    <div class="column">
+                                        <strong>
+                                            Fecha Fin:
+                                        </strong>
+                                        N/A
+                                    </div>
+                                </div>
+                            <% } %>
                         <% } %>
                         <a href="/estado_cuenta/pagar">
                             <button class="button is-responsive">
