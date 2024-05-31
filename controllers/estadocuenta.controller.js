@@ -57,8 +57,9 @@ exports.get_pago_alumno = (request, response, next) => {
                         })
                         // Si no, es alumno de diplomado
                     } else if (username[0] == '8') {
+                        let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
                         // Sacas información del diplomado que estan cursando
-                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(username);
+                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(username, fechaActual);
                         let infoPagosDiplomado = '';
                         if (infoDiplomado.length != 0) {
                             // Sacas información de algún pago si es que existe
