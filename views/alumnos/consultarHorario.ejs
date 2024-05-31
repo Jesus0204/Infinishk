@@ -19,20 +19,12 @@
         </div>
     <% } else { %>
     <% if (confirmacion === 1) { %>
-        <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-7">
-                <h3 class="title is-3">Materias Inscritas: 
-                    Ciclo <%= periodo.Nombre %></h3>
-            </div>
-        </div>
+        <label class="label is-large has-text-danger has-text-weight-semibold">
+            Materias Inscritas:
+            Ciclo <%= periodo.Nombre %>
+        </label>
     <% } else { %>
-        <div class="columns">
-            <div class="column is-4"></div>
-            <div class="column is-6">
-                <h3 class="title is-3">Confirmar Horario</h3>
-            </div>
-        </div>
+        <label class="label is-medium has-text-danger has-text-weight-semibold">CONFIRMAR MATERIAS</label>
     <% } %>
     <br>
     <% if (confirmacion === 1) { %>
@@ -232,7 +224,9 @@
                     </div>
                 </div>
             </div>
-            <label class="label is-medium" for="confirmar">Escoge plan de pago:</label>
+            <br>
+            <label class="label is-medium has-text-danger has-text-weight-semibold" for="IDPlanPago">ESCOGE PLAN DE
+                PAGO</label>
             <div class="columns">
                 <div class="column is-3">
                     <div class="select is-medium">
@@ -251,9 +245,10 @@
                         <table class="table is-hoverable is-fullwidth is-hidden" id="table_1">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left;">#</th>
-                                    <th style="text-align: left;">Total</th>
-                                    <th style="text-align: left;">Fecha Límite de Pago</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">#</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">Total</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">Fecha Límite de Pago
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="table_1_body">
@@ -266,9 +261,10 @@
                         <table class="table is-hoverable is-fullwidth is-hidden" id="table_2">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left;">#</th>
-                                    <th style="text-align: left;">Total</th>
-                                    <th style="text-align: left;">Fecha Límite de Pago</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">#</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">Total</th>
+                                    <th class="has-text-weight-semibold" style="text-align: left;">Fecha Límite de Pago
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="table_2_body">
@@ -277,7 +273,9 @@
                     </div>
                 </div>
             </div>
+            <br>
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <label class="label is-medium has-text-danger has-text-weight-semibold">CONSULTA TUS MATERIAS</label>
             <div class="table-container">
                 <table class="table is-hoverable is-fullwidth">
                     <thead>
@@ -445,9 +443,9 @@
                             </div>
                             <div class="column is-6">
                                 <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
-                                <p id="precioFinal"><%= precioFinal %></p>
+                                <p class="is-hidden" id="precioFinal"><%= precioFinal %></p>
                                 <p class="has-text-danger">
-                                    <span class=" has-text-weight-bold">
+                                    <span class="has-text-weight-bold">
                                         $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2 }) %>
                                     </span>
