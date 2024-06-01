@@ -165,7 +165,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
         to: correo,
         from: {
             name: 'VIA PAGO',
-            email: 'administracion@ivd.edu.mx',
+            email: 'soporte@pagos.ivd.edu.mx',
         },
         subject: 'Bienvenido a VIA Pago',
         html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLinkNoAlumno}">Establecer Contraseña</a></p>`
@@ -267,7 +267,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
            to: correo,
            from: {
                name: 'VIA PAGO',
-               email: 'administracion@ivd.edu.mx',
+               email: 'soporte@pagos.ivd.edu.mx',
            },
            subject: 'Bienvenido a VIA Pago',
            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
@@ -284,9 +284,12 @@ exports.post_registrar_usuario = async (request, response, next) => {
     response.redirect('/configuracion/consultar_usuario');
 };
 
-exports.get_obtener_usuario = (request, response, next) => {
+exports.get_obtener_usuario = async (request, response, next) => {
+    const users = await getAllAdmins();
+
     response.render('configuracion/obtener_usuario', {
-        error:false,
+        error: false,
+        users: users,
         errorMensaje: '',
         csrfToken: request.csrfToken(),
         username: request.session.username || '',
@@ -297,8 +300,8 @@ exports.get_obtener_usuario = (request, response, next) => {
 
 exports.post_getAdmins = async(request, response, next) => {
     let input = request.body.input;
+    const users = JSON.parse(request.body.admins);
     try {
-        const users = await getAllAdmins();
 
         let unregisteredAdmins = [];
         let registeredAdmins = [];
@@ -385,7 +388,7 @@ exports.post_activar_usuario = async (request, response, next) => {
             to: correo,
             from: {
                 name: 'VIA PAGO',
-                email: 'administracion@ivd.edu.mx',
+                email: 'soporte@pagos.ivd.edu.mx',
             },
             subject: 'Bienvenido a VIA Pago',
             html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
@@ -416,7 +419,7 @@ exports.post_activar_usuario = async (request, response, next) => {
             to: correo,
             from: {
                 name: 'VIA PAGO',
-                email: 'administracion@ivd.edu.mx',
+                email: 'soporte@pagos.ivd.edu.mx',
             },
             subject: 'Bienvenido a VIA Pago',
             html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
@@ -1020,7 +1023,7 @@ exports.post_alumnos = async (request,response,next) => {
             to: email,
             from: {
                 name: 'VIA PAGO',
-                email: 'administracion@ivd.edu.mx',
+                email: 'soporte@pagos.ivd.edu.mx',
             },
             subject: 'Bienvenido a VIA Pago',
             html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`

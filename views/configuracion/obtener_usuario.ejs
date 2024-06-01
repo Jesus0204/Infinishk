@@ -24,6 +24,7 @@
             <div class="column is-6">
                 <form action="/configuracion/obtener_usuario" method="POST">
                     <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" id="admins" name="admins" value="<%= JSON.stringify(users) %>">
                     <label for="user" class="label is-medium">
                         Matrícula:
                     </label>

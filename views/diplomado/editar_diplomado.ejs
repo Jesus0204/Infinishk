@@ -1,78 +1,62 @@
-<%- include('../includes/head.ejs', { 
-    username: username, 
-    permisos: permisos, 
-    rol: rol })
-%>
+<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
 
-<body>
-    <section class="section">
-        <div class="container" style="display: flex; justify-content: center;">
-            <p class="title" style="text-align: center;">Modificar Diplomado</p>
-            <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()"
-                style="width: 50%; margin-top: 50px;">
-                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
-                <label for="Duracion" class="label is-large">Duración:</label>
+    <body>
+        <section class="section">
+            <div class="container" style="display: flex; justify-content: center;">
+                <p class="title" style="text-align: center;">Modificar Diplomado</p>
+                <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()"
+                    style="width: 50%; margin-top: 50px;">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="IDDiplomado" value="<%= diplomado.IDDiplomado %>">
+                    <input type="hidden" id="fechaInicio" value="<%= diplomado.fechaInicio %>">
+                    <input type="hidden" id="fechaFin" value="<%= diplomado.fechaFin %>">
 
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input type="text" id="Duracion" name="Duracion" value="<%= diplomado.Duracion %>" required
-                            class="input is-large">
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
-                        </span>
-                    </p>
-                </div>
-
-                <label for="precioDiplomado" class="label is-large">Precio:</label>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input type="number" id="precioDiplomado" name="precioDiplomado"
-                            value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any" required
-                            class="input is-large" pattern="^\d+(\.\d+)?$" placeholder="Precio del Diplomado">
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                        </span>
-                    </p>
-                </div>
-
-                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input type="text" id="nombreDiplomado" name="nombreDiplomado" value="<%= diplomado.nombreDiplomado %>"
-                            required class="input is-large">
-                        <span class="icon is-small is-left">
-                            <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
-                        </span>
-                    </p>
-                </div>
-
-                <label for="statusDiplomado" class="label is-large">Estatus:</label>
-                <label class="checkbox">
-                    <% if (diplomado.diplomadoActivo === 0) { %>
+                    <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                     <div class="field">
-                        <input id="statusDiplomado" type="checkbox" name="statusDiplomado" class="switch is-rounded">
-                        <label for="statusDiplomado"></label>
+                        <p class="control has-icons-left">
+                            <input type="text" id="nombreDiplomado" name="nombreDiplomado"
+                                value="<%= diplomado.nombreDiplomado %>" required class="input is-large">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                            </span>
+                        </p>
                     </div>
-                    <% } else { %>
+
+                    <label for="precioDiplomado" class="label is-large">Precio:</label>
                     <div class="field">
-                        <input id="statusDiplomado" type="checkbox" name="statusDiplomado" class="switch is-rounded"
-                            checked>
-                        <label for="statusDiplomado"></label>
+                        <p class="control has-icons-left">
+                            <input type="number" id="precioDiplomado" name="precioDiplomado"
+                                value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any" required
+                                class="input is-large" pattern="^\d+(\.\d+)?$" placeholder="Precio del Diplomado">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                            </span>
+                        </p>
                     </div>
-                    <% } %>
-                </label>
-                <br>
-                <button type="submit" class="button is-rounded is-large is-responsive">
-                    <span>Registrar Cambios</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
-                <p id="alerta" class="help is-danger" style="display: none;"></p>
-            </form>
-        </div>
-    </section>
-    <script type="text/javascript" src="/js/editar_diplomado.js"></script>
-</body>
-<%- include('../includes/foot.ejs') %>
+
+                    <label for="Fecha Inicio" class="label is-large">Fecha Inicio/Fecha Fin:</label>
+
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input type="date" id="fecha" name="fecha" class="datepicker">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                    <br>
+                    <button type="submit" class="button is-rounded is-large is-responsive">
+                        <span>Registrar Cambios</span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                    <p id="alerta" class="help is-danger" style="display: none;"></p>
+                </form>
+            </div>
+        </section>
+        <script type="text/javascript" src="/js/editar_diplomado.js"></script>
+    </body>
+
+    </html>

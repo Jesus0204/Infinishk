@@ -2,11 +2,9 @@ const db = require('../util/database');
 
 module.exports = class Cursa{
     // Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-    constructor(mi_Matricula,mi_IDDiplomado,mi_fechaInicio,mi_fechaFin){
+    constructor(mi_Matricula,mi_IDDiplomado){
         this.Matricula = mi_Matricula;
         this.IDDiplomado = mi_IDDiplomado;
-        this.fechaInicio = mi_fechaInicio;
-        this.fechaFin = mi_fechaFin;
     };
 
     static fetchDiplomado(matricula){
@@ -14,11 +12,11 @@ module.exports = class Cursa{
         [matricula]);
     };
 
-    static fetchDiplomadosCursando(matricula) {
-        return db.execute(`SELECT D.nombreDiplomado, C.IDDiplomado, D.precioDiplomado, C.fechaInicio, C.fechaFin
+    static fetchDiplomadosCursando(matricula, fechaActual) {
+        return db.execute(`SELECT D.nombreDiplomado, C.IDDiplomado, D.precioDiplomado, D.fechaInicio, D.fechaFin
         FROM Cursa AS C, Diplomado AS D 
-        WHERE C.IDDiplomado = D.IDDiplomado AND C.fechaFin > Now() AND C.fechaInicio < Now() 
-        AND C.Matricula = ?`, [matricula]);
+        WHERE C.IDDiplomado = D.IDDiplomado AND D.fechaFin > ? AND D.fechaInicio < ? 
+        AND C.Matricula = ? `, [fechaActual, fechaActual, matricula]);
     };
 
     static fetchPagosHechos(matricula, IDDiplomado) {

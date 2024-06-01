@@ -57,8 +57,9 @@ exports.get_pago_alumno = (request, response, next) => {
                         })
                         // Si no, es alumno de diplomado
                     } else if (username[0] == '8') {
+                        let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
                         // Sacas información del diplomado que estan cursando
-                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(username);
+                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(username, fechaActual);
                         let infoPagosDiplomado = '';
                         if (infoDiplomado.length != 0) {
                             // Sacas información de algún pago si es que existe
@@ -703,8 +704,10 @@ exports.get_estado_cuenta = async (request, response, next) => {
             });
         } else if (matricula[0] == '8') {
 
-        const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
-        const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula);
+            let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
+
+            const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
+            const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula, fechaActual);
 
         // Formatear fechas
         for (let count = 0; count < pagosDiplomado.length; count++) {
