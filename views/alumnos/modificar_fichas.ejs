@@ -7,10 +7,18 @@
 <body>
     <section class="section">
         <div class="container">
+            <div class="columns">
+                <div class="column is-1">
+                    <a id="Boton_regresar" type="submit" class="is-responsive"
+                        onclick="regresar()">
+                        <span class="icon">
+                            <i class="fas fa-arrow-left fa-2x"></i>
+                        </span>
+                    </a>
+                </div>
             <input type="hidden" id="_csrf" value="<%= csrfToken %>">
             <input type="hidden" id="alumno" value="<%= alumno[0].Matricula %>">
-            <div class="columns">
-                <div class="column is-6">
+                <div class="column is-12">
                     <h3 class="title is-3">Modificar Fichas de Pago</h3>
                 </div>
             </div>
@@ -298,5 +306,6 @@
     </section>
 
     <script type="text/javascript" src="/js/modificar_fichas.js"></script>
+    <script type="text/javascript" src="/js/boton_regresar.js"></script>
 </body>
 <%- include('../includes/foot.ejs') %>
