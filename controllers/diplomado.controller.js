@@ -217,10 +217,11 @@ exports.post_detalles_diplomado = (request, response, next) => {
 exports.get_alumnos_nodiplomado = async (request, response, next) => {
     const nombre = request.body.nombre
     const id = await Diplomado.fetchID(nombre)
+    const idDiplomado = id[0][0].IDDiplomado
     Diplomado.fetchAlumnosNoinscritos(nombre)
         .then(([alumnos, fieldData]) => {
             response.render('diplomado/agregar_alumnos', {
-                id: id,
+                id: idDiplomado,
                 alumnos: alumnos,
                 csrfToken: request.csrfToken(),
                 permisos: request.session.permisos || [],
@@ -240,16 +241,48 @@ exports.get_alumnos_nodiplomado = async (request, response, next) => {
 }
 
 exports.post_registrar_alumnos = (request, response, next) => {
-    const id=request.body.id;
-    const alumnosSeleccionados = request.body.alumno;
+    const id = request.body.id
+    let alumnosSeleccionados = request.body.alumno;
 
     if (!Array.isArray(alumnosSeleccionados)) {
         alumnosSeleccionados = [alumnosSeleccionados];
     }
 
     alumnosSeleccionados.forEach(matricula => {
-        Diplomado.insertarAlumno(matricula,id)
+        Diplomado.insertarAlumno(matricula, id)
     });
 
-    response.redirect('diplomado/detalles_diplomado');
+    Diplomado.fetchDatos(id)
+        .then(([diplomadoInfo, fieldData]) => {
+            Diplomado.fetchAlumnos(id)
+                .then(([alumnosDiplomado, fieldData]) => {
+                    response.render('diplomado/detalles_diplomado', {
+                        diplomado: diplomadoInfo,
+                        alumnosDiplomado: alumnosDiplomado,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        username: request.session.username || '',
+                        csrfToken: request.csrfToken(),
+                    });
+                })
+                .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        error_alumno: false
+                    });
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                error_alumno: false
+            });
+            console.log(error)
+        });
 }
