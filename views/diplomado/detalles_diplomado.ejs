@@ -48,6 +48,24 @@
                             </form>
                         </div>
                     <% } %>
+                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
+                        <div class="column">
+                            <form action="/diplomado/agregar_alumnos" method="POST">
+                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
+                                <p class="control">
+                                    <button class="button is-rounded big-button" type="submit">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                        <span>
+                                            Agregar Alumnos
+                                        </span>
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    <% } %>
                 </div>
 
                 <div class="notification">

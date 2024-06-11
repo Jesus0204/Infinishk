@@ -19,5 +19,8 @@ router.post('/editar_diplomado',isAuth,can_ModificarDiplomado,diplomadoControlle
 router.post('/resultado_diplomado',isAuth,can_ModificarDiplomado,diplomadoController.post_modificar_diplomado);
 router.get('/', diplomadoController.get_diplomado);
 router.post('/detalles_diplomado',isAuth,can_ConsultarDiplomado,diplomadoController.post_detalles_diplomado);
+router.post('/agregar_alumnos',isAuth,can_ModificarDiplomado,diplomadoController.get_alumnos_nodiplomado);
+router.post('/registrar_alumnos',isAuth,can_ModificarDiplomado,diplomadoController.post_registrar_alumnos);
+
 
 module.exports = router;
