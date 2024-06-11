@@ -112,7 +112,7 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
     const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
 
-    Diplomado.update(id, fechaInicio,fechaFin, precio, nombre)
+    Diplomado.update(id, fechaInicio, fechaFin, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
         })
@@ -150,8 +150,8 @@ exports.post_registrar_diplomado = (request, response, next) => {
 
     const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
     const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(29, 'hours').add(59, 'minutes').add(59, 'seconds').format();
-    
-    Diplomado.save(fechaInicio,fechaFin, precio, nombre)
+
+    Diplomado.save(fechaInicio, fechaFin, precio, nombre)
         .then(() => {
             return Diplomado.fetchOne(nombre)
         })
@@ -191,6 +191,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                         rol: request.session.rol || "",
                         username: request.session.username || '',
                         csrfToken: request.csrfToken(),
+                        registro:false,
                     });
                 })
                 .catch((error) => {
@@ -212,4 +213,78 @@ exports.post_detalles_diplomado = (request, response, next) => {
             });
             console.log(error)
         });
-};
+}
+
+exports.get_alumnos_nodiplomado = async (request, response, next) => {
+    const nombre = request.body.nombre
+    const id = await Diplomado.fetchID(nombre)
+    const idDiplomado = id[0][0].IDDiplomado
+    Diplomado.fetchAlumnosNoinscritos(nombre)
+        .then(([alumnos, fieldData]) => {
+            response.render('diplomado/agregar_alumnos', {
+                id: idDiplomado,
+                alumnos: alumnos,
+                csrfToken: request.csrfToken(),
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                username: request.session.username || '',
+            });
+        })
+        .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                error_alumno: false
+            });
+            console.log(error)
+        });
+}
+
+exports.post_registrar_alumnos = (request, response, next) => {
+    const id = request.body.id
+    let alumnosSeleccionados = request.body.alumno;
+
+    if (!Array.isArray(alumnosSeleccionados)) {
+        alumnosSeleccionados = [alumnosSeleccionados];
+    }
+
+    alumnosSeleccionados.forEach(matricula => {
+        Diplomado.insertarAlumno(matricula, id)
+    });
+
+    Diplomado.fetchDatos(id)
+        .then(([diplomadoInfo, fieldData]) => {
+            Diplomado.fetchAlumnos(id)
+                .then(([alumnosDiplomado, fieldData]) => {
+                    response.render('diplomado/detalles_diplomado', {
+                        diplomado: diplomadoInfo,
+                        alumnosDiplomado: alumnosDiplomado,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        username: request.session.username || '',
+                        csrfToken: request.csrfToken(),
+                        registro:true,
+                    });
+                })
+                .catch((error) => {
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        error_alumno: false
+                    });
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            response.status(500).render('500', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+                error_alumno: false
+            });
+            console.log(error)
+        });
+}
