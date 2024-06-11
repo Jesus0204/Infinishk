@@ -93,6 +93,19 @@
                         </div>
                     </div>
                 </div>
+
+                <% if (registro) { %>
+                    <div class="columns is-vcentered">
+                        <div class="column is-2"></div>
+                        <div class="column is-8">
+                            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                <button class="delete"></button>
+                                Alumnos registrados exitosamente.
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                
             </div>
 
             <div id="alumnosDiplomado"></div>
@@ -161,4 +174,5 @@
     </body>
     </section>
     <script type="text/javascript" src="/js/pagination.js"></script>
+    <script type="text/javascript" src="/js/detalles_diplomado.js"></script>
     </html>

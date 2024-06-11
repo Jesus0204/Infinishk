@@ -191,6 +191,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                         rol: request.session.rol || "",
                         username: request.session.username || '',
                         csrfToken: request.csrfToken(),
+                        registro:false,
                     });
                 })
                 .catch((error) => {
@@ -264,6 +265,7 @@ exports.post_registrar_alumnos = (request, response, next) => {
                         rol: request.session.rol || "",
                         username: request.session.username || '',
                         csrfToken: request.csrfToken(),
+                        registro:true,
                     });
                 })
                 .catch((error) => {
