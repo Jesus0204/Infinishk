@@ -23,6 +23,14 @@
             <div class="container">
 
                 <div class="columns">
+                    <div class="column is-1">
+                        <a id="Boton_regresar" type="submit" class="is-responsive"
+                            onclick="regresar()">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left fa-2x"></i>
+                            </span>
+                        </a>
+                    </div>
                     <div class="column is-8">
                         <h3 class="title is-3">Información de Diplomado:
                             <br>
@@ -42,6 +50,24 @@
                                         </span>
                                         <span>
                                             Modificar Diplomado
+                                        </span>
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    <% } %>
+                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
+                        <div class="column">
+                            <form action="/diplomado/agregar_alumnos" method="POST">
+                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
+                                <p class="control">
+                                    <button class="button is-rounded big-button" type="submit">
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                        <span>
+                                            Agregar Alumnos
                                         </span>
                                     </button>
                                 </p>
@@ -75,6 +101,19 @@
                         </div>
                     </div>
                 </div>
+
+                <% if (registro) { %>
+                    <div class="columns is-vcentered">
+                        <div class="column is-2"></div>
+                        <div class="column is-8">
+                            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                <button class="delete"></button>
+                                Alumnos registrados exitosamente.
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                
             </div>
 
             <div id="alumnosDiplomado"></div>
@@ -143,4 +182,7 @@
     </body>
     </section>
     <script type="text/javascript" src="/js/pagination.js"></script>
+    <script type="text/javascript" src="/js/boton_regresar.js"></script>
+    <script type="text/javascript" src="/js/detalles_diplomado.js"></script>
+    <script type="text/javascript" src="/js/boton_regresar.js"></script>
     </html>

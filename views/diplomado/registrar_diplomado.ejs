@@ -6,10 +6,24 @@
 <body>
     <section class="section">
         <div class="container" style="display: flex; justify-content: center;">
-            <p class="title" style="text-align: center;">Registrar Diplomado</p>
+            <div class="columns">
+            <div class="column is-1">
+                <a id="Boton_regresar" type="submit" class="is-responsive"
+                    onclick="regresar()">
+                    <span class="icon">
+                        <i class="fas fa-arrow-left fa-2x"></i>
+                    </span>
+                </a>
+            </div>
+            <div class="column is-12">
+                <p class="title" style="text-align: center;">Registrar Diplomado</p>
+            </div>
+        </div>
+        
             <form id="formDiplomado" action="/diplomado/registrar_diplomado" method="POST" style="width: 50%; margin-top: 50px;" placeholder="Horas / meses">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
+                
                 <label for="nombreDiplomado" class="label is-large">Nombre:</label>
                 <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large" onchange="validateAll()" placeholder="Nombre del Diplomado">
                 <div id="errorNombre" style="color: red;"></div> <!-- Mensaje de error para el nombre -->
@@ -41,5 +55,6 @@
         </div>
     </section>
     <script type="text/javascript" src="/js/registrar_diplomado.js"></script>
+    <script type="text/javascript" src="/js/boton_regresar.js"></script>
 </body>
 <%- include('../includes/foot.ejs') %>
