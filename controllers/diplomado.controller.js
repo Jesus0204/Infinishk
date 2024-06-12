@@ -242,40 +242,33 @@ exports.get_alumnos_nodiplomado = async (request, response, next) => {
 }
 
 exports.post_registrar_alumnos = (request, response, next) => {
-    const id = request.body.id
+    const id = request.body.id;
     let alumnosSeleccionados = request.body.alumno;
 
     if (!Array.isArray(alumnosSeleccionados)) {
         alumnosSeleccionados = [alumnosSeleccionados];
     }
 
-    alumnosSeleccionados.forEach(matricula => {
-        Diplomado.insertarAlumno(matricula, id)
+    const promises = alumnosSeleccionados.map(matricula => {
+        return Diplomado.insertarAlumno(matricula, id);
     });
 
-    Diplomado.fetchDatos(id)
-        .then(([diplomadoInfo, fieldData]) => {
-            Diplomado.fetchAlumnos(id)
-                .then(([alumnosDiplomado, fieldData]) => {
+    Promise.all(promises)
+        .then(() => {
+            return Diplomado.fetchAlumnos(id);
+        })
+        .then(([alumnosDiplomado, fieldData]) => {
+            return Diplomado.fetchDatos(id)
+                .then(([diplomadoInfo, fieldData]) => {
                     response.render('diplomado/detalles_diplomado', {
                         diplomado: diplomadoInfo,
                         alumnosDiplomado: alumnosDiplomado,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
-                        username: request.session.username || '',
                         csrfToken: request.csrfToken(),
-                        registro:true,
+                        registro: true,
                     });
-                })
-                .catch((error) => {
-                    response.status(500).render('500', {
-                        username: request.session.username || '',
-                        permisos: request.session.permisos || [],
-                        rol: request.session.rol || "",
-                        error_alumno: false
-                    });
-                    console.log(error)
                 });
         })
         .catch((error) => {
@@ -285,6 +278,6 @@ exports.post_registrar_alumnos = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 }
