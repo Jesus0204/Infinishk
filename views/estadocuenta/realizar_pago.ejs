@@ -9,8 +9,8 @@
         <h1 class="title"> Realizar Pago</h1>
         <br>
         <div class="columns">
-            <div class="column is-4">
-                <p>
+            <div class="column is-3">
+                <p class="has-text-black">
                     Selecciona el tipo de pago que vas a realizar:
                 </p>
                 <br>
@@ -42,49 +42,55 @@
                     <% for (let deudas of totales) { %>
                     <% porPagar += deudas.montoAPagar %>
                     <% } %>
-                    <p class="is-size-5" style="text-align: center;">
-                        <strong>Saldo Pendiente: </strong>
-                        $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">
+                            Saldo Pendiente
+                        </p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
                                                      }) %>
-                    </p>
-                    <br>
-                    <table class="table is-bordered Pago-de-Colegiatura"
-                        style="color: #ffffff;  margin-left: auto; margin-right: auto;">
-                        <caption class="is-size-5">
-                            <strong>
-                                Ficha Actual a Pagar:
-                            </strong>
-                        </caption>
-                        <thead>
-                            <th style="color: #ffffff">
-                                Fecha Límite
-                            </th>
-                            <th style="color: #ffffff">
-                                Monto a Pagar
-                            </th>
-                            <th style="color: #ffffff">
-                                Monto Pagado
-                            </th>
-                        <tbody>
+                        </p>
+                    </div>
+                    <label class="label is-medium has-text-danger has-text-weight-semibold">FICHA ACTUAL A PAGAR</label>
+                    <table class="table is-hoverable is-fullwidth">
+                        <tr>
                             <td>
-                                <%= deuda[0].fechaLimitePago %>
+                                <p class="has-text-danger has-text-weight-semibold">
+                                    Fecha Límite
+                                </p>
+                                <p class="has-text-black has-text-weight-bold">
+                                    <%= deuda[0].fechaLimitePago %>
+                                </p>
                             </td>
+                        </tr>
+                        <tr>
                             <td>
-                                $<%= deuda[0].montoAPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
+                                <p class="has-text-danger has-text-weight-semibold">
+                                    Monto a Pagar
+                                </p>
+                                <p class="has-text-black has-text-weight-bold">
+                                    $<%= deuda[0].montoAPagar.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                     }) %>
+                                </p>
                             </td>
+                        </tr>
+                        <tr>
                             <td>
-                                $<%= deuda[0].montoPagado.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
+                                <p class="has-text-danger has-text-weight-semibold">
+                                    Monto Pagado
+                                </p>
+                                <p class="has-text-black has-text-weight-bold">
+                                    $<%= deuda[0].montoPagado.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                     }) %>
+                                </p>
                             </td>
-                        </tbody>
-                        </thead>
+                        </tr>
                     </table>
                     <% } %>
                     <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
@@ -132,14 +138,14 @@
             </div>
             <div class="column is-offset-1">
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
-                    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
-                    <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
-                    <% if (alumno[0].Matricula[0] == '1') { %>
-                    <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
-                    <% } %>
-                    <% if (solicitudes.length != 0){ %>
-                    <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
-                    <% } %>
+                <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
+                <% if (alumno[0].Matricula[0] == '1') { %>
+                <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
+                <% } %>
+                <% if (solicitudes.length != 0){ %>
+                <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
+                <% } %>
                 <div id="pago_colegiatura">
                     <div class="columns">
                         <div class="column is-5">
@@ -231,13 +237,13 @@
                         <div class="column">
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <% if (solicitudes.length) { %> 
-                                        <input name="monto" class="input is-medium" type="number" step="any"
-                                            id="monto_no_usar" placeholder="Monto pagado" value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
+                                    <% if (solicitudes.length) { %>
+                                    <input name="monto" class="input is-medium" type="number" step="any"
+                                        id="monto_no_usar" placeholder="Monto pagado"
+                                        value="<%= solicitudes[0].montoPagar.toFixed(2) %>" readonly>
                                     <% } else { %>
-                                        <input name="monto" class="input is-medium" type="number" step="any"
-                                            id="monto_no_usar" placeholder="Monto pagado"
-                                            value="" readonly>
+                                    <input name="monto" class="input is-medium" type="number" step="any"
+                                        id="monto_no_usar" placeholder="Monto pagado" value="" readonly>
                                     <% } %>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
@@ -284,33 +290,33 @@
                     </div>
                 </div>
                 <div class="columns">
-                    <div class="column is-2"></div>
-                    <div class="column is-8">
+                    <div class="column is-5"></div>
+                    <div class="column is-7">
                         <div id="boton_tarjeta">
-                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_1"
+                            <button class="js-modal-trigger confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
+                                id="Boton_pagar_1"
                                 data-target="modal-pago-tarjeta" disabled>
-                                <span>Realizar Pago</span>
+                                <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                 </span>
                             </button>
                         </div>
                         <div id="boton_efectivo" class="is-hidden">
-                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_2"
+                            <button class="js-modal-trigger confirmar-button is-responsive"
+                                style="font-size: large; padding-left: 1.5em;" id="Boton_pagar_2"
                                 data-target="modal-pago-efectivo" disabled>
-                                <span>Realizar Pago</span>
+                                <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                 </span>
                             </button>
                         </div>
                         <div id="boton_transferencia" class="is-hidden">
-                            <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                style="font-size: large; margin: 8px 2px;" id="Boton_pagar_3"
+                            <button class="js-modal-trigger confirmar-button is-responsive"
+                                style="font-size: large; padding-left: 1.5em;" id="Boton_pagar_3"
                                 data-target="modal-pago-transferencia" disabled>
-                                <span>Realizar Pago</span>
+                                <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                 </span>
@@ -358,9 +364,9 @@
                 <header class="modal-card-head">
                     <p id="modal_title" class="modal-card-title" style="text-align: center;">
                         <% if (pago_col == true) { %>
-                            <strong>Pago de Colegiatura</strong>
+                        <strong>Pago de Colegiatura</strong>
                         <% } else { %>
-                            <strong>Pago de Diplomado</strong>
+                        <strong>Pago de Diplomado</strong>
                         <% } %>
                     </p>
                     <button type="button" class="delete" aria-label="delete"></button>
@@ -384,7 +390,7 @@
                     <button type="button" class="delete" aria-label="delete"></button>
                 </header>
                 <section class="modal-card-body">
-                    <p> 
+                    <p>
                         Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina:
                     </p>
                     <br>
@@ -441,12 +447,14 @@
                     <div id="errorNotification" class="notification is-danger">
                         <p>
                             Es muy importante colocar correctamente la REFERENCIA como el concepto de la transferencia,
-                            utilizando la REFERENCIA NUMÉRICA que tienes asignada, ya que de ser incorrectos se genera un reembolso automático, sin
+                            utilizando la REFERENCIA NUMÉRICA que tienes asignada, ya que de ser incorrectos se genera
+                            un reembolso automático, sin
                             realizarse el pago.
                         </p>
                     </div>
                 </section>
             </div>
+        </div>
     </div>
 </section>
 <%- include('../includes/foot.ejs') %>
