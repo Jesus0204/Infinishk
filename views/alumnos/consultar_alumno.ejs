@@ -85,6 +85,8 @@
                 ¡Datos modificados! Recargando datos...
             </div>
             <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
                 <div class="columns is-flex is-align-items-stretch" id="topinfo">
                     <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                     <div class="column">
