@@ -168,10 +168,11 @@ exports.post_fetch_datos = async (request, response, next) => {
             const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
             confirmacion = conf[0][0].horarioConfirmado;
         } else {
-            let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
-            alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula, fechaActual);
-
+            alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
+            
+            let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
+            alumnoDiplomadoActualConsulta = await EstudianteDiplomado.fetchDiplomadoCursando(matricula, fechaActual);
             confirmacion = 0;
         }
         if (confirmacion === 0) {
@@ -180,6 +181,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
+                alumnoDiplomadoActual: alumnoDiplomadoActualConsulta[0][0],
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",

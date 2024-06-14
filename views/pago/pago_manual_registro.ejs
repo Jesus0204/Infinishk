@@ -107,63 +107,60 @@
                     </table>
                 <% } %>
                 <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
-                <table class="table is-bordered Pago-de-Diplomado"
-                    style="color: #ffffff; margin-left: auto; margin-right: auto;">
-                    <caption class="is-size-5">
-                        <strong>
-                            Diplomado:
-                        </strong>
-                    </caption>
-                    <thead>
-                        <th style="color: #ffffff">
-                            Nombre
-                        </th>
-                        <th style="color: #ffffff">
-                            Total
-                        </th>
-                    </thead>
-                    <tbody>
-                        <td>
-                            <%= diplomado[0].nombreDiplomado %>
-                        </td>
-                        <td>
-                            $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }) %>
-                        </td>
-                    </tbody>
-                </table>
+                    <label class="label is-medium has-text-danger has-text-weight-semibold">CURSANDO</label>
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>
+                                <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    DIPLOMADO
+                                </p>
+                                <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                    <%= diplomado[0].nombreDiplomado %>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    PRECIO
+                                </p>
+                                <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                    $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
                 <% if (pagoDiplomado.length != 0) { %>
-                <table class="table is-bordered Pago-de-Diplomado"
-                    style="color: #ffffff;margin-left: auto; margin-right: auto;">
-                    <caption class="is-size-5">
-                        <strong>
-                            Pagos anteriores:
-                        </strong>
-                    </caption>
-                    <thead>
-                        <th style="color: #ffffff;">
-                            Fecha de Pago
-                        </th>
-                        <th style="color: #ffffff;">
-                            Monto
-                        </th>
-                    </thead>
-                    <% for (let pago of pagoDiplomado) { %>
-                    <tbody>
-                        <td>
-                            <%= pago.fechaPago %>
-                        </td>
-                        <td>
-                            $<%= pago.montoPagado.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                             }) %>
-                        </td>
-                    </tbody>
-                    <% } %>
-                </table>
+                    <label class="label is-medium has-text-danger has-text-weight-semibold">PAGOS ANTERIORES</label>
+                    <table class="table"
+                        style="margin-left: auto; margin-right: auto;">
+                        <thead>
+                            <th>
+                                Fecha de Pago
+                            </th>
+                            <th>
+                                Monto
+                            </th>
+                        </thead>
+                        <tbody>
+                        <% for (let pago of pagoDiplomado) { %>
+                            <tr>
+                                <td>
+                                    <%= pago.fechaPago %>
+                                </td>
+                                <td>
+                                    $<%= pago.montoPagado.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    }) %>
+                                </td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
                 <% } %>
                 <% } %>
                 <% if (deuda.length == 0 && colegiatura.length != 0) { %>

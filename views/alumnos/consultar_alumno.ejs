@@ -103,7 +103,12 @@
                 <% } else { %>
                 <div class="column is-5">
                     <label class="block font-semibold"><strong>Diplomado:</strong></label>
-                    <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].nombreDiplomado %>
+                    <div class="mt-1 px-4 py-2 bg-gray-100 rounded border">
+                        <% if (alumnoDiplomadoActual) { %> 
+                            <%= alumnoDiplomadoActual.nombreDiplomado %>
+                        <% } else { %>
+                            No se encuentra cursando un diplomado
+                        <% } %>
                     </div>
                 </div>
                 <div class="column is-3">
