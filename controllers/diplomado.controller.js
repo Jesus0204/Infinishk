@@ -57,7 +57,6 @@ exports.post_fetch_diplomado = (request, response, next) => {
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
                     username: request.session.username || '',
-                    // Pasar las fechas originales para las comparaciones
                     fechaInicioOriginal: fechaInicioOriginal,
                     fechaFinOriginal: fechaFinOriginal
                 });
