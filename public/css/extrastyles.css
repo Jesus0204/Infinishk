@@ -83,6 +83,10 @@
     border-radius: 30px;
     border: solid #ffffff;
   }
+
+  .containerConsultarAlumno {
+    padding-top: 30px;
+  }
 }
 
 .is-fullheight-100vh {
@@ -97,7 +101,6 @@
   text-align: center;
   float: right;
   border-radius: 10px;
-  width: 80%;
   background-color: #000000;
   color: #ffffff;
   border: solid #95404c;

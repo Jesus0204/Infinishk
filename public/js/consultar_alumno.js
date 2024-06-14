@@ -340,3 +340,20 @@ function pagosextra() {
     }
 
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const topinfo = document.getElementById('topinfo');
+
+    const updateTopInfoClasses = () => {
+        if (window.innerWidth >= 1128) {
+            topinfo.classList.add("is-flex");
+            topinfo.classList.add("is-align-items-stretch");
+        } else {
+            topinfo.classList.remove("is-flex");
+            topinfo.classList.remove("is-align-items-stretch");
+        }
+    };
+
+    updateTopInfoClasses();
+    window.addEventListener('resize', updateTopInfoClasses);
+});
