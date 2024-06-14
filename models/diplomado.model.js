@@ -32,7 +32,7 @@ module.exports = class Diplomado {
     }
 
     static fetchID(nombre) {
-        return db.execute('Select IDDiplomado FROM diplomado WHERE nombreDiplomado = ?', [nombre]);
+        return db.execute('Select IDDiplomado FROM Diplomado WHERE nombreDiplomado = ?', [nombre]);
     }
 
     static update(id, fechaInicio, fechaFin, precio, nombre) {
@@ -55,8 +55,7 @@ module.exports = class Diplomado {
     }
 
     static buscar_en_curso(consulta) {
-        return db.execute('SELECT Diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from Cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]
-        );
+        return db.execute('SELECT Diplomado.* FROM Diplomado WHERE nombreDiplomado LIKE ? AND diplomadoActivo = 1 AND IDDiplomado NOT IN (Select IDDiplomado from Cursa WHERE Now() > fechainicio AND Now() < fechafin)', [`%${consulta}%`]);
     }
 
     static fetchDatos(id) {
@@ -66,17 +65,17 @@ module.exports = class Diplomado {
     }
 
     static fetchAlumnos(id) {
-        return db.execute('SELECT alumno.matricula, alumno.nombre, alumno.apellidos, estudiantediplomado.fechaInscripcion FROM alumno JOIN estudiantediplomado ON alumno.matricula = estudiantediplomado.matricula JOIN cursa ON estudiantediplomado.Matricula = cursa.Matricula JOIN diplomado ON cursa.IDDiplomado = diplomado.IDDiplomado WHERE diplomado.IDDiplomado = ?',
+        return db.execute('SELECT Alumno.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM Alumno JOIN estudianteDiplomado ON Alumno.matricula = estudianteDiplomado.matricula JOIN Cursa ON estudianteDiplomado.matricula = Cursa.matricula JOIN Diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.IDDiplomado = ?',
             [id])
     }
 
     static fetchAlumnosNoinscritos(nombre) {
-        return db.execute('SELECT estudiantediplomado.matricula, alumno.nombre, alumno.apellidos, estudiantediplomado.fechaInscripcion FROM estudiantediplomado JOIN alumno ON estudiantediplomado.matricula = alumno.matricula WHERE estudiantediplomado.matricula NOT IN (SELECT cursa.Matricula FROM cursa JOIN diplomado ON cursa.IDDiplomado = diplomado.IDDiplomado WHERE diplomado.nombreDiplomado= ?)',
+        return db.execute('SELECT estudianteDiplomado.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM estudianteDiplomado JOIN Alumno ON estudianteDiplomado.matricula = Alumno.matricula WHERE estudianteDiplomado.matricula NOT IN (SELECT Cursa.Matricula FROM Cursa JOIN Diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.nombreDiplomado= ?)',
             [nombre])
     }
 
     static insertarAlumno(matricula, id) {
-        return db.execute('INSERT INTO `cursa`(`Matricula`, `IDDiplomado`) VALUES (?,?)',
+        return db.execute('INSERT INTO `Cursa`(`Matricula`, `IDDiplomado`) VALUES (?,?)',
             [matricula, id])
     }
 
