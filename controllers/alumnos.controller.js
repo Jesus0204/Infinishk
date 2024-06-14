@@ -138,9 +138,8 @@ exports.post_fetch_datos = async (request, response, next) => {
         const [pagos] = await Pago.fetchOne(matricula);
         const [cargosExtra] = await PagoExtra.fetchSinPagar(matricula);
         const [pagosExtra] = await PagoExtra.fetchPagados(matricula);
-        const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username); 
         const [deuda] = await Deuda.fetchDeudaConsultarAlumno(matricula);
-        const pagosDiplomado = await PagaDiplomado.fetchPagosDiplomado(matricula);
+        const [pagosDiplomado] = await PagaDiplomado.fetchPagosDiplomado(matricula);
         const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
 
         // Conviertes la fecha si existe
@@ -187,7 +186,6 @@ exports.post_fetch_datos = async (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
-                estudianteProfesional: estudianteProfesional[0][0],
                 estadoCuenta: estadoCuenta,
                 pagos: pagos,
                 deuda: deuda,
@@ -195,7 +193,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
-                pagosDiplomado: pagosDiplomado[0],
+                pagosDiplomado: pagosDiplomado,
                 csrfToken: request.csrfToken()
             });
         }
@@ -217,7 +215,6 @@ exports.post_fetch_datos = async (request, response, next) => {
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
-                estudianteProfesional: estudianteProfesional[0][0],
                 estadoCuenta: estadoCuenta,
                 pagos: pagos,
                 deuda: deuda,
@@ -225,7 +222,6 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
-                pagosDiplomado: pagosDiplomado[0],
                 csrfToken: request.csrfToken()
             });
         }

@@ -81,7 +81,6 @@
 
             <div id="modificacion_datos" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
-                <button id="btn_eliminar_estatus" class="delete"></button>
                 ¡Datos modificados! Recargando datos...
             </div>
             <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
@@ -109,8 +108,6 @@
                             style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes.</p>
                         <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
                             style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100.</p>
-                        <p id="ayuda_beca_vacia" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                            style="padding: 0.5em;">Por favor escribe un % de beca.</p>
                         <div class="box" style="text-align: center;">
                             <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
                             <input id="beca" name="beca"
@@ -123,7 +120,7 @@
                         <div class="box" style="text-align: center;">
                             <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
                             <p class="has-text-black has-text-weight-bold is-size-5">
-                                <% if (alumnoDiplomadoActual) { %>
+                                <% if (alumnoDiplomadoActual[0].length != 0) { %>
                                 <%= alumnoDiplomadoActual[0][0].nombreDiplomado %>
                                 <% } else { %>
                                 No se encuentra cursando un diplomado
@@ -171,78 +168,223 @@
             <div class="container containerConsultarAlumno">
                 <div class="tabs is-centered is-boxed is-fullwidth">
                     <ul>
-                        <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                        <li class="is-active" id="nav_estado">
-                            <a onclick="muestra_estado_de_cuenta()">
+                        <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
+                        <li class="is-active" id="nav_pagos_Diplomado">
+                            <a onclick="muestra_pagos_diplomado()">
                                 <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
-                                <span>Estado de Cuenta</span>
+                                <span>Pagos Diplomado</span>
                             </a>
                         </li>
+                        <li id="nav_pagos_Diplomado_Otros">
+                            <a onclick="muestra_extras_diplomado()">
+                                <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
+                                <span>Otros Pagos</span>
+                            </a>
+                        </li>
+                        <% } %>
+                        <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+                            <li class="is-active" id="nav_estado">
+                                <a onclick="muestra_estado_de_cuenta()">
+                                    <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
+                                    <span>Estado de Cuenta</span>
+                                </a>
+                            </li>
+                            <li id="nav_historial_pagos">
+                                <a onclick="muestra_historial_de_pagos()">
+                                    <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
+                                    <span>Historial de Pagos</span>
+                                </a>
+                            </li>
                         <% } %>
                         <li id="nav_otros_cargos">
                             <a onclick="muestra_otros_cargos()">
                                 <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
-                                <span>Otros Cargos</span>
-                            </a>
-                        </li>
-                        <li id="nav_historial_pagos">
-                            <a onclick="muestra_historial_de_pagos()">
-                                <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                                <span>Historial de Pagos</span>
+                                <span>Solicitudes Pendientes</span>
                             </a>
                         </li>
                         <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                        <li id="nav_horario">
-                            <a onclick="muestra_horario()">
-                                <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
-                                <span>Materias</span>
-                            </a>
-                        </li>
+                            <li id="nav_horario">
+                                <a onclick="muestra_horario()">
+                                    <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
+                                    <span>Materias</span>
+                                </a>
+                            </li>
                         <% } %>
+
                     </ul>
                 </div>
             
                 <div id="otros_cargos" class="is-hidden">
-                    <% pagosExtra.forEach(pagosExtra => { %>
-                        <% if(pagosExtra.montoPagar !== 0) { %>
-                            <div class="box">
-                                <div class="columns is-vcentered">
-                                    <div class="column">
-                                        <p><strong>Monto a Pagar:</strong> $<%= pagosExtra.montoPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %> </p>
-                                        <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
-                                    </div>
+                    <% if (pagosExtra.length != 0) { %> 
+                        <% let countOtros = 5 %>
+                        <% pagosExtra.forEach(pagosExtra => { %>
+                            <% if (countOtros % 5 == 0) { %>
+                                <div class="columns">
+                            <% } %>
+                            <% countOtros++ %>
+                            <div class="column">
+                                <table class="table ficha-table is-fullwidth" style="border-radius: 10px;">
+                                    <tr>
+                                        <td style="padding: 5px 15px">
+                                            <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                                MOTIVO
+                                            </p>
+                                            <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                                <%= pagosExtra.motivoPago %>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 15px">
+                                            <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                                MONTO
+                                            </p>
+                                            <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                                $<%= pagosExtra.montoPagar.toLocaleString('mx', {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2
+                                                            }) %>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <% if (countOtros % 5 == 0) { %>
                                 </div>
+                            <% } %>
+                        <% }); %>
+                        <% if (countOtros % 5 != 0) { %>
                             </div>
                         <% } %>
-                    <% }); %>
-                </div>
-            
-                <div id="historial" class="is-hidden">
-                    <div id="pagos">
-                        <div class="tabs is-boxed">
-                            <ul>
-                                <li class="is-active" id="nav_pagoscol">
-                                    <a onclick="pagoscol()">
-                                        <% if(matricula[0] == '1') { %>
-                                            <span>Pagos de Colegiatura</span>
-                                        <% } else { %>
-                                            <span>Pagos de Diplomado</span>
-                                        <% } %>
-                                    </a>
-                                </li>
-                                <li id="nav_pagosextra">
-                                    <a onclick="pagosextra()">
-                                        <span>Pagos Extras</span>
-                                    </a>
-                                </li>
-                            </ul>
+                    <% } else { %>
+                        <div class="box">
+                            <p class="has-text-weight-medium has-text-black">
+                                Este alumno no cuenta con solicitudes de pago pendientes. Para dar de alta una solicitud de pago, 
+                                por favor haz click <a href="/pagos/solicitudes">aquí</a>.
+                            </p>
                         </div>
+                    <% } %>
+                </div>
 
-                        <div id="pagoscol">
-                            <% if(matricula[0] == '1') { %>
+                <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
+                    <div id="pagosdipl">
+                        <% if (pagosDiplomado.length != 0) { %>
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Monto</th>
+                                        <th style="text-align: left;">Diplomado</th>
+                                        <th style="text-align: left;">Fecha</th>
+                                        <th style="text-align: left;">Motivo</th>
+                                        <th style="text-align: left;">Método</th>
+                                        <th style="text-align: left;">Nota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% pagosDiplomado.forEach(pagos => { %>
+                                    <tr>
+                                        <td>
+                                            $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2
+                                                                }) %>
+                                        </td>
+                                        <td>
+                                            <%= pagos.nombreDiplomado %>
+                                        </td>
+                                        <td>
+                                            <%= pagos.fechaPago %>
+                                        </td>
+                                        <td>
+                                            <%= pagos.Motivo %>
+                                        </td>
+                                        <td>
+                                            <%= pagos.metodoPago %>
+                                        </td>
+                                        <td>
+                                            <%= pagos.Nota %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <label class="label is-medium has-text-danger has-text-weight-semibold" for="IDPlanPago">
+                                IMPORTANTE
+                            </label>
+                            <div class="box">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Este alumno todavía no ha pagado ningún diplomado. 
+                                </p>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div id="extrasDiplomado" class="is-hidden">
+                        <% if (pagadosExtra.length != 0) { %>
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Monto</th>
+                                        <th style="text-align: left;">Fecha</th>
+                                        <th style="text-align: left;">Motivo</th>
+                                        <th style="text-align: left;">Método</th>
+                                        <th style="text-align: left;">Nota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% pagadosExtra.forEach(pagadosExtra => { %>
+                                    <tr>
+                                        <td>
+                                            $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                        </td>
+                                        <td>
+                                            <%= pagadosExtra.fechaPago %>
+                                        </td>
+                                        <td>
+                                            <%= pagadosExtra.motivoPago %>
+                                        </td>
+                                        <td>
+                                            <%= pagadosExtra.metodoPago %>
+                                        </td>
+                                        <td>
+                                            <%= pagadosExtra.Nota %>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <div class="box">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Este alumno no ha pagado nada dentro de "Otros Pagos".
+                                </p>
+                            </div>
+                        <% } %>
+                    </div>
+
+                <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+                    <div id="historial" class="is-hidden">
+                        <div id="pagos">
+                            <div class="tabs is-boxed">
+                                <ul>
+                                    <li class="is-active" id="nav_pagoscol">
+                                        <a onclick="pagoscol()">
+                                            <span>Pagos de Colegiatura</span>
+                                        </a>
+                                    </li>
+                                    <li id="nav_pagosextra">
+                                        <a onclick="pagosextra()">
+                                            <span>Pagos Extras</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div id="pagoscol">
                                 <table class="table is-fullwidth is-hoverable">
                                     <thead>
                                         <tr>
@@ -278,73 +420,48 @@
                                         <% } )%>
                                     </tbody>
                                 </table>
-
-                            <% } else if(matricula[0] == '8') { %>
-                                <% pagosDiplomado.forEach(pagos => { %>
-                                    <% if(pagos.montoPagado !== 0) { %>
-                                        <div class="box">
-                                            <div class="columns is-vcentered">
-                                                <div class="column">
-                                                    <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
+                            </div>
+    
+                            <div class="is-hidden" id="pagosextra">
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">Monto</th>
+                                            <th style="text-align: left;">Fecha</th>
+                                            <th style="text-align: left;">Motivo</th>
+                                            <th style="text-align: left;">Método</th>
+                                            <th style="text-align: left;">Nota</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% pagadosExtra.forEach(pagadosExtra => { %>
+                                            <tr>
+                                                <td>
+                                                    $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
-                                                    }) %> </p>
-                                                    <p><strong>Nombre del Diplomado:</strong> <%= pagos.nombreDiplomado %> </p>
-                                                    <p><strong>Fecha de Pago:</strong> <%= pagos.fechaPago %> </p>
-                                                    <p><strong>Motivo de Pago:</strong> <%= pagos.Motivo %> </p>
-                                                    <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
-                                                    <% if(pagos.Nota !== '') { %>
-                                                    <p><strong>Nota:</strong> <%= pagos.Nota %> </p>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <% } %>
-                                <% }) %>
-                            <% }; %>
-                        </div>
-
-                        <div class="is-hidden" id="pagosextra">
-                            <table class="table is-fullwidth is-hoverable">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: left;">Monto</th>
-                                        <th style="text-align: left;">Fecha</th>
-                                        <th style="text-align: left;">Motivo</th>
-                                        <th style="text-align: left;">Método</th>
-                                        <th style="text-align: left;">Nota</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% pagadosExtra.forEach(pagadosExtra => { %>
-                                        <tr>
-                                            <td>
-                                                $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %>
-                                            </td>
-                                            <td>
-                                                <%= pagadosExtra.fechaPago %>
-                                            </td>
-                                            <td>
-                                                <%= pagadosExtra.motivoPago %>
-                                            </td>
-                                            <td>
-                                                <%= pagadosExtra.metodoPago %>
-                                            </td>
-                                            <td>
-                                                 <%= pagadosExtra.Nota %>
-                                            </td>
-                                        </tr>
-                                    <% }); %>
-                                </tbody>
-                            </table>
+                                                    }) %>
+                                                </td>
+                                                <td>
+                                                    <%= pagadosExtra.fechaPago %>
+                                                </td>
+                                                <td>
+                                                    <%= pagadosExtra.motivoPago %>
+                                                </td>
+                                                <td>
+                                                    <%= pagadosExtra.metodoPago %>
+                                                </td>
+                                                <td>
+                                                     <%= pagadosExtra.Nota %>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <% if(matricula[0] == '1') { %>
+                    
                     <div id="horario" class="is-hidden">
                         <div id="diplomados_activos" class="container">
                             <% if (error) { %>
@@ -511,109 +628,122 @@
                             <% } %>
                         </div>
                     </div>
-                <% } %>
-
-                <div id="estado_cuenta" class="is-active">        
-                    <div id="deuda">
-                        <div class="table-container">
-                            <table class="table is-fullwidth is-hoverable">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: left;">#</th>
-                                        <th style="text-align: left;">Pendiente</th>
-                                        <th style="text-align: left;">Total</th>
-                                        <th style="text-align: left;">Pagado</th>
-                                        <th style="text-align: left;">Descuento</th>
-                                        <th style="text-align: left;">Fecha Límite de Pago</th>
-                                        <th style="text-align: left;">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% let currentDate = fechaActual %>
-                                    <% for (let count = 0; count < deuda.length; count++) { %>
-                                    <tr>
-                                        <td>Pago #<%= count + 1 %></td>
-                                        <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %></td>
-                                        <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %></td>
-                                        <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %></td>
-                                        <td>
-                                            $<%= deuda[count].Descuento.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            }) %>
-                                        </td>
-                                        <td><%= deuda[count].fechaLimitePago %></td>
-                                        <% if (deuda[count].Pagado == 1) { %>
-                                        <td>
-                                            <span class="tag is-size-6" style="background-color: #ddf5e5;">
-                                                <span class="icon is-small" style="color: #21c85b">
-                                                    <i class="fa-solid fa-circle-check"></i>
-                                                </span>
-                                                <span style="color: #21c85b">
-                                                    Pagado
-                                                </span>
-                                            </span>
-                                        </td>
-                                        <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
-                                        <td>
-                                            <span class="tag is-size-6" style="background-color: #fdf2cc">
-                                                <span class="icon is-small" style="color: #fec416">
-                                                    <i class="fa-solid fa-clock"></i>
-                                                </span>
-                                                <span style="color: #fec416">
-                                                    Pendiente
-                                                </span>
-                                            </span>
-                                        </td>
-                                        <% } else { %>
-                                        <td>
-                                            <span class="tag is-size-6" style="background-color: #f6d5d8">
-                                                <span class="icon is-small" style="color: #f83362">
-                                                    <i class="fa-solid fa-circle-xmark"></i>
-                                                </span>
-                                                <span style="color: #f83362">
-                                                    Atrasado
-                                                </span>
-                                            </span>
-                                        </td>
-                                        <% } %>
-                                    </tr>
+                    
+                    <div id="estado_cuenta" class="is-active">        
+                        <div id="deuda">
+                            <% if (deuda.length != 0) { %> 
+                                <div class="table-container">
+                                    <table class="table is-fullwidth is-hoverable">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: left;">#</th>
+                                                <th style="text-align: left;">Pendiente</th>
+                                                <th style="text-align: left;">Total</th>
+                                                <th style="text-align: left;">Pagado</th>
+                                                <th style="text-align: left;">Descuento</th>
+                                                <th style="text-align: left;">Fecha Límite de Pago</th>
+                                                <th style="text-align: left;">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% let currentDate = fechaActual %>
+                                            <% for (let count = 0; count < deuda.length; count++) { %>
+                                            <tr>
+                                                <td>Pago #<%= count + 1 %></td>
+                                                <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                                <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                                <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                                <td>
+                                                    $<%= deuda[count].Descuento.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    }) %>
+                                                </td>
+                                                <td><%= deuda[count].fechaLimitePago %></td>
+                                                <% if (deuda[count].Pagado == 1) { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                                        <span class="icon is-small" style="color: #21c85b">
+                                                            <i class="fa-solid fa-circle-check"></i>
+                                                        </span>
+                                                        <span style="color: #21c85b">
+                                                            Pagado
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #fdf2cc">
+                                                        <span class="icon is-small" style="color: #fec416">
+                                                            <i class="fa-solid fa-clock"></i>
+                                                        </span>
+                                                        <span style="color: #fec416">
+                                                            Pendiente
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <% } else { %>
+                                                <td>
+                                                    <span class="tag is-size-6" style="background-color: #f6d5d8">
+                                                        <span class="icon is-small" style="color: #f83362">
+                                                            <i class="fa-solid fa-circle-xmark"></i>
+                                                        </span>
+                                                        <span style="color: #f83362">
+                                                            Atrasado
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <% } %>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="columns">
+                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
+                                    <div class="column is-4 is-offset-8">
+                                        <form method="POST" action="/alumnos/fichas">
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                            <p class="control">
+                                                <button class="confirmar-button is-responsive"
+                                                    style="font-size: large;  padding-right: 1.5em;" type="submit">
+                                                    <span class="icon is-large">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </span>
+                                                    <span>
+                                                        MODIFICAR FICHAS
+                                                    </span>
+                                                </button>
+                                            </p>
+                                        </form>
+                                    </div>
                                     <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="columns">
-                            <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
-                            <div class="column is-4 is-offset-8">
-                                <form method="POST" action="/alumnos/fichas">
-                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
-                                    <p class="control">
-                                        <button class="confirmar-button is-responsive"
-                                            style="font-size: large;  padding-right: 1.5em;" type="submit">
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </span>
-                                            <span>
-                                                MODIFICAR FICHAS
-                                            </span>
-                                        </button>
+                                </div>
+                            <% } else { %>
+                                <label class="label is-medium has-text-danger has-text-weight-semibold"
+                                     for="IDPlanPago">
+                                    IMPORTANTE
+                                </label>
+                                <div class="box">
+                                    <p class="has-text-weight-medium has-text-black">
+                                        Este alumno todavía no cuenta con una colegiatura para el periodo actual. Favor de
+                                        intentar más tarde.
                                     </p>
-                                </form>
-                            </div>
+                                </div>
                             <% } %>
                         </div>
                     </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </section>

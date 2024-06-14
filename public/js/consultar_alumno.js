@@ -42,12 +42,6 @@ function mensaje_ref() {
 }
 
 function mensaje_beca() {
-    if (beca.value.length === 0) {
-        ayuda_beca_vacia.classList.remove('is-hidden');
-    } else {
-        ayuda_beca_vacia.classList.add('is-hidden');
-    }
-
     if (beca.value < 0 || beca.value === '-0') {
         bt_Modificar.disabled = true;
         ayuda_beca_negativa.classList.remove('is-hidden');
@@ -85,7 +79,12 @@ function modificar() {
     const csrf = document.getElementById('_csrf').value;
     const alumno = document.getElementById('alumno').value;
     const ref = document.getElementById('ref').value;
-    const beca = document.getElementById('beca').value;
+    const beca = document.getElementById('beca');
+
+    let beca_alumno;
+    if (beca) {
+        beca_alumno = beca.value;
+    }
 
     console.log('Data to be sent:', { ref, beca, alumno });
 
@@ -101,7 +100,7 @@ function modificar() {
         },
         body: JSON.stringify({
             ref: ref,
-            beca: beca,
+            beca: beca_alumno,
             alumno: alumno,
         })
     })
@@ -162,33 +161,54 @@ function muestra_otros_cargos() {
     const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
     const tab_horario = document.querySelector('#nav_horario');
+    const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
+    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
 
-    tab_historial_pagos.classList.remove('is-active');
+    if (tab_pagos_Diplomado_Otros) {
+        tab_pagos_Diplomado_Otros.classList.remove('is-active');
+    }
+     
+    if (tab_historial_pagos) {
+         tab_historial_pagos.classList.remove('is-active');
+     }
 
     if (tab_horario) {
         tab_horario.classList.remove('is-active');
-
     }
 
     if (tab_estado) {
         tab_estado.classList.remove('is-active');
     }
 
+    if (tab_pagos_Diplomado) {
+        tab_pagos_Diplomado.classList.remove('is-active');
+    }
+
     tab_otros_cargos.classList.add('is-active');
 
     const historial = document.querySelector('#historial');
-    historial.classList.add('is-hidden');
+    if (historial) {
+        historial.classList.add('is-hidden');
+    }
 
     const horario = document.querySelector('#horario');
-
     if (horario) {
         horario.classList.add('is-hidden');
     }
 
     const estado_cuenta = document.querySelector('#estado_cuenta');
-
     if (estado_cuenta) {
         estado_cuenta.classList.add('is-hidden');
+    }
+
+    const pagosdipl = document.querySelector('#pagosdipl');
+    if (pagosdipl) {
+        pagosdipl.classList.add('is-hidden');
+    }
+
+    const extrasDiplomado = document.querySelector('#extrasDiplomado');
+    if (extrasDiplomado) {
+        extrasDiplomado.classList.add('is-hidden');
     }
 
     const otros_cargos = document.querySelector('#otros_cargos');
@@ -253,6 +273,44 @@ function muestra_horario() {
 
     const horario = document.querySelector('#horario');
     horario.classList.remove('is-hidden');
+}
+
+function muestra_pagos_diplomado() {
+    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
+    const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
+    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
+
+    tab_otros_cargos.classList.remove('is-active');
+    tab_pagos_Diplomado_Otros.classList.remove('is-active');
+    tab_pagos_Diplomado.classList.add('is-active');
+
+    const otros_cargos = document.querySelector('#otros_cargos');
+    otros_cargos.classList.add('is-hidden');
+
+    const extrasDiplomado = document.querySelector('#extrasDiplomado');
+    extrasDiplomado.classList.add('is-hidden');
+    
+    const pagosdipl = document.querySelector('#pagosdipl');
+    pagosdipl.classList.remove('is-hidden');
+}
+
+function muestra_extras_diplomado() {
+    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
+    const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
+    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
+
+    tab_otros_cargos.classList.remove('is-active');
+    tab_pagos_Diplomado_Otros.classList.add('is-active');
+    tab_pagos_Diplomado.classList.remove('is-active');
+
+    const otros_cargos = document.querySelector('#otros_cargos');
+    otros_cargos.classList.add('is-hidden');
+
+    const extrasDiplomado = document.querySelector('#extrasDiplomado');
+    extrasDiplomado.classList.remove('is-hidden');
+
+    const pagosdipl = document.querySelector('#pagosdipl');
+    pagosdipl.classList.add('is-hidden');
 }
 
 function darDeBajaGrupo(IDGrupo, matricula) {
