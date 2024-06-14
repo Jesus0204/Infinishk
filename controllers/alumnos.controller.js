@@ -131,6 +131,7 @@ exports.post_fetch_datos = async (request, response, next) => {
     let matches = request.body.buscar.match(/(\d+)/);
     const matricula = matches[0];
     const periodo = await Periodo.fetchActivo();
+    const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
     try {
         let alumnoConsulta;
 
@@ -189,6 +190,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 estadoCuenta: estadoCuenta,
                 pagos: pagos,
                 deuda: deuda,
+                fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
@@ -218,6 +220,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 estadoCuenta: estadoCuenta,
                 pagos: pagos,
                 deuda: deuda,
+                fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
