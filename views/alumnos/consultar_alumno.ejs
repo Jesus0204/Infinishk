@@ -83,83 +83,79 @@
                 style="background-color: #5a6581; color:#ffffff;">
                 ¡Datos modificados! Recargando datos...
             </div>
-            <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
-                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
-                <div class="columns is-flex is-align-items-stretch" id="topinfo">
-                    <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                    <div class="column">
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">PLAN DE ESTUDIOS</p>
-                            <p class="has-text-black has-text-weight-bold is-size-5">
-                                <%= alumnoConsulta[0].planEstudio %></p>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
-                            <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
-                            style="padding: 0.5em;">El porcentaje de beca no puede ser negativo.</p>
-                        <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                            style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes.</p>
-                        <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                            style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100.</p>
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
-                            <input id="beca" name="beca"
-                                class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
-                                value="<%= alumnoConsulta[0].porcBeca %>">
-                        </div>
-                    </div>
-                    <% } else { %>
-                    <div class="column">
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
-                            <p class="has-text-black has-text-weight-bold is-size-5">
-                                <% if (alumnoDiplomadoActual[0].length != 0) { %>
-                                <%= alumnoDiplomadoActual[0][0].nombreDiplomado %>
-                                <% } else { %>
-                                No se encuentra cursando un diplomado
-                                <% } %>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">FECHA INSCRIPCIÓN</p>
-                            <p class="has-text-black has-text-weight-bold is-size-5">
-                                <%= alumnoConsulta[0].fechaInscripcion %></p>
-                        </div>
-                    </div>
-                    <% } %>
-                    <div class="column">
-                        <p id="ayuda_ref_vacia" class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
-                            style="padding: 0.5em;">Por favor escribe una referencia bancaria.</p>
-                        <p id="ayuda_ref_negativa" class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
-                            style="padding: 0.5em;">La referencia bancaria no puede ser negativa.</p>
-                        <p id="ayuda_ref_exponente" class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
-                            style="padding: 0.5em;">La referencia bancaria no puede tener exponentes.</p>
-                        <div class="box" style="text-align: center;">
-                            <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
-                            <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
-                                type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
-                        </div>
+            <div class="columns is-flex is-align-items-stretch" id="topinfo">
+                <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">PLAN DE ESTUDIOS</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= alumnoConsulta[0].planEstudio %></p>
                     </div>
                 </div>
-                <div class="columns">
-                    <div class="column is-4 is-offset-8">
-                        <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
-                            style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
-                            <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
-                            <span>GUARDAR CAMBIOS</span>
-                        </button>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
                     </div>
                 </div>
-            </form>
+                <div class="column">
+                    <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
+                        style="padding: 0.5em;">El porcentaje de beca no puede ser negativo.</p>
+                    <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                        style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes.</p>
+                    <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                        style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100.</p>
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
+                        <input id="beca" name="beca"
+                            class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
+                            value="<%= alumnoConsulta[0].porcBeca %>">
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <% if (alumnoDiplomadoActual[0].length != 0) { %>
+                            <%= alumnoDiplomadoActual[0][0].nombreDiplomado %>
+                            <% } else { %>
+                            No se encuentra cursando un diplomado
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">FECHA INSCRIPCIÓN</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= alumnoConsulta[0].fechaInscripcion %></p>
+                    </div>
+                </div>
+                <% } %>
+                <div class="column">
+                    <p id="ayuda_ref_vacia" class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
+                        style="padding: 0.5em;">Por favor escribe una referencia bancaria.</p>
+                    <p id="ayuda_ref_negativa" class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
+                        style="padding: 0.5em;">La referencia bancaria no puede ser negativa.</p>
+                    <p id="ayuda_ref_exponente" class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
+                        style="padding: 0.5em;">La referencia bancaria no puede tener exponentes.</p>
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
+                        <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
+                            type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-4 is-offset-8">
+                    <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
+                        style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
+                        <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
+                        <span>GUARDAR CAMBIOS</span>
+                    </button>
+                </div>
+            </div>
 
             <!-- menú de tabs -->
             <div class="columns">

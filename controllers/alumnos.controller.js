@@ -106,8 +106,7 @@ exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
 
     if (beca == ""){
-        console.log('entre')
-        beca == '0';
+        beca = '0';
     }
 
     try {
