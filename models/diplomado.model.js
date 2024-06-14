@@ -70,7 +70,7 @@ module.exports = class Diplomado {
     }
 
     static fetchAlumnosNoinscritos(nombre) {
-        return db.execute('SELECT estudianteDiplomado.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM estudianteDiplomado JOIN Alumno ON estudianteDiplomado.matricula = Alumno.matricula WHERE estudianteDiplomado.matricula NOT IN (SELECT Cursa.Matricula FROM Cursa JOIN diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.nombreDiplomado= ?)',
+        return db.execute('SELECT estudianteDiplomado.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM estudianteDiplomado JOIN Alumno ON estudianteDiplomado.matricula = Alumno.matricula WHERE estudianteDiplomado.matricula NOT IN (SELECT Cursa.Matricula FROM Cursa JOIN Diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.nombreDiplomado= ?)',
             [nombre])
     }
 
