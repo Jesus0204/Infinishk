@@ -28,7 +28,7 @@ module.exports = class Deuda {
 
     static fetchDeudaConsultarAlumno(matricula) {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
-        (D.montoAPagar - D.Descuento) AS 'montoAPagar',
+        (D.montoAPagar) AS 'montoAPagar',
         ((D.montoAPagar - D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
         D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P

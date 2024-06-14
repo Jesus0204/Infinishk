@@ -3,26 +3,25 @@
     permisos: permisos,
     rol: rol
 }) %>
-
 <section class="section">
-    <div class="container">
         <div class="columns">
             <div class="column is-1">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
-                        <i class="fas fa-arrow-left fa-2x"></i>
+                        <i class="fas fa-arrow-left fa-2x" style="margin-top: 0.5em;"></i>
                     </span>
                 </a>
             </div>
-        <h1 class="title"> Realizar Pago</h1>
+            <div class="column">
+                <label class="label is-large has-text-danger has-text-weight-semibold">REALIZAR PAGO</label>
+            </div>
         </div>
         <div class="columns">
-            <div class="column is-3">
-                <p class="has-text-black">
+            <div class="column is-one-fifth">
+                <label class="label has-text-black has-text-weight-normal" for="tipo" style="padding-bottom: 0.5em;">
                     Selecciona el tipo de pago que vas a realizar:
-                </p>
-                <br>
+                </label>
                 <div class="control has-icons-left">
                     <div class="select is-medium" style="width: 110%;">
                         <select name="tipo" id="tipo" style="width: 110%;">
@@ -51,35 +50,39 @@
                     <% for (let deudas of totales) { %>
                     <% porPagar += deudas.montoAPagar %>
                     <% } %>
-                    <div class="box" style="text-align: center;">
-                        <p class="has-text-grey has-text-weight-medium">
-                            Saldo Pendiente
-                        </p>
-                        <p class="has-text-black has-text-weight-bold is-size-5">
-                            $<%= (porPagar - colegiatura[0].montoPagadoTotal).toLocaleString('mx', {
-                                                        minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2
-                                                     }) %>
-                        </p>
-                    </div>
-                    <label class="label is-medium has-text-danger has-text-weight-semibold">FICHA ACTUAL A PAGAR</label>
-                    <table class="table is-hoverable is-fullwidth">
-                        <tr>
-                            <td>
-                                <p class="has-text-danger has-text-weight-semibold">
-                                    Fecha Límite
+                    <div class="columns">
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">
+                                    SALDO PENDIENTE
                                 </p>
-                                <p class="has-text-black has-text-weight-bold">
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    $<%= (porPagar).toLocaleString('mx', {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2
+                                                             }) %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="label is-medium has-text-danger has-text-weight-semibold">FICHA ACTUAL</label>
+                    <table class="table ficha-table is-fullwidth" style="border-radius: 10px;">
+                        <tr>
+                            <td style="padding: 5px 15px">
+                                <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    FECHA LÍMITE
+                                </p>
+                                <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
                                     <%= deuda[0].fechaLimitePago %>
                                 </p>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <p class="has-text-danger has-text-weight-semibold">
-                                    Monto a Pagar
+                            <td style="padding: 5px 15px">
+                                <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    MONTO A PAGAR
                                 </p>
-                                <p class="has-text-black has-text-weight-bold">
+                                <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
                                     $<%= deuda[0].montoAPagar.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
@@ -88,11 +91,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <p class="has-text-danger has-text-weight-semibold">
-                                    Monto Pagado
+                            <td style="padding: 5px 15px">
+                                <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    MONTO PAGADO
                                 </p>
-                                <p class="has-text-black has-text-weight-bold">
+                                <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
                                     $<%= deuda[0].montoPagado.toLocaleString('mx', {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
@@ -103,33 +106,32 @@
                     </table>
                     <% } %>
                     <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
-                    <table class="table is-bordered Pago-de-Diplomado"
-                        style="color: #ffffff; margin-left: auto; margin-right: auto;">
-                        <caption class="is-size-5">
-                            <strong>
-                                Cursando:
-                            </strong>
-                        </caption>
-                        <thead>
-                            <th style="color: #ffffff">
-                                Diplomado
-                            </th>
-                            <th style="color: #ffffff">
-                                Precio
-                            </th>
-                        </thead>
-                        <tbody>
-                            <td>
-                                <%= diplomado[0].nombreDiplomado %>
-                            </td>
-                            <td>
-                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
+                        <label class="label is-medium has-text-danger has-text-weight-semibold">CURSANDO</label>
+                        <table class="table is-fullwidth">
+                            <tr>
+                                <td>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        DIPLOMADO
+                                    </p>
+                                    <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                        <%= diplomado[0].nombreDiplomado %>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        PRECIO
+                                    </p>
+                                    <p class="has-text-black has-text-weight-bold" style="margin: 5px 0">
+                                        $<%= diplomado[0].precioDiplomado.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
                                                  }) %>
-                            </td>
-                        </tbody>
-                    </table>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
                     <% } %>
                     <% if (deuda.length == 0 && colegiatura.length != 0) { %>
                     <div style="text-align: center;">
@@ -294,13 +296,13 @@
                         <label class="label is-medium" for="nota">Nota: </label>
                     </div>
                     <div class="column">
-                        <textarea name="nota" id="nota" class="input is-medium"
+                        <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
                             placeholder="Escribe tu nota aquí."></textarea>
                     </div>
                 </div>
                 <div class="columns">
-                    <div class="column is-5"></div>
-                    <div class="column is-7">
+                    <div class="column is-6"></div>
+                    <div class="column is-6">
                         <div id="boton_tarjeta">
                             <button class="js-modal-trigger confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
                                 id="Boton_pagar_1"
@@ -464,7 +466,6 @@
                 </section>
             </div>
         </div>
-    </div>
 </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/modal_popup.js"></script>

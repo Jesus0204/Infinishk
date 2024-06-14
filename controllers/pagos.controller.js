@@ -540,8 +540,9 @@ exports.post_fetch_registrar_pago_manual = (request, response, next) => {
                         })
                         // Si no, es alumno de diplomado
                     } else if (matches[0][0] == '8') {
+                        let now = moment().tz('America/Mexico_City').format('YYYY-MM-DD')
                         // Sacas información del diplomado que estan cursando
-                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(matches[0]);
+                        const [infoDiplomado, fieldData] = await Cursa.fetchDiplomadosCursando(matches[0], now);
                         let infoPagosDiplomado = '';
                         if (infoDiplomado.length != 0) {
                             // Sacas información de algún pago si es que existe

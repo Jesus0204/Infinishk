@@ -121,6 +121,10 @@
   border: solid #95404c;
 }
 
+ .textarea, .input, .select select {
+  max-width: 100%;
+}
+
 .button {
   width: 100%;
   margin: 6px auto;
