@@ -105,7 +105,8 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => { 
     const { ref, beca, alumno, csrf } = request.body;
 
-    if(beca == null){
+    if (beca == ""){
+        console.log('entre')
         beca == '0';
     }
 
