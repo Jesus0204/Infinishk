@@ -183,7 +183,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
-                alumnoDiplomadoActual: alumnoDiplomadoActualConsulta[0][0],
+                alumnoDiplomadoActual: alumnoDiplomadoActualConsulta,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
