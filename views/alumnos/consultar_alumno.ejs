@@ -83,6 +83,8 @@
                 style="background-color: #5a6581; color:#ffffff;">
                 ¡Datos modificados! Recargando datos...
             </div>
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
             <div class="columns is-flex is-align-items-stretch" id="topinfo">
                 <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                 <div class="column">
