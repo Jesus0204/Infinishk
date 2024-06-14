@@ -27,7 +27,7 @@
             </a>
         </div>
         <div class="column">
-            <label class="label is-large has-text-danger has-text-weight-semibold">REALIZAR PAGO MANUAL</label>
+            <label class="label is-large has-text-danger has-text-weight-semibold">REGISTRAR PAGO MANUAL</label>
         </div>
     </div>
     <div class="columns is-centered">
@@ -108,7 +108,7 @@
                 <% } %>
                 <% if (alumno[0].Matricula[0] == '8' && diplomado.length != 0) { %>
                     <label class="label is-medium has-text-danger has-text-weight-semibold">CURSANDO</label>
-                    <table class="table is-fullwidth">
+                    <table class="table ficha-table is-fullwidth">
                         <tr>
                             <td>
                                 <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
@@ -135,7 +135,7 @@
                     </table>
                 <% if (pagoDiplomado.length != 0) { %>
                     <label class="label is-medium has-text-danger has-text-weight-semibold">PAGOS ANTERIORES</label>
-                    <table class="table"
+                    <table class="table ficha-table is-fullwidth"
                         style="margin-left: auto; margin-right: auto;">
                         <thead>
                             <th>
@@ -178,37 +178,32 @@
             </div>
             <div id="info_pago_extra" class="is-hidden">
                 <% if (solicitudes.length != 0)  { %>
-                <table class="table is-bordered Pago-Extra"
-                    style="color: #ffffff; margin-left: auto; margin-right: auto;">
-                    <caption class="is-size-5">
-                        <strong>
-                            Pendientes:
-                        </strong>
-                    </caption>
-                    <thead>
-                        <th style="color: #ffffff">
-                            Motivo
-                        </th>
-                        <th style="color: #ffffff">
-                            Monto
-                        </th>
-                    </thead>
-                    <tbody>
-                        <% for (let solicitud of solicitudes) { %>
-                            <tr>
-                                <td>
-                                    <%= solicitud.motivoPago %>
-                                </td>
-                                <td>
-                                    $<%= solicitud.montoPagar.toLocaleString('mx', {
-                                                        minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2
-                                                     }) %>
-                                </td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+                    <label class="label is-medium has-text-danger has-text-weight-semibold">PENDIENTES</label>
+                    <table class="table ficha-table is-fullwidth">
+                        <thead>
+                            <th style="text-align: left;">
+                                Motivo
+                            </th>
+                            <th style="text-align: left;">
+                                Monto
+                            </th>
+                        </thead>
+                        <tbody>
+                            <% for (let solicitud of solicitudes) { %>
+                                <tr>
+                                    <td>
+                                        <%= solicitud.motivoPago %>
+                                    </td>
+                                    <td>
+                                        $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 <% } %>
             </div>
         </div>
@@ -369,7 +364,7 @@
                                 <% } else { %>
                                     <button class="js-modal-trigger confirmar-button is-responsive"
                                         type="button" style="font-size: large; padding-left: 1.5em;" id="boton_pago_col"
-                                        data-target="modal-confirmar-registro_colegiatura" type="button" disabled>
+                                        data-target="modal-confirmar-registro_colegiatura" type="button">
                                         <span>REGISTRAR PAGO</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>

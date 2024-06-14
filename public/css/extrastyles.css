@@ -121,6 +121,10 @@
   border: solid #95404c;
 }
 
+.ficha-table {
+  border-radius: 10px;
+}
+
  .textarea, .input, .select select {
   max-width: 100%;
 }
