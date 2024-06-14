@@ -120,7 +120,7 @@
                             <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
                             <p class="has-text-black has-text-weight-bold is-size-5">
                                 <% if (alumnoDiplomadoActual) { %>
-                                <%= alumnoDiplomadoActual.nombreDiplomado %>
+                                <%= alumnoDiplomadoActual[0][0].nombreDiplomado %>
                                 <% } else { %>
                                 No se encuentra cursando un diplomado
                                 <% } %>
