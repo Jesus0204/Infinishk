@@ -4,6 +4,37 @@
     rol: rol
 }) %>
 
+<style>
+    input:focus {
+        border: 2px solid #5a6581 !important
+    }
+
+    input:hover {
+        border: 2px solid #910106 !important;
+    }
+
+    input {
+        border: 2px solid #7c7f80 !important;
+    }
+
+    .columns.is-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .columns.is-flex .column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .columns.is-flex .box {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-start; /* Align content to the top */
+    }
+</style>
+
 <body>
     <section class="section">
         <div class="container">
@@ -16,13 +47,15 @@
                         </span>
                     </a>
                 </div>
-                <div class="column is-6">
-                    <h3 class="title is-3">Alumno: 
+                <div class="column">
+                    <label
+                        class="label is-large has-text-danger has-text-weight-semibold">
+                        ALUMNO: 
                         <br>
                         <%= alumnoConsulta[0].Nombre %>
-                        <%= alumnoConsulta[0].Apellidos %> - 
+                        <%= alumnoConsulta[0].Apellidos %> -
                         <%= alumnoConsulta[0].Matricula %>
-                    </h3>
+                    </label>
                 </div>
                 <% if (contienePermiso(permisos, 'Registrar Pago Manual') == true) { %>
                     <div class="column">
@@ -40,7 +73,7 @@
                                 </button>
                             </p>
                         </form>
-                </div>
+                    </div>
                 <% } %>
             </div>
 
@@ -51,499 +84,535 @@
                 <button id="btn_eliminar_estatus" class="delete"></button>
                 ¡Datos modificados! Recargando datos...
             </div>
-
-            <div class="notification">
-                <div class="columns is-vcentered">
-                    <div class="column is-3">
-                        <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
-                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                            <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
-                        <label class="block font-semibold"><strong>Referencia Bancaria:</strong></label>
-                        <input id="ref" name="ref" class="input is-small" type="number" step="any"
-                            value="<%= alumnoConsulta[0].referenciaBancaria %>">
-
-                        <p id="ayuda_ref_vacia" class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
-                            style="padding: 0.5em; margin-bottom: -2em;">
-                            Por favor escribe una referencia bancaria.</p>
-                        <p id="ayuda_ref_negativa" class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
-                            style="padding: 0.5em; margin-bottom: -2em;">
-                            La referencia bancaria no puede ser negativa.</p>
-                        <p id="ayuda_ref_exponente" class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
-                            style="padding: 0.5em; margin-bottom: -2em;">
-                            La referencia bancaria no puede tener exponentes.</p>
-
-                    </div>
+            <form action="/alumnos/datos_alumno/modify" method="POST" class="form-modificar">
+                <div class="columns is-flex is-align-items-stretch" id="topinfo">
                     <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                        <div class="column is-4">
-                            <label class="block font-semibold"><strong>Plan de Estudios:</strong></label>
-                            <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].planEstudio %>
-                            </div>
+                    <div class="column">
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">PLAN DE ESTUDIOS</p>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].planEstudio %></p>
                         </div>
-                        <div class="column is-3">
-                            <label class="block font-semibold"><strong>Ciclo Escolar:</strong></label>
-                            <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= periodo.Nombre %>
-                            </div>
+                    </div>
+                    <div class="column">
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
+                            <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
                         </div>
-                        <div class="column is-2">
-                            <label class="block font-semibold"><strong>% de Beca:</strong></label>
-                            <input id="beca" name="beca" class="input is-small" type="number" step="any"
+                    </div>
+                    <div class="column">
+                        <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
+                            style="padding: 0.5em;">El porcentaje de beca no puede ser negativo.</p>
+                        <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                            style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes.</p>
+                        <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
+                            style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100.</p>
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
+                            <input id="porcBeca" name="porcBeca"
+                                class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
                                 value="<%= alumnoConsulta[0].porcBeca %>">
-
-                            <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
-                                style="padding: 0.5em; margin-bottom: -2em;">
-                                El porcentaje de beca no puede ser negativo.</p>
-                            <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                                style="padding: 0.5em; margin-bottom: -2em;">
-                                El porcentaje de beca no puede tener exponentes.</p>
-                            <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                                style="padding: 0.5em; margin-bottom: -2em;">
-                                El porcentaje de beca no puede ser mayor a 100.</p>
                         </div>
+                    </div>
                     <% } else { %>
-                        <div class="column is-5">
-                            <label class="block font-semibold"><strong>Diplomado:</strong></label>
-                            <div class="mt-1 px-4 py-2 bg-gray-100 rounded border">
-                                <% if (alumnoDiplomadoActual) { %> 
-                                    <%= alumnoDiplomadoActual.nombreDiplomado %>
+                    <div class="column">
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <% if (alumnoDiplomadoActual) { %>
+                                <%= alumnoDiplomadoActual.nombreDiplomado %>
                                 <% } else { %>
-                                    No se encuentra cursando un diplomado
+                                No se encuentra cursando un diplomado
                                 <% } %>
-                            </div>
+                            </p>
                         </div>
-                        <div class="column is-3">
-                            <label class="block font-semibold"><strong>Fecha de Inscripción:</strong></label>
-                            <div class="mt-1 px-4 py-2 bg-gray-100 rounded border"><%= alumnoConsulta[0].fechaInscripcion %>
-                            </div>
+                    </div>
+                    <div class="column">
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">FECHA INSCRIPCIÓN</p>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].fechaInscripcion %></p>
                         </div>
+                    </div>
                     <% } %>
+                    <div class="column">
+                        <p id="ayuda_ref_vacia" class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
+                            style="padding: 0.5em;">Por favor escribe una referencia bancaria.</p>
+                        <p id="ayuda_ref_negativa" class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
+                            style="padding: 0.5em;">La referencia bancaria no puede ser negativa.</p>
+                        <p id="ayuda_ref_exponente" class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
+                            style="padding: 0.5em;">La referencia bancaria no puede tener exponentes.</p>
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
+                            <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
+                                type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                        </div>
+                    </div>
                 </div>
-                <div class="column is-narrow">
-                    <button id="Boton_modificar" type="submit" class="button is-primary is-responsive"
-                        onclick="modificar()">Guardar Cambios</button>
+                <div class="columns">
+                    <div class="column is-4 is-offset-8">
+                        <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
+                            style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
+                            <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
+                            <span>GUARDAR CAMBIOS</span>
+                        </button>
+                    </div>
                 </div>
             </form>
-        </div>
-        </div>
 
-        <!-- menú de tabs -->
-        <div class="container" style="padding-top: 15px;">
-            <div class="tabs is-boxed">
-                <ul>
-                    <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+            <!-- menú de tabs -->
+            <div class="columns">
+                <div class="column is-full"></div>
+            </div>
+            <div class="container containerConsultarAlumno">
+                <div class="tabs is-centered is-boxed is-fullwidth">
+                    <ul>
+                        <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                         <li class="is-active" id="nav_estado">
                             <a onclick="muestra_estado_de_cuenta()">
                                 <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
                                 <span>Estado de Cuenta</span>
                             </a>
                         </li>
-                    <% } %>
-                    <li id="nav_otros_cargos">
-                        <a onclick="muestra_otros_cargos()">
-                            <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
-                            <span>Otros Cargos</span>
-                        </a>
-                    </li>
-                    <li id="nav_historial_pagos">
-                        <a onclick="muestra_historial_de_pagos()">
-                            <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                            <span>Historial de Pagos</span>
-                        </a>
-                    </li>
-                    <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+                        <% } %>
+                        <li id="nav_otros_cargos">
+                            <a onclick="muestra_otros_cargos()">
+                                <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
+                                <span>Otros Cargos</span>
+                            </a>
+                        </li>
+                        <li id="nav_historial_pagos">
+                            <a onclick="muestra_historial_de_pagos()">
+                                <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
+                                <span>Historial de Pagos</span>
+                            </a>
+                        </li>
+                        <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                         <li id="nav_horario">
                             <a onclick="muestra_horario()">
                                 <span class="icon is-small"><i class="fa-solid fa-calendar-week"></i></span>
                                 <span>Materias</span>
                             </a>
                         </li>
-                    <% } %>
-                </ul>
-            </div>
+                        <% } %>
+                    </ul>
+                </div>
             
-            <div id="otros_cargos" class="is-hidden">
-                <% pagosExtra.forEach(pagosExtra => { %>
-                    <% if(pagosExtra.montoPagar !== 0) { %>
-                        <div class="box">
-                            <div class="columns is-vcentered">
-                                <div class="column">
-                                    <p><strong>Monto a Pagar:</strong> $<%= pagosExtra.montoPagar.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            }) %> </p>
-                                    <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
+                <div id="otros_cargos" class="is-hidden">
+                    <% pagosExtra.forEach(pagosExtra => { %>
+                        <% if(pagosExtra.montoPagar !== 0) { %>
+                            <div class="box">
+                                <div class="columns is-vcentered">
+                                    <div class="column">
+                                        <p><strong>Monto a Pagar:</strong> $<%= pagosExtra.montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %> </p>
+                                        <p><strong>Motivo:</strong> <%= pagosExtra.motivoPago %> </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <% } %>
-                <% }); %>
-            </div>
+                        <% } %>
+                    <% }); %>
+                </div>
             
-            <div id="historial" class="is-hidden">
-                <div id="pagos">
-                    <div class="tabs is-boxed">
-                        <ul>
-                            <li class="is-active" id="nav_pagoscol">
-                                <a onclick="pagoscol()">
-                                    <% if(matricula[0] == '1') { %>
-                                        <span>Pagos de Colegiatura</span>
-                                    <% } else { %>
-                                        <span>Pagos de Diplomado</span>
+                <div id="historial" class="is-hidden">
+                    <div id="pagos">
+                        <div class="tabs is-boxed">
+                            <ul>
+                                <li class="is-active" id="nav_pagoscol">
+                                    <a onclick="pagoscol()">
+                                        <% if(matricula[0] == '1') { %>
+                                            <span>Pagos de Colegiatura</span>
+                                        <% } else { %>
+                                            <span>Pagos de Diplomado</span>
+                                        <% } %>
+                                    </a>
+                                </li>
+                                <li id="nav_pagosextra">
+                                    <a onclick="pagosextra()">
+                                        <span>Pagos Extras</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div id="pagoscol">
+                            <% if(matricula[0] == '1') { %>
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">Monto</th>
+                                            <th style="text-align: left;">Fecha</th>
+                                            <th style="text-align: left;">Motivo</th>
+                                            <th style="text-align: left;">Método</th>
+                                            <th style="text-align: left;">Nota</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% pagos.forEach(pagos => { %>
+                                                <tr>
+                                                    <td>
+                                                        $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2
+                                                            }) %>
+                                                    </td>
+                                                    <td>
+                                                        <%= pagos.fechaPago %>
+                                                    </td>
+                                                    <td>
+                                                        <%= pagos.motivo %>
+                                                    </td>
+                                                    <td>
+                                                        <%= pagos.metodoPago %>
+                                                    </td>
+                                                    <td>
+                                                        <%= pagos.nota %>
+                                                    </td>
+                                                </tr>
+                                        <% } )%>
+                                    </tbody>
+                                </table>
+
+                            <% } else if(matricula[0] == '8') { %>
+                                <% pagosDiplomado.forEach(pagos => { %>
+                                    <% if(pagos.montoPagado !== 0) { %>
+                                        <div class="box">
+                                            <div class="columns is-vcentered">
+                                                <div class="column">
+                                                    <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    }) %> </p>
+                                                    <p><strong>Nombre del Diplomado:</strong> <%= pagos.nombreDiplomado %> </p>
+                                                    <p><strong>Fecha de Pago:</strong> <%= pagos.fechaPago %> </p>
+                                                    <p><strong>Motivo de Pago:</strong> <%= pagos.Motivo %> </p>
+                                                    <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
+                                                    <% if(pagos.Nota !== '') { %>
+                                                    <p><strong>Nota:</strong> <%= pagos.Nota %> </p>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <% } %>
-                                </a>
-                            </li>
-                            <li id="nav_pagosextra">
-                                <a onclick="pagosextra()">
-                                    <span>Pagos Extras</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                                <% }) %>
+                            <% }; %>
+                        </div>
 
-                    <div id="pagoscol">
-                        <% if(matricula[0] == '1') { %>
-                            <% pagos.forEach(pagos => { %>
-                                <% if(pagos.montoPagado !== 0) { %>
-                                    <div class="box">
-                                        <div class="columns is-vcentered">
-                                            <div class="column">
-                                                <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
+                        <div class="is-hidden" id="pagosextra">
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Monto</th>
+                                        <th style="text-align: left;">Fecha</th>
+                                        <th style="text-align: left;">Motivo</th>
+                                        <th style="text-align: left;">Método</th>
+                                        <th style="text-align: left;">Nota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% pagadosExtra.forEach(pagadosExtra => { %>
+                                        <tr>
+                                            <td>
+                                                $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
-                                                }) %> </p>
-                                                <p><strong>Fecha de Pago:</strong> <%= pagos.fechaPago %> </p>
-                                                <p><strong>Motivo de Pago:</strong> <%= pagos.motivo %> </p>
-                                                <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
-                                                <% if(pagos.nota !== '') { %>
-                                                <p><strong>Nota:</strong> <%= pagos.nota %> </p>
-                                                <% } %>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% } %>
-                            <% } )%>
-
-                        <% } else if(matricula[0] == '8') { %>
-                            <% pagosDiplomado.forEach(pagos => { %>
-                                <% if(pagos.montoPagado !== 0) { %>
-                                    <div class="box">
-                                        <div class="columns is-vcentered">
-                                            <div class="column">
-                                                <p><strong>Monto Pagado:</strong> $<%= pagos.montoPagado.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %> </p>
-                                                <p><strong>Nombre del Diplomado:</strong> <%= pagos.nombreDiplomado %> </p>
-                                                <p><strong>Fecha de Pago:</strong> <%= pagos.fechaPago %> </p>
-                                                <p><strong>Motivo de Pago:</strong> <%= pagos.Motivo %> </p>
-                                                <p><strong>Método:</strong> <%= pagos.metodoPago %> </p>
-                                                <% if(pagos.Nota !== '') { %>
-                                                <p><strong>Nota:</strong> <%= pagos.Nota %> </p>
-                                                <% } %>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% } %>
-                            <% }) %>
-                        <% }; %>
-                    </div>
-
-                    <div class="is-hidden" id="pagosextra">
-                        <% pagadosExtra.forEach(pagadosExtra => { %>
-                            <% if(pagadosExtra.montoPagar !== 0) { %>
-                                <div class="box">
-                                    <div class="columns is-vcentered">
-                                        <div class="column">
-                                            <p><strong>Monto Pagado:</strong> $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            }) %> </p>
-                                            <p><strong>Fecha de Pago:</strong> <%= pagadosExtra.fechaPago %> </p>
-                                            <p><strong>Motivo de Pago:</strong> <%= pagadosExtra.motivoPago %> </p>
-                                            <p><strong>Método:</strong> <%= pagadosExtra.metodoPago %> </p>
-                                            <% if(pagadosExtra.Nota !== '') { %>
-                                            <p><strong>Nota:</strong> <%= pagadosExtra.Nota %> </p>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% } %>
-                        <% }); %>
+                                                }) %>
+                                            </td>
+                                            <td>
+                                                <%= pagadosExtra.fechaPago %>
+                                            </td>
+                                            <td>
+                                                <%= pagadosExtra.motivoPago %>
+                                            </td>
+                                            <td>
+                                                <%= pagadosExtra.metodoPago %>
+                                            </td>
+                                            <td>
+                                                 <%= pagadosExtra.Nota %>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        <% if(matricula[0] == '1') { %>
-            <div id="horario" class="is-hidden">
-                <div id="diplomados_activos" class="container">
-                    <% if (error) { %>
-                        <div id="errorNotification" class="notification is-danger">
-                            Este alumno aun no ha confirmado sus materias.
-                        </div>
-                    <% } %>
-                    <% if(confirmacion){%>
-                        <h3 class="title is-2">Consultar Horario</h3>
-                    <%}%>
-                    <% if(confirmacion === 1){%>
-                    <% if (schedule[0].length === 0) { %>
-                    <h3 class="title is-2">Horario no disponible por el momento.</h3>
-                    <% } else { %>
-                    <% for (let grupo of schedule[0]) { %>
-                    <table class="table is bordered is hoverable is-fullwidth">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="column">
-                                        <p>Unidad de Formación: <%= grupo.IDGrupo %>
-                                        </p>
-                                        <h3 class="title is-5">
-                                            <%= grupo.Nombre %>
-                                        </h3>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-user"></i>
-                                            </span>
-                                            <strong>Profesor: </strong>
-                                            <%= grupo.Profesor %>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-clock"></i>
-                                            </span>
-                                            <strong>Horario: </strong>
-                                            <%= grupo.Horario %>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-building"></i>
-                                            </span>
-                                            <strong>Salón: </strong>
-                                            <%= grupo.Salon %>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fas fa-graduation-cap"></i>
-                                            </span>
-                                            <strong>Créditos: </strong>
-                                            <%= grupo.Creditos.toLocaleString('mx', {
-                                                minimumFractionDigits: 1, maximumFractionDigits: 1
-                                            }) %>
-                                        </p>
-                                        <p>
-                                            <span class="icon is-small">
-                                                <i class="fa-solid fa-tags"></i>
-                                            </span>
-                                            <strong>Costo (MXN): </strong>$<%=
-                                                                                    grupo.Precio_materia.toLocaleString('mx', {
-                                                                                    minimumFractionDigits: 2, maximumFractionDigits: 2
-                                                                                    }) %>
-                                        </p>
-                                    </div>
-                                </td>
-                                <td style="display: block;">
-                                    <br><br><br><br>
-                                    <div class="columns is-vcentered">
-                                        <div class="column" style="text-align: center;">
-                                            <button type="submit"
-                                                class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                                style="font-size: medium; background-color: #000000;" id="Boton_eliminar"
-                                                data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
-                                                <span class="icon is-large">
-                                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
-                                                </span>
-                                                <span>Dar de Baja</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-    
-                                <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
-                                    <div class="modal-background"></div>
-                                    <div class="modal-card">
-                                        <header class="modal-card-head">
-                                            <p class="modal-card-title" style="text-align: center;">
-                                                <strong> Dar de Baja Materia Extra</strong>
-                                            </p>
-                                            <button class="delete" aria-label="delete"></button>
-                                        </header>
-                                        <section class="modal-card-body">
-                                            <p class="is-size-5" style="text-align: center;">
-                                                <strong>¡Esta acción no se puede deshacer!</strong>
-                                            </p>
-                                            <br>
-                                            <p class="is-size-5" style="text-align: center;">
-                                                Los datos del grupo a dar de baja son los siguientes:
-                                            </p>
-                                            <br>
-                                            <br>
-                                            <div style="text-align: center;">
-                                                <p class="is-size-5" style="text-align: center;">
-                                                    <strong>Nombre: </strong><%= grupo.Nombre %>
+                <% if(matricula[0] == '1') { %>
+                    <div id="horario" class="is-hidden">
+                        <div id="diplomados_activos" class="container">
+                            <% if (error) { %>
+                                <div id="errorNotification" class="notification is-danger">
+                                    Este alumno aun no ha confirmado sus materias.
+                                </div>
+                            <% } %>
+                            <% if(confirmacion){%>
+                                <h3 class="title is-2">Consultar Horario</h3>
+                            <%}%>
+                            <% if(confirmacion === 1){%>
+                            <% if (schedule[0].length === 0) { %>
+                            <h3 class="title is-2">Horario no disponible por el momento.</h3>
+                            <% } else { %>
+                            <% for (let grupo of schedule[0]) { %>
+                            <table class="table is bordered is hoverable is-fullwidth">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="column">
+                                                <p>Unidad de Formación: <%= grupo.IDGrupo %>
                                                 </p>
-                                                <p class="is-size-5" style="text-align: center;">
-                                                    <strong>Profesor: </strong><%= grupo.Profesor %>
+                                                <h3 class="title is-5">
+                                                    <%= grupo.Nombre %>
+                                                </h3>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-regular fa-user"></i>
+                                                    </span>
+                                                    <strong>Profesor: </strong>
+                                                    <%= grupo.Profesor %>
                                                 </p>
-                                                <p class="is-size-5" style="text-align: center;">
-                                                    <strong>Horario: </strong><%= grupo.Horario %>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-regular fa-clock"></i>
+                                                    </span>
+                                                    <strong>Horario: </strong>
+                                                    <%= grupo.Horario %>
                                                 </p>
-                                                <p class="is-size-5" style="text-align: center;">
-                                                    <strong>Salón: </strong><%= grupo.Salon %>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-regular fa-building"></i>
+                                                    </span>
+                                                    <strong>Salón: </strong>
+                                                    <%= grupo.Salon %>
                                                 </p>
-                                                <p class="is-size-5" style="text-align: center;">
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-graduation-cap"></i>
+                                                    </span>
                                                     <strong>Créditos: </strong>
                                                     <%= grupo.Creditos.toLocaleString('mx', {
                                                         minimumFractionDigits: 1, maximumFractionDigits: 1
-                                                        }) %>
-                                                </p>
-                                                <p class="is-size-5" style="text-align: center;">
-                                                    <strong>Costo (MXN): </strong>
-                                                    $<%=grupo.Precio_materia.toLocaleString('mx', {
-                                                        minimumFractionDigits: 2, maximumFractionDigits: 2
                                                     }) %>
                                                 </p>
+                                                <p>
+                                                    <span class="icon is-small">
+                                                        <i class="fa-solid fa-tags"></i>
+                                                    </span>
+                                                    <strong>Costo (MXN): </strong>$<%=
+                                                                                            grupo.Precio_materia.toLocaleString('mx', {
+                                                                                            minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                                            }) %>
+                                                </p>
                                             </div>
-                                        </section>
-                                        <footer class="modal-card-foot" style="justify-content: center;">
-                                            <div class="field is-grouped">
-                                                <p class="control">
-                                                    <button class="button is-rounded is-medium is-responsive"
-                                                        aria-label="close" style="font-size: large; margin: 8px 2px;">
-                                                        <span class="icon is-large">
-                                                            <i class="fa-solid fa-circle-chevron-left"
-                                                                style="color: #ffffff;"></i>
-                                                        </span>
-                                                        <span>Regresar</span>
-                                                    </button> </p>
-                                                <p class="control">
-                                                    <button class="button is-rounded is-medium is-responsive"
-                                                        onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
-                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                        </td>
+                                        <td style="display: block;">
+                                            <br><br><br><br>
+                                            <div class="columns is-vcentered">
+                                                <div class="column" style="text-align: center;">
+                                                    <button type="submit"
+                                                        class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                                        style="font-size: medium; background-color: #000000;" id="Boton_eliminar"
+                                                        data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
                                                         <span class="icon is-large">
                                                             <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                                         </span>
                                                         <span>Dar de Baja</span>
                                                     </button>
-                                                </p>
-                                        </footer>
-                                    </div>
-                                </div>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <% } %>
-                    <% } %>
-                    <h3 class="title is-4" style="text-align: center;">Costo Total (MXN): $
-                        <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2 }) %>
-                    </h3>
-                    <br>
-                    <% } %>
-                </div>
-            </div>
-        <% } %>
-
-        <div id="estado_cuenta" class="is-active">        
-            <div id="deuda">
-                <div class="table-container">
-                    <table class="table is-fullwidth is-hoverable">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left;">#</th>
-                                <th style="text-align: left;">Pendiente</th>
-                                <th style="text-align: left;">Total</th>
-                                <th style="text-align: left;">Pagado</th>
-                                <th style="text-align: left;">Descuento</th>
-                                <th style="text-align: left;">Fecha Límite de Pago</th>
-                                <th style="text-align: left;">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% let currentDate = fechaActual %>
-                            <% for (let count = 0; count < deuda.length; count++) { %>
-                            <tr>
-                                <td>Pago #<%= count + 1 %></td>
-                                <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
-                                <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
-                                <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
-                                <td>
-                                    $<%= deuda[count].Descuento.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %>
-                                </td>
-                                <td><%= deuda[count].fechaLimitePago %></td>
-                                <% if (deuda[count].Pagado == 1) { %>
-                                <td>
-                                    <span class="tag is-size-6" style="background-color: #ddf5e5;">
-                                        <span class="icon is-small" style="color: #21c85b">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </span>
-                                        <span style="color: #21c85b">
-                                            Pagado
-                                        </span>
-                                    </span>
-                                </td>
-                                <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
-                                <td>
-                                    <span class="tag is-size-6" style="background-color: #fdf2cc">
-                                        <span class="icon is-small" style="color: #fec416">
-                                            <i class="fa-solid fa-clock"></i>
-                                        </span>
-                                        <span style="color: #fec416">
-                                            Pendiente
-                                        </span>
-                                    </span>
-                                </td>
-                                <% } else { %>
-                                <td>
-                                    <span class="tag is-size-6" style="background-color: #f6d5d8">
-                                        <span class="icon is-small" style="color: #f83362">
-                                            <i class="fa-solid fa-circle-xmark"></i>
-                                        </span>
-                                        <span style="color: #f83362">
-                                            Atrasado
-                                        </span>
-                                    </span>
-                                </td>
-                                <% } %>
-                            </tr>
+                                                </div>
+                                            </div>
+                                        </td>
+            
+                                        <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
+                                            <div class="modal-background"></div>
+                                            <div class="modal-card">
+                                                <header class="modal-card-head">
+                                                    <p class="modal-card-title" style="text-align: center;">
+                                                        <strong> Dar de Baja Materia Extra</strong>
+                                                    </p>
+                                                    <button class="delete" aria-label="delete"></button>
+                                                </header>
+                                                <section class="modal-card-body">
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>¡Esta acción no se puede deshacer!</strong>
+                                                    </p>
+                                                    <br>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        Los datos del grupo a dar de baja son los siguientes:
+                                                    </p>
+                                                    <br>
+                                                    <br>
+                                                    <div style="text-align: center;">
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Nombre: </strong><%= grupo.Nombre %>
+                                                        </p>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Profesor: </strong><%= grupo.Profesor %>
+                                                        </p>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Horario: </strong><%= grupo.Horario %>
+                                                        </p>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Salón: </strong><%= grupo.Salon %>
+                                                        </p>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Créditos: </strong>
+                                                            <%= grupo.Creditos.toLocaleString('mx', {
+                                                                minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                                }) %>
+                                                        </p>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>Costo (MXN): </strong>
+                                                            $<%=grupo.Precio_materia.toLocaleString('mx', {
+                                                                minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                            }) %>
+                                                        </p>
+                                                    </div>
+                                                </section>
+                                                <footer class="modal-card-foot" style="justify-content: center;">
+                                                    <div class="field is-grouped">
+                                                        <p class="control">
+                                                            <button class="button is-rounded is-medium is-responsive"
+                                                                aria-label="close" style="font-size: large; margin: 8px 2px;">
+                                                                <span class="icon is-large">
+                                                                    <i class="fa-solid fa-circle-chevron-left"
+                                                                        style="color: #ffffff;"></i>
+                                                                </span>
+                                                                <span>Regresar</span>
+                                                            </button> </p>
+                                                        <p class="control">
+                                                            <button class="button is-rounded is-medium is-responsive"
+                                                                onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
+                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                                                <span class="icon is-large">
+                                                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                </span>
+                                                                <span>Dar de Baja</span>
+                                                            </button>
+                                                        </p>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <% } %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="columns">
-                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
-                    <div class="column is-4 is-offset-8">
-                        <form method="POST" action="/alumnos/fichas">
-                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                            <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
-                            <p class="control">
-                                <button class="confirmar-button is-responsive"
-                                    style="font-size: large;  padding-right: 1.5em;" type="submit">
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </span>
-                                    <span>
-                                        MODIFICAR FICHAS
-                                    </span>
-                                </button>
-                            </p>
-                        </form>
+                            <% } %>
+                            <h3 class="title is-4" style="text-align: center;">Costo Total (MXN): $
+                                <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2 }) %>
+                            </h3>
+                            <br>
+                            <% } %>
+                        </div>
                     </div>
-                    <% } %>
+                <% } %>
+
+                <div id="estado_cuenta" class="is-active">        
+                    <div id="deuda">
+                        <div class="table-container">
+                            <table class="table is-fullwidth is-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">#</th>
+                                        <th style="text-align: left;">Pendiente</th>
+                                        <th style="text-align: left;">Total</th>
+                                        <th style="text-align: left;">Pagado</th>
+                                        <th style="text-align: left;">Descuento</th>
+                                        <th style="text-align: left;">Fecha Límite de Pago</th>
+                                        <th style="text-align: left;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let currentDate = fechaActual %>
+                                    <% for (let count = 0; count < deuda.length; count++) { %>
+                                    <tr>
+                                        <td>Pago #<%= count + 1 %></td>
+                                        <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %></td>
+                                        <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %></td>
+                                        <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %></td>
+                                        <td>
+                                            $<%= deuda[count].Descuento.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }) %>
+                                        </td>
+                                        <td><%= deuda[count].fechaLimitePago %></td>
+                                        <% if (deuda[count].Pagado == 1) { %>
+                                        <td>
+                                            <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                                <span class="icon is-small" style="color: #21c85b">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </span>
+                                                <span style="color: #21c85b">
+                                                    Pagado
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <% } else if (moment(deuda[count].fechaLimitePago, 'LL').isAfter(currentDate)) { %>
+                                        <td>
+                                            <span class="tag is-size-6" style="background-color: #fdf2cc">
+                                                <span class="icon is-small" style="color: #fec416">
+                                                    <i class="fa-solid fa-clock"></i>
+                                                </span>
+                                                <span style="color: #fec416">
+                                                    Pendiente
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <% } else { %>
+                                        <td>
+                                            <span class="tag is-size-6" style="background-color: #f6d5d8">
+                                                <span class="icon is-small" style="color: #f83362">
+                                                    <i class="fa-solid fa-circle-xmark"></i>
+                                                </span>
+                                                <span style="color: #f83362">
+                                                    Atrasado
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <% } %>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="columns">
+                            <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
+                            <div class="column is-4 is-offset-8">
+                                <form method="POST" action="/alumnos/fichas">
+                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                    <p class="control">
+                                        <button class="confirmar-button is-responsive"
+                                            style="font-size: large;  padding-right: 1.5em;" type="submit">
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </span>
+                                            <span>
+                                                MODIFICAR FICHAS
+                                            </span>
+                                        </button>
+                                    </p>
+                                </form>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/consultar_alumno.js"></script>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
