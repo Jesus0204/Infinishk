@@ -70,12 +70,12 @@ module.exports = class Diplomado {
     }
 
     static fetchAlumnosNoinscritos(nombre) {
-        return db.execute('SELECT estudiantediplomado.matricula, alumno.nombre, alumno.apellidos, estudiantediplomado.fechaInscripcion FROM estudiantediplomado JOIN alumno ON estudiantediplomado.matricula = alumno.matricula WHERE estudiantediplomado.matricula NOT IN (SELECT cursa.Matricula FROM cursa JOIN diplomado ON cursa.IDDiplomado = diplomado.IDDiplomado WHERE diplomado.nombreDiplomado= ?)',
+        return db.execute('SELECT estudianteDiplomado.matricula, Alumno.nombre, Alumno.apellidos, estudianteDiplomado.fechaInscripcion FROM estudianteDiplomado JOIN Alumno ON estudianteDiplomado.matricula = Alumno.matricula WHERE estudianteDiplomado.matricula NOT IN (SELECT Cursa.Matricula FROM Cursa JOIN diplomado ON Cursa.IDDiplomado = Diplomado.IDDiplomado WHERE Diplomado.nombreDiplomado= ?)',
             [nombre])
     }
 
     static insertarAlumno(matricula, id) {
-        return db.execute('INSERT INTO `cursa`(`Matricula`, `IDDiplomado`) VALUES (?,?)',
+        return db.execute('INSERT INTO `Cursa`(`Matricula`, `IDDiplomado`) VALUES (?,?)',
             [matricula, id])
     }
 
