@@ -10,6 +10,10 @@ const Colegiatura = require('../models/colegiatura.model');
 const Usuario = require('../models/usuario.model');
 const Reporte = require('../models/reporte.model');
 
+const {
+    post_fetch_datos
+} = require('./alumnos.controller');
+
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const stream = require('stream');
@@ -605,8 +609,12 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
             // Si no hay una solicitud de pago se guarda dicho pago
             if (pendientes.length == 0) {
                 Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
-                    .then(([rows, fieldData]) => {
-                        response.redirect('/alumnos/fetch_datos');
+                    .then(async ([rows, fieldData]) => {
+                        // Definir la matrícula que use la función post_fetch_datos
+                        request.body.buscar = matricula;
+
+                        // Llamar la función para hacer el render
+                        await post_fetch_datos(request, response, next);
                     })
                     .catch((error) => {
                         response.status(500).render('500', {
@@ -629,8 +637,12 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                             const liquida = idpago_extra.IDLiquida;
                             update = true;
                             Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota, liquida)
-                                .then(([rows, fieldData]) => {
-                                    response.redirect('/alumnos/fetch_datos');
+                                .then(async ([rows, fieldData]) => {
+                                    // Definir la matrícula que use la función post_fetch_datos
+                                    request.body.buscar = matricula;
+
+                                    // Llamar la función para hacer el render
+                                    await post_fetch_datos(request, response, next);
                                 })
                                 .catch((error) => {
                                     response.status(500).render('500', {
@@ -647,8 +659,12 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                 // Si ninguna solicitud es igual solo se guarda el pago con un nuevo registro
                 if (update == false) {
                     Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
-                        .then(([rows, fieldData]) => {
-                            response.redirect('/alumnos/fetch_datos');
+                        .then(async ([rows, fieldData]) => {
+                            // Definir la matrícula que use la función post_fetch_datos
+                            request.body.buscar = matricula;
+
+                            // Llamar la función para hacer el render
+                            await post_fetch_datos(request, response, next);
                         })
                         .catch((error) => {
                             response.status(500).render('500', {
@@ -685,8 +701,12 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
     const IDDiplomado = request.body.IDDiplomado;
 
     PagoDiplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
-        .then(([rows, fieldData]) => {
-            response.redirect('/alumnos/fetch_datos');
+        .then(async ([rows, fieldData]) => {
+            // Definir la matrícula que use la función post_fetch_datos
+            request.body.buscar = matricula;
+
+            // Llamar la función para hacer el render
+            await post_fetch_datos(request, response, next);
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -737,7 +757,12 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
             if (monto_a_usar > 0) {
                 await Alumno.update_credito(matricula, monto_a_usar);
             }
-            response.redirect('/alumnos/fetch_datos');
+
+            // Definir la matrícula que use la función post_fetch_datos
+            request.body.buscar = matricula;
+
+            // Llamar la función para hacer el render
+            await post_fetch_datos(request, response, next);
         })
         .catch((error) => {
             response.status(500).render('500', {
