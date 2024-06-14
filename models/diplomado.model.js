@@ -32,7 +32,7 @@ module.exports = class Diplomado {
     }
 
     static fetchID(nombre) {
-        return db.execute('Select IDDiplomado FROM diplomado WHERE nombreDiplomado = ?', [nombre]);
+        return db.execute('Select IDDiplomado FROM Diplomado WHERE nombreDiplomado = ?', [nombre]);
     }
 
     static update(id, fechaInicio, fechaFin, precio, nombre) {
