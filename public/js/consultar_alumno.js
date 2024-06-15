@@ -134,17 +134,22 @@ function modificar() {
 /* Funciones para alternar entre pestañas */
 function muestra_estado_de_cuenta() {
     const tab_estado = document.querySelector('#nav_estado');
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
+    const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
     const tab_horario = document.querySelector('#nav_horario');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
 
-    tab_otros_cargos.classList.remove('is-active');
+    tab_pagos_Otros.classList.remove('is-active');
     tab_historial_pagos.classList.remove('is-active');
     tab_horario.classList.remove('is-active');
+    tab_solicitudes.classList.remove('is-active');
     tab_estado.classList.add('is-active');
 
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.add('is-hidden');
+    const extras = document.querySelector('#extras');
+    extras.classList.add('is-hidden');
+
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.add('is-hidden');
 
     const historial = document.querySelector('#historial');
     historial.classList.add('is-hidden');
@@ -157,16 +162,14 @@ function muestra_estado_de_cuenta() {
 }
 
 function muestra_otros_cargos() {
-    const tab_estado = document.querySelector('#nav_estado');
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
-    const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
-    const tab_horario = document.querySelector('#nav_horario');
     const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
-    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
+    const tab_estado = document.querySelector('#nav_estado');
+    const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
+    const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
+    const tab_horario = document.querySelector('#nav_horario');
 
-    if (tab_pagos_Diplomado_Otros) {
-        tab_pagos_Diplomado_Otros.classList.remove('is-active');
-    }
+    tab_solicitudes.classList.remove('is-active');
      
     if (tab_historial_pagos) {
          tab_historial_pagos.classList.remove('is-active');
@@ -184,7 +187,7 @@ function muestra_otros_cargos() {
         tab_pagos_Diplomado.classList.remove('is-active');
     }
 
-    tab_otros_cargos.classList.add('is-active');
+    tab_pagos_Otros.classList.add('is-active');
 
     const historial = document.querySelector('#historial');
     if (historial) {
@@ -206,20 +209,84 @@ function muestra_otros_cargos() {
         pagosdipl.classList.add('is-hidden');
     }
 
-    const extrasDiplomado = document.querySelector('#extrasDiplomado');
-    if (extrasDiplomado) {
-        extrasDiplomado.classList.add('is-hidden');
-    }
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.add('is-hidden');
 
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.remove('is-hidden');
+    const extras = document.querySelector('#extras');
+    extras.classList.remove('is-hidden');
 }
 
 function muestra_historial_de_pagos() {
     const tab_estado = document.querySelector('#nav_estado');
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
+    const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
     const tab_horario = document.querySelector('#nav_horario');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
+
+    tab_horario.classList.remove('is-active');
+    tab_estado.classList.remove('is-active');
+    tab_pagos_Otros.classList.remove('is-active');
+    tab_solicitudes.classList.remove('is-active');
+    tab_historial_pagos.classList.add('is-active');
+
+    const horario = document.querySelector('#horario');
+    horario.classList.add('is-hidden');
+
+    const estado_cuenta = document.querySelector('#estado_cuenta');
+    estado_cuenta.classList.add('is-hidden');
+
+    const extras = document.querySelector('#extras');
+    extras.classList.add('is-hidden');
+
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.add('is-hidden');
+
+    const historial = document.querySelector('#historial');
+    historial.classList.remove('is-hidden');
+}
+
+function muestra_horario() {
+    const tab_estado = document.querySelector('#nav_estado');
+    const nav_pagos_Otros = document.querySelector('#nav_pagos_Otros');
+    const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
+    const tab_horario = document.querySelector('#nav_horario');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
+
+    tab_estado.classList.remove('is-active');
+    nav_pagos_Otros.classList.remove('is-active');
+    tab_historial_pagos.classList.remove('is-active');
+    tab_solicitudes.classList.remove('is-active');
+    tab_horario.classList.add('is-active');
+
+    const estado_cuenta = document.querySelector('#estado_cuenta');
+    estado_cuenta.classList.add('is-hidden');
+
+    const extras = document.querySelector('#extras');
+    extras.classList.add('is-hidden');
+
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.add('is-hidden');
+
+    const historial = document.querySelector('#historial');
+    historial.classList.add('is-hidden');
+
+    const horario = document.querySelector('#horario');
+    horario.classList.remove('is-hidden');
+}
+
+function muestra_solicitudes() {
+    const tab_estado = document.querySelector('#nav_estado');
+    const tab_horario = document.querySelector('#nav_horario');
+    const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
+    const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
+    const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
+    
+    tab_pagos_Otros.classList.remove('is-active');
+
+    if (tab_historial_pagos) {
+        tab_historial_pagos.classList.remove('is-active');
+    }
 
     if (tab_horario) {
         tab_horario.classList.remove('is-active');
@@ -229,88 +296,56 @@ function muestra_historial_de_pagos() {
         tab_estado.classList.remove('is-active');
     }
 
-    tab_otros_cargos.classList.remove('is-active');
-    tab_historial_pagos.classList.add('is-active');
+    if (tab_pagos_Diplomado) {
+        tab_pagos_Diplomado.classList.remove('is-active');
+    }
+
+    tab_solicitudes.classList.add('is-active');
+
+    const historial = document.querySelector('#historial');
+    if (historial) {
+        historial.classList.add('is-hidden');
+    }
 
     const horario = document.querySelector('#horario');
-
     if (horario) {
         horario.classList.add('is-hidden');
     }
 
     const estado_cuenta = document.querySelector('#estado_cuenta');
-
     if (estado_cuenta) {
         estado_cuenta.classList.add('is-hidden');
     }
 
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.add('is-hidden');
+    const pagosdipl = document.querySelector('#pagosdipl');
+    if (pagosdipl) {
+        pagosdipl.classList.add('is-hidden');
+    }
 
-    const historial = document.querySelector('#historial');
-    historial.classList.remove('is-hidden');
-}
+    const extras = document.querySelector('#extras');
+    extras.classList.add('is-hidden');
 
-function muestra_horario() {
-    const tab_estado = document.querySelector('#nav_estado');
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
-    const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
-    const tab_horario = document.querySelector('#nav_horario');
-
-    tab_estado.classList.remove('is-active');
-    tab_otros_cargos.classList.remove('is-active');
-    tab_historial_pagos.classList.remove('is-active');
-    tab_horario.classList.add('is-active');
-
-    const estado_cuenta = document.querySelector('#estado_cuenta');
-    estado_cuenta.classList.add('is-hidden');
-
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.add('is-hidden');
-
-    const historial = document.querySelector('#historial');
-    historial.classList.add('is-hidden');
-
-    const horario = document.querySelector('#horario');
-    horario.classList.remove('is-hidden');
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.remove('is-hidden');
 }
 
 function muestra_pagos_diplomado() {
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
+    const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
     const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
-    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
+    const tab_solicitudes = document.querySelector('#nav_solicitudes');
 
-    tab_otros_cargos.classList.remove('is-active');
-    tab_pagos_Diplomado_Otros.classList.remove('is-active');
+    tab_pagos_Otros.classList.remove('is-active');
+    tab_solicitudes.classList.remove('is-active');
     tab_pagos_Diplomado.classList.add('is-active');
 
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.add('is-hidden');
+    const extras = document.querySelector('#extras');
+    extras.classList.add('is-hidden');
 
-    const extrasDiplomado = document.querySelector('#extrasDiplomado');
-    extrasDiplomado.classList.add('is-hidden');
-    
+    const solicitudes = document.querySelector('#solicitudes');
+    solicitudes.classList.add('is-hidden');
+
     const pagosdipl = document.querySelector('#pagosdipl');
     pagosdipl.classList.remove('is-hidden');
-}
-
-function muestra_extras_diplomado() {
-    const tab_otros_cargos = document.querySelector('#nav_otros_cargos');
-    const tab_pagos_Diplomado = document.querySelector('#nav_pagos_Diplomado');
-    const tab_pagos_Diplomado_Otros = document.querySelector('#nav_pagos_Diplomado_Otros');
-
-    tab_otros_cargos.classList.remove('is-active');
-    tab_pagos_Diplomado_Otros.classList.add('is-active');
-    tab_pagos_Diplomado.classList.remove('is-active');
-
-    const otros_cargos = document.querySelector('#otros_cargos');
-    otros_cargos.classList.add('is-hidden');
-
-    const extrasDiplomado = document.querySelector('#extrasDiplomado');
-    extrasDiplomado.classList.remove('is-hidden');
-
-    const pagosdipl = document.querySelector('#pagosdipl');
-    pagosdipl.classList.add('is-hidden');
 }
 
 function darDeBajaGrupo(IDGrupo, matricula) {
@@ -357,47 +392,6 @@ function darDeBajaGrupo(IDGrupo, matricula) {
             console.error('Error en la petición fetch:', error);
         });
 };
-
-
-function pagoscol() {
-    const tab_pagoscol = document.querySelector('#nav_pagoscol');
-    const tab_pagosextra = document.querySelector('#nav_pagosextra');
-
-    tab_pagosextra.classList.remove('is-active');
-    tab_pagoscol.classList.add('is-active');
-
-    // Quitar la tabla de extras
-    const tabla_extras = document.querySelector('#pagosextra');
-    tabla_extras.classList.add('is-hidden');
-
-    // Poner la tabla de pagos colegiatura
-    const tabla_pagoscol = document.querySelector('#pagoscol');
-    tabla_pagoscol.classList.remove('is-hidden');
-}
-
-function pagosextra() {
-    const tab_pagoscol = document.querySelector('#nav_pagoscol');
-    const tab_pagosextra = document.querySelector('#nav_pagosextra');
-
-    tab_pagosextra.classList.add('is-active');
-    tab_pagoscol.classList.remove('is-active');
-
-    // Quitar la tabla de pagos colegiatura
-    const tabla_pagoscol = document.querySelector('#pagoscol');
-    tabla_pagoscol.classList.add('is-hidden');
-
-    // Poner la tabla de pagos extras
-    const tabla_extras = document.querySelector('#pagosextra');
-    tabla_extras.classList.remove('is-hidden');
-
-    // Quitar la tabla de pagos colegiatura dip
-    const tabla_pagosdip = document.querySelector('#pagosdip');
-
-    if (tabla_pagosdip){
-        tabla_pagosdip.classList.add('is-hidden');
-    }
-
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const topinfo = document.getElementById('topinfo');
