@@ -366,7 +366,7 @@
 
                 <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                     <div id="historial" class="is-hidden">
-                        <div id="pagos">
+                         <% if (pagos.length != 0) { %>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -402,45 +402,13 @@
                                     <% } )%>
                                 </tbody>
                             </table>
-    
-                            <div class="is-hidden" id="pagosextra">
-                                <table class="table is-fullwidth is-hoverable">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align: left;">Monto</th>
-                                            <th style="text-align: left;">Fecha</th>
-                                            <th style="text-align: left;">Motivo</th>
-                                            <th style="text-align: left;">Método</th>
-                                            <th style="text-align: left;">Nota</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% pagadosExtra.forEach(pagadosExtra => { %>
-                                            <tr>
-                                                <td>
-                                                    $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
-                                                        minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2
-                                                    }) %>
-                                                </td>
-                                                <td>
-                                                    <%= pagadosExtra.fechaPago %>
-                                                </td>
-                                                <td>
-                                                    <%= pagadosExtra.motivoPago %>
-                                                </td>
-                                                <td>
-                                                    <%= pagadosExtra.metodoPago %>
-                                                </td>
-                                                <td>
-                                                     <%= pagadosExtra.Nota %>
-                                                </td>
-                                            </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
+                        <% } else { %>
+                            <div class="box">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Este alumno no ha realizado ningún pago de su colegiatura actual. 
+                                </p>
                             </div>
-                        </div>
+                        <% } %>
                     </div>
                     
                     <div id="horario" class="is-hidden">
