@@ -173,12 +173,6 @@
                                 <span>Pagos Diplomado</span>
                             </a>
                         </li>
-                        <li id="nav_pagos_Diplomado_Otros">
-                            <a onclick="muestra_extras_diplomado()">
-                                <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                                <span>Otros Pagos</span>
-                            </a>
-                        </li>
                         <% } %>
                         <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                             <li class="is-active" id="nav_estado">
@@ -190,16 +184,22 @@
                             <li id="nav_historial_pagos">
                                 <a onclick="muestra_historial_de_pagos()">
                                     <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                                    <span>Historial de Pagos</span>
+                                    <span>Historial Colegiatura</span>
                                 </a>
                             </li>
-                        <% } %>
-                        <li id="nav_otros_cargos">
-                            <a onclick="muestra_otros_cargos()">
-                                <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
-                                <span>Solicitudes Pendientes</span>
-                            </a>
-                        </li>
+                            <% } %>
+                            <li id="nav_pagos_Otros">
+                                <a onclick="muestra_otros_cargos()">
+                                    <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
+                                    <span>Otros Pagos</span>
+                                </a>
+                            </li>
+                            <li id="nav_solicitudes">
+                                <a onclick="muestra_solicitudes()">
+                                    <span class="icon is-small"><i class="fa-solid fa-list-ul"></i></span>
+                                    <span>Solicitudes Pendientes</span>
+                                </a>
+                            </li>
                         <% if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                             <li id="nav_horario">
                                 <a onclick="muestra_horario()">
@@ -212,7 +212,7 @@
                     </ul>
                 </div>
             
-                <div id="otros_cargos" class="is-hidden">
+                <div id="solicitudes" class="is-hidden">
                     <% if (pagosExtra.length != 0) { %> 
                         <% let countOtros = 5 %>
                         <% pagosExtra.forEach(pagosExtra => { %>
@@ -261,6 +261,52 @@
                                 por favor haz click <a href="/pagos/solicitudes">aquí</a>.
                             </p>
                         </div>
+                    <% } %>
+                </div>
+
+                <div id="extras" class="is-hidden">
+                    <% if (pagadosExtra.length != 0) { %>
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Monto</th>
+                                <th style="text-align: left;">Fecha</th>
+                                <th style="text-align: left;">Motivo</th>
+                                <th style="text-align: left;">Método</th>
+                                <th style="text-align: left;">Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% pagadosExtra.forEach(pagadosExtra => { %>
+                            <tr>
+                                <td>
+                                    $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                </td>
+                                <td>
+                                    <%= pagadosExtra.fechaPago %>
+                                </td>
+                                <td>
+                                    <%= pagadosExtra.motivoPago %>
+                                </td>
+                                <td>
+                                    <%= pagadosExtra.metodoPago %>
+                                </td>
+                                <td>
+                                    <%= pagadosExtra.Nota %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <div class="box">
+                        <p class="has-text-weight-medium has-text-black">
+                            Este alumno no ha pagado nada dentro de "Otros Pagos".
+                        </p>
+                    </div>
                     <% } %>
                 </div>
 
@@ -318,8 +364,9 @@
                         <% } %>
                     </div>
 
-                    <div id="extrasDiplomado" class="is-hidden">
-                        <% if (pagadosExtra.length != 0) { %>
+                <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
+                    <div id="historial" class="is-hidden">
+                        <div id="pagos">
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -331,94 +378,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% pagadosExtra.forEach(pagadosExtra => { %>
-                                    <tr>
-                                        <td>
-                                            $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                    <% pagos.forEach(pagos => { %>
+                                            <tr>
+                                                <td>
+                                                    $<%= pagos.montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
                                                         }) %>
-                                        </td>
-                                        <td>
-                                            <%= pagadosExtra.fechaPago %>
-                                        </td>
-                                        <td>
-                                            <%= pagadosExtra.motivoPago %>
-                                        </td>
-                                        <td>
-                                            <%= pagadosExtra.metodoPago %>
-                                        </td>
-                                        <td>
-                                            <%= pagadosExtra.Nota %>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
+                                                </td>
+                                                <td>
+                                                    <%= pagos.fechaPago %>
+                                                </td>
+                                                <td>
+                                                    <%= pagos.motivo %>
+                                                </td>
+                                                <td>
+                                                    <%= pagos.metodoPago %>
+                                                </td>
+                                                <td>
+                                                    <%= pagos.nota %>
+                                                </td>
+                                            </tr>
+                                    <% } )%>
                                 </tbody>
                             </table>
-                        <% } else { %>
-                            <div class="box">
-                                <p class="has-text-weight-medium has-text-black">
-                                    Este alumno no ha pagado nada dentro de "Otros Pagos".
-                                </p>
-                            </div>
-                        <% } %>
-                    </div>
-
-                <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
-                    <div id="historial" class="is-hidden">
-                        <div id="pagos">
-                            <div class="tabs is-boxed">
-                                <ul>
-                                    <li class="is-active" id="nav_pagoscol">
-                                        <a onclick="pagoscol()">
-                                            <span>Pagos de Colegiatura</span>
-                                        </a>
-                                    </li>
-                                    <li id="nav_pagosextra">
-                                        <a onclick="pagosextra()">
-                                            <span>Pagos Extras</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div id="pagoscol">
-                                <table class="table is-fullwidth is-hoverable">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align: left;">Monto</th>
-                                            <th style="text-align: left;">Fecha</th>
-                                            <th style="text-align: left;">Motivo</th>
-                                            <th style="text-align: left;">Método</th>
-                                            <th style="text-align: left;">Nota</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% pagos.forEach(pagos => { %>
-                                                <tr>
-                                                    <td>
-                                                        $<%= pagos.montoPagado.toLocaleString('mx', {
-                                                                minimumFractionDigits: 2,
-                                                                maximumFractionDigits: 2
-                                                            }) %>
-                                                    </td>
-                                                    <td>
-                                                        <%= pagos.fechaPago %>
-                                                    </td>
-                                                    <td>
-                                                        <%= pagos.motivo %>
-                                                    </td>
-                                                    <td>
-                                                        <%= pagos.metodoPago %>
-                                                    </td>
-                                                    <td>
-                                                        <%= pagos.nota %>
-                                                    </td>
-                                                </tr>
-                                        <% } )%>
-                                    </tbody>
-                                </table>
-                            </div>
     
                             <div class="is-hidden" id="pagosextra">
                                 <table class="table is-fullwidth is-hoverable">
