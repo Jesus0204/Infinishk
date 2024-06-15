@@ -105,14 +105,16 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => { 
     const { ref, beca, alumno, csrf } = request.body;
 
+    let beca_new = beca;
+
     if (beca == ""){
-        beca = '0';
+        beca_new = '0';
     }
 
     try {
         let data;
         if (alumno.startsWith("1")) {
-            data = await EstudianteProfesional.update(alumno, ref, beca);
+            data = await EstudianteProfesional.update(alumno, ref, beca_new);        
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
