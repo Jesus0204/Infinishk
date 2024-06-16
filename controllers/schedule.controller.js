@@ -336,8 +336,10 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                    <p>
                        ¡Gracias!
                    </p>`;
-
-    sendEmail(mensaje_vacio);
+    
+    if (alumnos_horario_vacio.length != 0) {
+        sendEmail(mensaje_vacio);
+    }
 
     let mensaje_fallo = "";
     // Llenar el correo con todos los nombres
@@ -364,5 +366,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         ¡Gracias!
                     </p>`;
 
-    sendEmail(mensaje_fallo);
+    if (alumnos_fallo.length != 0) {
+        sendEmail(mensaje_fallo);
+    }
 }
