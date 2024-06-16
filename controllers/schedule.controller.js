@@ -157,6 +157,36 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
     })
 };
 
+async function sendEmail(message){
+
+    // Crear el texto del correo para los horarios no acetados
+    let mensaje = `<p>¡Hola!</p>
+                   <p>
+                       Este es un correo automatizado para avisar que los horarios de los alumnos:
+                       <br>
+                       <br>
+                       `;
+
+    let mensaje_final = mensaje + message;
+
+    // Crear el mensaje para enviar el correo
+    const msg = {
+        to: 'jaczmx@gmail.com',
+        from: {
+            name: 'VIA PAGO',
+            email: 'soporte@pagos.ivd.edu.mx ',
+        },
+        subject: `Horario de alumnos no se pudo confirmar automáticamente`,
+        html: mensaje_final
+    };
+
+    try {
+        await sgMail.send(msg);
+    } catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
+}
+
 exports.aceptar_horario_resagados = async (request, response, next) => {
     const [periodo, fieldData] = await Periodo.fetchActivo();
     const periodoActivo = periodo[0].IDPeriodo;
@@ -167,44 +197,15 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
     const [alumnosNoConfirmados, fieldData_2] = await EstudianteProfesional.fetchAlumnosNoConfirmados();
 
+    let alumnos_horario_vacio = [];
+    let alumnos_fallo = [];
+
     for (let count = 0; count < alumnosNoConfirmados.length; count++){
         try {
             const schedule = await getUserGroups(periodoActivo, Number(alumnosNoConfirmados[count].Matricula));
 
             if (schedule.data.length == 0) {
-                // Creas el mensaje para enviar el correo
-                const msg = {
-                    to: 'jaczmx@gmail.com',
-                    from: {
-                        name: 'VIA PAGO',
-                        email: 'administracion@ivd.edu.mx',
-                    },
-                    subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
-                    html: `<p>¡Hola!</p>
-                    <p>
-                        Este es un correo automatizado para avisar que el horario de:
-                        <br>
-                        <br>
-                        <strong>Nombre: ${alumnosNoConfirmados[count].Nombre} ${alumnosNoConfirmados[count].Apellidos}</strong>
-                        <br>
-                        <strong>Matricula: ${alumnosNoConfirmados[count].Matricula}</strong>
-                        <br>
-                        <br>
-                        no pudo ser confirmado. 
-                        Este error fue ocasionado porque en el portal administrativo el alumno no tiene un horario asignado ni materias que registrar.
-                    </p>
-                    <p>
-                        Sentimos los inconvenientes que esto puede ocasionar. 
-                    <p>
-                        ¡Gracias!
-                    </p>`
-                };
-
-                try {
-                    await sgMail.send(msg);
-                } catch (error) {
-                    console.error('Error al enviar el correo electrónico:', error.toString());
-                }
+                alumnos_horario_vacio.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
             } else {
                 const cursos = schedule.data.map(schedule => {
                     const {
@@ -312,24 +313,44 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
         } catch(error) {
             console.log(error);
-            // Creas el mensaje para enviar el correo
-            const msg = {
-                to: 'jaczmx@gmail.com',
-                from: {
-                    name: 'VIA PAGO',
-                    email: 'administracion@ivd.edu.mx',
-                },
-                subject: `Horario de ${alumnosNoConfirmados[count].Matricula} no se pudo confirmar automáticamente`,
-                html: `<p>¡Hola!</p>
-                    <p>
-                        Este es un correo automatizado para avisar que el horario de:
+            alumnos_fallo.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
+        }
+    }
+
+    let mensaje_vacio = "";
+    // Llenar el correo con todos los nombres
+    for (let alumno_data = 0; alumno_data < alumnos_horario_vacio.length; alumno_data = alumno_data + 3) {
+        mensaje_vacio += `<strong>Nombre: ${alumnos_horario_vacio[alumno_data]} ${alumnos_horario_vacio[alumno_data + 1]}</strong>
+                        <br>
+                        <strong>Matricula: ${alumnos_horario_vacio[alumno_data + 2]}</strong>
                         <br>
                         <br>
-                        <strong>Nombre: ${alumnosNoConfirmados[count].Nombre} ${alumnosNoConfirmados[count].Apellidos}</strong>
+                        `;
+    }
+
+    mensaje_vacio += `<br>
+                       no pudo ser confirmado. 
+                       Este error fue ocasionado porque en el portal administrativo el alumno no tiene un horario asignado ni materias que registrar.
+                   </p>
+                   <p>
+                       Sentimos los inconvenientes que esto puede ocasionar. 
+                   <p>
+                       ¡Gracias!
+                   </p>`;
+
+    sendEmail(mensaje_vacio);
+
+    let mensaje_fallo = "";
+    // Llenar el correo con todos los nombres
+    for (let alumno_data = 0; alumno_data < alumnos_fallo.length; alumno_data = alumno_data + 3) {
+        mensaje_fallo += `<strong>Nombre: ${alumnos_fallo[alumno_data]} ${alumnos_fallo[alumno_data + 1]}</strong>
                         <br>
-                        <strong>Matricula: ${alumnosNoConfirmados[count].Matricula}</strong>
+                        <strong>Matricula: ${alumnos_fallo[alumno_data + 2]}</strong>
                         <br>
                         <br>
+                        `;
+    }
+    mensaje_fallo += `<br>
                         no pudo ser confirmado. 
                         Este error puede suceder por tres razones: 
                         <br>
@@ -343,14 +364,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         Sentimos los inconvenientes que esto puede ocasionar. 
                     <p>
                         ¡Gracias!
-                    </p>`
-            };
+                    </p>`;
 
-            try {
-                await sgMail.send(msg);
-            } catch (error) {
-                console.error('Error al enviar el correo electrónico:', error.toString());
-            }
-        }
-    }
+    sendEmail(mensaje_fallo);
 }
