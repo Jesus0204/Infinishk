@@ -328,8 +328,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         `;
     }
 
-    mensaje_vacio += `<br>
-                       no pudo ser confirmado. 
+    mensaje_vacio += `no pudo ser confirmado. 
                        Este error fue ocasionado porque en el portal administrativo el alumno no tiene un horario asignado ni materias que registrar.
                    </p>
                    <p>
@@ -337,8 +336,10 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                    <p>
                        ¡Gracias!
                    </p>`;
-
-    sendEmail(mensaje_vacio);
+    
+    if (alumnos_horario_vacio.length != 0) {
+        sendEmail(mensaje_vacio);
+    }
 
     let mensaje_fallo = "";
     // Llenar el correo con todos los nombres
@@ -350,8 +351,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         <br>
                         `;
     }
-    mensaje_fallo += `<br>
-                        no pudo ser confirmado. 
+    mensaje_fallo += `no pudo ser confirmado. 
                         Este error puede suceder por tres razones: 
                         <br>
                         <ol>
@@ -366,5 +366,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         ¡Gracias!
                     </p>`;
 
-    sendEmail(mensaje_fallo);
+    if (alumnos_fallo.length != 0) {
+        sendEmail(mensaje_fallo);
+    }
 }
