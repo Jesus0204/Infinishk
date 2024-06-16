@@ -14,6 +14,10 @@ const Diplomado = require('../models/diplomado.model');
 const Rol = require('../models/rol.model');
 
 const {
+    aceptar_horario_resagados
+} = require('./schedule.controller');
+
+const {
     getAllUsers,
     getAllCourses,
     getAllPeriods,
@@ -1099,4 +1103,25 @@ exports.post_periodos = async (request,response,next) => {
             success: success
         });
     };
+}
+
+exports.aceptar_horario_resagados = async (request, response, next) => {
+
+    let success;
+    try {
+        // Llamar la función para aceptar los horarios y mandar correos en caso de fallo
+        await aceptar_horario_resagados(request, response, next);
+
+        success = true;
+        return response.status(200).json({
+            success: success,
+        });
+    } catch (error) {
+        success = false;
+        console.log(error);
+        return response.status(500).json({
+            success: success,
+        });
+    }
+
 }

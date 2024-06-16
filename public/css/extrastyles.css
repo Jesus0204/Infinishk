@@ -97,31 +97,31 @@
   border-color: #ffffff;
 }
 
-.confirmar-button {
+.confirmar-button  {
   text-align: center;
   float: right;
-  border-radius: 10px;
-  background-color: #000000;
-  color: #ffffff;
-  border: solid #95404c;
+  border-radius: 10px !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: solid #95404c !important;
 }
 
 .confirmar-button:focus {
-  box-shadow: 0 0 0 2px #015fcc;
-  background-color: #761D1F;
+  box-shadow: 0 0 0 2px #015fcc !important;
+  background-color: #761D1F !important;
   color: #ffffff;
 }
 
 .confirmar-button:hover {
-  background-color: #761D1F;
+  background-color: #761D1F !important;
   color: #ffffff;
-  border: solid #95404c;
+  border: solid #95404c !important;
 }
 
 .confirmar-button:hover:disabled{
-  background-color: #ba8e8f;
+  background-color: #ba8e8f !important;
   color: #ffffff;
-  border: solid #95404c;
+  border: solid #95404c !important;
 }
 
 .ficha-table {

@@ -1,59 +1,83 @@
 <%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
-
-    <meta name="_csrf" content="<%= csrfToken %>">
+<style>
+    .form-button {
+        margin-bottom: 20px;
+        /* Ajusta este valor según la separación que desees */
+    }
+</style>
 
     <body>
         <section class="section">
             <div class="container">
-                <h3 id="title" class="title"> Sincronizar Base de Datos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    SINCRONIZAR BASE DE DATOS
+                </label>
                 <br>
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Por favor, elige el tipo de dato que se va a sincronizar con el sistema administrativo.
-                    Solo se va a mostrar cualquier dato que no este registrado en la base, ya que todo lo demás al
-                    sincronizar
-                    es actualizado automáticamente.
+                <div id="aceptar_resagados" class="notification is-hidden"
+                    style="background-color: #5a6581; color:#ffffff;">
+                    ¡Horarios confirmados! Recargando página...
+                </div>
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Por favor, elige el tipo de dato que se va a sincronizar. Toma en cuenta, que todos los procesos son automatizados
+                        a excepción de obtener alumnos, ya que se tiene que insertar su beca junto con su referencia bancaria.
+                    </p>
                 </div>
                 <br>
-                <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Obtener Alumnos
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-                <form action="/configuracion/actualizarMaterias" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Obtener Materias
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-                <form action="/configuracion/actualizarPeriodos" method="GET" class="form-button">
-                    <button type="submit" id="buscarBtn" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Obtener Periodos
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-                <style>
-                    .form-button {
-                        margin-bottom: 20px;
-                        /* Ajusta este valor según la separación que desees */
-                    }
-                </style>
+                <div class="columns">
+                    <div class="column is-6">
+                        <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
+                            <button type="submit" class="confirmar-button button is-large is-fullwidth is-responsive">
+                                <span>
+                                    Obtener Alumnos
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="column is-6">
+                        <form action="/configuracion/actualizarMaterias" method="GET" class="form-button">
+                            <button type="submit" class="confirmar-button  button is-large is-fullwidth is-responsive">
+                                <span>
+                                    Obtener Materias
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-6">
+                        <form action="/configuracion/actualizarPeriodos" method="GET" class="form-button">
+                            <button type="submit" class="confirmar-button button is-large is-fullwidth is-responsive">
+                                <span>
+                                    Obtener Periodos
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="column is-6">
+                        <button type="submit"
+                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            onclick="aceptar_horarios()">
+                            <span>
+                                Confirmar horarios resagados
+                            </span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     </body>
 <%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/actualizarBase.js"></script>
