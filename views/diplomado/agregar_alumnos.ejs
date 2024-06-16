@@ -15,63 +15,76 @@
             font-size: 20px;
         }
 
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
 
     <body>
         <section class="section">
-                <form action="/diplomado/registrar_alumnos" method="POST">
+            <form action="/diplomado/registrar_alumnos" method="POST">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" value="<%= id %>" name="id" id="id">
-                <table class="table is-bordered is-hoverable is-fullwidth">
-                    <thead>
-                        <tr>
-                        <tr>
-                            <th>
-                                <p class="is-size-5"><strong> </strong></p>
-                            </th>
-                            <th>
-                                <p class="is-size-5"><strong>Matricula: </strong></p>
-                            </th>
-                            <th>
-                                <p class="is-size-5"><strong>Nombre: </strong></p>
-                            </th>
-                            <th>
-                                <p class="is-size-5"><strong>Apellidos: </strong></p>
-                            </th>
-                            <th>
-                                <p class="is-size-5"><strong>Fecha Inscripción: </strong></p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let i=0; i < alumnos.length; i++) { %>
-                            <tr id="pagination-content">
-                                <td><input type="checkbox" name="alumno" value="<%= alumnos[i].matricula %>"></td>
-                                <td>
-                                    <%= alumnos[i].matricula %>
-                                </td>
-                                <td>
-                                    <%= alumnos[i].nombre %>
-                                </td>
-                                <td>
-                                    <%= alumnos[i].apellidos %>
-                                </td>
-                                <td>
-                                    <%= new Date(alumnos[i].fechaInscripcion).toLocaleDateString('es-MX', {
-                                        year: 'numeric' , month: 'long' , day: 'numeric' }) %>
-                                </td>
+                <div class="search-bar">
+                    <input type="text" id="searchAlumnos" class="search-input"
+                        placeholder="Buscar por nombre o matricula...">
+                </div>
+                <div id="resultadoActivo" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+                    No existen alumnos con los paramétros de busqueda.
+                </div>
+                <div id="tablaAlumnos" class="table-container">
+                    <table class="table is-bordered is-hoverable is-fullwidth">
+                        <thead>
+                            <tr>
+                            <tr>
+                                <th>
+                                    <p class="is-size-5"><strong> </strong></p>
+                                </th>
+                                <th>
+                                    <p class="is-size-5"><strong>Matricula: </strong></p>
+                                </th>
+                                <th>
+                                    <p class="is-size-5"><strong>Nombre: </strong></p>
+                                </th>
+                                <th>
+                                    <p class="is-size-5"><strong>Apellidos: </strong></p>
+                                </th>
+                                <th>
+                                    <p class="is-size-5"><strong>Fecha Inscripción: </strong></p>
+                                </th>
                             </tr>
-                            <% } %>
-                    </tbody>
-                </table>
-                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                    <a class="pagination-previous" id="prev-button">Anterior</a>
-                    <a class="pagination-next" id="next-button">Siguiente</a>
-                    <ul class="pagination-list" id="pagination-list">
-                        <div id="pagination-numbers">
-                        </div>
-                    </ul>
-                </nav>
+                        </thead>
+                        <tbody>
+                            <% for(let i=0; i < alumnos.length; i++) { %>
+                                <tr>
+                                    <td><input type="checkbox" name="alumno" value="<%= alumnos[i].matricula %>"></td>
+                                    <td>
+                                        <%= alumnos[i].matricula %>
+                                    </td>
+                                    <td>
+                                        <%= alumnos[i].nombre %>
+                                    </td>
+                                    <td>
+                                        <%= alumnos[i].apellidos %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(alumnos[i].fechaInscripcion).toLocaleDateString('es-MX', {
+                                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
                 <button class="button is-rounded big-button" type="submit">
                     <span class="icon is-large">
                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -80,9 +93,9 @@
                         Registrar Alumnos
                     </span>
                 </button>
-                </form>
+            </form>
     </body>
     </section>
-    <script type="text/javascript" src="/js/pagination.js"></script>
+    <script type="text/javascript" src="/js/agregar_alumno.js"></script>
 
     </html>
