@@ -319,7 +319,7 @@
                             <th style="text-align: left;">Eliminar</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table_confirmar">
                         <% for (let count = 0; count < schedule.length; count++) { %>
                             <tr id="tablaMaterias<%=count%>">
                                 <input type="hidden" id="id<%=count%>" name="idMateria[]" value="<%= schedule[count].idMateria %>">
@@ -346,11 +346,19 @@
                                 <td>
                                     <input type="hidden" name="grupoHorario[]" id="horario<%=count%>"
                                         value="<%= JSON.stringify(schedule[count].horarios) %> ">
+                                    <input type="hidden" id="horarioTexto<%=count%>"
+                                        value="<% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
+                                        <%= schedule[count].horarios[i].diaSemana %>
+                                        <%= schedule[count].horarios[i].fechaInicio %> -
+                                        <%= schedule[count].horarios[i].fechaTermino %>
+                                        <br>
+                                        <% } %>
+                                        <br>">
                                     <% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
                                         <%= schedule[count].horarios[i].diaSemana %>
                                         <%= schedule[count].horarios[i].fechaInicio %> -
                                         <%= schedule[count].horarios[i].fechaTermino %>
-                                    <br>
+                                        <br>
                                     <% } %>
                                     <br>
                                 </td>
@@ -387,7 +395,7 @@
                     <div id="materiasEliminadasContainer" class="is-hidden">
                         <label class="label is-medium has-text-danger has-text-weight-semibold">MATERIAS ELIMINADAS</label>
                         <div class="table-container">
-                            <table id="table_eliminados" class="table is-hoverable is-fullwidth">
+                            <table class="table is-hoverable is-fullwidth">
                                 <thead>
                                     <tr>
                                         <th style="text-align: left;">
@@ -417,7 +425,7 @@
                                         <th style="text-align: left;">Agregar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table_eliminados">
     
                                 </tbody>
                             </table>

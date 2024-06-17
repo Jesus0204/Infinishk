@@ -213,6 +213,7 @@ function eliminar(materiaRow) {
     const fechaInicio = document.querySelector('#fechaInicio' + materiaRow).value;
     const fechaFin = document.querySelector('#fechaFin' + materiaRow).value;
     const horario = document.querySelector('#horario' + materiaRow).value;
+    const horarioTexto = document.querySelector('#horarioTexto' + materiaRow).value;
     const precio = document.querySelector('#precio' + materiaRow).value;
 
     // Sacar la tabla donde se va a agregar datos y el container
@@ -221,6 +222,7 @@ function eliminar(materiaRow) {
 
     // Create a new table row with data
     const newRow = document.createElement('tr');
+    newRow.id = 'tablaEliminados' + materiaRow;
 
     // Create and append cells to the new row
     const materiaData = document.createElement('td');
@@ -243,7 +245,6 @@ function eliminar(materiaRow) {
     creditSpan.appendChild(creditText);
     creditoData.appendChild(creditSpan);
     newRow.appendChild(creditoData);
-
     
     const costoData = document.createElement('td');
     costoData.textContent = '$'+ precio;
@@ -253,6 +254,9 @@ function eliminar(materiaRow) {
     agregarData.style.textAlign = 'center';
     const agregarButton = document.createElement('button');
     agregarButton.type = 'button';
+    agregarButton.onclick = function () {
+        agregar(materiaRow); // Call the agregar function with materiaRow as parameter
+    };
     agregarButton.classList.add('tag', 'is-size-6');
     agregarButton.style.backgroundColor = '#eef2fb'; // lighter color
     agregarButton.style.color = '#5a6581';
@@ -281,9 +285,110 @@ function eliminar(materiaRow) {
     createHiddenInput(newRow, 'fechaInicioEliminado[]', fechaInicio, `fechaInicioEliminado${materiaRow}`);
     createHiddenInput(newRow, 'fechaFinEliminado[]', fechaFin, `fechaFinEliminado${materiaRow}`);
     createHiddenInput(newRow, 'grupoHorarioEliminado[]', horario, `horarioEliminado${materiaRow}`);
+    createHiddenInput(newRow, '', horarioTexto, `horarioTextoEliminado${materiaRow}`);
 
     // Borrar la tabla del front end
     document.querySelector('#tablaMaterias' + materiaRow).remove();
+}
+
+function agregar(materiaRow) {
+    // Agarrar todos los datos de la materia de la tabla
+    const idMateria = document.querySelector('#idEliminado' + materiaRow).value;
+    const materia = document.querySelector('#materiaEliminado' + materiaRow).value;
+    const creditos = document.querySelector('#creditosEliminado' + materiaRow).value;
+    const profesor = document.querySelector('#profesorEliminado' + materiaRow).value;
+    const salon = document.querySelector('#salonEliminado' + materiaRow).value;
+    const fechaInicio = document.querySelector('#fechaInicioEliminado' + materiaRow).value;
+    const fechaFin = document.querySelector('#fechaFinEliminado' + materiaRow).value;
+    const horario = document.querySelector('#horarioEliminado' + materiaRow).value;
+    const horarioTexto = document.querySelector('#horarioTextoEliminado' + materiaRow).value;
+    const precio = document.querySelector('#precioEliminado' + materiaRow).value;
+
+    const table_confirmar = document.querySelector('#table_confirmar');
+
+    // Create a new table row with data
+    const newRow = document.createElement('tr');
+    newRow.id = 'tablaMaterias' + materiaRow;
+
+    // Create and append cells to the new row
+    const materiaData = document.createElement('td');
+    const strongMateria = document.createElement('strong');
+    strongMateria.textContent = materia;
+    materiaData.appendChild(strongMateria);
+    newRow.appendChild(materiaData);
+
+    const profesorData = document.createElement('td');
+    profesorData.textContent = profesor;
+    newRow.appendChild(profesorData);
+
+    const horarioData = document.createElement('td');
+    horarioData.innerHTML = horarioTexto;
+    newRow.appendChild(horarioData);
+
+    const salonData = document.createElement('td');
+    salonData.textContent = salon;
+    newRow.appendChild(salonData);
+
+    const creditoData = document.createElement('td');
+    const creditSpan = document.createElement('span');
+    creditSpan.classList.add('tag', 'is-size-6');
+    creditSpan.style.backgroundColor = '#ddf5e5';
+    const creditText = document.createElement('span');
+    creditText.style.color = '#21c85b';
+    creditText.textContent = creditos;
+    creditSpan.appendChild(creditText);
+    creditoData.appendChild(creditSpan);
+    newRow.appendChild(creditoData);
+
+    const costoData = document.createElement('td');
+    costoData.textContent = '$' + precio;
+    newRow.appendChild(costoData);
+
+    const eliminarData = document.createElement('td');
+    eliminarData.style.textAlign = 'center';
+    const eliminarButton = document.createElement('button');
+    eliminarButton.type = 'button';
+    eliminarButton.onclick = function () {
+        eliminar(materiaRow); // Call the agregar function with materiaRow as parameter
+    };
+    eliminarButton.classList.add('tag', 'is-size-6');
+    eliminarButton.style.backgroundColor = '#f6d5d8'; // lighter color
+    eliminarButton.style.color = '#f83362';
+    const eliminarIcon = document.createElement('span');
+    eliminarIcon.classList.add('icon', 'is-small');
+    eliminarButton.appendChild(eliminarIcon);
+    const eliminarIconLogo = document.createElement('i');
+    eliminarIconLogo.classList.add('fa-solid', 'fa-trash-can');
+    eliminarIcon.appendChild(eliminarIconLogo);
+    eliminarData.appendChild(eliminarButton);
+    newRow.appendChild(eliminarData);
+
+    // Append the new row to the table body
+    table_confirmar.appendChild(newRow);
+
+    // Creas los hidden inputs para enviarlos al backend
+    createHiddenInput(newRow, 'idMateria[]', idMateria, `id${materiaRow}`);
+    createHiddenInput(newRow, '', materia, `materia${materiaRow}`);
+    createHiddenInput(newRow, '', creditos, `creditos${materiaRow}`);
+    createHiddenInput(newRow, '', precio, `precio${materiaRow}`);
+    createHiddenInput(newRow, 'nombreProfesorCompleto[]', profesor, `profesor${materiaRow}`);
+    createHiddenInput(newRow, 'salon[]', salon, `salon${materiaRow}`);
+    createHiddenInput(newRow, 'fechaInicio[]', fechaInicio, `fechaInicio${materiaRow}`);
+    createHiddenInput(newRow, 'fechaFin[]', fechaFin, `fechaFin${materiaRow}`);
+    createHiddenInput(newRow, 'grupoHorario[]', horario, `horario${materiaRow}`);
+    createHiddenInput(newRow, '', horarioTexto, `horarioTexto${materiaRow}`);
+
+    // Borrar la tabla del front end
+    document.querySelector('#tablaEliminados' + materiaRow).remove();
+
+    const tableBody = document.querySelector('#table_eliminados');
+    const rowCount = tableBody.rows.length;
+
+    const materiasEliminadasContainer = document.querySelector('#materiasEliminadasContainer');
+
+    if (rowCount == 0) {
+        materiasEliminadasContainer.classList.add('is-hidden');
+    }
 }
 
 function createHiddenInput(parent, name, value, id) {
