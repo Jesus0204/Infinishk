@@ -202,3 +202,69 @@ $(document).ready(function () {
     // Llamas la función para mostrar tabla al inicio
     setTable();
 })
+
+function eliminar(materiaRow) {
+    // Agarrar todos los datos de la materia de la tabla
+    const idMateria = document.querySelector('#id' + materiaRow).value;
+    const materia = document.querySelector('#materia' + materiaRow).value;
+    const creditos = document.querySelector('#creditos' + materiaRow).value;
+    const profesor = document.querySelector('#profesor' + materiaRow).value;
+    const salon = document.querySelector('#salon' + materiaRow).value;
+    const fechaInicio = document.querySelector('#fechaInicio' + materiaRow).value;
+    const fechaFin = document.querySelector('#fechaFin' + materiaRow).value;
+    const horario = document.querySelector('#horario' + materiaRow).value;
+    const precio = document.querySelector('#precio' + materiaRow).value;
+
+    // Sacar la tabla donde se va a agregar datos y el container
+    const table_eliminados = document.querySelector('#table_eliminados');
+    const container = document.querySelector('#materiasEliminadasContainer');
+
+    // Create a new table row with data
+    const newRow = document.createElement('tr');
+
+    // Create and append cells to the new row
+    const materiaData = document.createElement('td');
+    materiaData.textContent = materia;
+    newRow.appendChild(materiaData);
+
+    const profesorData = document.createElement('td');
+    profesorData.textContent = profesor;
+    newRow.appendChild(profesorData);
+
+    const creditoData = document.createElement('td');
+    creditoData.textContent = creditos;
+    newRow.appendChild(creditoData);
+
+    const costoData = document.createElement('td');
+    costoData.textContent = '$'+ precio;
+    newRow.appendChild(costoData);
+
+    // Append the new row to the table body
+    table_eliminados.appendChild(newRow);
+
+    // Quitar la tabla para que ahora sea visible
+    container.classList.remove('is-hidden');
+
+    // Creas los hidden inputs para enviarlos al backend
+    createHiddenInput(newRow, 'idMateriaEliminado[]', idMateria, `idEliminado${materiaRow}`);
+    createHiddenInput(newRow, '', materia, `materiaEliminado${materiaRow}`);
+    createHiddenInput(newRow, '', creditos, `creditosEliminado${materiaRow}`);
+    createHiddenInput(newRow, '', precio, `precioEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'nombreProfesorCompletoEliminado[]', profesor, `profesorEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'salonEliminado[]', salon, `salonEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'fechaInicioEliminado[]', fechaInicio, `fechaInicioEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'fechaFinEliminado[]', fechaFin, `fechaFinEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'grupoHorarioEliminado[]', horario, `horarioEliminado${materiaRow}`);
+
+    // Borrar la tabla del front end
+    document.querySelector('#tablaMaterias' + materiaRow).remove();
+}
+
+function createHiddenInput(parent, name, value, id) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    input.id = id;
+    parent.appendChild(input);
+}

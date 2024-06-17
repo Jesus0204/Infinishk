@@ -321,13 +321,22 @@
                     </thead>
                     <tbody>
                         <% for (let count = 0; count < schedule.length; count++) { %>
-                            <tr>
-                                <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
-                                <input type="hidden" name="nombreProfesorCompleto[]"
+                            <tr id="tablaMaterias<%=count%>">
+                                <input type="hidden" id="id<%=count%>" name="idMateria[]" value="<%= schedule[count].idMateria %>">
+                                <input type="hidden" id="profesor<%=count%>" name="nombreProfesorCompleto[]"
                                     value="<%= schedule[count].nombreProfesorCompleto %>">
-                                <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
-                                <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
-                                <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
+                                <input type="hidden" id="salon<%=count%>" name="salon[]"
+                                    value="<%= schedule[count].nombreSalon %>">
+                                <input type="hidden" id="fechaInicio<%=count%>" name="fechaInicio[]"
+                                    value="<%= schedule[count].startDateFormat %>">
+                                <input type="hidden" id="fechaFin<%=count%>" name="fechaFin[]"
+                                    value="<%= schedule[count].endDateFormat %>">
+                                <input type="hidden" id="materia<%=count%>"
+                                    value="<%= schedule[count].nombreMat %>">
+                                <input type="hidden" id="creditos<%=count%>" value="<%= schedule[count].creditos %>">
+                                <input type="hidden" id="precio<%=count%>" value="<%=
+                                    schedule[count].precioMateria.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>">
                                 <td>
                                     <strong>
                                         <%= schedule[count].nombreMat %>
@@ -335,12 +344,12 @@
                                 </td>
                                 <td><%= schedule[count].nombreProfesorCompleto %></td>
                                 <td>
-                                    <input type="hidden" name="grupoHorario[]"
+                                    <input type="hidden" name="grupoHorario[]" id="horario<%=count%>"
                                         value="<%= JSON.stringify(schedule[count].horarios) %> ">
                                     <% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
-                                    <%= schedule[count].horarios[i].diaSemana %>
-                                    <%= schedule[count].horarios[i].fechaInicio %> -
-                                    <%= schedule[count].horarios[i].fechaTermino %>
+                                        <%= schedule[count].horarios[i].diaSemana %>
+                                        <%= schedule[count].horarios[i].fechaInicio %> -
+                                        <%= schedule[count].horarios[i].fechaTermino %>
                                     <br>
                                     <% } %>
                                     <br>
@@ -361,14 +370,15 @@
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                 </td>
                                 <td>
-                                    <span class="tag is-size-6" style="background-color: #f6d5d8;">
+                                    <button type="button" id="btnEliminar<%=count%>" class="tag is-size-6"
+                                        style="background-color: #f6d5d8;" onclick="eliminar('<%=count%>')">
                                         <span class="icon is-small" style="color: #f83362">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </span>
                                         <span style="color: #f83362">
                                             Eliminar
                                         </span>
-                                    </span>                
+                                    </button>                
                                 </td>
                             </tr>
                         <% } %>
@@ -376,7 +386,47 @@
                 </table>
             </div>
             <div class="columns">
-                <div class="column is-8"></div>
+                <div class="column is-8">
+                    <div id="materiasEliminadasContainer" class="is-hidden">
+                        <label class="label is-medium has-text-danger has-text-weight-semibold">MATERIAS ELIMINADAS</label>
+                        <div class="table-container">
+                            <table id="table_eliminados" class="table is-hoverable is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-book"></i>
+                                            </span>
+                                            Materia
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-user"></i>
+                                            </span>
+                                            Profesor
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fas fa-graduation-cap"></i>
+                                            </span>
+                                            Créditos
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-tags"></i>
+                                            </span>
+                                            Costo
+                                        </th>
+                                        <th style="text-align: left;">Agregar Materia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <div class="column">
                     <div class="box">
                         <% if (porcBeca || credito != 0) { %>
@@ -456,7 +506,8 @@
                             </div>
                         </div>
                     </div>
-                    <button class="confirmar-button is-responsive" type="submit" style="font-size: large;"
+                    <button class="confirmar-button is-responsive" type="submit"
+                        style="font-size: large; padding-left: 1.5em;"
                         id="Boton_confirmar">
                         <span>CONFIRMAR MATERIAS</span>
                         <span class="icon is-large">
