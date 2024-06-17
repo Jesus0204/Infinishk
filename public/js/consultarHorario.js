@@ -224,7 +224,9 @@ function eliminar(materiaRow) {
 
     // Create and append cells to the new row
     const materiaData = document.createElement('td');
-    materiaData.textContent = materia;
+    const strongMateria = document.createElement('strong');
+    strongMateria.textContent = materia;
+    materiaData.appendChild(strongMateria);
     newRow.appendChild(materiaData);
 
     const profesorData = document.createElement('td');
@@ -232,12 +234,36 @@ function eliminar(materiaRow) {
     newRow.appendChild(profesorData);
 
     const creditoData = document.createElement('td');
-    creditoData.textContent = creditos;
+    const creditSpan = document.createElement('span');
+    creditSpan.classList.add('tag', 'is-size-6');
+    creditSpan.style.backgroundColor = '#ddf5e5';
+    const creditText = document.createElement('span');
+    creditText.style.color = '#21c85b';
+    creditText.textContent = creditos;
+    creditSpan.appendChild(creditText);
+    creditoData.appendChild(creditSpan);
     newRow.appendChild(creditoData);
 
+    
     const costoData = document.createElement('td');
     costoData.textContent = '$'+ precio;
     newRow.appendChild(costoData);
+    
+    const agregarData = document.createElement('td');
+    agregarData.style.textAlign = 'center';
+    const agregarButton = document.createElement('button');
+    agregarButton.type = 'button';
+    agregarButton.classList.add('tag', 'is-size-6');
+    agregarButton.style.backgroundColor = '#eef2fb'; // lighter color
+    agregarButton.style.color = '#5a6581';
+    const agregarIcon = document.createElement('span');
+    agregarIcon.classList.add('icon', 'is-small');
+    agregarButton.appendChild(agregarIcon);
+    const agregarIconLogo = document.createElement('i');
+    agregarIconLogo.classList.add('fa-solid', 'fa-plus');
+    agregarIcon.appendChild(agregarIconLogo);
+    agregarData.appendChild(agregarButton);
+    newRow.appendChild(agregarData);
 
     // Append the new row to the table body
     table_eliminados.appendChild(newRow);

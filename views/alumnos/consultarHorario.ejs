@@ -316,7 +316,7 @@
                                 </span>
                                 Costo
                             </th>
-                            <th style="text-align: left;">Eliminar Materia</th>
+                            <th style="text-align: left;">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -369,14 +369,11 @@
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <button type="button" id="btnEliminar<%=count%>" class="tag is-size-6"
                                         style="background-color: #f6d5d8;" onclick="eliminar('<%=count%>')">
                                         <span class="icon is-small" style="color: #f83362">
                                             <i class="fa-solid fa-trash-can"></i>
-                                        </span>
-                                        <span style="color: #f83362">
-                                            Eliminar
                                         </span>
                                     </button>                
                                 </td>
@@ -417,7 +414,7 @@
                                             </span>
                                             Costo
                                         </th>
-                                        <th style="text-align: left;">Agregar Materia</th>
+                                        <th style="text-align: left;">Agregar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -427,7 +424,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column is-flex is-flex-direction-column is-justify-content-flex-end">
                     <div class="box">
                         <% if (porcBeca || credito != 0) { %>
                             <div class="columns is-mobile">
