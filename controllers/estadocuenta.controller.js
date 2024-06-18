@@ -326,27 +326,29 @@ exports.post_recibir_pago = async (request, response, next) => {
                             .then(async ([deudas_noPagadas, fieldData]) => {
                                 // Guardas el pago completo del alumno
                                 await Pago.save_tarjeta(IDdeuda, motivo, monto, nota, fechaUsar);
-    
+
+                                // El monto inicial a usar es lo que el usuario decidió
+                                let monto_a_usar = monto;
                                 for (let deuda of deudas_noPagadas) {
-                                    if (monto <= 0) {
+                                    if (monto_a_usar <= 0) {
                                         break;
-                                    } else if ((deuda.montoAPagar - deuda.montoPagado) < monto) {
+                                    } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
                                         // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                                        await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), IDdeuda);
-                                        await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), IDCol);
-                                    } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto) {
+                                        await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
+                                    } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                                         // Como el monto a usar es menor, se usa monto a usar (lo que resto)
-                                        await Deuda.update_Deuda(monto, IDdeuda);
-                                        await Colegiatura.update_Colegiatura(monto, IDCol);
+                                        await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
                                     }
-    
+
                                     // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                                    monto = monto - (deuda.montoAPagar - deuda.montoPagado);
+                                    monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
                                 }
-    
+
                                 // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
-                                if (monto > 0) {
-                                    await Alumno.update_credito(matricula, monto);
+                                if (monto_a_usar > 0) {
+                                    await Alumno.update_credito(matricula, monto_a_usar);
                                 }
                             })
                     } else if (primerNumero === '8') {
