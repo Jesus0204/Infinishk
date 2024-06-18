@@ -1,5 +1,4 @@
 const select_plan = document.querySelector('#IDPlanPago');
-const precioFinal = parseFloat(document.querySelector('#precioFinal').innerHTML);
 const table1 = document.querySelector('#table_1');
 const table2 = document.querySelector('#table_2');
 const table1_body = document.querySelector('#table_1_body');
@@ -7,7 +6,7 @@ const table2_body = document.querySelector('#table_2_body');
 const column_table1 = document.querySelector('#column_table1');
 const column_table2 = document.querySelector('#column_table2');
 
-function plans_desktop() {
+function plans_desktop(precioFinal) {
     let plans = [];
     for (let plan of select_plan) {
         let numPagos = plan.getAttribute('data-num');
@@ -86,7 +85,7 @@ function plans_desktop() {
     return plans;
 }
 
-function plans_mobile(){
+function plans_mobile(precioFinal){
     let plans = [];
 
     for (let plan of select_plan) {
@@ -154,11 +153,11 @@ function plans_mobile(){
     return plans;
 }
 
-function setTable() {
+function setTable(precioFinal) {
     let numPagos = $('#IDPlanPago').find(':selected').data('num');
 
     if (window.innerWidth >= 940) {
-        let plans = plans_desktop();
+        let plans = plans_desktop(precioFinal);
 
         // Iteras sobre los planes para relevar las tablas
         for (let plan of plans) {
@@ -176,7 +175,7 @@ function setTable() {
             }
         }
     } else {
-        let plans = plans_mobile();
+        let plans = plans_mobile(precioFinal);
 
         // Iteras sobre los planes para relevar las tablas
         for (let plan of plans) {
@@ -191,16 +190,20 @@ function setTable() {
 }
 
 $(document).ready(function () {
+    const precioFinalModificado = document.querySelector('#precioFinalModificado');
     $('#IDPlanPago').change(function () {
-        setTable();
+        const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
+        setTable(precioFinalNum);
     });
 
     window.addEventListener('resize', () => {
-        setTable();
+        const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
+        setTable(precioFinalNum);
     });
 
     // Llamas la función para mostrar tabla al inicio
-    setTable();
+    const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
+    setTable(precioFinalNum);
 })
 
 function eliminar(materiaRow) {
@@ -289,6 +292,31 @@ function eliminar(materiaRow) {
 
     // Borrar la tabla del front end
     document.querySelector('#tablaMaterias' + materiaRow).remove();
+
+    const subtotal = document.querySelector('#subtotal');
+    const precioFinal = document.querySelector('#precioFinalModificado');
+    const porcBeca = document.querySelector('#porcBeca').value;
+
+    // Limpia el número para poder hacer matemáticas con él
+    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
+    const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
+
+    const newSubtotal = subtotalNum - precioMateriaNum;
+    const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
+    const newPrecioFinal = precioFinalNum - materiaPrecioBeca;
+
+    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    setTable(precioFinalNumTabla);
 }
 
 function agregar(materiaRow) {
@@ -389,6 +417,31 @@ function agregar(materiaRow) {
     if (rowCount == 0) {
         materiasEliminadasContainer.classList.add('is-hidden');
     }
+
+    const subtotal = document.querySelector('#subtotal');
+    const precioFinal = document.querySelector('#precioFinalModificado');
+    const porcBeca = document.querySelector('#porcBeca').value;
+
+    // Limpia el número para poder hacer matemáticas con él
+    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
+    const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
+
+    const newSubtotal = subtotalNum + precioMateriaNum;
+    const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
+    const newPrecioFinal = precioFinalNum + materiaPrecioBeca;
+
+    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    setTable(precioFinalNumTabla);
 }
 
 function createHiddenInput(parent, name, value, id) {

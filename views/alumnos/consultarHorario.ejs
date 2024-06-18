@@ -9,11 +9,13 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
-                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
-                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
-                    ¡Gracias por tu comprensión!
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                        horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                        espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                        ¡Gracias por tu comprensión!
+                    </p>
                 </div>
             </div>
         </div>
@@ -32,8 +34,11 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias no se encuentran disponibles actualmente. Por favor intenta más tarde o contacta a tu coordinador. 
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias no se encuentran disponibles actualmente. Por favor intenta más tarde o contacta a
+                        tu coordinador.
+                    </p>
                 </div>
             </div>
         </div>
@@ -203,11 +208,13 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
-                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
-                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
-                    ¡Gracias por tu comprensión!
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                        horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                        espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                        ¡Gracias por tu comprensión!
+                    </p>
                 </div>
             </div>
         </div>
@@ -215,12 +222,16 @@
         <form action="/horario/confirmar_horario" method="POST">
             <div class="columns">
                 <div class="column">
-                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                        ¡Bienvenido a ViaPago! 
-                        En esta sección puedes consultar las materias que tienes inscritas para el semestre en curso.
-                        También podrás elegir entre los distintos planes de pagos, para que elijas el que más
-                        te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
-                        innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador, para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                    <div class="box">
+                        <p class="has-text-weight-medium has-text-black">
+                            ¡Bienvenido a ViaPago!
+                            En esta sección puedes consultar las materias que tienes inscritas para el semestre en
+                            curso.
+                            También podrás elegir entre los distintos planes de pagos, para que elijas el que más
+                            te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
+                            innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador,
+                            para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -443,7 +454,7 @@
                                 </div>
                                 <div class="column is-6">
                                     <p class="has-text-black">
-                                        <span class="has-text-weight-bold">
+                                        <span class="has-text-weight-bold" id="subtotal">
                                             $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2 }) %>
                                         </span>
@@ -498,9 +509,9 @@
                             </div>
                             <div class="column is-6">
                                 <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
-                                <p class="is-hidden" id="precioFinal"><%= precioFinal %></p>
+                                <input type="hidden" id="porcBeca" value="<%= porcBeca %>">
                                 <p class="has-text-danger">
-                                    <span class="has-text-weight-bold">
+                                    <span class="has-text-weight-bold" id="precioFinalModificado">
                                         $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2 }) %>
                                     </span>
