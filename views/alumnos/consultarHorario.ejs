@@ -286,6 +286,12 @@
             </div>
             <br>
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <div class="box is-hidden" id="informacionMateria">
+                <label class="label is-medium has-text-danger has-text-weight-semibold">IMPORTANTE</label>
+                <p class="has-text-weight-medium" style="color: #5a6581">
+                    Por favor agrega al menos una materia para poder confirmar tu horario.
+                </p>
+            </div>
             <div class="columns" id="materiasPorConfirmar">
                 <div class="column">
                     <label class="label is-medium has-text-danger has-text-weight-semibold">CONSULTA TUS MATERIAS</label>
@@ -391,7 +397,8 @@
                                                 minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         </td>
                                         <td style="text-align: center;">
-                                            <button type="button" id="btnEliminar<%=count%>" class="tag is-size-6"
+                                            <button type="button" id="btnEliminar<%=count%>"
+                                                class="tag is-size-6 btn-eliminar-materia"
                                                 style="background-color: #f6d5d8;" onclick="eliminar('<%=count%>')">
                                                 <span class="icon is-small" style="color: #f83362">
                                                     <i class="fa-solid fa-trash-can"></i>
