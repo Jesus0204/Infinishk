@@ -124,6 +124,12 @@
   border: solid #95404c !important;
 }
 
+.confirmar-button:disabled{
+  background-color: #999999 !important;
+  color: #ffffff;
+  border: solid #95404c !important;
+}
+
 .ficha-table {
   border-radius: 10px;
 }

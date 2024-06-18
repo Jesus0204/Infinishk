@@ -293,6 +293,18 @@ function eliminar(materiaRow) {
     // Borrar la tabla del front end
     document.querySelector('#tablaMaterias' + materiaRow).remove();
 
+    const tableBody = document.querySelector('#table_confirmar');
+    const Boton_confirmar = document.querySelector('#Boton_confirmar');
+    const rowCount = tableBody.rows.length;
+
+    const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
+
+    if (rowCount == 0) {
+        Boton_confirmar.disabled = true;
+        materiasPorConfirmar.classList.add('is-hidden');
+    }
+
+
     const subtotal = document.querySelector('#subtotal');
     const precioFinal = document.querySelector('#precioFinalModificado');
     const porcBeca = document.querySelector('#porcBeca').value;
@@ -333,6 +345,10 @@ function agregar(materiaRow) {
     const precio = document.querySelector('#precioEliminado' + materiaRow).value;
 
     const table_confirmar = document.querySelector('#table_confirmar');
+    const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
+    const Boton_confirmar = document.querySelector('#Boton_confirmar');
+    Boton_confirmar.disabled = false;
+    materiasPorConfirmar.classList.remove('is-hidden');
 
     // Create a new table row with data
     const newRow = document.createElement('tr');
