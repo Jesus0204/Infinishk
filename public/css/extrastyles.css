@@ -130,6 +130,22 @@
   border: solid #95404c !important;
 }
 
+.btn-eliminar-materia {
+  border: solid 2px #f6d5d8;
+}
+
+.btn-eliminar-materia:hover {
+  border: solid 2px #95404c;
+}
+
+.btn-agregar-materia {
+  border: solid 2px #eef2fb;
+}
+
+.btn-agregar-materia:hover {
+  border: solid 2px #3f4a6b;
+}
+
 .ficha-table {
   border-radius: 10px;
 }

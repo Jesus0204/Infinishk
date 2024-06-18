@@ -260,7 +260,7 @@ function eliminar(materiaRow) {
     agregarButton.onclick = function () {
         agregar(materiaRow); // Call the agregar function with materiaRow as parameter
     };
-    agregarButton.classList.add('tag', 'is-size-6');
+    agregarButton.classList.add('tag', 'is-size-6', 'btn-agregar-materia');
     agregarButton.style.backgroundColor = '#eef2fb'; // lighter color
     agregarButton.style.color = '#5a6581';
     const agregarIcon = document.createElement('span');
@@ -295,6 +295,7 @@ function eliminar(materiaRow) {
 
     const tableBody = document.querySelector('#table_confirmar');
     const Boton_confirmar = document.querySelector('#Boton_confirmar');
+    const informacionMateria = document.querySelector('#informacionMateria');
     const rowCount = tableBody.rows.length;
 
     const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
@@ -302,6 +303,7 @@ function eliminar(materiaRow) {
     if (rowCount == 0) {
         Boton_confirmar.disabled = true;
         materiasPorConfirmar.classList.add('is-hidden');
+        informacionMateria.classList.remove('is-hidden');
     }
 
 
@@ -347,8 +349,10 @@ function agregar(materiaRow) {
     const table_confirmar = document.querySelector('#table_confirmar');
     const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
     const Boton_confirmar = document.querySelector('#Boton_confirmar');
+    const informacionMateria = document.querySelector('#informacionMateria');
     Boton_confirmar.disabled = false;
     materiasPorConfirmar.classList.remove('is-hidden');
+    informacionMateria.classList.add('is-hidden');
 
     // Create a new table row with data
     const newRow = document.createElement('tr');
@@ -395,7 +399,7 @@ function agregar(materiaRow) {
     eliminarButton.onclick = function () {
         eliminar(materiaRow); // Call the agregar function with materiaRow as parameter
     };
-    eliminarButton.classList.add('tag', 'is-size-6');
+    eliminarButton.classList.add('tag', 'is-size-6', 'btn-eliminar-materia');
     eliminarButton.style.backgroundColor = '#f6d5d8'; // lighter color
     eliminarButton.style.color = '#f83362';
     const eliminarIcon = document.createElement('span');
