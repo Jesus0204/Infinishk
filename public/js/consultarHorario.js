@@ -196,14 +196,19 @@ $(document).ready(function () {
         setTable(precioFinalNum);
     });
 
-    window.addEventListener('resize', () => {
+
+    const horarioConfirmado = document.querySelector('#horarioConfirmado').value;
+
+    if (horarioConfirmado == 0) {
+        window.addEventListener('resize', () => {
+            const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
+            setTable(precioFinalNum);
+        });
+    
+        // Llamas la función para mostrar tabla al inicio
         const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
         setTable(precioFinalNum);
-    });
-
-    // Llamas la función para mostrar tabla al inicio
-    const precioFinalNum = parseFloat(precioFinalModificado.textContent.trim().replace(/\$|,/g, ''));
-    setTable(precioFinalNum);
+    }
 })
 
 function eliminar(materiaRow) {
