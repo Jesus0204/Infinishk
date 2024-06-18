@@ -892,6 +892,8 @@ exports.post_subir_archivo = (request, response, next) => {
                         deudaEstudiante = 0;
                     } else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
+                    } else if (tipoPago === 'Pago de Colegiatura') {
+                            tipoPago = 'Pago de Colegiatura';
                     } else {
                         tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
                         deudaEstudiante = montoAPagar;
