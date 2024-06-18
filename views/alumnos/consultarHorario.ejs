@@ -9,11 +9,13 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
-                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
-                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
-                    ¡Gracias por tu comprensión!
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                        horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                        espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                        ¡Gracias por tu comprensión!
+                    </p>
                 </div>
             </div>
         </div>
@@ -32,8 +34,11 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias no se encuentran disponibles actualmente. Por favor intenta más tarde o contacta a tu coordinador. 
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias no se encuentran disponibles actualmente. Por favor intenta más tarde o contacta a
+                        tu coordinador.
+                    </p>
                 </div>
             </div>
         </div>
@@ -203,11 +208,13 @@
         <div class="columns">
             <div class="column is-2"></div>
             <div class="column is-8">
-                <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                    Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
-                    horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
-                    espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
-                    ¡Gracias por tu comprensión!
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
+                        horario. Estaté atento, porque cuando esten listas tus materias se encontrarán en este mismo
+                        espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
+                        ¡Gracias por tu comprensión!
+                    </p>
                 </div>
             </div>
         </div>
@@ -215,12 +222,16 @@
         <form action="/horario/confirmar_horario" method="POST">
             <div class="columns">
                 <div class="column">
-                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                        ¡Bienvenido a ViaPago! 
-                        En esta sección puedes consultar las materias que tienes inscritas para el semestre en curso.
-                        También podrás elegir entre los distintos planes de pagos, para que elijas el que más
-                        te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
-                        innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador, para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                    <div class="box">
+                        <p class="has-text-weight-medium has-text-black">
+                            ¡Bienvenido a ViaPago!
+                            En esta sección puedes consultar las materias que tienes inscritas para el semestre en
+                            curso.
+                            También podrás elegir entre los distintos planes de pagos, para que elijas el que más
+                            te acomoda. Por favor revisa las materias y su costo cautelosamente para evitar cambios
+                            innecesarios. Si no estás conforme con la propuesta, por favor contacta a tu coordinador,
+                            para que los cambios necesarios se puedan aplicar. ¡Gracias!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -316,18 +327,27 @@
                                 </span>
                                 Costo
                             </th>
-                            <th style="text-align: left;">Eliminar Materia</th>
+                            <th style="text-align: left;">Eliminar</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table_confirmar">
                         <% for (let count = 0; count < schedule.length; count++) { %>
-                            <tr>
-                                <input type="hidden" name="idMateria[]" value="<%= schedule[count].idMateria %>">
-                                <input type="hidden" name="nombreProfesorCompleto[]"
+                            <tr id="tablaMaterias<%=count%>">
+                                <input type="hidden" id="id<%=count%>" name="idMateria[]" value="<%= schedule[count].idMateria %>">
+                                <input type="hidden" id="profesor<%=count%>" name="nombreProfesorCompleto[]"
                                     value="<%= schedule[count].nombreProfesorCompleto %>">
-                                <input type="hidden" name="salon[]" value="<%= schedule[count].nombreSalon %>">
-                                <input type="hidden" name="fechaInicio[]" value="<%= schedule[count].startDateFormat %>">
-                                <input type="hidden" name="fechaFin[]" value="<%= schedule[count].endDateFormat %>">
+                                <input type="hidden" id="salon<%=count%>" name="salon[]"
+                                    value="<%= schedule[count].nombreSalon %>">
+                                <input type="hidden" id="fechaInicio<%=count%>" name="fechaInicio[]"
+                                    value="<%= schedule[count].startDateFormat %>">
+                                <input type="hidden" id="fechaFin<%=count%>" name="fechaFin[]"
+                                    value="<%= schedule[count].endDateFormat %>">
+                                <input type="hidden" id="materia<%=count%>"
+                                    value="<%= schedule[count].nombreMat %>">
+                                <input type="hidden" id="creditos<%=count%>" value="<%= schedule[count].creditos %>">
+                                <input type="hidden" id="precio<%=count%>" value="<%=
+                                    schedule[count].precioMateria.toLocaleString('mx', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>">
                                 <td>
                                     <strong>
                                         <%= schedule[count].nombreMat %>
@@ -335,13 +355,21 @@
                                 </td>
                                 <td><%= schedule[count].nombreProfesorCompleto %></td>
                                 <td>
-                                    <input type="hidden" name="grupoHorario[]"
+                                    <input type="hidden" name="grupoHorario[]" id="horario<%=count%>"
                                         value="<%= JSON.stringify(schedule[count].horarios) %> ">
+                                    <input type="hidden" id="horarioTexto<%=count%>"
+                                        value="<% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
+                                        <%= schedule[count].horarios[i].diaSemana %>
+                                        <%= schedule[count].horarios[i].fechaInicio %> -
+                                        <%= schedule[count].horarios[i].fechaTermino %>
+                                        <br>
+                                        <% } %>
+                                        <br>">
                                     <% for (let i = 0; i < schedule[count].horarios.length; i++) { %>
-                                    <%= schedule[count].horarios[i].diaSemana %>
-                                    <%= schedule[count].horarios[i].fechaInicio %> -
-                                    <%= schedule[count].horarios[i].fechaTermino %>
-                                    <br>
+                                        <%= schedule[count].horarios[i].diaSemana %>
+                                        <%= schedule[count].horarios[i].fechaInicio %> -
+                                        <%= schedule[count].horarios[i].fechaTermino %>
+                                        <br>
                                     <% } %>
                                     <br>
                                 </td>
@@ -360,15 +388,13 @@
                                     schedule[count].precioMateria.toLocaleString('mx', {
                                         minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                 </td>
-                                <td>
-                                    <span class="tag is-size-6" style="background-color: #f6d5d8;">
+                                <td style="text-align: center;">
+                                    <button type="button" id="btnEliminar<%=count%>" class="tag is-size-6"
+                                        style="background-color: #f6d5d8;" onclick="eliminar('<%=count%>')">
                                         <span class="icon is-small" style="color: #f83362">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </span>
-                                        <span style="color: #f83362">
-                                            Eliminar
-                                        </span>
-                                    </span>                
+                                    </button>                
                                 </td>
                             </tr>
                         <% } %>
@@ -376,8 +402,48 @@
                 </table>
             </div>
             <div class="columns">
-                <div class="column is-8"></div>
-                <div class="column">
+                <div class="column is-8">
+                    <div id="materiasEliminadasContainer" class="is-hidden">
+                        <label class="label is-medium has-text-danger has-text-weight-semibold">MATERIAS ELIMINADAS</label>
+                        <div class="table-container">
+                            <table class="table is-hoverable is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-book"></i>
+                                            </span>
+                                            Materia
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-regular fa-user"></i>
+                                            </span>
+                                            Profesor
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fas fa-graduation-cap"></i>
+                                            </span>
+                                            Créditos
+                                        </th>
+                                        <th style="text-align: left;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-tags"></i>
+                                            </span>
+                                            Costo
+                                        </th>
+                                        <th style="text-align: left;">Agregar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_eliminados">
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-flex is-flex-direction-column is-justify-content-flex-end">
                     <div class="box">
                         <% if (porcBeca || credito != 0) { %>
                             <div class="columns is-mobile">
@@ -388,7 +454,7 @@
                                 </div>
                                 <div class="column is-6">
                                     <p class="has-text-black">
-                                        <span class="has-text-weight-bold">
+                                        <span class="has-text-weight-bold" id="subtotal">
                                             $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2 }) %>
                                         </span>
@@ -443,9 +509,9 @@
                             </div>
                             <div class="column is-6">
                                 <% let precioFinal = precioTotal - (precioTotal * (porcBeca / 100)) - credito %>
-                                <p class="is-hidden" id="precioFinal"><%= precioFinal %></p>
+                                <input type="hidden" id="porcBeca" value="<%= porcBeca %>">
                                 <p class="has-text-danger">
-                                    <span class="has-text-weight-bold">
+                                    <span class="has-text-weight-bold" id="precioFinalModificado">
                                         $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2 }) %>
                                     </span>
@@ -456,7 +522,8 @@
                             </div>
                         </div>
                     </div>
-                    <button class="confirmar-button is-responsive" type="submit" style="font-size: large;"
+                    <button class="confirmar-button is-responsive" type="submit"
+                        style="font-size: large; padding-left: 1.5em;"
                         id="Boton_confirmar">
                         <span>CONFIRMAR MATERIAS</span>
                         <span class="icon is-large">
