@@ -873,8 +873,6 @@ exports.post_subir_archivo = (request, response, next) => {
                     }
                 }
 
-                console.log(montoAPagar)
-
                 if (idLiquida[0] && idLiquida[0][0] && idLiquida[0][0].IDLiquida !== undefined) {
                     tipoPago = 'Pago Completo';
                     deudaEstudiante = 0;
