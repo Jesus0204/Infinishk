@@ -322,7 +322,7 @@ exports.post_registrar_solicitud = (request, response, next) => {
         });
 };
 
-exports.get_ingresos = async (request, response, next) => { 
+exports.get_ingresos = async (request, response, next) => {
     try {
         const [periodos, fieldData] = await Reporte.fetchPeriodos();
 
@@ -873,6 +873,8 @@ exports.post_subir_archivo = (request, response, next) => {
                     }
                 }
 
+                console.log(montoAPagar)
+
                 if (idLiquida[0] && idLiquida[0][0] && idLiquida[0][0].IDLiquida !== undefined) {
                     tipoPago = 'Pago Completo';
                     deudaEstudiante = 0;
@@ -893,7 +895,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     } else if (tipoPago === 'Pago no Reconocido') {
                         tipoPago = 'Pago no Reconocido';
                     } else if (tipoPago === 'Pago de Colegiatura') {
-                            tipoPago = 'Pago de Colegiatura';
+                        tipoPago = 'Pago de Colegiatura';
                     } else {
                         tipoPago = 'Pago a Registrar'; // Si el importe no coincide con el monto a pagar
                         deudaEstudiante = montoAPagar;
@@ -972,10 +974,10 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         if (tipoPago === 'Pago de Colegiatura') {
             let diferencia = 0;
             let montoAPagar = 0;
-    
+
             const deuda = await Deuda.fetchDeuda(matricula);
             const idDeuda = await Deuda.fetchIDDeuda(matricula);
-    
+
             if (deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
                 montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
             } else {
@@ -986,28 +988,28 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 });
                 return;
             }
-    
+
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
-    
+
             if (importe > montoAPagar) {
                 diferencia = importe - montoAPagar;
             }
-    
+
             let importe_trans = importe - diferencia;
             await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
             await Colegiatura.update_transferencia(importe, idColegiatura)
             await Deuda.update_transferencia(importe_trans, idDeuda[0][0].IDDeuda)
             const deudaNext = await Deuda.fetchIDDeuda(matricula)
-    
+
             if (diferencia > 0) {
-    
+
                 if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
                     await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
                 } else {
                     await Alumno.update_credito(matricula, diferencia);
                 }
-    
+
             }
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
@@ -1024,7 +1026,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             });
         } else if (tipoPago === 'Pago Extra') {
             const idLiquida = await Liquida.fetchID(matricula);
-    
+
             if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
