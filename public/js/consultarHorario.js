@@ -311,30 +311,38 @@ function eliminar(materiaRow) {
         informacionMateria.classList.remove('is-hidden');
     }
 
-
     const subtotal = document.querySelector('#subtotal');
     const precioFinal = document.querySelector('#precioFinalModificado');
     const porcBeca = document.querySelector('#porcBeca').value;
 
+    // Function to clean and convert the currency string to a number
+    function parseCurrency(value) {
+        return parseFloat(value.trim().replace(/\$|,/g, ''));
+    }
+    
     // Limpia el número para poder hacer matemáticas con él
-    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
-    const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
-    const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
-
-    const newSubtotal = subtotalNum - precioMateriaNum;
+    const precioFinalNum = parseCurrency(precioFinal.textContent);
+    const precioMateriaNum = parseCurrency(precio);
+    
     const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
     const newPrecioFinal = precioFinalNum - materiaPrecioBeca;
-
-    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    
     precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 
-    const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    if (subtotal) {
+        const subtotalNum = parseCurrency(subtotal.textContent);
+        const newSubtotal = subtotalNum - precioMateriaNum;
+    
+        subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    const precioFinalNumTabla = parseCurrency(precioFinal.textContent);
     setTable(precioFinalNumTabla);
 }
 
@@ -448,22 +456,26 @@ function agregar(materiaRow) {
     const porcBeca = document.querySelector('#porcBeca').value;
 
     // Limpia el número para poder hacer matemáticas con él
-    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
     const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
     const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
-
-    const newSubtotal = subtotalNum + precioMateriaNum;
+    
     const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
     const newPrecioFinal = precioFinalNum + materiaPrecioBeca;
-
-    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    
     precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+    
+    if (subtotal) {
+        const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
+        const newSubtotal = subtotalNum + precioMateriaNum;
+    
+        subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
 
     const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
     setTable(precioFinalNumTabla);
