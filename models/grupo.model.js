@@ -39,8 +39,8 @@ module.exports = class Alumno {
         return PrecioTotal;
     }
 
-    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino){
-        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`) VALUES (?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino]);
+    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo){
+        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`) VALUES (?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo]);
     }
 
 }

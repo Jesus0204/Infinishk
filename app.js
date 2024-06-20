@@ -53,7 +53,7 @@ const helmet = require("helmet");
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net'],
+            "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
             "script-src-attr": ["'unsafe-inline'"], 
             "connect-src": ["'self'", 'sandboxpo.mit.com.mx'],
             "frame-src": ['*']
@@ -102,6 +102,7 @@ app.locals.contienePermiso = (permisos, casoUso) => {
 };
 
 let moment = require('moment-timezone');
+moment.locale('es-mx');
 app.locals.moment = moment;
 
 const scheduleController = require('./controllers/schedule.controller');
