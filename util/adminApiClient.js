@@ -109,6 +109,22 @@ async function getAllAdmins() {
   return response.data;
 }
 
+async function destroyGroup(student_id,group_id,id){
+  const token = await getToken();
+  const headers = getHeaders(token);
+  const response = await axiosAdminClient.get(
+    'v1/student_groups', {
+      headers,
+      params: {
+        student_id: student_id,
+        group_id: group_id,
+        id: id,
+      },
+    },
+  )
+  return response.data
+}
+
 
 module.exports = {
   getAllUsers,
@@ -116,5 +132,6 @@ module.exports = {
   getAllPeriods,
   getUserGroups,
   getUser,
-  getAllAdmins
+  getAllAdmins,
+  destroyGroup,
 }

@@ -357,6 +357,9 @@
                                         <input type="hidden" id="precio<%=count%>" value="<%=
                                             schedule[count].precioMateria.toLocaleString('mx', {
                                                 minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>">
+                                        <input type="hidden" id="idgrupo<%=count%>" name="idgrupo[]"
+                                            value="<%= schedule[count].idGrupo %>">
+                                        <input type="hidden" name="origen[]" value="confirmar">
                                         <td>
                                             <strong>
                                                 <%= schedule[count].nombreMat %>
@@ -449,8 +452,11 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table_eliminados">
-    
-                                </tbody>
+                                    <% for (let count = 0; count < schedule.length; count++) { %>
+                                        <input type="hidden" id="idgrupo<%=count%>" name="idgrupo[]" value="<%= schedule[count].idGrupo %>">
+                                        <input type="hidden" name="origen[]" value="eliminados">
+                                    <% } %>
+                                </tbody>                                
                             </table>
                         </div>
                     </div>
