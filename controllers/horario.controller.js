@@ -239,7 +239,6 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const fechaFinCurso = moment(fechaFin[i], 'LL').format('YYYY-MM-DD');
             const IDMateria = idMateria[i];
             const IDGrupo = idGrupo[i];
-            const IDGrupoEliminado = idGrupoEliminado[i];
 
             let horarioBaseDatos = '';
             for (let count = 0; count < horarioCurso.length; count++) {
@@ -262,13 +261,14 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 fechaFinCurso,
                 IDGrupo,
             );
-
-            // Eliminar grupo si es necesario
-            if (IDGrupoEliminado) {
-                console.log('idGrupoEliminado:', idGrupoEliminado); // Debugging line
-                // await destroyGroup(request.session.username, IDGrupoEliminado , IDGrupoEliminado)
-            }
         }
+
+        for (let i = 0; i < idGrupoEliminado.length; i++) {
+            const IDGrupoEliminado = idGrupoEliminado[i];
+            console.log('idGrupoEliminado:', IDGrupoEliminado);
+            // await destroyGroup(request.session.username, IDGrupoEliminado , IDGrupoEliminado)
+        }
+
 
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
