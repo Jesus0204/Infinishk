@@ -15,8 +15,8 @@ module.exports = class Cursa{
     static fetchDiplomadosCursando(matricula) {
         return db.execute(`SELECT D.nombreDiplomado, C.IDDiplomado, D.precioDiplomado, D.fechaInicio, D.fechaFin
         FROM Cursa AS C, Diplomado AS D 
-        WHERE C.IDDiplomado = D.IDDiplomado AND D.fechaFin > Now() AND D.fechaInicio < Now()
-        AND C.Matricula = ? `, [matricula]);
+        WHERE C.IDDiplomado = D.IDDiplomado AND D.fechaFin > Now() AND D.fechaInicio < Now() 
+        AND C.Matricula = ?`, [matricula]);
     };
 
     static fetchPagosHechos(matricula, IDDiplomado) {
