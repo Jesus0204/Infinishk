@@ -223,6 +223,7 @@ function eliminar(materiaRow) {
     const horario = document.querySelector('#horario' + materiaRow).value;
     const horarioTexto = document.querySelector('#horarioTexto' + materiaRow).value;
     const precio = document.querySelector('#precio' + materiaRow).value;
+    const idGrupo = document.querySelector('#idGrupo' + materiaRow).value;
 
     // Sacar la tabla donde se va a agregar datos y el container
     const table_eliminados = document.querySelector('#table_eliminados');
@@ -293,6 +294,7 @@ function eliminar(materiaRow) {
     createHiddenInput(newRow, 'fechaInicioEliminado[]', fechaInicio, `fechaInicioEliminado${materiaRow}`);
     createHiddenInput(newRow, 'fechaFinEliminado[]', fechaFin, `fechaFinEliminado${materiaRow}`);
     createHiddenInput(newRow, 'grupoHorarioEliminado[]', horario, `horarioEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'idGrupoEliminado[]', idGrupo, `idGrupoEliminado${materiaRow}`);
     createHiddenInput(newRow, '', horarioTexto, `horarioTextoEliminado${materiaRow}`);
 
     // Borrar la tabla del front end
@@ -358,6 +360,7 @@ function agregar(materiaRow) {
     const horario = document.querySelector('#horarioEliminado' + materiaRow).value;
     const horarioTexto = document.querySelector('#horarioTextoEliminado' + materiaRow).value;
     const precio = document.querySelector('#precioEliminado' + materiaRow).value;
+    const idGrupo = document.querySelector('#idGrupoEliminado' + materiaRow).value;
 
     const table_confirmar = document.querySelector('#table_confirmar');
     const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
@@ -438,6 +441,7 @@ function agregar(materiaRow) {
     createHiddenInput(newRow, 'fechaFin[]', fechaFin, `fechaFin${materiaRow}`);
     createHiddenInput(newRow, 'grupoHorario[]', horario, `horario${materiaRow}`);
     createHiddenInput(newRow, '', horarioTexto, `horarioTexto${materiaRow}`);
+    createHiddenInput(newRow, 'idGrupo[]', idGrupo, `idGrupo${materiaRow}`);
 
     // Borrar la tabla del front end
     document.querySelector('#tablaEliminados' + materiaRow).remove();
