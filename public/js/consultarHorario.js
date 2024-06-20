@@ -102,10 +102,10 @@ function plans_desktop(precioFinal) {
             let half_up = Math.ceil(numPagos / 2);
             let pago1 = precioFinal * 0.23;
             let precioRestante = precioFinal * 0.77;
-            let pagoMensual = precioRestante / (numPagos - 1);
+            let pagoMensual = parseFloat((precioRestante / (numPagos - 1)).toFixed(2));
 
-            let totalCalculated = pago1 + pagoMensual.toFixed(2) * (numPagos - 1);
-            let adjustment = precioFinal - totalCalculated;
+            let totalCalculated = pago1 + (pagoMensual * (numPagos - 1));
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
 
             // La primera tabla se llena
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
@@ -193,10 +193,10 @@ function plans_mobile(precioFinal){
         } else {
             let pago1 = precioFinal * 0.23;
             let precioRestante = precioFinal * 0.77;
-            let pagoMensual = precioRestante / (numPagos - 1);
+            let pagoMensual = parseFloat((precioRestante / (numPagos - 1)).toFixed(2));
 
-            let totalCalculated = pago1 + pagoMensual.toFixed(2) * (numPagos - 1);
-            let adjustment = precioFinal - totalCalculated;
+            let totalCalculated = pago1 + (pagoMensual * (numPagos - 1));
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
 
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', {minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
 
