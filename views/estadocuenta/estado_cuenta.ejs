@@ -11,6 +11,9 @@
     .solicitdes {
         border: 1px solid #dbdbdb; /* Adjust the border color as needed */
         border-radius: 10px; /* Adjust the border radius as needed */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .solicitdes .table {
@@ -25,70 +28,83 @@
         <div class="column is-one-quarter">
             <div class="card">
                 <header class="card-header">
-                    <p class="card-header-title is-centered has-background-danger has-text-white is-size-4">Estado de Cuenta</p>
+                    <p class="card-header-title is-centered has-background-danger has-text-white is-size-4">
+                        Estado de Cuenta
+                        <a onclick="downloadPDF('<%= matricula %>')" class="icon is-large">
+                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                        </a>
+                    </p>
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        <% if(matricula[0] == '1') { %>
-                            <div class="box has-background-light" style="text-align: center;">
-                                <p>CICLO ESCOLAR</p>
-                                <p class="title is-2"><%= periodo.Nombre %></p>
+                        <div class="columns">
+                            <div class="column is-12" id="boxContent">
+                                <% if(matricula[0] == '1') { %>
+                                    <div class="box has-background-light" style="text-align: center;">
+                                        <p>CICLO ESCOLAR</p>
+                                        <p class="title is-2"><%= periodo.Nombre %></p>
+                                    </div>
+                                    <% if(estudianteProfesional.porcBeca !== 0) { %>
+                                        <div class="box has-background-light" style="text-align: center;">
+                                            <p>PORCENTAJE DE BECA</p>
+                                            <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
+                                        </div>
+                                <% } %>
+                                <% } else if (matricula[0] == '8') { %>
+                                    <% if (diplomados.length != 0) { %> 
+                                        <div class="box has-background-light" style="text-align: center;">
+                                            <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
+                                        </div>
+                                        <div class="columns">
+                                            <div class="column is-offset-1">
+                                                <strong>
+                                                    Fecha Inicio:
+                                                </strong>
+                                                <%= diplomados[0].fechaInicio %>
+                                            </div>
+                                            <div class="column">
+                                                <strong>
+                                                    Fecha Fin:
+                                                </strong>
+                                                <%= diplomados[0].fechaFin %>
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="box has-background-light" style="text-align: center;">
+                                            <p class="title is-4">Cursando Ningún Diplomado</p>
+                                        </div>
+                                        <div class="columns">
+                                            <div class="column is-offset-1">
+                                                <strong>
+                                                    Fecha Inicio:
+                                                </strong>
+                                                N/A
+                                            </div>
+                                            <div class="column">
+                                                <strong>
+                                                    Fecha Fin:
+                                                </strong>
+                                                N/A
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% } %>
                             </div>
-                            <% if(estudianteProfesional.porcBeca !== 0) { %>
-                                <div class="box has-background-light" style="text-align: center;">
-                                    <p>PORCENTAJE DE BECA</p>
-                                    <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
-                                </div>
-                        <% } %>
-                        <% } else if (matricula[0] == '8') { %>
-                            <% if (diplomados.length != 0) { %> 
-                                <div class="box has-background-light" style="text-align: center;">
-                                    <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
-                                </div>
-                                <div class="columns">
-                                    <div class="column is-offset-1">
-                                        <strong>
-                                            Fecha Inicio:
-                                        </strong>
-                                        <%= diplomados[0].fechaInicio %>
-                                    </div>
-                                    <div class="column">
-                                        <strong>
-                                            Fecha Fin:
-                                        </strong>
-                                        <%= diplomados[0].fechaFin %>
-                                    </div>
-                                </div>
-                            <% } else { %>
-                                <div class="box has-background-light" style="text-align: center;">
-                                    <p class="title is-4">Cursando Ningún Diplomado</p>
-                                </div>
-                                <div class="columns">
-                                    <div class="column is-offset-1">
-                                        <strong>
-                                            Fecha Inicio:
-                                        </strong>
-                                        N/A
-                                    </div>
-                                    <div class="column">
-                                        <strong>
-                                            Fecha Fin:
-                                        </strong>
-                                        N/A
-                                    </div>
-                                </div>
-                            <% } %>
-                        <% } %>
-                        <a href="/estado_cuenta/pagar">
-                            <button class="button is-responsive">
-                                <span>
-                                    Realizar Pago
-                                </span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                        </a>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-12">
+                                <a href="/estado_cuenta/pagar">
+                                    <button class="button is-responsive">
+                                        <span>
+                                            Realizar Pago
+                                        </span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,7 +146,7 @@
                              </li>
                          </ul>
                      </div>
-                    <div class="is-hidden" id="extras">
+                    <div class="is-hidden" id="solicitudes">
                         <% if (pagosExtra.length > 0) { %>
                             <% let countOtros = 5 %>
                             <% pagosExtra.forEach(pagosExtra => { %>
