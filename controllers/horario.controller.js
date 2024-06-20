@@ -7,7 +7,7 @@ const Periodo = require('../models/periodo.model');
 const PrecioCredito = require('../models/precio_credito.model');
 const Materia = require('../models/materia.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
-const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups,destroyGroup } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups, destroyGroup } = require('../util/adminApiClient');
 const { request } = require('express');
 
 // Configuras a moment con el locale. 
@@ -205,19 +205,28 @@ exports.get_propuesta_horario = async (request, response, next) => {
 
 };
 
-exports.post_confirmar_horario = async (request, response, next) => {
+const ensureArray = (value) => {
+    if (Array.isArray(value)) {
+        return value;
+    }
+    if (value === undefined || value === null) {
+        return [];
+    }
+    return [value];
+};
 
+exports.post_confirmar_horario = async (request, response, next) => {
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
 
-    const idMateria = Array.isArray(request.body['idMateria[]']) ? request.body['idMateria[]'] : [];
-    const nombreProfesorCompleto = Array.isArray(request.body['nombreProfesorCompleto[]']) ? request.body['nombreProfesorCompleto[]'] : [];
-    const salon = Array.isArray(request.body['salon[]']) ? request.body['salon[]'] : [];
-    const fechaInicio = Array.isArray(request.body['fechaInicio[]']) ? request.body['fechaInicio[]'] : [];
-    const fechaFin = Array.isArray(request.body['fechaFin[]']) ? request.body['fechaFin[]'] : [];
-    const idGrupo = Array.isArray(request.body['idgrupo[]']) ? request.body['idgrupo[]'] : [];
-    const grupoHorario = Array.isArray(request.body['grupoHorario[]']) ? request.body['grupoHorario[]'] : [];
-    const origen = Array.isArray(request.body['origen[]']) ? request.body['origen[]'] : [];
+    const idMateria = ensureArray(request.body['idMateria[]']);
+    const nombreProfesorCompleto = ensureArray(request.body['nombreProfesorCompleto[]']);
+    const salon = ensureArray(request.body['salon[]']);
+    const fechaInicio = ensureArray(request.body['fechaInicio[]']);
+    const fechaFin = ensureArray(request.body['fechaFin[]']);
+    const idGrupo = ensureArray(request.body['idGrupo[]']);
+    const idGrupoEliminado = ensureArray(request.body['idGrupoEliminado[]']);
+    const grupoHorario = ensureArray(request.body['grupoHorario[]']);
     const grupoHorarioValidado = grupoHorario.map(item => JSON.parse(item));
 
     try {
@@ -230,10 +239,11 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const fechaFinCurso = moment(fechaFin[i], 'LL').format('YYYY-MM-DD');
             const IDMateria = idMateria[i];
             const IDGrupo = idGrupo[i];
+            const IDGrupoEliminado = idGrupoEliminado[i];
 
             let horarioBaseDatos = '';
             for (let count = 0; count < horarioCurso.length; count++) {
-                if ((count + 1) == horarioCurso.length) {
+                if ((count + 1) === horarioCurso.length) {
                     horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino;
                 } else {
                     horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino + ', ';
@@ -241,22 +251,22 @@ exports.post_confirmar_horario = async (request, response, next) => {
             }
 
             // Guardar el grupo en la base de datos
-            if (origen[i] === 'confirmar') {
-                await Grupo.saveGrupo(
-                    request.session.username,
-                    IDMateria,
-                    precioActual,
-                    profesor,
-                    salonCurso,
-                    horarioBaseDatos,
-                    fechaInicioCurso,
-                    fechaFinCurso,
-                    IDGrupo,
-                );
-            }
+            await Grupo.saveGrupo(
+                request.session.username,
+                IDMateria,
+                precioActual,
+                profesor,
+                salonCurso,
+                horarioBaseDatos,
+                fechaInicioCurso,
+                fechaFinCurso,
+                IDGrupo,
+            );
 
-            else if (origen[i] === 'eliminados') {
-                await destroyGroup(request.session.username,IDGrupo,IDGrupo)
+            // Eliminar grupo si es necesario
+            if (IDGrupoEliminado) {
+                console.log('idGrupoEliminado:', idGrupoEliminado); // Debugging line
+                // await destroyGroup(request.session.username, IDGrupoEliminado , IDGrupoEliminado)
             }
         }
 
@@ -265,8 +275,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
         await EstudianteProfesional.updateHorarioAccepted(request.session.username);
 
         response.redirect('/horario/consultaHorario');
-    }
-    catch (error) {
+    } catch (error) {
         response.status(500).render('500', {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
@@ -275,4 +284,4 @@ exports.post_confirmar_horario = async (request, response, next) => {
         });
         console.log(error);
     }
-}
+};
