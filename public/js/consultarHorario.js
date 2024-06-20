@@ -26,6 +26,14 @@ function getPaymentDates(numPagos, semesterStart) {
     if (numPagos == 1) {
         // If only one payment, set it to the start date
         paymentDates.push(moment(startDate).format('LL'));
+    } else if (numPagos == 6) {
+        // Special case: six payments
+        let currentPaymentDate = moment(startDate);
+        paymentDates.push(moment(currentPaymentDate).format('LL'));
+        for (let i = 1; i < numPagos; i++) {
+            currentPaymentDate.add(1, 'month').date(5); // Move to the 5th of the next month
+            paymentDates.push(moment(currentPaymentDate).format('LL'));
+        }
     } else {
         // Calculate the interval between payments in days
         const interval = (endDate - startDate) / (numPagos - 1);
