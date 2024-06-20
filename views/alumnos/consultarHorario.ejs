@@ -4,6 +4,8 @@
     rol: rol 
 }) %>
 
+<% moment.locale('es-mx'); %>
+
 <section class='section'>
     <input type="hidden" id="horarioConfirmado" value="<%= confirmacion %>">
     <% if (periodoExistente == 0) { %>
