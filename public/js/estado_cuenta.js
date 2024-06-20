@@ -140,7 +140,7 @@ function setText(activeContent, span) {
     } else if (activeContent == 'solicitudes') {
         span.textContent = 'Solicitudes Pendientes';
     } else if (activeContent == 'pagosExtra') {
-        span.textContent = 'Otros pagos';
+        span.textContent = 'Otros Pagos';
     } else if (activeContent == 'pagos') {
         span.textContent = 'Historial Pagos';
     }
@@ -174,13 +174,17 @@ function downloadPDF(matricula) {
         title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
         setText(activeContentId, title);
 
+        const br = document.createElement('br');
+
         // Create a temporary container for the combined content
         const combinedContent = document.createElement('div');
         combinedContent.style.padding = `${margin}px`; // Add padding for margin
         combinedContent.style.background = 'white'; // Ensure background is white
         combinedContent.appendChild(edoCuenta);
         combinedContent.appendChild(boxContent.cloneNode(true));
+        combinedContent.appendChild(br);
         combinedContent.appendChild(title);
+        combinedContent.appendChild(br);
         combinedContent.appendChild(activeContent.cloneNode(true));
         combinedContent.style.display = 'block';
         combinedContent.style.position = 'absolute';
