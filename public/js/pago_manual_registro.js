@@ -63,7 +63,7 @@ $('#pago').change(function () {
     let motivo = $(this).find(':selected').text();
     // Cambias el DOM para mostrar el precio correcto
     const monto = document.querySelector('#monto');
-    monto.innerHTML = '<strong>Monto: </strong> $' + num_monto.toLocaleString('mx', {
+    monto.value = num_monto.toLocaleString('mx', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
