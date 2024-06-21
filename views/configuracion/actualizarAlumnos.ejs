@@ -68,6 +68,19 @@
     input:hover {
     border: 2px solid #5a6581 !important;
     }
+
+    .search-bar {
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
 </style>
 
 <body>
@@ -89,6 +102,16 @@
             <h3 class="title is-3">Revisión de Datos de Alumnos</h3>
             </div>
             </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchAlumnos" class="search-input"
+                    placeholder="Buscar alumnos para registrar">
+            </div>
+            <div id="resultadoAlumno" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
+                No existen alumnos para registrar con los paramétros de busqueda.
+            </div>
+
+            <div id="tablaAlumnosRegistro" class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -211,6 +234,7 @@
                     <% }); %>
                 </tbody>
             </table>
+        </div>
             <br>
             <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
                 <a class="pagination-previous" id="prev-button-2">Anterior</a>
@@ -238,5 +262,6 @@
         </section>
     <script type="text/javascript" src="/js/pagination_datos.js"></script>
     <script type="text/javascript" src="/js/actualizarAlumnos.js"></script>
+    <script type="text/javascript" src="/js/buscarAlumnoRegistro.js"></script>
     <script type="text/javascript" src="/js/boton_regresar.js"></script>
 <%- include('../includes/foot.ejs') %>
