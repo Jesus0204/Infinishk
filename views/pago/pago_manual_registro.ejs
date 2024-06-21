@@ -345,7 +345,7 @@
                                 <label class="label is-medium" for="nota_col">Nota: </label>
                             </div>
                             <div class="column">
-                                <textarea name="nota" id="nota_col" class="input is-medium"
+                                <textarea name="nota" id="nota_col" class="textarea is-medium" rows="2"
                                     placeholder="Escribe tu nota aquí."></textarea>
                             </div>
                         </div>
@@ -528,24 +528,20 @@
                 <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <p class="is-size-5" id="monto">
-                                <strong>Monto: </strong>
-                                $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                             }) %>
-                            </p>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="pago">Otros pagos:</label>
                         </div>
                         <div class="column">
-                            <label class="label is-medium" for="pago">Otros pagos:</label>
                             <div class="control has-icons-left">
-                                <div class="select is-medium">
-                                    <select name="pago" id="pago">
+                                <div class="select is-medium" style="width: 110%;">
+                                    <select name="pago" id="pago" style="width: 110%;">
                                         <% for (let pago of pagos_extra) { %>
                                         <option value="<%= pago.IDPagosExtras %>"
-                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
+                                            data-monto="<%= pago.montoPagar.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                             })  %>">
                                             <%= pago.motivoPago %></option>
                                         <% } %>
                                     </select>
@@ -553,6 +549,26 @@
                                 <div class="icon is-medium is-left">
                                     <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-5">
+                            <label class="label is-medium" for="monto">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" id="monto"
+                                        placeholder="Monto" readonly
+                                        value="<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                             }) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -597,7 +613,7 @@
                             <label class="label is-medium" for="nota">Nota: </label>
                         </div>
                         <div class="column">
-                            <textarea name="nota" id="nota" class="input is-medium"
+                            <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
                                 placeholder="Escribe tu nota aquí."></textarea>
                         </div>
                     </div>
