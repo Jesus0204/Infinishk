@@ -203,7 +203,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             const schedule = await Grupo.fetchSchedule(matricula)
             const precio = await Grupo.fetchPrecioTotal(matricula)
             const descuento = await Alumno.fetchCredito(matricula)
-            const desc = descuento[0][0].Credito
+            const desc = (descuento[0][0].Credito) ?? 0;
             const precioTotal = (precio[0][0].Preciototal - desc)
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
