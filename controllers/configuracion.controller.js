@@ -887,6 +887,7 @@ exports.get_materias = async (request, response, next) => {
         });
 
         const updatedCourses = [];
+
         for (const course of parsedCourses) {
             const courseExistente = await Materia.fetchOne(course.id)
             if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
@@ -894,31 +895,37 @@ exports.get_materias = async (request, response, next) => {
                 await Materia.updateMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id)
                 updatedCourses.push({ ...course, updated: true });
             } else {
-                updatedCourses.push({ ...course, updated: false });
+                updatedCourses.push({...course, updated: false});
             }
         }
 
         // Filtra los usuarios que no fueron actualizados
-        const coursesSinActualizar = updatedCourses.filter(course => !course.updated);
+        coursesSinActualizar = updatedCourses.filter(course => !course.updated);
 
-        response.render('configuracion/actualizarMaterias', {
-            materias: coursesSinActualizar,
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-            csrfToken: request.csrfToken()
-        });
-    }
+        for(const course of coursesSinActualizar) {
+            try {
+                // Si la materia no existe, registrarla automaticamente
+                await Materia.saveMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id);
+                course.updated = true;
+            }
+                catch (error) {
+                    console.error('Error registrando curso ${course.name}:', error);
+                    course.updated = false;
+                }
+            }
 
-    catch (error) {
-        console.error('Error realizando operaciones:', error);
-        response.status(500).render('500', {
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-            error_alumno: false
-        });
-    }
+            response.json({
+                success: true,
+                updateCourses: updatedCourses,
+                coursesSinActualizar: coursesSinActualizar.filter(course => !course.updated)
+            });
+        }
+        catch (error) {
+            console.error('Error realizando operaciones:', error);
+            response.status(500).json({
+                success: false
+            });
+        }
 };
 
 
@@ -1054,30 +1061,6 @@ exports.post_alumnos = async (request,response,next) => {
     };
 }
 
-exports.post_materias = async (request,response,next) => {
-    try {
-        let success = true;
-        const idMateria= request.body.id;
-        const idSep = request.body.idsep;
-        const nombre = request.body.nombre;
-        const creditos = request.body.creditos;
-        const semestre = request.body.semestre;
-        const planEstudio = request.body.carrera;
-    
-        await Materia.saveMateria(idMateria, nombre, planEstudio, semestre, creditos, idSep);
-    
-        response.json({
-            success: success
-        });
-    } catch (error) {
-        let success = false;
-        console.log(error);
-        response.json({
-            success: success
-        });
-    }
-    
-}
 
 exports.post_periodos = async (request,response,next) => {
     try {

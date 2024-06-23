@@ -17,6 +17,12 @@
                     style="background-color: #5a6581; color:#ffffff;">
                     ¡Horarios confirmados! Recargando página...
                 </div>
+
+                <div id="aceptar_materias" class="notification is-hidden"
+                    style="background-color: #5a6581; color:#ffffff;">
+                    ¡Materias registradas! Recargando página...
+                </div>
+                
                 <div class="box">
                     <p class="has-text-weight-medium has-text-black">
                         Por favor, elige el tipo de dato que se va a sincronizar. Toma en cuenta, que todos los procesos son automatizados
@@ -38,17 +44,17 @@
                         </form>
                     </div>
                     <div class="column is-6">
-                        <form action="/configuracion/actualizarMaterias" method="GET" class="form-button">
-                            <button type="submit" class="confirmar-button  button is-large is-fullwidth is-responsive">
-                                <span>
-                                    Obtener Materias
-                                </span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit"
+                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            onclick="registrar_materias()">
+                            <span>
+                                Registrar Materias
+                            </span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                </div>
                 </div>
                 <div class="columns">
                     <div class="column is-6">
@@ -81,3 +87,4 @@
     </body>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
+<script type="text/javascript" src="/js/actualizarMaterias.js"></script>
