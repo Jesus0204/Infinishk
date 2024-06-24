@@ -4,7 +4,7 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                <div class="column is-1">
+                <div class="column is-1 is-offset-3">
                     <a id="Boton_regresar" type="submit" class="is-responsive"
                         onclick="regresar()">
                         <span class="icon">
@@ -17,9 +17,10 @@
                         MODIFICAR DIPLOMADO
                     </label>
                 </div>
-                </div>
-                </div>
+            </div>
+            </div>
 
+            <div class="container" style="display: flex; justify-content: center;">
             <form action="/diplomado/resultado_diplomado" method="POST" onsubmit="return validateForm()"
                     style="width: 50%; margin-top: 50px;">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -27,47 +28,62 @@
                     <input type="hidden" id="fechaInicio" value="<%= diplomado.fechaInicio %>">
                     <input type="hidden" id="fechaFin" value="<%= diplomado.fechaFin %>">
 
-                    <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input type="text" id="nombreDiplomado" name="nombreDiplomado"
-                                value="<%= diplomado.nombreDiplomado %>" required class="input is-medium">
-                            <span class="icon is-small is-left">
-                                <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
-                            </span>
-                        </p>
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label for="nombreDiplomado" class="label is-medium">Nombre</label>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input type="text" id="nombreDiplomado" name="nombreDiplomado"
+                                        value="<%= diplomado.nombreDiplomado %>" class="input is-medium">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <label for="precioDiplomado" class="label is-large">Precio:</label>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input type="number" id="precioDiplomado" name="precioDiplomado"
-                                value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any" required
-                                class="input is-large" pattern="^\d+(\.\d+)?$" placeholder="Precio del Diplomado">
-                            <span class="icon is-small is-left">
-                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                            </span>
-                        </p>
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label for="precioDiplomado" class="label is-medium">Precio</label>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input type="number" id="precioDiplomado" name="precioDiplomado"
+                                        value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any"
+                                        class="input is-medium" pattern="^\d+(\.\d+)?$" placeholder="Precio del Diplomado">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <label for="Fecha Inicio" class="label is-large">Fecha Inicio/Fecha Fin:</label>
-
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input type="date" id="fecha" name="fecha" class="datepicker">
-                            <span class="icon is-small is-left">
-                                <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
-                            </span>
-                        </p>
+                    <div class="columns">
+                        <div class="column">
+                            <label for="Fecha Inicio" class="label is-medium">Fecha Inicio / Fecha Fin</label>
+                        </div>
                     </div>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input type="date" id="fecha" name="fecha" class="datepicker">
+                            </p>
+                        </div>
 
-                    <br>
-                    <button type="submit" class="button is-rounded is-large is-responsive">
-                        <span>Registrar Cambios</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
+                    <div class="column is-offset-5">
+                        <p class="control">
+                            <button type="submit" class="confirmar-button is-medium is-responsive"
+                                style="font-size: large; padding-left: 1em;">
+                                    <span>REGISTRAR CAMBIOS</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                            </button>
+                        </p>
                     <p id="alerta" class="help is-danger" style="display: none;"></p>
                 </form>
             </div>
@@ -76,5 +92,5 @@
         <script type="text/javascript" src="/js/editar_diplomado.js"></script>
         <script type="text/javascript" src="/js/boton_regresar.js"></script>
     </body>
-
+    <%- include('../includes/foot.ejs') %>
     </html>
