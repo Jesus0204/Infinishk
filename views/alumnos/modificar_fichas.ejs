@@ -19,7 +19,10 @@
             <input type="hidden" id="_csrf" value="<%= csrfToken %>">
             <input type="hidden" id="alumno" value="<%= alumno[0].Matricula %>">
                 <div class="column is-12">
-                    <h3 class="title is-3">Modificar Fichas de Pago</h3>
+                    <label
+                        class="label is-large has-text-danger has-text-weight-semibold">
+                        MODIFICAR FICHAS DE PAGO
+                    </label>
                 </div>
             </div>
 
@@ -28,7 +31,9 @@
             <% if (fichas.length === 0) { %>
             <div class="columns">
                 <div class="column is-6">
-                    <h3 class="subtitle">No se encontraron deudas recientes</h3>
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        Actualmente este alumno no tiene deudas recientes. Favor de intentar más tarde.
+                    </div>
                 </div>
             </div>
             <% } %>
@@ -162,17 +167,17 @@
                                         <% } %>
                                         <% if (ficha1.Pagado != 1) { %>
                                         <button id="Boton_modificar<%=display1%>" type="submit"
-                                            class="button is-rounded is-medium is-responsive"
+                                            class="button is-medium is-responsive"
                                             onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
-                                            style="font-size: medium;" disabled>
-                                            <span>Modificar</span>
+                                            style="font-size: medium; background: #000000;" disabled>
                                             <span class="icon is-large">
-                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
                                             </span>
+                                            <span>MODIFICAR</span>
                                         </button>
                                         <% } else { %>
                                             <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                                                ¡Esta ficha ya esta pagada!
+                                                ¡Esta ficha ya está pagada!
                                             </div>
                                         <% } %>
                                     </form>
@@ -279,18 +284,18 @@
                                             <% } %>
                                         <% } %>
                                         <% if (ficha2.Pagado != 1) { %>
-                                        <button id="Boton_modificar<%=display2%>" type="submit"
-                                            class="button is-rounded is-medium is-responsive"
-                                            onclick="modificar('<%= ficha2.descuento %>', '<%= ficha2.fecha_lim %>', '<%= ficha2.nota %>', '<%= ficha2.IDDeuda %>', '<%= display2 %>')"
-                                            style="font-size: medium;" disabled>
-                                            <span>Modificar</span>
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                            </span>
-                                        </button>
+                                            <button id="Boton_modificar<%=display1%>" type="submit"
+                                                class="button is-medium is-responsive"
+                                                onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
+                                                style="font-size: medium; background: #000000;" disabled>
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                                                </span>
+                                                <span>MODIFICAR</span>
+                                            </button>
                                          <% } else { %>
                                             <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                                                ¡Esta ficha ya esta pagada!
+                                                ¡Esta ficha ya está pagada!
                                             </div>
                                         <% } %>
                                     </form>

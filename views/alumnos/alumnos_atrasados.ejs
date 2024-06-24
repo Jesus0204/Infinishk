@@ -51,7 +51,9 @@
         <% if (actuales[0].alumnosTotales == 0){ %>
         <div class="columns">
             <div class="column is-7">
-                <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    ALUMNOS ATRASADOS EN PAGOS
+                </label>
             </div>
         </div>
         <br>
@@ -66,7 +68,9 @@
         <% } else if (pagos_atrasados.length == 0) { %>
         <div class="columns">
             <div class="column is-7">
-                <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    ALUMNOS ATRASADOS EN PAGOS
+                </label>
                 <div class="notification" style="background-color: rgba(4, 114, 77, 0.7); color:#ffffff;">
                     ¡Ningún alumno tiene un pago atrasado! ¡No hay nada que ver por el momento!
                 </div>
@@ -80,14 +84,16 @@
         <% } else { %>
             <div class="columns">
                 <div class="column is-7">
-                    <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        ALUMNOS ATRASADOS EN PAGOS
+                    </label>
                 </div>
                 <div class="column is-5">
                     <div class="ct-chart ct-golden-section ct-slice-pie ct-series-x" id="bar-chart"></div>
                 </div>
             </div>
             <div class="search-bar">
-                <input type="text" id="searchAlumnos" class="search-input" placeholder="Buscar Alumnos Atrasados: Nombre o Matrícula">
+                <input type="text" id="searchAlumnos" class="search-input" placeholder="Buscar por nombre o matrícula">
             </div>
         <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
         <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
