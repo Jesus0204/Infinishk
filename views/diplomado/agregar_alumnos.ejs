@@ -33,28 +33,25 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-1">
+                    <div class="column is-narrow">
                         <a id="Boton_regresar" type="submit" class="is-responsive"
-                            onclick="regresar()">
+                            style="margin-right: 10px;" onclick="regresar()">
                             <span class="icon">
                                 <i class="fas fa-arrow-left fa-2x"></i>
                             </span>
                         </a>
                     </div>
-                    <div class="column">
                         <label class="label is-large has-text-danger has-text-weight-semibold">
                             AGREGAR ALUMNOS
                         </label>
-                    </div>
-                    </div>
-                   
+                </div>
 
             <form action="/diplomado/registrar_alumnos" method="POST">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" value="<%= id %>" name="id" id="id">
                 <div class="search-bar">
                     <input type="text" id="searchAlumnos" class="search-input"
-                        placeholder="Buscar por nombre o matricula...">
+                        placeholder="Buscar por nombre o matrícula">
                 </div>
                 <div id="resultadoActivo" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
                     No existen alumnos con los paramétros de busqueda.
@@ -103,18 +100,21 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="button big-button" type="submit">
+                <button class="confirmar-button is-medium is-responsive" type="submit"
+                style="font-size: large; padding-right: 1em;">
                     <span class="icon is-large">
                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                     </span>
                     <span>
-                        Registrar Alumnos
+                        REGISTRAR ALUMNOS
                     </span>
                 </button>
             </form>
-    </body>
+        </div>
     </section>
-    <script type="text/javascript" src="/js/agregar_alumno.js"></script>
-    <script type="text/javascript" src="/js/boton_regresar.js"></script>
+</body>
+<%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/agregar_alumno.js"></script>
+<script type="text/javascript" src="/js/boton_regresar.js"></script>
 
-    </html>
+</html>
