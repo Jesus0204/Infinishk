@@ -359,6 +359,7 @@
                                         <tr>
                                             <th style="text-align: left;">#</th>
                                             <th style="text-align: left;">Pendiente</th>
+                                            <th style="text-align: left;">Descuento</th>
                                             <th style="text-align: left;">Total</th>
                                             <th style="text-align: left;">Pagado</th>
                                             <th style="text-align: left;">Fecha Límite de Pago</th>
@@ -371,6 +372,10 @@
                                         <tr>
                                             <td>Pago #<%= count + 1 %></td>
                                             <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) %></td>
+                                            <td>$<%= deuda[count].Descuento.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         }) %></td>
