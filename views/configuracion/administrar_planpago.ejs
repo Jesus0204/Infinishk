@@ -17,13 +17,15 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-6" style="text-align: center;">
-                <h3 class="title is-3" style="margin-bottom: 0;">Planes de Pago</h3>
+            <div class="column is-6">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    PLANES DE PAGO
+                </label>
             </div>
             <% if (contienePermiso(permisos, 'Registrar Plan de Pago' )==true) { %>
             <div class="column is-offset-1">
                 <p class="control" style="margin-bottom: 0;">
-                    <a class="button is-rounded is-responsive" style="font-size: large; width: 90%;"
+                    <a class="button is-responsive" style="font-size: large; width: 90%;"
                         href="/configuracion/registrar_planpago">
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-plus"></i>
@@ -40,124 +42,143 @@
         <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
         <div id="notificationPlanPago" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button id="btn_eliminar_estatus" class="delete"></button>
-            ¡Plan de Pago Modificado! Recargando datos...
+            ¡Plan de Pago modificado! Recargando datos...
         </div>
-        <div class="columns">
-            <div class="column is-2"></div>
-            <div class="column is-8">
-                <% let count = 0 %>
-                <p class="is-hidden" id="planPagoLength"><%= planpago.length %></p>
-                <% planpago.forEach(plan=> { %>
-                <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <form class="formModificarPlanPago" action="/configuracion/modificar_planpago"
-                                    method="POST">
-                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>">
 
-                                    
-                                    <div class="field">
-                                        <label class="label is-medium">Nombre del Plan: </label>
-                                        <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre<%= count %>"
-                                            style="padding: 0.5em; margin-top: -1em;">
-                                            Por favor escribe un nombre del plan de Pago.
-                                        </p>
-                                        <div class="control has-icons-left">
-                                            <input class="input is-medium" type="text" name="nombrePlan"
-                                                id="nombre<%= count %>"
-                                                value="<%= plan.nombrePlan %>" style="border: 2px solid
-                                                    #7c7f80;">
+        <% let count = 0 %>
+        
+        <p class="is-hidden" id="planPagoLength"><%= planpago.length %></p>
+        <% planpago.forEach(plan=> { %>
+        <table class="table ficha-table is-fullwidth">
+            <form class="formModificarPlanPago" action="/configuracion/modificar_planpago"
+                method="POST">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>">
+                    <tr>
+                        <td>
+                            <div class="columns is-vcentered">
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        NOMBRE DEL PLAN
+                                    </p>
+                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre<%= count %>"
+                                        style="padding: 0.5em; margin-top: -1em;">
+                                        Por favor escribe un nombre del plan de Pago.
+                                    </p>
+                                    <div class="control has-icons-left">
+                                        <input class="input is-medium" type="text" name="nombrePlan"
+                                            id="nombre<%= count %>"
+                                            value="<%= plan.nombrePlan %>" style="border: 2px solid #7c7f80;">
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-layer-group" style="color: #95404c;"></i>
                                             </span>
+                                    </div>
+                                </div>
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        NÚMERO DE PAGOS
+                                    </p>
+                                    <div class="control has-icons-left">
+                                        <input readonly class="input is-medium" type="text" name="numeroPagos"
+                                            value="<%= plan.numeroPagos %>" style="border: 2px solid
+                                                #7c7f80;">
+                                        <span class="icon is-small is-left">
+                                            <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="columns is-vcentered">
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        ESTADO
+                                    </p>
+                                    <div class="control">
+                                        <div class="select is-medium">
+                                            <select name="planPagoActivo" id="estatus<%= count %>">
+                                                <option value="1" <% if (plan.planPagoActivo===1) { %> selected
+                                                    <% } %>>Activo
+                                                </option>
+                                                <option value="0" <% if (plan.planPagoActivo !==1) { %> selected
+                                                    <% } %>>No Activo
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="field">
-                                        <label class="label is-medium">Número de Pagos: </label>
-                                        <div class="control has-icons-left">
-                                            <input readonly class="input is-medium" type="text" name="numeroPagos"
-                                                value="<%= plan.numeroPagos %>" style="border: 2px solid
-                                                    #7c7f80;">
-                                            <span class="icon is-small is-left">
-                                                <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label class="label is-medium">Estado: </label>
-                                        <div class="control">
-                                            <div class="select is-medium">
-                                                <select name="planPagoActivo" id="estatus<%= count %>">
-                                                    <option value="1" <% if (plan.planPagoActivo===1) { %> selected
-                                                        <% } %>>Activo
-                                                    </option>
-                                                    <option value="0" <% if (plan.planPagoActivo !==1) { %> selected
-                                                        <% } %>>No Activo
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div class="column is-6">
                                     <div class="is-hidden" id="boton_aplicar<%= count %>">
                                         <button id="btn_aplicar_cambios<%= count %>" type="submit"
-                                            class="button is-medium is-rounded is-responsive">
+                                            class="button is-medium is-responsive"
+                                            style="font-size: medium; background-color: #000000;">
                                             <span>
-                                                Aplicar
-                                                cambios
+                                                MODIFICAR
                                             </span>
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                             </span>
                                         </button>
                                     </div>
+                                </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
                 <% count++ %>
                 <% }) %>
-            </div>
-        </div>
+        </table>
 
         <% } else { %>
-        <div class="columns">
-            <div class="column is-2"></div>
-            <div class="column is-8">
-                <% planpago.forEach(plan=> { %>
-                <div class="card" style="margin-bottom: 20px; border: 5px solid #910106;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4 has-text-black">Nombre del Plan:</p>
-                                <p class="subtitle is-4 has-text-grey">
-                                    <%= plan.nombrePlan %>
-                                </p>
-                                <p class="title is-4 has-text-black">Número de Pagos:</p>
-                                <p class="subtitle is-4 has-text-grey">
-                                    <%= plan.numeroPagos %>
-                                </p>
-
-                                <p class="title is-4 has-text-black">Estado:</p>
-                                <p class="subtitle is-4 has-text-grey">
-                                    <% if (plan.planPagoActivo===1) { %>
-                                    Activo
-                                    <% } %>
-
-                                    <% if (plan.planPagoActivo===0) { %>
-                                    No Activo
-                                    <% } %>
-                                </p>
+            <% planpago.forEach(plan=> { %>
+            <table class="table ficha-table is-fullwidth">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="IDPlanPago" value="<%= plan.IDPlanPago %>">
+                    <tr>
+                        <td>
+                            <div class="columns is-vcentered">
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        NOMBRE DEL PLAN
+                                    </p>
+                                    <p class="is-size-5">
+                                        <%= plan.nombrePlan %>
+                                    </p>
+                                </div>
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        NÚMERO DE PAGOS
+                                    </p>
+                                    <p class="is-size-5">
+                                        <%= plan.numeroPagos %>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <% }) %>
-            </div>
-        </div>
-        <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="columns is-vcentered">
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        ESTADO
+                                    </p>
+                                    <% if (plan.planPagoActivo===1) { %>
+                                        Activo
+                                    <% } %>
+                                    <% if (plan.planPagoActivo===0) { %>
+                                        No Activo
+                                    <% } %>
+                                </div>
+                                <% }) %>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
         <script type="text/javascript" src="/js/administrar_planpago.js"></script>
     </div>
 </section>
