@@ -7,7 +7,7 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-1 is-offset-2">
+            <div class="column is-1 is-offset-3">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
@@ -15,69 +15,90 @@
                     </span>
                 </a>
             </div>
-            <div class="column is-6">
-                <h3 class="title is-3">Registrar Solicitud de Pago</h3>
+            <div class="column">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    REGISTRAR SOLICITUD DE PAGO
+                </label>
             </div>
         </div>
-        <form action="/pagos/registrar_solicitud" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input type="hidden" value="<%= alumno[0].Matricula %>" id="matricula" name="matricula">
-            <div class="columns is-vcentered">
-                <div class="column is-2"></div>
-                <div class="column is-5">
-                    <p class="is-size-5">
-                        <strong>Nombre: </strong><%= alumno[0].Nombre %>
-                        <%= alumno[0].Apellidos %>
-                    </p>
+
+        <div class="container" style="display: flex; justify-content: center;">
+            <form action="/pagos/registrar_solicitud" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" value="<%= alumno[0].Matricula %>" id="matricula" name="matricula">
+                
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium">Nombre:</label>
+                    </div>
+                    <div class="column">
+                        <p class="is-size-5">
+                            <%= alumno[0].Nombre %>
+                            <%= alumno[0].Apellidos %>
+                        </p>
+                    </div>
                 </div>
-                <div class="column is-3">
-                    <p class="is-size-5">
-                        <strong>Matricula: </strong> <%= alumno[0].Matricula %>
-                    </p>
+
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium">Matrícula:</label>
+                    </div>
+                    <div class="column">
+                        <p class="is-size-5">
+                            <%= alumno[0].Matricula %>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="columns is-vcentered">
-                <div class="column is-2"></div>
-                <div class="column is-5">
-                    <label class="label is-medium" for="pago">Pagos Extra:</label>
-                    <div class="control has-icons-left">
-                        <div class="select is-medium">
-                            <select name="pago" id="pago">
-                                <% for (let pago of pagos_extra) { %>
-                                <option value="<%= pago.IDPagosExtras %>"
-                                    data-monto="<%= pago.montoPagar.toFixed(2) %>">
-                                    <%= pago.motivoPago %></option>
-                                <% } %>
-                            </select>
-                        </div>
-                        <div class="icon is-medium is-left">
-                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="pago">Pagos Extra:</label>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <div class="select is-medium">
+                                <select name="pago" id="pago">
+                                    <% for (let pago of pagos_extra) { %>
+                                    <option value="<%= pago.IDPagosExtras %>"
+                                        data-monto="<%= pago.montoPagar.toFixed(2) %>">
+                                        <%= pago.motivoPago %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="icon is-medium is-left">
+                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="column is-narrow">
-                    <p class="is-size-5" id="monto">
-                        <strong>Monto: </strong>
-                        $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }) %>
+
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium">Monto:</label>
+                    </div>
+                    <div class="column">
+                        <p class="is-size-5" id="monto">
+                            $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }) %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="column is-offset-5">
+                    <p class="control">
+                        <button type="submit" id="Boton_registrar" class="confirmar-button is-medium is-responsive"
+                            style="font-size: large; padding-left: 1em; padding-top: 8px; padding-bottom: 8px;">
+                            <span>REGISTRAR SOLICITUD</span>
+                            <span class="icon is-medium">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
                     </p>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-6">
-                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar">
-                        <span>Registrar Solicitud</span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </section>
 <%- include('../includes/foot.ejs') %>
