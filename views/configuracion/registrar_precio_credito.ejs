@@ -7,7 +7,7 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-1 is-offset-2">
+            <div class="column is-1 is-offset-3">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
@@ -16,83 +16,83 @@
                 </a>
             </div>
             <div class="column is-6">
-                <h3 class="title is-3" style="text-align: center;">
-                    Registrar Nuevo Precio Crédito</h3>
-            </div>
-        </div>
-        <br>
-        <div class="columns">
-            <div class="column is-3"></div>
-                <div class="column is-6">
-                    <p class="is-size-5" style="text-align: center;">
-                        Los datos del precio crédito actual son:
-                    </p>
-                    <br>
-                    <br>
-                    <div class="columns is-vcentered">
-                        <div class="column is-two-fifths is-offset-1">
-                            <p class="is-size-5" style="text-align: center;">
-                                <strong>Precio: </strong>$<%= precio_actual.precioPesos.toLocaleString('mx', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                 }) %>
-                            </p>
-                        </div>
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <p class="is-size-5" style="text-align: center;">
-                                <strong>Fecha de Registro:
-                                </strong>
-                                <br>
-                                <%= precio_actual.fechaModificacion %>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    REGISTRAR NUEVO PRECIO CRÉDITO
+                </label>
             </div>
         </div>
 
-        <form action="/configuracion/registrar_precio_credito" method="POST">
-            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken%>">
-            <div class="columns">
-                <div class="column is-3"></div>
+        <div class="columns">
+            <div class="column is-3"></div>
                 <div class="column is-6">
-                    <label class="label is-medium" for="monto">Monto:</label>
-                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
-                        style="padding: 0.5em; margin-top: -1em;">
-                        Por favor escribe un monto válido para el precio del crédito.</p>
-                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
-                        style="padding: 0.5em; margin-top: -1em;">
-                        El monto debe ser mayor de 0.</p>
-                    <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
-                        style="padding: 0.5em; margin-top: -1em;">
-                        Por favor escribe un monto sin exponente.</p>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                placeholder="Monto del nuevo precio crédito">
-                            <span class="icon is-small is-left">
-                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                            </span>
-                        </p>
+                    <div class="box">
+                            <p class="has-text-weight-medium has-text-black">
+                                Los datos del precio crédito actual son
+                            </p>
+                        <br>
+                        <div class="columns is-vcentered">
+                            <div class="column is-3">
+                                <label class="label is-medium">Precio:</label>
+                            </div>
+                            <div class="column">
+                                $<%= precio_actual.precioPesos.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
+                            </div>
+                            <div class="column is-3">
+                                <label class="label is-medium">Fecha de Registro:</label>
+                            </div>
+                            <div class="column">
+                                <%= precio_actual.fechaModificacion %>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-6">
-                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_registrar" disabled>
-                        <span>Registrar Precio Crédito</span>
+
+    <div class="columns">
+        <div class="column is-3"></div>
+            <div class="column is-6">
+                <form action="/configuracion/registrar_precio_credito" method="POST">
+                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken%>">
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label class="label is-medium" for="monto">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un monto válido para el precio del crédito.</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    El monto debe ser mayor de 0.</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un monto sin exponente.</p>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" type="number" step="any" id="monto"
+                                        placeholder="Monto del precio crédito">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                            </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+            
+                <p class="control">
+                    <button type="submit" id="Boton_registrar" class="confirmar-button is-medium is-responsive"
+                        style="font-size: large; padding-left: 1em;" disabled>
+                        <span>REGISTRAR PRECIO CRÉDITO</span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                         </span>
                     </button>
-                </div>
-                <div class="column is-3"></div>
-            </div>
+                </p>
         </form>
-    </div>
+
     <script type="text/javascript" src="/js/registrar_precio_credito.js"></script>
     <script type="text/javascript" src="/js/boton_regresar.js"></script>
 </section>
