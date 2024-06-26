@@ -114,11 +114,15 @@
                                     <%= calculo_pagos.toFixed(2) %>
                                 </div>
                                 <div class="column is-4 is-offset-1">
-                                    Nombre: <%= deudas_atrasadas[0].Nombre %>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    NOMBRE: <%= deudas_atrasadas[0].Nombre %>
                                     <%= deudas_atrasadas[0].Apellidos %>
+                                    </p>
                                 </div>
                                 <div class="column is-3">
-                                    Matrícula: <%= deudas_atrasadas[0].matricula %>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    MATRÍCULA: <%= deudas_atrasadas[0].matricula %>
+                                    </p>
                                 </div>
                                 <div class="column is-3">
                                     <form action="/alumnos/datos_alumno" method="POST">
@@ -182,7 +186,7 @@
                                     
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -228,7 +232,7 @@
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -271,7 +275,7 @@
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count + 1].fechaLimitePago %>
                                 </div>
