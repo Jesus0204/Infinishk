@@ -63,7 +63,7 @@
                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                             <p class="control">
-                                <button class="button is-rounded is-responsive" style="font-size: large;" type="submit">
+                                <button class="button is-responsive" style="font-size: large;" type="submit">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-plus"></i>
                                     </span>
@@ -304,7 +304,7 @@
                     <% } else { %>
                     <div class="box">
                         <p class="has-text-weight-medium has-text-black">
-                            Este alumno no ha pagado nada dentro de "Otros Pagos".
+                            Este alumno todavía no ha pagado ningún pago de tipo Otros Pagos.
                         </p>
                     </div>
                     <% } %>
@@ -532,7 +532,9 @@
                                             <div class="modal-card">
                                                 <header class="modal-card-head">
                                                     <p class="modal-card-title" style="text-align: center;">
-                                                        <strong> Dar de Baja Materia Extra</strong>
+                                                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                            DAR DE BAJA MATERIA
+                                                        </label>
                                                     </p>
                                                     <button class="delete" aria-label="delete"></button>
                                                 </header>
@@ -735,9 +737,6 @@
                                     <% } %>
                                 </div>
                             <% } else { %>
-                                <label class="label is-medium has-text-danger has-text-weight-semibold"
-                                     for="IDPlanPago">
-                                    IMPORTANTE
                                 </label>
                                 <div class="box">
                                     <p class="has-text-weight-medium has-text-black">

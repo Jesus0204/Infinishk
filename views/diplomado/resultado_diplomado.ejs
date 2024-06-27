@@ -4,65 +4,157 @@
     rol: rol }) 
     %>
 
+    <style>
+        .columns.is-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    
+        .columns.is-flex .column {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .columns.is-flex .box {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+        }
+    </style>
+
 <body>
-    <div class="container" style="display: flex; justify-content: center;">
-        <div class="content" style="width: 70%; margin-top: 50px;">
+    <section class="section">
+        <div class="container" style="max-width: 640px;">
+            <div class="columns">
+                <div class="column is-1">
+                    <a id="Boton_regresar" type="submit" class="is-responsive"
+                        onclick="regresar()">
+                        <span class="icon">
+                            <i class="fas fa-arrow-left fa-2x"></i>
+                        </span>
+                    </a>
+                </div>
+
             <% if (modificar) { %>
-                <h1 class="title is-2 has-text-centered">Información Actualizada del Diplomado</h1>
-                <div class="card" style="margin-bottom: 20px;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4 has-text-black">ID:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-4 has-text-black">Nombre:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
-                                <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
-                                <p class="title is-4 has-text-black">Fecha Inicio:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
-                                <p class="title is-4 has-text-black">Fecha Fin:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                <div class="column">
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                    INFORMACIÓN ACTUALIZADA DEL DIPLOMADO</label>
+                </div>
+                </div>
+            </div>
+
+            <div class="container" style="max-width: 640px;">
+                <div class="columns is-flex is-align-items-stretch" id="info">
+                    <div class="column">
+                        <div class="box" style="text-align: center;">
+                            <p class="has-text-grey has-text-weight-medium">ID</p>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= diplomado.IDDiplomado %></p>
+                        </div>
+                       </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">NOMBRE</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= diplomado.nombreDiplomado %></p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">PRECIO</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    $<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="columns is-flex is-align-items-stretch" id="info">
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">FECHA INICIO</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">FECHA FIN</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                             </div>
                         </div>
                     </div>
+                
+                    <p class="control">
+                        <form action="/diplomado/consultar_diplomado" method="GET">
+                            <button type="submit" class="button is-medium is-responsive">
+                                <span>
+                                    Regresar a Diplomados
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </p>
                 </div>
-                <form action="/diplomado/consultar_diplomado" method="GET">
-                    <button type="submit" class="button is-rounded is-large is-responsive">
-                        <span>
-                            Regresar a Diplomados
-                        </span>
-                        <span class="icon is-large">
-                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                        </span>
-                    </button>
-                </form>
             <% } %>
 
             <% if (registrar) { %>
-                <h1 class="title is-2 has-text-centered">Diplomado creado con éxito</h1>
-                <div class="card" style="margin-bottom: 20px;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4 has-text-black">ID:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.IDDiplomado %></p>
-                                <p class="title is-4 has-text-black">Nombre:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= diplomado.nombreDiplomado %></p>
-                                <p class="title is-4 has-text-black">Precio:</p>
-                                <p class="subtitle is-4 has-text-grey">$<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
-                                <p class="title is-4 has-text-black">Fecha Inicio:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
-                                <p class="title is-4 has-text-black">Fecha Fin:</p>
-                                <p class="subtitle is-4 has-text-grey"><%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                <div class="column">
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                    INFORMACIÓN DEL NUEVO DIPLOMADO</label>
+                </div>
+                </div>
+            </div>
+
+            <div class="container" style="max-width: 640px;">
+                    <div class="columns is-flex is-align-items-stretch" id="info">
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">ID</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= diplomado.IDDiplomado %></p>
+                            </div>
+                       </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">NOMBRE</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= diplomado.nombreDiplomado %></p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">PRECIO</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    $<%= diplomado.precioDiplomado.toLocaleString('mx') %></p>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="columns is-flex is-align-items-stretch" id="info">
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">FECHA INICIO</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= new Date(diplomado.fechaInicio).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="box" style="text-align: center;">
+                                <p class="has-text-grey has-text-weight-medium">FECHA FIN</p>
+                                <p class="has-text-black has-text-weight-bold is-size-5">
+                                    <%= new Date(diplomado.fechaFin).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                             </div>
                         </div>
                     </div>
-                </div>
+
                 <form action="/diplomado/registrar_diplomado" method="GET">
-                    <button type="submit" class="button is-rounded is-large is-responsive">
+                    <button type="submit" class="button is-medium is-responsive">
                         <span>
-                            Registrar otro Diplomado
+                            Registrar Otro Diplomado
                         </span>
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -70,7 +162,7 @@
                     </button>
                 </form>
                 <form action="/diplomado/consultar_diplomado" method="GET">
-                    <button type="submit" class="button is-rounded is-large is-responsive">
+                    <button type="submit" class="button is-medium is-responsive">
                         <span>
                             Regresar a Diplomados
                         </span>
@@ -80,7 +172,8 @@
                     </button>
                 </form>
             <% } %>
-        </div>
-    </div>
+    </section>
 </body>
+
+<script type="text/javascript" src="/js/boton_regresar.js"></script>
 <%- include('../includes/foot.ejs') %>
