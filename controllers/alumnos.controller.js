@@ -64,7 +64,7 @@ exports.get_alumnos_atrasados = (request, response, next) => {
 exports.get_datos = async (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
-        solicitud_pago: false, 
+        solicitud_pago: false,
         fichas_pago: false,
         datos_alumno: true,
         username: request.session.username || '',
@@ -75,11 +75,12 @@ exports.get_datos = async (request, response, next) => {
 };
 
 exports.post_dar_baja_grupo = async (request, response, next) => {
-    const { IDGrupo, matricula} = request.body;
+    const { IDGrupo, matricula } = request.body;
 
     // Formateas la fecha y hora en el formato deseado
     const fecha_actual = moment().tz('America/Mexico_City');
-    
+    const fecha_formateada = fecha_actual.format('YYYY-MM-DD');
+
     try {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
@@ -88,12 +89,11 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
 
-        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
-        console.log('exito :)')
+        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca);
 
         // Función Modificar fichas de pago
         // Función Eliminar Grupo
-        response.status(200).json({success: true});
+        response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
@@ -102,19 +102,19 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 }
 
 
-exports.post_datos_modify = async (request, response, next) => { 
+exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
 
     let beca_new = beca;
 
-    if (beca == ""){
+    if (beca == "") {
         beca_new = '0';
     }
 
     try {
         let data;
         if (alumno.startsWith("1")) {
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);        
+            data = await EstudianteProfesional.update(alumno, ref, beca_new);
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
@@ -166,21 +166,21 @@ exports.post_fetch_datos = async (request, response, next) => {
 
         let confirmacion;
         let alumnoDiplomadoActualConsulta = "";
-        if(matricula.startsWith('1')) {
+        if (matricula.startsWith('1')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
             const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
             confirmacion = conf[0][0].horarioConfirmado;
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
-            
+
             let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
             alumnoDiplomadoActualConsulta = await EstudianteDiplomado.fetchDiplomadoCursando(matricula, fechaActual);
             confirmacion = 0;
         }
         if (confirmacion === 0) {
             response.render('alumnos/consultar_alumno', {
-                error:true,
+                error: true,
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
@@ -202,12 +202,12 @@ exports.post_fetch_datos = async (request, response, next) => {
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(matricula)
             const precio = await Grupo.fetchPrecioTotal(matricula)
-            const descuento = await Alumno.fetchCredito(matricula)
-            const desc = (descuento[0][0].Credito) ?? 0;
-            const precioTotal = (precio[0][0].Preciototal - desc)
+            const credito = await Alumno.fetchCredito(matricula)
+            const cred = (credito[0][0].Credito) ?? 0;
+            const precioTotal = (precio[0][0].Preciototal - cred)
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
-                error:false,
+                error: false,
                 periodo: periodo[0][0],
                 periodoExistente: periodoExistente,
                 schedule: schedule,
@@ -227,7 +227,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 csrfToken: request.csrfToken()
             });
         }
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         response.status(500).render('500', {
             username: request.session.username || '',
@@ -248,7 +248,7 @@ exports.post_fetch_fichas = (request, response, next) => {
                 .then(([fichas, fieldData]) => {
                     response.render('alumnos/modificar_fichas', {
                         alumno: alumno,
-                        fichas: fichas, 
+                        fichas: fichas,
                         fechaActual: now,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
@@ -280,7 +280,7 @@ exports.post_fetch_fichas = (request, response, next) => {
 exports.get_fichas = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
-        solicitud_pago: false, 
+        solicitud_pago: false,
         fichas_pago: true,
         datos_alumno: false,
         username: request.session.username || '',
@@ -290,7 +290,7 @@ exports.get_fichas = (request, response, next) => {
     });
 };
 
-exports.post_fichas_modify = async (request, response, next) => { 
+exports.post_fichas_modify = async (request, response, next) => {
     const { descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
 
