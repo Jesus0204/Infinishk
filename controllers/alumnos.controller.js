@@ -88,9 +88,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const Credito = resultfetchCredito[0][0].credito;
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-
-        // Función Modificar fichas de pago
-        // Función Eliminar Grupo
+        
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
