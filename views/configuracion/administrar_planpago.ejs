@@ -19,7 +19,7 @@
         <div class="columns">
             <div class="column is-6">
                 <label class="label is-large has-text-danger has-text-weight-semibold">
-                    PLANES DE PAGO
+                    PLAN DE PAGO
                 </label>
             </div>
             <% if (contienePermiso(permisos, 'Registrar Plan de Pago' )==true) { %>
@@ -42,7 +42,7 @@
         <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
         <div id="notificationPlanPago" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button id="btn_eliminar_estatus" class="delete"></button>
-            ¡Plan de Pago modificado! Recargando datos...
+            ¡Plan de pago modificado! Recargando datos...
         </div>
 
         <% let count = 0 %>
@@ -63,7 +63,7 @@
                                     </p>
                                     <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre<%= count %>"
                                         style="padding: 0.5em; margin-top: -1em;">
-                                        Por favor escribe un nombre del plan de Pago.
+                                        Por favor escribe un nombre del plan de pago.
                                     </p>
                                     <div class="control has-icons-left">
                                         <input class="input is-medium" type="text" name="nombrePlan"
@@ -95,7 +95,7 @@
                             <div class="columns is-vcentered">
                                 <div class="column is-6">
                                     <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
-                                        ESTADO
+                                        ESTATUS
                                     </p>
                                     <div class="control">
                                         <div class="select is-medium">

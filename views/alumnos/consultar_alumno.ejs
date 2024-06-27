@@ -353,9 +353,6 @@
                                 </tbody>
                             </table>
                         <% } else { %>
-                            <label class="label is-medium has-text-danger has-text-weight-semibold" for="IDPlanPago">
-                                IMPORTANTE
-                            </label>
                             <div class="box">
                                 <p class="has-text-weight-medium has-text-black">
                                     Este alumno todavía no ha pagado ningún diplomado. 
@@ -422,9 +419,6 @@
                             <!-- HORARIO EMPIEZA AQUI  -->
 
                             <% if(confirmacion){%>
-                                <label class="label is-medium has-text-danger has-text-weight-semibold" for="IDHorario">
-                                    HORARIO
-                                </label>
                             <%}%>
                             <% if(confirmacion === 1){%>
                             <% if (schedule[0].length === 0) { %>
@@ -440,39 +434,21 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fa-solid fa-book"></i>
-                                                </span>
                                                 Materia
                                             </th>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-user"></i>
-                                                </span>
                                                 Profesor
                                             </th>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-clock"></i>
-                                                </span>
                                                 Horario
                                             </th>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fa-regular fa-building"></i>
-                                                </span>
                                                 Salón
                                             </th>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fas fa-graduation-cap"></i>
-                                                </span>
                                                 Créditos
                                             </th>
                                             <th style="text-align: left;">
-                                                <span class="icon is-small">
-                                                    <i class="fa-solid fa-tags"></i>
-                                                </span>
                                                 Costo
                                             </th>
                                             <th style="text-align: left;">
@@ -578,22 +554,24 @@
                                                 <footer class="modal-card-foot" style="justify-content: center;">
                                                     <div class="field is-grouped">
                                                         <p class="control">
-                                                            <button class="button is-rounded is-medium is-responsive"
-                                                                aria-label="close" style="font-size: large; margin: 8px 2px;">
+                                                            <button class="button is-medium is-responsive"
+                                                                aria-label="close" style="font-size: large; margin: 8px 2px; 
+                                                                padding-right: 5px; padding-left: 10px;">
                                                                 <span class="icon is-large">
                                                                     <i class="fa-solid fa-circle-chevron-left"
                                                                         style="color: #ffffff;"></i>
                                                                 </span>
-                                                                <span>Regresar</span>
+                                                                <span>REGRESAR</span>
                                                             </button> </p>
                                                         <p class="control">
-                                                            <button class="button is-rounded is-medium is-responsive"
+                                                            <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
-                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
                                                                 <span class="icon is-large">
                                                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                                                 </span>
-                                                                <span>Dar de Baja</span>
+                                                                <span>DAR DE BAJA</span>
                                                             </button>
                                                         </p>
                                                 </footer>
@@ -647,9 +625,9 @@
                                                 <th style="text-align: left;">Pendiente</th>
                                                 <th style="text-align: left;">Total</th>
                                                 <th style="text-align: left;">Pagado</th>
-                                                <th style="text-align: left;">Descuento</th>
+                                                <th style="text-align: left;">Ajuste</th>
                                                 <th style="text-align: left;">Fecha Límite de Pago</th>
-                                                <th style="text-align: left;">Status</th>
+                                                <th style="text-align: left;">Estatus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -657,10 +635,14 @@
                                             <% for (let count = 0; count < deuda.length; count++) { %>
                                             <tr>
                                                 <td>Pago #<%= count + 1 %></td>
-                                                <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2
-                                                        }) %></td>
+                                                <td><% if (deuda[count].saldoPendiente < 0) { %>
+                                                    $0.00
+                                                <% } else { %>
+                                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    }) %>
+                                                <% } %></td>
                                                 <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
