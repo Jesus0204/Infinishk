@@ -170,7 +170,11 @@
                                 <% } %>
                                 <div class="column">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% if (deudas_atrasadas[count].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total: </strong>
                                     $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
@@ -217,7 +221,11 @@
                                 <% } %>
                                 <div class="column" style="text-align: center;">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% if (deudas_atrasadas[count].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total: </strong>
                                     $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
@@ -260,7 +268,11 @@
                                 <% } %>
                                 <div class="column" style="text-align: center;">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count + 1].saldoPendiente.toLocaleString('mx') %>
+                                    <% if (deudas_atrasadas[count + 1].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count + 1].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total:</strong>
                                     $<%= deudas_atrasadas[count + 1].montoAPagar.toLocaleString('mx') %>
