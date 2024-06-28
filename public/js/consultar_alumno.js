@@ -349,7 +349,7 @@ function muestra_pagos_diplomado() {
 }
 
 function darDeBajaGrupo(IDGrupo, matricula) {
-    //El token de protección CSRF
+    // El token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
 
     // Enviar los datos al servidor
@@ -364,22 +364,31 @@ function darDeBajaGrupo(IDGrupo, matricula) {
             matricula: matricula
         })
     })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
 
-            const table = document.getElementById(id);
+        return response.json();
+    })
+    .then((data) => {
+        if (data.success) {
+            // Supongamos que tienes una fila en la tabla con un id correspondiente al IDGrupo
+            const rowId = `grupo-${IDGrupo}`; // Ajusta esto según tu lógica
+            const tableRow = document.getElementById(rowId);
 
-            if (table) {
-                table.remove();
+            if (tableRow) {
+                tableRow.remove();
             } else {
-                console.error(`No se encontró la fila ${id}.`);
+                console.error(`No se encontró la fila con el id ${rowId}.`);
             }
 
             // Mostrar la notificación de eliminación
-            document.getElementById('eliminacion').classList.remove('is-hidden');
-            
+            const notification = document.getElementById('eliminacion');
+            if (notification) {
+                notification.classList.remove('is-hidden');
+            }
+
             // Desplazar la página hacia arriba
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -387,11 +396,15 @@ function darDeBajaGrupo(IDGrupo, matricula) {
             setTimeout(() => {
                 window.location.reload();
             }, 2000); // 2000 milisegundos = 2 segundos
-        })
-        .catch(error => {
-            console.error('Error en la petición fetch:', error);
-        });
-};
+        } else {
+            console.error('Error en el servidor:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la petición fetch:', error);
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const topinfo = document.getElementById('topinfo');

@@ -23,7 +23,7 @@ module.exports = class Fichas {
         return rows;
     }
     
-    static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca){
-        db.execute(`CALL dar_baja_grupo(?, ?, ?, ?, ?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca])
+    static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito){
+        db.execute(`CALL dar_baja_grupo(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
 } 

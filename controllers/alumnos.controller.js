@@ -77,22 +77,18 @@ exports.get_datos = async (request, response, next) => {
 exports.post_dar_baja_grupo = async (request, response, next) => {
     const { IDGrupo, matricula } = request.body;
 
-    // Formateas la fecha y hora en el formato deseado
-    const fecha_actual = moment().tz('America/Mexico_City');
-    const fecha_formateada = fecha_actual.format('YYYY-MM-DD');
-
     try {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
-
-        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca);
-
-        // Función Modificar fichas de pago
-        // Función Eliminar Grupo
+        const Credito = resultfetchCredito[0][0].credito;
+        
+        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+        
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
