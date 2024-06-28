@@ -13,7 +13,7 @@ const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
-const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups,destroyGroup } = require('../util/adminApiClient');
 const { request, response } = require('express');
 
 // Configuras a moment con el locale. 
@@ -82,12 +82,16 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
         const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo,matricula);
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
         const Credito = resultfetchCredito[0][0].credito;
+        const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {

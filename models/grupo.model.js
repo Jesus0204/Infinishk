@@ -43,4 +43,9 @@ module.exports = class Alumno {
         return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`) VALUES (?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo]);
     }
 
+    static fetchIDExterno(IDGrupo,matricula){
+        return db.execute('SELECT IDGrupoExterno FROM Grupo WHERE IDGrupo = ? AND Matricula = ?',
+        [IDGrupo,matricula]);
+    }
+
 }
