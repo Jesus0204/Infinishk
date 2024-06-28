@@ -98,7 +98,7 @@
         <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
         <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
         <div id="resultadoQuery" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
-            No existen alumnos con los paramétros de busqueda.
+            No existen alumnos con los paramétros de búsqueda.
         </div>
             <% for (let deudas_atrasadas of pagos_atrasados) { %>
             <table class="table is-bordered is-hoverable is-fullwidth tablaAlumnos">
@@ -190,7 +190,7 @@
                                     
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Límite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -240,7 +240,7 @@
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Límite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -287,7 +287,7 @@
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Límite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count + 1].fechaLimitePago %>
                                 </div>

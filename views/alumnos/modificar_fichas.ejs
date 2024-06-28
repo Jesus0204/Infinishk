@@ -42,7 +42,7 @@
                 <div id="modificacion_ficha" class="notification is-hidden"
                     style="background-color: #5a6581; color:#ffffff;">
                     <button id="btn_eliminar_estatus" class="delete"></button>
-                    ¡Ficha modificada! Recargando datos...
+                    ¡Ficha modificada! Recargando página...
                 </div>
                 <% if (fichas.length > 0) { %>
                 <thead>
@@ -112,7 +112,7 @@
                                         <% if (ficha1.Pagado != 1) { %>
                                         <p id="ayuda_fecha_vacia<%=display1%>"
                                             class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
-                                            Por favor escoge una fecha límite.</p>
+                                            Por favor escoge una fecha límite</p>
                                         <input id="fecha_lim<%=display1%>" name="fecha_lim"
                                             class="fecha-limite input is-medium" type="date"
                                             placeholder="<%= moment(ficha1.fechaLimitePago).format('DD/MM/YYYY') %>">
@@ -125,13 +125,14 @@
                                         <strong>Ajuste:</strong>
                                         <% if (ficha1.Pagado != 1) { %>
                                         <input id="descuento<%=display1%>" name="descuento" class="input is-medium"
-                                            type="number" step="any" value="<%= ficha1.Descuento %>">
+                                            type="number" step="any" value="<%= ficha1.Descuento %>"
+                                            placeholder="Valor del ajuste">
                                         <p id="ayuda_descuento_vacio<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            Por favor escribe un valor de ajuste. Si no deseas aplicar
+                                            Por favor escribe un valor de ajuste - si no deseas aplicar
                                             <br>
-                                            un ajuste, escribe 0.</p>
+                                            un ajuste, escribe 0</p>
                                         <p id="ayuda_descuento_negativo<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
@@ -139,11 +140,11 @@
                                         <p id="ayuda_descuento_exponente<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede tener exponentes.</p>
+                                            El ajuste no puede tener exponentes</p>
                                         <p id="ayuda_descuento_deuda<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser mayor al saldo pendiente a pagar.</p>
+                                            El descuento no puede ser mayor al saldo pendiente a pagar</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha1.Descuento.toLocaleString('mx', {
@@ -157,7 +158,7 @@
                                         <strong>Nota:</strong>
                                         <p id="ayuda_nota<%=display1%>" class="help is-hidden has-text-danger-dark"
                                             style="padding-bottom: 0.6em;">
-                                            Por favor escribe una nota.</p>
+                                            Por favor escribe una nota</p>
                                         <textarea id="nota<%=display1%>" name="nota" class="input is-medium"
                                             value="<%= ficha1.notaModificacion %>"
                                             placeholder="Escribe tu nota"></textarea>
@@ -229,7 +230,7 @@
                                         <p id="ayuda_fecha_vacia<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-fecha"
                                             style="padding: 0.5em;">
-                                            Por favor escoge una fecha límite.</p>
+                                            Por favor escoge una fecha límite</p>
                                         <input name="fecha_lim" id="fecha_lim<%=display2%>"
                                             class="fecha-limite input is-medium" type="date"
                                             placeholder="<%= moment(ficha2.fechaLimitePago).format('DD/MM/YYYY') %>">
@@ -242,13 +243,14 @@
                                         <strong>Ajuste:</strong>
                                         <% if (ficha2.Pagado != 1) { %>
                                         <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
-                                            type="number" step="any" value="<%= ficha2.Descuento %>">
+                                            type="number" step="any" value="<%= ficha2.Descuento %>"
+                                            placeholder="Valor del ajuste">
                                         <p id="ayuda_descuento_vacio<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            Por favor escribe un valor de ajuste. Si no deseas aplicar
+                                            Por favor escribe un valor de ajuste - si no deseas aplicar
                                             <br>
-                                            un ajuste, escribe 0.</p>
+                                            un ajuste, escribe 0</p>
                                         <p id="ayuda_descuento_negativo<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
@@ -256,11 +258,11 @@
                                         <p id="ayuda_descuento_exponente<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede tener exponentes.</p>
+                                            El ajuste no puede tener exponentes</p>
                                         <p id="ayuda_descuento_deuda<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser mayor al saldo pendiente a pagar.</p>
+                                            El descuento no puede ser mayor al saldo pendiente a pagar</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha2.Descuento.toLocaleString('mx', {
@@ -275,7 +277,7 @@
                                         <p id="ayuda_nota<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-nota"
                                             style="padding-bottom: 0.6em;">
-                                            Por favor escribe una nota.</p>
+                                            Por favor escribe una nota</p>
                                         <textarea id="nota<%=display2%>" name="nota" class="input is-medium"
                                             value="<%= ficha2.notaModificacion %>"
                                             placeholder="Escribe tu nota"></textarea>
