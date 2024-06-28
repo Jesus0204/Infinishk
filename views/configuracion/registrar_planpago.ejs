@@ -18,7 +18,7 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-1 is-offset-2">
+            <div class="column is-1 is-offset-3">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
@@ -26,80 +26,87 @@
                     </span>
                 </a>
             </div>
-            <div class="column is-6" style="text-align: center;">
-                <h3 class="title is-3" style="margin-bottom: 0;">Registrar Plan de Pago</h3>
+            <div class="column">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    REGISTRAR PLAN DE PAGO
+                </label>
             </div>
         </div>
 
-        <div class="columns">
-            <div class="column is-2"></div>
-            <div class="column is-8">
-                <div class="card" style="margin-bottom: 10px; border: 5px solid #910106;">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <form id="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
-                                    method="POST">
-                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                    <label class="label is-medium">Nombre del Plan:</label>
-                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre"
-                                        style="padding: 0.5em; margin-top: -1em;">
-                                        Por favor escribe un nombre del plan de Pago.
-                                    </p>
-                                    <div class="field">
-                                        <div class="control has-icons-left">
-                                            <input class="input is-medium" type="text" id="nombrePlan"
-                                                name="nombrePlan" style="border: 2px solid
-                                                #7c7f80;" placeholder="Nombre del nuevo plan">
-                                                 <span class="icon is-small is-left">
-                                                    <i class="fa-solid fa-layer-group" style="color: #95404c;"></i>
-                                                 </span>
-                                        </div>
-                                    </div>
-                                    <label class="label is-medium">Número de Pagos:</label>
-                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_vacio"
-                                        style="padding: 0.5em; margin-top: -1em;">
-                                        Por favor escribe un número de pagos válido.
-                                    </p>
-                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_negativo"
-                                        style="padding: 0.5em; margin-top: -1em;">
-                                        Por favor escribe un número mayor a 0.
-                                    </p>
-                                    <p class="help is-hidden has-text-danger-dark" id="ayuda_num_exponente"
-                                        style="padding: 0.5em; margin-top: -1em;">
-                                        Por favor escribe un número de pagos sin exponente.
-                                    </p>
-                                    <p class="help is-hidden has-text-danger-dark" id="existente"
-                                        style="padding: 0.5em; margin-top: -1em;">
-                                        Ya existe un plan con ese número de pagos. 
-                                    </p>
-                                    <div class="field">
-                                        <div class="control has-icons-left">
-                                            <input class="input is-medium" type="number" id="numeroPagos"
-                                                name="numeroPagos"
-                                                style="border: 2px solid
-                                                    #7c7f80;" placeholder="Número de pagos del nuevo plan">
-                                            <span class="icon is-small is-left">
-                                                <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <button id="btn_aplicar_cambios" type="submit"
-                                        class="button is-large is-rounded is-responsive" disabled>
-                                        <span>Registrar Plan</span>
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+        <div class="container" style="display: flex; justify-content: center;">
+            <form id="formRegistrarPlanPago" action="/configuracion/registrar_planpago"
+                method="POST">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">       
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label class="label is-medium">Nombre del Plan:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_nombre"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un nombre para el plan de pago.
+                            </p>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="text" id="nombrePlan"
+                                        name="nombrePlan" style="border: 2px solid
+                                        #7c7f80;" placeholder="Nombre del nuevo plan">
+                                        <span class="icon is-small is-left">
+                                            <i class="fa-solid fa-layer-group" style="color: #95404c;"></i>
                                         </span>
-                                    </button>
-                                    <p id="errorMessage" style="color: red;"></p>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label class="label is-medium">Número de Pagos:</label>
+                        </div>
+                        <div class="column">
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_num_vacio"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un número de pagos válido.
+                            </p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_num_negativo"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un número mayor a 0.
+                            </p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_num_exponente"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Por favor escribe un número de pagos sin exponente.
+                            </p>
+                            <p class="help is-hidden has-text-danger-dark" id="existente"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                    Ya existe un plan con ese número de pagos. 
+                            </p>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="number" id="numeroPagos"
+                                        name="numeroPagos"
+                                        style="border: 2px solid
+                                        #7c7f80;" placeholder="Número de pagos del nuevo plan">
+                                        <span class="icon is-small is-left">
+                                            <i class="fa-solid fa-list-ol" style="color: #95404c;"></i>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-offset-5">
+                        <p class="control">
+                            <button type="submit" class="confirmar-button is-medium is-responsive"
+                                style="font-size: large; padding-left: 1em;"
+                                id="btn_aplicar_cambios" disabled>
+                                    <span>REGISTRAR PLAN</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                            </button>
+                        </p>            
+                        </form>
+                    </div>
             </div>
-        </div>
-    </div>
 </section>
 <%- include('../includes/foot.ejs') %>
 

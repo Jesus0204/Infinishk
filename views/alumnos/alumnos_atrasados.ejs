@@ -51,7 +51,9 @@
         <% if (actuales[0].alumnosTotales == 0){ %>
         <div class="columns">
             <div class="column is-7">
-                <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    ALUMNOS ATRASADOS EN PAGOS
+                </label>
             </div>
         </div>
         <br>
@@ -66,7 +68,9 @@
         <% } else if (pagos_atrasados.length == 0) { %>
         <div class="columns">
             <div class="column is-7">
-                <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    ALUMNOS ATRASADOS EN PAGOS
+                </label>
                 <div class="notification" style="background-color: rgba(4, 114, 77, 0.7); color:#ffffff;">
                     ¡Ningún alumno tiene un pago atrasado! ¡No hay nada que ver por el momento!
                 </div>
@@ -80,19 +84,21 @@
         <% } else { %>
             <div class="columns">
                 <div class="column is-7">
-                    <h3 class="title is-3">Alumnos Atrasados en Pagos</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        ALUMNOS ATRASADOS EN PAGOS
+                    </label>
                 </div>
                 <div class="column is-5">
                     <div class="ct-chart ct-golden-section ct-slice-pie ct-series-x" id="bar-chart"></div>
                 </div>
             </div>
             <div class="search-bar">
-                <input type="text" id="searchAlumnos" class="search-input" placeholder="Buscar Alumnos Atrasados: Nombre o Matrícula">
+                <input type="text" id="searchAlumnos" class="search-input" placeholder="Buscar por nombre o matrícula">
             </div>
         <p class="is-hidden" id="atrasados"><%=atrasados[0].alumnosAtrasados %></p>
         <p class="is-hidden" id="totales"><%= actuales[0].alumnosTotales %></p>
         <div id="resultadoQuery" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
-            No existen alumnos con los paramétros de busqueda.
+            No existen alumnos con los paramétros de búsqueda.
         </div>
             <% for (let deudas_atrasadas of pagos_atrasados) { %>
             <table class="table is-bordered is-hoverable is-fullwidth tablaAlumnos">
@@ -108,20 +114,24 @@
                                     <%= calculo_pagos.toFixed(2) %>
                                 </div>
                                 <div class="column is-4 is-offset-1">
-                                    Nombre: <%= deudas_atrasadas[0].Nombre %>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    NOMBRE: <%= deudas_atrasadas[0].Nombre %>
                                     <%= deudas_atrasadas[0].Apellidos %>
+                                    </p>
                                 </div>
                                 <div class="column is-3">
-                                    Matrícula: <%= deudas_atrasadas[0].matricula %>
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                    MATRÍCULA: <%= deudas_atrasadas[0].matricula %>
+                                    </p>
                                 </div>
                                 <div class="column is-3">
                                     <form action="/alumnos/datos_alumno" method="POST">
                                         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                         <input type="hidden" name="buscar" id="buscar"
                                             value="<%= deudas_atrasadas[0].matricula %>">
-                                        <button type="submit" class="button is-rounded is-medium is-responsive"
+                                        <button type="submit" class="button is-small is-responsive"
                                             style="font-size: medium;">
-                                            <span>Ver detalles</span>
+                                            <span>Detalles</span>
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                             </span>
@@ -160,7 +170,11 @@
                                 <% } %>
                                 <div class="column">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% if (deudas_atrasadas[count].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total: </strong>
                                     $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
@@ -168,7 +182,7 @@
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
                                     <br>
-                                    <strong>Descuento:</strong>
+                                    <strong>Ajuste:</strong>
                                     $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
@@ -176,7 +190,7 @@
                                     
                                 </div>
                                 <div class="column">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -207,7 +221,11 @@
                                 <% } %>
                                 <div class="column" style="text-align: center;">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% if (deudas_atrasadas[count].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total: </strong>
                                     $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
@@ -215,14 +233,14 @@
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
                                     <br>
-                                    <strong>Descuento:</strong>
+                                    <strong>Ajuste:</strong>
                                     $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count].fechaLimitePago %>
                                 </div>
@@ -250,7 +268,11 @@
                                 <% } %>
                                 <div class="column" style="text-align: center;">
                                     <strong>Pendiente:</strong>
-                                    $<%= deudas_atrasadas[count + 1].saldoPendiente.toLocaleString('mx') %>
+                                    <% if (deudas_atrasadas[count + 1].saldoPendiente < 0) { %>
+                                        $0
+                                    <% } else { %>
+                                        $<%= deudas_atrasadas[count + 1].saldoPendiente.toLocaleString('mx'); %>
+                                    <% } %>
                                     <br>
                                     <strong>Total:</strong>
                                     $<%= deudas_atrasadas[count + 1].montoAPagar.toLocaleString('mx') %>
@@ -258,14 +280,14 @@
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count + 1].montoPagado.toLocaleString('mx') %>
                                     <br>
-                                    <strong>Descuento:</strong>
+                                    <strong>Ajuste:</strong>
                                     $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>
                                 </div>
                                 <div class="column" style="text-align: center;">
-                                    <strong>Fecha Limite Pago:</strong>
+                                    <strong>Fecha Límite de Pago:</strong>
                                     <br>
                                     <%= deudas_atrasadas[count + 1].fechaLimitePago %>
                                 </div>

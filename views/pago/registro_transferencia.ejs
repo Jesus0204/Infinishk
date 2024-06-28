@@ -47,15 +47,15 @@
             width: 100%;
         }
 
-        td {
+        .td-faltantes {
             border: 5px solid rgb(255, 255, 255);
             /* Líneas más oscuras para la tabla */
-            padding: 10px;
+            padding: 8px;
             font-size: 19px;
             color: white;
         }
 
-        th {
+        .th-faltantes {
             border: 5px solid rgb(255, 255, 255);
             padding: 10px;
             font-size: 19px;
@@ -63,7 +63,7 @@
             color: white;
         }
 
-        thead {
+        .thead-faltantes {
             background-color: black;
             font-style: italic;
         }
@@ -88,24 +88,40 @@
             color: #ffffff;
             border: solid #000000;
         }
-    </style>
-    <section class="section">
 
-        <body>
+        .table-container {
+            padding-top: 1rem; 
+            overflow: hidden;
+        }
+
+        #titulo {
+            display: flex;
+            align-items: center;
+            padding-top: 1rem;
+            padding-left: 0.4rem;
+        }
+    </style>
+
+    <body>
+        <section class="section">
             <% if (subir) { %>
                 <div class="columns">
                     <div class="column is-3"></div>
                     <div class="column is-7">
-                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                            REGISTRAR ARCHIVO CSV DE TRANSFERENCIA</label>
                     </div>
                 </div>
                 <div class="columns">
                     <div class="column is-3"></div>
                     <div class="column is-6">
-                        <p>Por favor ingresa un archivo CSV del banco para registrar las transferencias recibidas a la
-                            base de
-                            datos.</p>
-                            
+                        <div class="box">
+                            <p class="has-text-weight-medium has-text-black">
+                                Por favor ingresa un archivo CSV del banco para registrar las transferencias recibidas a la
+                                base de datos.
+                            </p>
+                        </div>
+                        
                             <% if (error) { %>
                                 <div id="errorNotification" class="notification is-danger">
                                     <button id="closeNotification" class="delete" type="button"></button>
@@ -120,9 +136,14 @@
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                     <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;"
                         onchange="updateLabel()">
-                    <label for="archivo" id="labelArchivo" class="button is-large is-rounded is-responsive"><i
-                            class="fas fa-upload"></i> Elegir Archivo</label>
-                    <button type="submit" class="button is-large is-rounded is-responsive">Subir Archivo</button>
+                        <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
+                        style="font-size: medium; background: #000000;">
+                                <span> ELEGIR ARCHIVO </span>
+                                <span class="icon is-large">
+                                    <i class="fas fa-upload"></i></span></label>
+                        <button type="submit" class="button is-large is-responsive"
+                        style="font-size: medium; background: #000000;">
+                            SUBIR ARCHIVO </button>
                     <div id="error"></div>
                 </form>
 
@@ -130,53 +151,57 @@
                     <% if (datos.some(fila=> fila.tipoPago === 'Pago Completo')) { %>
                         <div class="table-container">
                             <div id="tablaCompleta">
-                                <div class="columns">
-                                    <div class="column is-1">
-                                        <a id="Boton_regresar" type="submit" class="is-responsive"
-                                            onclick="regresar()">
-                                            <span class="icon">
-                                                <i class="fas fa-arrow-left fa-2x"></i>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    </div>
-                                <p class="title is-4 mt-5">Pagos ya Realizados</p>
-                                <table class="ta">
+                                <div id="titulo">
+                                    <div class="columns">
+                                        <div class="column is-narrow">
+                                            <a id="Boton_regresar" type="submit" class="is-responsive"
+                                                onclick="regresar()">
+                                                <span class="icon">
+                                                    <i class="fas fa-arrow-left fa-2x"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                                        PAGOS YA REALIZADOS</label>
+                                </div>
+                            </div>
+                            <div class="column"></div>
+                                <table class="table is-fullwidth is-hoverable">
                                     <thead>
-                                        <tr class="has-text-white">
-                                            <th class="has-text-white">Nombre</th>
-                                            <th class="has-text-white">Matricula</th>
-                                            <th class="has-text-white">Referencia</th>
-                                            <th class="has-text-white">Fecha y Hora</th>
-                                            <th class="has-text-white">Importe</th>
-                                            <th class="has-text-white">Deuda</th>
-                                            <th class="has-text-white">Tipo de Pago</th>
+                                        <tr>
+                                            <th style="text-align: left;">Nombre</th>
+                                            <th style="text-align: left;">Matrícula</th>
+                                            <th style="text-align: left;">Referencia</th>
+                                            <th style="text-align: left;">Fecha y Hora</th>
+                                            <th style="text-align: left;">Importe</th>
+                                            <th style="text-align: left;">Deuda</th>
+                                            <th style="text-align: left;">Tipo de Pago</th>
                                         </tr>
                                     </thead>
                                     <% datos.forEach((fila,index)=> { %>
                                         <tbody>
                                             <% if (fila.tipoPago==='Pago Completo' ) { %>
                                                 <tr id="pagination-content">
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= fila.nombre %>
                                                             <%= fila.apellidos %>
                                                     </td>
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= fila.Matricula %>
                                                     </td>
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= fila.Referencia %>
                                                     </td>
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= fila.fechaFormato %>
                                                     </td>
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                     </td>
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                     </td>                                                    
-                                                    <td class="has-text-black">
+                                                    <td>
                                                         <%= fila.tipoPago %>
                                                     </td>
                                                 </tr>
@@ -195,7 +220,7 @@
                                     </div>
                                 </ul>
                             </nav>
-                            <button id="toggleButton" class="button is-large is-rounded is-responsive">
+                            <button id="toggleButton" class="button is-medium is-responsive">
                                 <span>Revisar No Completos</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -212,13 +237,21 @@
                                         </a>
                                     </div>
                                     <div class="column is-7">
-                                        <h3 class="title is-3">Registrar Archivo CSV de Transferencia</h3>
+                                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                                            REGISTRAR ARCHIVO CSV DE TRANSFERENCIA</label>
                                     </div>
                                 </div>
-                                <div id="tablaCompleta" class="has-text-centered mt-5">
-                                    <div class="alert alert-info is-size-4">No hay pagos completos en este archivo.
+
+                                <div class="columns">
+                                    <div class="column is-2"></div>
+                                    <div class="column is-8">
+                                        <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                            No hay pagos completos en este archivo.
+                                        </div>
                                     </div>
-                                    <button id="toggleButton" class="button is-large is-rounded is-responsive">
+                                </div>
+
+                                    <button id="toggleButton" class="button is-medium is-responsive">
                                         <span>
                                             Revisar No Completos
                                         </span>
@@ -232,28 +265,36 @@
 
 
                         <% if (!datos.some(fila=> ['Pago Colegiatura', 'Pago a Registrar', 'Pago de Diplomado'].includes(fila.tipoPago))) { %>
-                            <div id="tablaNoCompleta" class="has-text-centered mt-5">
-                                <div class="alert alert-info is-size-4">No hay pagos para registrar en este
-                                    archivo.</div>
-                                <button id="toggleButtonActivo" class="button is-large is-rounded is-responsive">Revisar
+                            <div class="columns">
+                                <div class="column is-2"></div>
+                                <div class="column is-8">
+                                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                        No hay pagos para registrar en este archivo.
+                                    </div>
+                                </div>
+                            </div>
+                                <button id="toggleButtonActivo" class="button is-medium is-responsive">Revisar
                                     Completos</button>
                             </div>
                             <% } else { %>
                                 <div class="table-container">
                                     <div id="tablaNoCompleta">
-                                        <p class="title is-4 mt-5">Pagos Faltantes</p>
+                                        <div class="titulo">
+                                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                                            PAGOS FALTANTES</label>
+                                        </div>
                                         <table class="ta">
-                                            <thead>
+                                            <thead class="thead-faltantes">
                                                 <tr class="has-text-white">
-                                                    <th class="has-text-white">Nombre</th>
-                                                    <th class="has-text-white">Matricula</th>
-                                                    <th class="has-text-white">Referencia</th>
-                                                    <th class="has-text-white">Fecha y Hora</th>
-                                                    <th class="has-text-white">Importe</th>
-                                                    <th class="has-text-white">Deuda</th>
-                                                    <th class="has-text-white">Tipo de Pago</th>
-                                                    <th class="has-text-white">Nota</th>
-                                                    <th class="has-text-white">Acciones</th>
+                                                    <th class="th-faltantes">Nombre</th>
+                                                    <th class="th-faltantes">Matrícula</th>
+                                                    <th class="th-faltantes">Referencia</th>
+                                                    <th class="th-faltantes">Fecha y Hora</th>
+                                                    <th class="th-faltantes">Importe</th>
+                                                    <th class="th-faltantes">Deuda</th>
+                                                    <th class="th-faltantes">Tipo de Pago</th>
+                                                    <th class="th-faltantes">Nota</th>
+                                                    <th class="th-faltantes">Acciones</th>
                                                 </tr>
                                             </thead>
 
@@ -262,31 +303,31 @@
                                                     <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' || fila.tipoPago==='Pago de Diplomado' || fila.tipoPago === 'Pago no Reconocido' ) { %>
                                                         <tr id="fila<%= index %>"
                                                             class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
-                                                            <td>
+                                                            <td class="td-faltantes">
                                                                 <%= fila.nombre %>
                                                                     <%= fila.apellidos %>
                                                             </td>
-                                                            <td>
+                                                            <td class="td-faltantes">
                                                                 <%= fila.Matricula %>
                                                             </td>
-                                                            <td>
+                                                            <td class="td-faltantes">
                                                                 <%= fila.Referencia %>
                                                             </td>
-                                                            <td>
+                                                            <td class="td-faltantes">
                                                                 <%= fila.fechaFormato %>
                                                             </td>
-                                                            <td>
+                                                            <td class="td-faltantes">
                                                                 <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                             </td>                                                            
                                                             <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' ) { %>
-                                                                <td>
+                                                                <td class="td-faltantes">
                                                                     <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                                 </td>                                                                
                                                                 <% } 
                                                                 else { %>
-                                                                    <td>N/A</td>
+                                                                    <td class="td-faltantes">N/A</td>
                                                                     <% } %>
-                                                                        <td>
+                                                                        <td class="td-faltantes">
                                                                             <form action="/pagos/resultadoTransferencia"
                                                                                 method="POST" id="form<%= index %>"
                                                                                 class="form-enviar-datos">
@@ -315,8 +356,7 @@
                                                                                         </option>
                                                                                         <option value="Pago Extra"
                                                                                             <%=fila.tipoPago==='Pago Extra'
-                                                                                            ? 'selected' : '' %>>Pago
-                                                                                            Extra
+                                                                                            ? 'selected' : '' %>>Otro Pago
                                                                                         </option>
                                                                                         <% } %>
                                                                                         <% } %>
@@ -346,18 +386,17 @@
                                                                                                     value="Pago Extra"
                                                                                                     <%=fila.tipoPago==='Pago Extra'
                                                                                                     ? 'selected' : '' %>
-                                                                                                    >Pago
-                                                                                                    Extra
+                                                                                                    >Otro Pago
                                                                                                 </option>
                                                                                                 <% } %>
                                                                                                 <% } %>
                                                                                 </select>
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="td-faltantes">
                                                                             <textarea name="nota"
                                                                                 placeholder="Escribe tu nota aquí"></textarea>
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="td-faltantes">
                                                                             <input type="hidden" name="nombre"
                                                                                 value="<%= fila.nombre %> <%= fila.apellidos %>">
                                                                             <input type="hidden" name="matricula"
@@ -372,11 +411,11 @@
                                                                                 value="<%= fila.deudaEstudiante %>">
                                                                             <% if (fila.tipoPago==='Pago a Registrar' ) { %>
                                                                                 <button type="submit"
-                                                                                    class="button my-button is-medium is-rounded is-responsive">
+                                                                                    class="button my-button is-medium is-responsive">
                                                                                     <span>
-                                                                                        Posponer
+                                                                                        POSPONER
                                                                                     </span>
-                                                                                    <span class="icon is-large">
+                                                                                    <span class="icon is-small">
                                                                                         <i class="fa-solid fa-circle-chevron-right"
                                                                                             style="color: #ffffff;"></i>
                                                                                     </span>
@@ -386,11 +425,11 @@
                                                                                         Esta referencia no está registrada en la base, por favor revisa los datos de este alumno.
                                                                                 <% } else { %>
                                                                                     <button type="submit"
-                                                                                        class="button my-button is-medium is-rounded is-responsive">
+                                                                                        class="button my-button is-medium is-responsive">
                                                                                         <span>
-                                                                                            Enviar datos
+                                                                                            REGISTRAR
                                                                                         </span>
-                                                                                        <span class="icon is-middle">
+                                                                                        <span class="icon is-small">
                                                                                             <i class="fa-solid fa-circle-chevron-right"
                                                                                                 style="color: #ffffff;"></i>
                                                                                         </span>
@@ -414,7 +453,7 @@
                                             </ul>
                                         </nav>
                                         <button id="toggleButtonActivo"
-                                            class="button is-large is-rounded is-responsive">
+                                            class="button is-medium is-responsive">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
                                             </span>

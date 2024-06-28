@@ -265,8 +265,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
 
         for (let i = 0; i < idGrupoEliminado.length; i++) {
             const IDGrupoEliminado = idGrupoEliminado[i];
-            console.log('idGrupoEliminado:', IDGrupoEliminado);
-            // await destroyGroup(request.session.username, IDGrupoEliminado , IDGrupoEliminado)
+            await destroyGroup(request.session.username, IDGrupoEliminado)
         }
 
 

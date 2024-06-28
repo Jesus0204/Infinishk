@@ -54,7 +54,6 @@ router.get('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionControlle
 router.post('/actualizarAlumnos',isAuth,can_ActualizarBase,configuracionController.post_alumnos);
 
 router.get('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.get_materias);
-router.post('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionController.post_materias);
 
 router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.get_periodos);
 router.post('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.post_periodos);

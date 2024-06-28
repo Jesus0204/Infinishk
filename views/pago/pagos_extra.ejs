@@ -28,18 +28,20 @@
     <div class="container">
         <div class="columns">
             <div class="column is-6">
-                <h3 class="title is-3">Configuración Otros Pagos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    CONFIGURACIÓN OTROS PAGOS
+                </label>
             </div>
             <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { %>
             <div class="column is-offset-2">
                 <p class="control">
-                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                    <a class="button is-responsive" style="font-size: large;"
                         href="/pagos/registrar_pago_extra">
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-plus"></i>
                         </span>
                         <span>
-                            Registrar Pago Extra
+                            Registrar Otro Pago
                         </span>
                     </a>
                 </p>
@@ -49,7 +51,7 @@
         <% if (registrar == true) { %>
         <div id="registrar_estatus" class="notification" style="background-color: #5a6581; color:#ffffff;">
             <button id="btn_registrar_estatus" class="delete"></button>
-            ¡El pago extra ha sido registrado!
+            ¡El otro pago ha sido registrado!
         </div>
         <% } %>
         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -75,31 +77,23 @@
             <div id="modificacion_estatus" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
                 <button id="btn_eliminar_estatus" class="delete"></button>
-                ¡Estatus de Pago Modificado!
+                ¡Estatus de pago modificado!
             </div>
             <div class="table-container">
-                <table class="table is-bordered is-hoverable is-fullwidth">
+                <table class="table is-hoverable is-fullwidth">
                     <thead>
                         <tr>
-                            <th>
-                                <p class="is-size-5">
-                                    <strong>Motivo: </strong>
-                                </p>
+                            <th style="text-align: left;">
+                                Motivo
                             </th>
-                            <th>
-                                <p class="is-size-5">
-                                    <strong>Monto: </strong>
-                                </p>
+                            <th style="text-align: left;">
+                                Monto
                             </th>
-                            <th>
-                                <p class="is-size-5">
-                                    <strong>Fecha Creación: </strong>
-                                </p>
+                            <th style="text-align: left;">
+                                Fecha Creación
                             </th>
-                            <th style="width: 16%">
-                                <p class="is-size-5">
-                                    Estatus:
-                                </p>
+                            <th style="text-align: left;">
+                                Estatus
                             </th>
                         </tr>
                     </thead>
@@ -107,22 +101,16 @@
                         <% for (let pago of pagos) { %>
                         <tr id="pagination-content">
                             <td>
-                                <div class="column">
-                                    <%= pago.motivoPago %>
-                                </div>
+                                <%= pago.motivoPago %>   
                             </td>
                             <td>
-                                <div class="column">
-                                    $ <%= pago.montoPagar.toLocaleString('mx', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }) %>
-                                </div>
+                                $ <%= pago.montoPagar.toLocaleString('mx', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
                             </td>
                             <td>
-                                <div class="column">
-                                    <%= pago.createdAt %>
-                                </div>
+                                <%= pago.createdAt %>
                             </td>
                             <td>
                                 <div class="field">
@@ -153,18 +141,18 @@
             <% let count_sin = 0 %>
             <div id="eliminacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
                 <button id="btn_eliminar_notificacion" class="delete"></button>
-                ¡Pago extra eliminado!
+                ¡Otro pago eliminado!
             </div>
 
             <% if (pagosNoAsignados.length == 0) { %>
             <article id="inexistente" class="message"
                 style="background-color: #5a6581; color:#ffffff; text-align: center;">
                 <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                    <p>No existen pagos extras modificables / eliminables </p>
+                    <p>No existen otros pagos modificables / eliminables. </p>
                     <button id="btn_eliminar_mensaje" class="delete" aria-label="delete"></button>
                 </div>
                 <div class="message-body" style="color:#ffffff;">
-                    Actualmente no existen pagos extra que se puedan modificar su motivo, monto o que se puedan
+                    Actualmente no existen otros pagos a los que se puedan modificar su motivo, monto o que se puedan
                     eliminar.
                 </div>
             </article>
@@ -173,115 +161,127 @@
             <p class="is-hidden" id="pagosNoAsignados_length"><%= pagosNoAsignados.length %></p>
 
             <% for (let pago of pagosNoAsignados) { %>
-            <table class="table is-hoverable is-fullwidth" id="<%= pago.IDPagosExtras %>">
-                <tbody>
-                    <div class="columns is-vcentered">
-                        <div class="column is-5">
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo<%= count_sin %>"
-                                style="padding: 0.5em; margin-bottom: -2em;">Por favor
-                                escribe un concepto de Pago Extra.</p>
-                        </div>
-                        <div class="column">
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio<%= count_sin %>"
-                                style="padding: 0.5em; margin-bottom: -2em;">
-                                Por favor
-                                escribe un monto válido del Pago Extra.</p>
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo<%= count_sin %>"
-                                style="padding: 0.5em; margin-bottom: -2em;">Por
-                                favor escribe un número mayor a 0.</p>
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente<%= count_sin %>"
-                                style="padding: 0.5em; margin-bottom: -2em;">Por favor escribe un motivo sin exponente.
-                            </p>
-                        </div>
+            <table class="table ficha-table is-fullwidth" id="<%= pago.IDPagosExtras %>">
+                <div class="columns is-vcentered">
+                    <div class="column is-6">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo<%= count_sin %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor escribe un concepto para el otro pago
+                        </p>
                     </div>
-                    <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
-                        <tr style="display: table-cell;">
-                            <td style="display: block; border: none">
-                                <div class="columns is-vcentered">
-                                    <div class="column" style="text-align: center;">
-                                        <label class="label is-medium" for="motivo<%= count_sin %>">Motivo: </label>
-                                        <div class="field">
-                                            <p class="control has-icons-left">
-                                                <input name="motivo" class="input is-medium" type="text"
-                                                    id="motivo<%= count_sin %>" placeholder="Concepto del Pago Extra"
-                                                    value="<%= pago.motivoPago %>" style=" border: 2px solid #7c7f80;">
-                                                <span class="icon is-small is-left">
-                                                    <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="column" style="text-align: center;">
-                                        <label class="label is-medium" for="monto<%= count_sin %>">Monto:</label>
-                                        <div class="field">
-                                            <p class="control has-icons-left">
-                                                <input name="monto" class="input is-medium" type="number" step="any"
-                                                    id="monto<%= count_sin %>" placeholder="Monto del Pago Extra"
-                                                    value="<%= pago.montoPagar.toFixed(2) %>" style="border: 2px solid
-                                                    #7c7f80;">
-                                                <span class="icon is-small is-left">
-                                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="columns is-vcentered">
-                                    <div class="column is-4" style="text-align: center;">
-                                        <label class="label is-medium">
-                                            Fecha Creación:
-                                        </label>
-                                    </div>
-                                    <div class="column" style="text-align: center;">
-                                        <p class="is-size-5">
-                                            <%= pago.createdAt %>
+                    <div class="column is-6">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio<%= count_sin %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor escribe un monto válido para el otro pago
+                        </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo<%= count_sin %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor escribe un número mayor a 0
+                        </p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente<%= count_sin %>"
+                            style="padding: 0.5em; margin-bottom: -2em;">
+                            Por favor escribe un motivo sin exponente
+                        </p>
+                    </div>
+                </div>
+                
+                <form action="/pagos/pagos_extra/modify" method="POST" class="form-modificar">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" id="id" name="id" value="<%= pago.IDPagosExtras %>">
+                    <tr>
+                        <td>
+                            <div class="columns is-vcentered">
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0"
+                                    for="motivo<%= count_sin %>">
+                                        MOTIVO
+                                    </p>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="motivo" class="input is-medium" type="text"
+                                                id="motivo<%= count_sin %>" placeholder="Concepto del otro pago"
+                                                value="<%= pago.motivoPago %>" style=" border: 2px solid #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr style="display: table-cell;">
-                            <td style="display: block;" class="is-hidden" id="modificar<%= count_sin %>">
-                                <div class="columns is-vcentered">
-                                    <div class="column" style="text-align: center;">
-                                        <button type="submit" class="button is-rounded is-medium is-responsive"
-                                            style="font-size: medium;" id="Boton_modificar<%= count_sin %>">
-                                            <span>Guardar</span>
-                                            <span class="icon is-large">
-                                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0"
+                                        for="monto<%= count_sin %>">
+                                            MONTO
+                                    </p>
+                                    <div class="field">
+                                        <p class="control has-icons-left">
+                                            <input name="monto" class="input is-medium" type="number" step="any"
+                                                id="monto<%= count_sin %>" placeholder="Monto del otro pago"
+                                                value="<%= pago.montoPagar.toFixed(2) %>" style="border: 2px solid
+                                                #7c7f80;">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                             </span>
-                                        </button>
+                                        </p>
                                     </div>
-                                </div>
-                    </form>
-                    </td>
-                    <td style="display: block;">
-                        <div class="columns is-vcentered">
-                            <div class="column" style="text-align: center;">
-                                <button type="submit" class="js-modal-trigger button is-rounded is-medium is-responsive"
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="columns is-vcentered">
+                                        <div class="column is-6">
+                                            <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0"
+                                                for="monto<%= count_sin %>">
+                                                    FECHA CREACIÓN
+                                            </p>
+                                        </div>
+                                        <div class="column">
+                                            <p class="is-size-5">
+                                                <%= pago.createdAt %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <tr>
+                            <td>
+                                <div class="columns is-vcentered">
+                                    <div class="column is-6" style="text-align: left;">
+                                        <div class="is-hidden" id="modificar<%= count_sin %>">
+                                            <button type="submit" class="button is-medium is-responsive"
+                                                style="font-size: medium;" id="Boton_modificar<%= count_sin %>">
+                                                <span>GUARDAR</span>
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                            </form>
+                            <div class="column is-6" style="text-align: right;">
+                                <button type="submit" class="js-modal-trigger button is-medium is-responsive"
                                     style="font-size: medium; background-color: #000000;"
                                     id="Boton_eliminar<%= count_sin %>"
                                     data-target="modal-confirmar-eliminar<%= count_sin %>">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                     </span>
-                                    <span>Eliminar</span>
+                                    <span>ELIMINAR</span>
                                 </button>
                             </div>
                         </div>
                     </td>
-        </div>
-        </tr>
-        </tbody>
+                </div>
+            </tr>
         </table>
+
         <div id="modal-confirmar-eliminar<%= count_sin %>" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p class="modal-card-title" style="text-align: center;">
-                        <strong> Eliminar Pago Extra</strong>
+                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                            ELIMINAR OTRO PAGO
+                        </label>
                     </p>
                     <button class="delete" aria-label="delete"></button>
                 </header>
@@ -291,7 +291,7 @@
                     </p>
                     <br>
                     <p class="is-size-5" style="text-align: center;">
-                        Los datos del pago extra a eliminar son los siguientes:
+                        Los datos del otro pago a eliminar son los siguientes:
                     </p>
                     <br>
                     <div class="columns is-vcentered">
@@ -325,22 +325,22 @@
                 <footer class="modal-card-foot" style="justify-content: center;">
                     <div class="field is-grouped">
                         <p class="control">
-                            <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                            <button class="button is-medium is-responsive" aria-label="close"
                                 style="font-size: large; margin: 8px 2px;">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
                                 </span>
-                                <span>Regresar</span>
+                                <span>REGRESAR</span>
                             </button>
                         </p>
                         <p class="control">
-                            <button class="button is-rounded is-medium is-responsive"
+                            <button class="button is-medium is-responsive"
                                 onclick="eliminar('<%= pago.IDPagosExtras %>')"
                                 style="font-size: large; margin: 8px 2px; background-color: #000000;">
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                 </span>
-                                <span>Eliminar</span>
+                                <span>ELIMINAR</span>
                             </button>
                         </p>
                 </footer>

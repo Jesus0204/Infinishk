@@ -2,7 +2,7 @@
 function updateLabel() {
     var archivo = document.getElementById('archivo');
     var label = document.getElementById('labelArchivo');
-    label.innerHTML = '<i class="fas fa-upload"></i> ' + archivo.files[0].name;
+    label.innerHTML = '<i class="fas fa-upload"></i>' + archivo.files[0].name;
 }
 function validateFile() {
     var archivo = document.getElementById('archivo');
@@ -21,7 +21,7 @@ function validateFile() {
             // Si el contenido es válido, permitir la carga del archivo
             document.forms[0].submit(); // Esto enviará el formulario
         } else {
-            error.textContent = 'Por favor ingresa un csv válido.';
+            error.textContent = 'Por favor ingresa un CSV válido';
         }
     };
     reader.onerror = function () {
@@ -143,13 +143,13 @@ document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach(
             if (boton) {
                 // Cambiar el texto del botón según el tipo de pago seleccionado
                 if (event.target.value === 'Pago a Registrar') {
-                    boton.innerHTML = `<span>Posponer</span>
-                    <span class="icon is-large">
+                    boton.innerHTML = `<span>POSPONER</span>
+                    <span class="icon is-small">
                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                     </span>`;
                 } else {
-                    boton.innerHTML = `<span>Enviar datos</span>
-                    <span class="icon is-middle">
+                    boton.innerHTML = `<span>REGISTRAR</span>
+                    <span class="icon is-small">
                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                     </span>`;
                 }
