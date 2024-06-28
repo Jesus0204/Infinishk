@@ -21,7 +21,7 @@ function validateFile() {
             // Si el contenido es válido, permitir la carga del archivo
             document.forms[0].submit(); // Esto enviará el formulario
         } else {
-            error.textContent = 'Por favor ingresa un CSV válido.';
+            error.textContent = 'Por favor ingresa un CSV válido';
         }
     };
     reader.onerror = function () {

@@ -29,7 +29,7 @@
         <div class="columns">
             <div class="column is-6">
                 <label class="label is-large has-text-danger has-text-weight-semibold">
-                    CONFIGURACIÓN PAGOS EXTRA
+                    CONFIGURACIÓN OTROS PAGOS
                 </label>
             </div>
             <% if (contienePermiso(permisos, 'Registrar Pago Extra') == true) { %>
@@ -41,7 +41,7 @@
                             <i class="fa-solid fa-circle-plus"></i>
                         </span>
                         <span>
-                            Registrar Pago Extra
+                            Registrar Otro Pago
                         </span>
                     </a>
                 </p>
@@ -51,7 +51,7 @@
         <% if (registrar == true) { %>
         <div id="registrar_estatus" class="notification" style="background-color: #5a6581; color:#ffffff;">
             <button id="btn_registrar_estatus" class="delete"></button>
-            ¡El pago extra ha sido registrado!
+            ¡El otro pago ha sido registrado!
         </div>
         <% } %>
         <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
@@ -141,18 +141,18 @@
             <% let count_sin = 0 %>
             <div id="eliminacion" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
                 <button id="btn_eliminar_notificacion" class="delete"></button>
-                ¡Pago extra eliminado!
+                ¡Otro pago eliminado!
             </div>
 
             <% if (pagosNoAsignados.length == 0) { %>
             <article id="inexistente" class="message"
                 style="background-color: #5a6581; color:#ffffff; text-align: center;">
                 <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                    <p>No existen pagos extras modificables / eliminables </p>
+                    <p>No existen otros pagos modificables / eliminables. </p>
                     <button id="btn_eliminar_mensaje" class="delete" aria-label="delete"></button>
                 </div>
                 <div class="message-body" style="color:#ffffff;">
-                    Actualmente no existen pagos extra que se puedan modificar su motivo, monto o que se puedan
+                    Actualmente no existen otros pagos a los que se puedan modificar su motivo, monto o que se puedan
                     eliminar.
                 </div>
             </article>
@@ -166,21 +166,21 @@
                     <div class="column is-6">
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo<%= count_sin %>"
                             style="padding: 0.5em; margin-bottom: -2em;">
-                            Por favor escribe un concepto de Pago Extra.
+                            Por favor escribe un concepto para el otro pago
                         </p>
                     </div>
                     <div class="column is-6">
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio<%= count_sin %>"
                             style="padding: 0.5em; margin-bottom: -2em;">
-                            Por favor escribe un monto válido del Pago Extra.
+                            Por favor escribe un monto válido para el otro pago
                         </p>
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo<%= count_sin %>"
                             style="padding: 0.5em; margin-bottom: -2em;">
-                            Por favor escribe un número mayor a 0.
+                            Por favor escribe un número mayor a 0
                         </p>
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente<%= count_sin %>"
                             style="padding: 0.5em; margin-bottom: -2em;">
-                            Por favor escribe un motivo sin exponente.
+                            Por favor escribe un motivo sin exponente
                         </p>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                                     <div class="field">
                                         <p class="control has-icons-left">
                                             <input name="motivo" class="input is-medium" type="text"
-                                                id="motivo<%= count_sin %>" placeholder="Concepto del Pago Extra"
+                                                id="motivo<%= count_sin %>" placeholder="Concepto del otro pago"
                                                 value="<%= pago.motivoPago %>" style=" border: 2px solid #7c7f80;">
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
@@ -215,7 +215,7 @@
                                     <div class="field">
                                         <p class="control has-icons-left">
                                             <input name="monto" class="input is-medium" type="number" step="any"
-                                                id="monto<%= count_sin %>" placeholder="Monto del Pago Extra"
+                                                id="monto<%= count_sin %>" placeholder="Monto del otro pago"
                                                 value="<%= pago.montoPagar.toFixed(2) %>" style="border: 2px solid
                                                 #7c7f80;">
                                             <span class="icon is-small is-left">
@@ -280,7 +280,7 @@
                 <header class="modal-card-head">
                     <p class="modal-card-title" style="text-align: center;">
                         <label class="label is-large has-text-danger has-text-weight-semibold">
-                            ELIMINAR PAGO EXTRA
+                            ELIMINAR OTRO PAGO
                         </label>
                     </p>
                     <button class="delete" aria-label="delete"></button>
@@ -291,7 +291,7 @@
                     </p>
                     <br>
                     <p class="is-size-5" style="text-align: center;">
-                        Los datos del pago extra a eliminar son los siguientes:
+                        Los datos del otro pago a eliminar son los siguientes:
                     </p>
                     <br>
                     <div class="columns is-vcentered">

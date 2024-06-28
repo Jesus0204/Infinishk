@@ -18,27 +18,27 @@
             </div>
             <div class="column">
                 <label class="label is-large has-text-danger has-text-weight-semibold">
-                    REGISTRAR NUEVO PAGO EXTRA
+                    REGISTRAR OTRO PAGO
                 </label>
             </div>
         </div>
 
-        <div class="container" style="display: flex; justify-content: center;">
+        <div class="container" style="justify-content: center; width: 49%">
             <form action="/pagos/registrar_pago_extra" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 
                 <div class="columns">
                     <div class="column is-3">
-                        <label class="label is-medium" for="motivo">Motivo </label>
+                        <label class="label is-medium" for="motivo">Motivo: </label>
                     </div>
                     <div class="column">
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
                             style="padding: 0.5em; margin-top: -1em;">Por favor
-                            escribe un concepto de Pago Extra.</p>
+                            escribe un concepto para el otro pago </p>
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                    placeholder="Concepto del nuevo Pago Extra">
+                                    placeholder="Concepto del otro pago">
                                 <span class="icon is-small is-left">
                                     <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                 </span>
@@ -49,25 +49,25 @@
 
                 <div class="columns">
                     <div class="column is-3">
-                        <label class="label is-medium" for="monto">Monto </label>
+                        <label class="label is-medium" for="monto">Monto: </label>
                     </div>
                     <div class="column">
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
                             style="padding: 0.5em; margin-top: -1em;">
-                            Por favor escribe un monto válido del Pago Extra.
+                            Por favor escribe un monto válido para el otro pago
                         </p>
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                             style="padding: 0.5em; margin-top: -1em;">
-                            Por favor escribe un número mayor a 0.
+                            Por favor escribe un número mayor a 0
                         </p>
                         <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
                             style="padding: 0.5em; margin-top: -1em;">
-                            Por favor escribe un motivo sin exponente.
+                            Por favor escribe un motivo sin exponente
                         </p>
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                    placeholder="Monto del nuevo Pago Extra">
+                                    placeholder="Monto del otro pago">
                                 <span class="icon is-small is-left">
                                     <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
                                 </span>
@@ -80,7 +80,7 @@
                     <p class="control">
                         <button type="submit" id="Boton_registrar" class="confirmar-button is-medium is-responsive"
                             style="font-size: large;" disabled>
-                            <span>REGISTRAR PAGO EXTRA</span>
+                            <span>REGISTRAR OTRO PAGO</span>
                             <span class="icon is-large">
                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                             </span>
