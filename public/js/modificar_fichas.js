@@ -12,26 +12,15 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const nota = document.querySelector('#nota' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
     const ayuda_nota = document.querySelector('#ayuda_nota' + count);
-    const ayuda_descuento_deuda = document.querySelector('#ayuda_descuento_deuda' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
 
     const montoPagar = document.getElementById('montoPagar' + count);
-    const deuda = montoPagar.innerHTML;
-    const deuda_no_comma = deuda.replace(',', '')
-
-    function deudaDescuento(){
-        if (descuento.value > Number(deuda_no_comma)) {
-            ayuda_descuento_deuda.classList.remove('is-hidden');
-        } else {
-            ayuda_descuento_deuda.classList.add('is-hidden');
-        }
-    }
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
         bt_Modificar.disabled = nota.value.length === 0 ||
             descuento.value.trim().toLowerCase().includes('e') ||
-                fecha_lim.value.length === 0 || descuento.value > Number(deuda_no_comma);
+                fecha_lim.value.length === 0
     }
 
     const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
@@ -98,7 +87,6 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     if (descuento){
         descuento.addEventListener('input', mensaje_descuento);
         descuento.addEventListener('input', checar_contenido);
-        descuento.addEventListener('input', deudaDescuento);
     }
 
 }
