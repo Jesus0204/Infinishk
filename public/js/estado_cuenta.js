@@ -153,19 +153,19 @@ function downloadPDF(matricula) {
     const pdf = new jsPDF();
     const margin = 10; // Define a margin for the content
 
-    const tabIds = []; // IDs de las pestañas
-
+    // Obtener las selecciones de checkboxes
+    const selectedTabs = [];
     if (document.getElementById('checkbox_deuda').checked) {
-        tabIds.push('deuda');
+        selectedTabs.push('deuda');
     }
     if (document.getElementById('checkbox_pagos').checked) {
-        tabIds.push('pagos');
+        selectedTabs.push('pagos');
     }
     if (document.getElementById('checkbox_solicitudes').checked) {
-        tabIds.push('solicitudes');
+        selectedTabs.push('solicitudes');
     }
     if (document.getElementById('checkbox_pagosExtra').checked) {
-        tabIds.push('pagosExtra');
+        selectedTabs.push('pagosExtra');
     }
 
     // Guardar el ID de la pestaña activa
@@ -174,7 +174,7 @@ function downloadPDF(matricula) {
 
     // Crear una copia oculta temporal de las pestañas para el PDF
     const hiddenTabs = [];
-    tabIds.forEach(tabId => {
+    selectedTabs.forEach(tabId => {
         if (tabId !== activeTabId) {
             const tabContent = document.getElementById(tabId);
             if (tabContent && tabContent.classList.contains('is-hidden')) {
@@ -189,18 +189,26 @@ function downloadPDF(matricula) {
     combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
     combinedContent.style.background = 'white'; // Asegurar que el fondo sea blanco
 
-    tabIds.forEach((tabId, index) => {
+    // Mapear los IDs de las tabs a los títulos deseados para el PDF
+    const tabTitles = {
+        'deuda': 'Colegiatura',
+        'pagos': 'Historial de Colegiatura',
+        'solicitudes': 'Solicitudes',
+        'pagosExtra': 'Historial Solicitudes'
+    };
+
+    selectedTabs.forEach((tabId, index) => {
         const tabContent = document.getElementById(tabId);
         if (tabContent) {
             const title = document.createElement('p');
             title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
-            title.textContent = `Contenido de ${tabId}`; // Puedes ajustar el título según necesites
+            title.textContent = tabTitles[tabId]; // Usar el título correspondiente al ID de la tab
             combinedContent.appendChild(title);
             combinedContent.appendChild(tabContent.cloneNode(true));
 
-            if (index < tabIds.length - 1) {
+            if (index < selectedTabs.length - 1) {
                 const br = document.createElement('br');
-                combinedContent.appendChild(br); // Agregar un salto de línea entre los contenidos de las pestañas
+                combinedContent.appendChild(br); // Agregar un salto de línea entre los contenidos de las tabs
             }
         }
     });
