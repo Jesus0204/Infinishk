@@ -10,8 +10,6 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const descuento = document.querySelector('#descuento' + count);
     const nota = document.querySelector('#nota' + count);
-    const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
-    const ayuda_descuento_negativo = document.querySelector('#ayuda_descuento_negativo' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
     const ayuda_nota = document.querySelector('#ayuda_nota' + count);
     const ayuda_descuento_deuda = document.querySelector('#ayuda_descuento_deuda' + count);
@@ -31,8 +29,8 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled = descuento.value.length === 0 || nota.value.length === 0 ||
-            parseFloat(descuento.value) < 0 || descuento.value.trim().toLowerCase().includes('e') ||
+        bt_Modificar.disabled = nota.value.length === 0 ||
+            descuento.value.trim().toLowerCase().includes('e') ||
                 fecha_lim.value.length === 0 || descuento.value > Number(deuda_no_comma);
     }
 
@@ -75,19 +73,6 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     }
 
     function mensaje_descuento() {
-        if (descuento.value.length === 0) {
-            ayuda_descuento_vacio.classList.remove('is-hidden');
-        } else {
-            ayuda_descuento_vacio.classList.add('is-hidden');
-        }
-
-        if (parseFloat(descuento.value) < 0) {
-            bt_Modificar.disabled = true;
-            ayuda_descuento_negativo.classList.remove('is-hidden');
-        } else {
-            ayuda_descuento_negativo.classList.add('is-hidden');
-        }
-
         if (descuento.value.trim().toLowerCase().includes('e')) {
             bt_Modificar.disabled = true;
             ayuda_descuento_exponente.classList.remove('is-hidden');
