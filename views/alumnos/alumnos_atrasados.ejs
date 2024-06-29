@@ -177,7 +177,8 @@
                                     <% } %>
                                     <br>
                                     <strong>Total: </strong>
-                                    $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
+                                    <% deudas_atrasadas_ajuste = deudas_atrasadas[count].montoAPagar + Math.abs(deudas_atrasadas[count].Descuento) %>
+                                    $<%= deudas_atrasadas_ajuste.toLocaleString('mx') %>
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
@@ -228,7 +229,8 @@
                                     <% } %>
                                     <br>
                                     <strong>Total: </strong>
-                                    $<%= deudas_atrasadas[count].montoAPagar.toLocaleString('mx') %>
+                                    <% deudas_atrasadas_ajuste = deudas_atrasadas[count].montoAPagar + Math.abs(deudas_atrasadas[count].Descuento) %>
+                                    $<%= deudas_atrasadas_ajuste.toLocaleString('mx') %>
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count].montoPagado.toLocaleString('mx') %>
@@ -275,13 +277,14 @@
                                     <% } %>
                                     <br>
                                     <strong>Total:</strong>
-                                    $<%= deudas_atrasadas[count + 1].montoAPagar.toLocaleString('mx') %>
+                                    <% deudas_atrasadas_ajuste = deudas_atrasadas[count+1].montoAPagar + Math.abs(deudas_atrasadas[count + 1].Descuento) %>
+                                    $<%= deudas_atrasadas_ajuste.toLocaleString('mx') %>
                                     <br>
                                     <strong>Pagado:</strong>
                                     $<%= deudas_atrasadas[count + 1].montoPagado.toLocaleString('mx') %>
                                     <br>
                                     <strong>Ajuste:</strong>
-                                    $<%= deudas_atrasadas[count].Descuento.toLocaleString('mx', {
+                                    $<%= deudas_atrasadas[count + 1].Descuento.toLocaleString('mx', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2
                                     }) %>

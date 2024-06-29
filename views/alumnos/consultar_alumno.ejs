@@ -643,10 +643,9 @@
                                                         maximumFractionDigits: 2
                                                     }) %>
                                                 <% } %></td>
-                                                <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2
-                                                        }) %></td>
+                                                <td><% deuda_ajuste = deuda[count].montoAPagar %>
+                                                    $<%= deuda_ajuste.toLocaleString('mx') %>
+                                                   </td>
                                                 <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
