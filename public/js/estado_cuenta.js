@@ -149,70 +149,110 @@ function setText(activeContent, span) {
 }
 
 function downloadPDF(matricula) {
-    const {
-        jsPDF
-    } = window.jspdf;
+    const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     const margin = 10; // Define a margin for the content
 
-    setTimeout(() => {
-        const activeTab = document.querySelector('.tabs .is-active');
-        const activeContentId = activeTab.id.replace('nav_', '');
-        const activeContent = document.getElementById(activeContentId);
-        const boxContent = document.getElementById('boxContent');
+    const tabIds = []; // IDs de las pestañas
 
-        if (!boxContent || !activeContent) {
-            console.error("Unable to find elements to clone.");
-            return;
+    if (document.getElementById('checkbox_deuda').checked) {
+        tabIds.push('deuda');
+    }
+    if (document.getElementById('checkbox_pagos').checked) {
+        tabIds.push('pagos');
+    }
+    if (document.getElementById('checkbox_solicitudes').checked) {
+        tabIds.push('solicitudes');
+    }
+    if (document.getElementById('checkbox_pagosExtra').checked) {
+        tabIds.push('pagosExtra');
+    }
+
+    // Guardar el ID de la pestaña activa
+    const activeTab = document.querySelector('.tabs .is-active');
+    const activeTabId = activeTab ? activeTab.id.replace('nav_', '') : null;
+
+    // Crear una copia oculta temporal de las pestañas para el PDF
+    const hiddenTabs = [];
+    tabIds.forEach(tabId => {
+        if (tabId !== activeTabId) {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.remove('is-hidden');
+                hiddenTabs.push(tabId);
+            }
         }
+    });
 
-        const edoCuenta = document.createElement('p');
-        edoCuenta.classList.add('card-header-title', 'is-centered', 'has-background-danger', 'has-text-white', 'is-size-3');
-        edoCuenta.textContent = 'Estado de Cuenta';
+    // Crear el contenido combinado para el PDF
+    const combinedContent = document.createElement('div');
+    combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
+    combinedContent.style.background = 'white'; // Asegurar que el fondo sea blanco
 
-        const title = document.createElement('p');
-        title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
-        setText(activeContentId, title);
+    tabIds.forEach((tabId, index) => {
+        const tabContent = document.getElementById(tabId);
+        if (tabContent) {
+            const title = document.createElement('p');
+            title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
+            title.textContent = `Contenido de ${tabId}`; // Puedes ajustar el título según necesites
+            combinedContent.appendChild(title);
+            combinedContent.appendChild(tabContent.cloneNode(true));
 
-        const br = document.createElement('br');
+            if (index < tabIds.length - 1) {
+                const br = document.createElement('br');
+                combinedContent.appendChild(br); // Agregar un salto de línea entre los contenidos de las pestañas
+            }
+        }
+    });
 
-        // Create a temporary container for the combined content
-        const combinedContent = document.createElement('div');
-        combinedContent.style.padding = `${margin}px`; // Add padding for margin
-        combinedContent.style.background = 'white'; // Ensure background is white
-        combinedContent.appendChild(edoCuenta);
-        combinedContent.appendChild(boxContent.cloneNode(true));
-        combinedContent.appendChild(br);
-        combinedContent.appendChild(title);
-        combinedContent.appendChild(br);
-        combinedContent.appendChild(activeContent.cloneNode(true));
-        combinedContent.style.display = 'block';
-        combinedContent.style.position = 'absolute';
-        combinedContent.style.top = '-9999px';
-        document.body.appendChild(combinedContent);
+    combinedContent.style.display = 'block';
+    combinedContent.style.position = 'absolute';
+    combinedContent.style.top = '-9999px';
+    document.body.appendChild(combinedContent);
 
-        html2canvas(combinedContent, {
-            scale: 2
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-            const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+    html2canvas(combinedContent, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-            const imgWidth = imgProps.width / 2; // Since we scaled canvas by 2
-            const imgHeight = imgProps.height / 2; // Since we scaled canvas by 2
+        const imgWidth = imgProps.width / 2; // Dado que escalamos el lienzo por 2
+        const imgHeight = imgProps.height / 2; // Dado que escalamos el lienzo por 2
 
-            let scaleFactor = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+        let scaleFactor = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-            let scaledWidth = imgWidth * scaleFactor;
-            let scaledHeight = imgHeight * scaleFactor;
+        let scaledWidth = imgWidth * scaleFactor;
+        let scaledHeight = imgHeight * scaleFactor;
 
-            pdf.addImage(imgData, 'PNG', margin, margin, scaledWidth, scaledHeight);
-            pdf.save(`${matricula}_EstadoCuenta.pdf`);
-            document.body.removeChild(combinedContent);
-        }).catch(error => {
-            console.error("Error generating PDF: ", error);
-            document.body.removeChild(combinedContent);
+        pdf.addImage(imgData, 'PNG', margin, margin, scaledWidth, scaledHeight);
+        pdf.save(`${matricula}_EstadoCuenta.pdf`);
+        document.body.removeChild(combinedContent);
+
+        // Restaurar la visibilidad original de las pestañas ocultas después de generar el PDF
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
         });
-    }, 1000); // Delay to ensure elements are fully loaded
+    }).catch(error => {
+        console.error("Error al generar el PDF: ", error);
+        document.body.removeChild(combinedContent);
+
+        // En caso de error, restaurar la visibilidad original de las pestañas ocultas
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
+        });
+    });
+
+    // Restaurar la visibilidad original de las pestañas ocultas inmediatamente después de iniciar el proceso
+    hiddenTabs.forEach(tabId => {
+        const tabContent = document.getElementById(tabId);
+        if (tabContent && !tabContent.classList.contains('is-hidden')) {
+            tabContent.classList.add('is-hidden');
+        }
+    });
 }

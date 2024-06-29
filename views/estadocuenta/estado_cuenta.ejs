@@ -4,24 +4,37 @@
     rol: rol })
     %>
 
-<style>
-    .card {
-        border: none !important;
-    }
-    .solicitdes {
-        border: 1px solid #dbdbdb; /* Adjust the border color as needed */
-        border-radius: 10px; /* Adjust the border radius as needed */
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .solicitdes .table {
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-</style>
+    <style>
+        .card {
+            border: none !important;
+        }
+        .solicitdes {
+            border: 1px solid #dbdbdb; /* Adjust the border color as needed */
+            border-radius: 10px; /* Adjust the border radius as needed */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    
+        .solicitdes .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+    
+        /* Estilos adicionales para asegurar visibilidad de los checkboxes */
+        .dropdown-content .dropdown-item {
+            display: flex;
+            align-items: center;
+        }
+    
+        .dropdown-content .dropdown-item label {
+            margin-left: 5px;
+        }
+    
+        .dropdown-content input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
 
 <section class="section">
     <div class="columns">
@@ -30,9 +43,6 @@
                 <header class="card-header">
                     <p class="card-header-title is-centered has-background-danger has-text-white is-size-4">
                         Estado de Cuenta
-                        <a onclick="downloadPDF('<%= matricula %>')" class="icon is-large">
-                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
-                        </a>
                     </p>
                 </header>
                 <div class="card-content">
@@ -103,6 +113,57 @@
                                         </span>
                                     </button>
                                 </a>
+                                <div class="dropdown is-hoverable">
+                                    <div class="dropdown-trigger">
+                                        <button class="button is-responsive" aria-haspopup="true" aria-controls="dropdown-menu">
+                                            <span>
+                                                Realizar Descarga
+                                            </span>
+                                            <span class="icon is-large">
+                                                <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                        <div class="dropdown-content">
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" id="checkbox_deuda">
+                                                <label class="checkbox">
+                                                    Colegiatura
+                                                </label>
+                                            </div>
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" id="checkbox_pagos">
+                                                <label class="checkbox">
+                                                    Historial Colegiatura
+                                                </label>
+                                            </div>
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" id="checkbox_solicitudes">
+                                                <label class="checkbox">
+                                                    Solicitudes Pendientes
+                                                </label>
+                                            </div>
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" id="checkbox_pagosExtra">
+                                                <label class="checkbox">
+                                                    Historial Pendientes
+                                                </label>
+                                            </div>
+                                            <hr class="dropdown-divider">
+                                            <div class="dropdown-item">
+                                                <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
+                                                    <span>
+                                                        Descargar PDF
+                                                    </span>
+                                                    <span class="icon is-large">
+                                                        <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
