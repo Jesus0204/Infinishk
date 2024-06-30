@@ -415,18 +415,24 @@
                                         <% for (let count = 0; count < deuda.length; count++) { %>
                                         <tr>
                                             <td>Pago #<%= count + 1 %></td>
-                                            <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                            <td>
+                                            <% if (deuda[count].saldoPendiente < 0) { %>
+                                                $0.00
+                                            <% } else { %>
+                                                $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
+                                            maximumFractionDigits: 2}) %>
+                                            <% } %></td>
                                             <td>$<%= deuda[count].Descuento.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         }) %></td>
-                                            <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
+                                            <td><% deuda_ajuste = deuda[count].montoAPagar + Math.abs(deuda[count].Descuento) %>
+                                                $<%= deuda_ajuste.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %>
+                                            </td>
                                             <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
@@ -475,9 +481,8 @@
                         <div class="notification is-danger">
                             <p>
                                 Todavía no se crea tu Colegiatura para este periodo.
-                                Si estas en la fecha de inscripción, por favor entra a Inscripción para confirmar tu
-                                horario y
-                                que se creen tus fichas de pago.
+                                Si estás en la fecha de inscripción, por favor entra a Materias para confirmar tu
+                                horario y se creen tus fichas de pago.
                             </p>
                         </div>
                         <% } %>
