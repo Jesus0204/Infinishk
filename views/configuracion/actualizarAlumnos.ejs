@@ -22,7 +22,7 @@
     td {
         border: 5px solid rgb(255, 255, 255);
         /* Líneas más oscuras para la tabla */
-        padding: 10px;
+        padding: 8px;
         font-size: 19px;
         color: white;
     }
@@ -81,15 +81,20 @@
         border-radius: 5px;
         box-sizing: border-box;
     }
+
+    .table-container-title {
+        padding-left: 1rem; 
+        overflow: hidden;
+    }
 </style>
 
 <body>
     <!-- Verifica si hay usuarios para mostrar -->
     <p class="is-hidden" id="usuarios_length"><%= usuarios.length %></p>
     <section class="section">
-        <div class="table-container">
+        <div class="table-container-title">
             <div class="columns">
-                <div class="column is-narrow is-offset-1">
+                <div class="column is-narrow">
                     <a id="Boton_regresar" type="submit" class="is-responsive"
                         onclick="regresar()">
                         <span class="icon">
@@ -99,7 +104,9 @@
             </div>
             <div class="column">
     <% if (usuarios.length > 0) { %>
-            <h3 class="title is-3">Revisión de Datos de Alumnos</h3>
+        <label class="label is-large has-text-danger has-text-weight-semibold">
+            REVISIÓN DE DATOS DE ALUMNOS 
+        </label>
             </div>
             </div>
             
@@ -108,7 +115,7 @@
                     placeholder="Buscar alumnos para registrar">
             </div>
             <div id="resultadoAlumno" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
-                No existen alumnos para registrar con los paramétros de busqueda.
+                No existen alumnos para registrar con los paramétros de búsqueda.
             </div>
 
             <div id="tablaAlumnosRegistro" class="table-container">
@@ -118,7 +125,7 @@
                         <th class="has-text-white">ID</th>
                         <th class="has-text-white">Nombre</th>
                         <th class="has-text-white">Apellidos</th>
-                        <th class="has-text-white">Email</th>
+                        <th class="has-text-white">Correo Electrónico</th>
                         <th class="has-text-white">Semestre</th>
                         <th class="has-text-white">Carrera</th>
                         <th class="has-text-white">Referencia Bancaria</th>
@@ -159,7 +166,7 @@
                             <td class="has-text-black">
                                 <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                     id="ayuda_plan<%= count %>">
-                                    Por favor escribe un plan de estudios. 
+                                    Por favor escribe un plan de estudios 
                                 </p>
                                 <%= usuario.planEstudio %>
                                 <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>"
@@ -169,24 +176,24 @@
                                 <td class="has-text-black">
                                     <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                         id="ayuda_plan<%= count %>">
-                                        Por favor escribe un plan de estudios.
+                                        Por favor escribe un plan de estudios
                                     </p>
-                                    <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudio"
+                                    <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudios"
                                     id="planEstudio<%= count %>"></textarea>
                                 </td>
                                 <% } %>
 
                         <td>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark" id="ayuda_referencia_vacio<%= count %>">
-                                Por favor escribe una referencia del alumno.
+                                Por favor escribe una referencia del alumno
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_referencia_negativo<%= count %>">
-                                Por favor escribe solo números positivos.
+                                Por favor escribe solo números positivos
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_referencia_exponente<%= count %>">
-                                Por favor no escribas números con exponentes.
+                                Por favor no escribas números con exponentes
                             </p>
                             <input id="referencia<%= count %>" class="input" type="text" name="referenciaBancaria"
                                 style="width:100%; display:block; padding:0; border: 2px solid
@@ -197,19 +204,19 @@
                         <td>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_beca_vacio<%= count %>">
-                                Por favor escribe una beca del alumno.
+                                Por favor escribe una beca del alumno
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_beca_negativo<%= count %>">
-                                Por favor escribe un número entre 0 y 100. 
+                                Por favor escribe un número entre 0 y 100
                             </p>
                             <p style="padding-bottom: 0.4em;" class="help is-hidden has-text-danger-dark"
                                 id="ayuda_beca_exponente<%= count %>">
-                                Por favor no escribas números con exponentes.
+                                Por favor no escribas números con exponentes
                             </p>
                             <input id="beca<%= count %>" class="input" type="number" name="beca"
                                 style="width:100%; display:block; padding:0; border: 2px solid
-                                #7c7f80;" placeholder=" % de Beca">
+                                #7c7f80;" placeholder=" % de beca">
                         </td>
 
                         <td>
@@ -218,16 +225,18 @@
                             <input type="hidden" name="apellidos" value="<%= usuario.apellidos %>">
                             <input type="hidden" name="email" value="<%= usuario.email %>">
                             <input type="hidden" name="semestre" value="<%= usuario.semester %>">
-                            <button id="btn_Subir<%= count %>" type="submit" class="button my-button is-medium is-rounded is-responsive" disabled>
-                                Registrar
-                                <br>
-                                Usuario
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
+                            
+                            <button id="btn_Subir<%= count %>" type="submit"
+                            class="button my-button is-medium is-responsive" disabled>
+                            <span>
+                                REGISTRAR
+                            </span>
+                            <span class="icon is-small">
+                                <i class="fa-solid fa-circle-chevron-right"
+                                    style="color: #ffffff;"></i>
+                            </span>
+                        </button>
                         </td>
-
                         </form>
                     </tr>
                     <% count++ %>
@@ -246,7 +255,9 @@
                 </ul>
             </nav>
             <% } else { %>
-                <h3 class="title is-3">Revisión de datos de Alumnos</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    REVISIÓN DE DATOS DE ALUMNOS 
+                </label>
                 <br>
                 <div class="columns">
                     <div class="column is-2"></div>
