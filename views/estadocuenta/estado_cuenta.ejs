@@ -112,12 +112,14 @@
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                     <div class="dropdown-content">
+                        <% if(matricula[0] == '1') { %>
                         <div class="dropdown-item">
                             <input type="checkbox" id="checkbox_deuda">
                                 <label class="checkbox">
                                     Colegiatura
                                 </label>
                         </div>
+                        <% } %>
                         <div class="dropdown-item">
                             <input type="checkbox" id="checkbox_pagos">
                                 <label class="checkbox">

@@ -91,7 +91,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
 
-        await destroyGroup(matricula, IDExterno);
+        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
@@ -120,21 +120,17 @@ exports.post_datos_modify = async (request, response, next) => {
     try {
         let data;
         if (alumno.startsWith("1")) {
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);
             if(beca_new == 0){
                 beca_uso = 1
             }
             else{
                 beca_uso = (1 - (beca_new / 100)) 
             }
-            console.log(beca_uso)
-            console.log(beca_original)
             if (beca_uso != beca_original){
             const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
             const credito = resultfetchCredito[0][0].credito;
-            console.log(credito)
-            console.log('Cambio la beca')
             await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+            data = await EstudianteProfesional.update(alumno, ref, beca_new);
             }  
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);

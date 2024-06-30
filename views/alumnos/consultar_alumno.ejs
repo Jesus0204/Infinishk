@@ -150,7 +150,69 @@
                 </div>
             </div>
             <div class="columns">
-                <div class="column is-4 is-offset-8">
+                <div class="column is-2">
+                    <div class="dropdown is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button is-large is-responsive is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"
+                                style="justify-content: space-between; align-items: center; padding: 0.3em 0.55em;">
+                                <span>
+                                    Realizar Descarga
+                                </span>
+                                <span class="icon" style="padding-right: 0.5em;">
+                                    <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <% if(matricula[0] == '1') { %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_deuda">
+                                    <label class="checkbox">
+                                        Colegiatura
+                                    </label>
+                                </div>
+                                <% } %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagos">
+                                    <label class="checkbox">
+                                        Historial Colegiatura
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_solicitudes">
+                                    <label class="checkbox">
+                                        Solicitudes Pendientes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagosExtra">
+                                    <label class="checkbox">
+                                        Historial Solicitudes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_materias">
+                                    <label class="checkbox">
+                                        Materias
+                                    </label>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div class="dropdown-item">
+                                    <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
+                                        <span>
+                                            Descargar PDF
+                                        </span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-4 is-offset-6">
                     <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
                         style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
                         <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
@@ -158,6 +220,7 @@
                     </button>
                 </div>
             </div>
+            
 
             <!-- menú de tabs -->
             <div class="columns">
@@ -452,7 +515,7 @@
                                                 Costo
                                             </th>
                                             <th style="text-align: left;">
-                                                Eliminar
+                                                <!-- botón dar de baja -->
                                             </th>
                                         </tr>
                                     </thead>
@@ -490,13 +553,14 @@
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
                                                     <button type="submit"
-                                                        class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
-                                                        style="background-color: #f6d5d8;" id="Boton_eliminar"
+                                                        class="js-modal-trigger confirmar-button is-medium is-responsive"
+                                                        style="font-size: medium;" id="Boton_eliminar"
                                                         data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
-                                                        <span class="icon is-small" style="color: #f83362">
-                                                            <i class="fa-solid fa-trash-can"></i>
+                                                        <span class="icon is-medium">
+                                                            <i class="fa-solid fa-trash"></i>
                                                         </span>
-                                                    </button> 
+                                                        <span>DAR DE BAJA</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -642,9 +706,10 @@
                                                         maximumFractionDigits: 2
                                                     }) %>
                                                 <% } %></td>
-                                                <td><% deuda_ajuste = deuda[count].montoAPagar %>
-                                                    $<%= deuda_ajuste.toLocaleString('mx') %>
-                                                   </td>
+                                                <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
                                                 <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
