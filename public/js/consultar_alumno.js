@@ -451,10 +451,11 @@ function downloadPDF(matricula) {
 
     // Mapear los IDs de las tabs a los títulos deseados para el PDF
     const tabTitles = {
-        'deuda': 'Colegiatura',
-        'pagos': 'Historial de Colegiatura',
+        'estado_cuenta': 'Colegiatura',
+        'historial': 'Historial de Colegiatura',
         'solicitudes': 'Solicitudes',
-        'pagosExtra': 'Historial Solicitudes'
+        'extras': 'Historial Solicitudes',
+        'horario': 'Horario del Alumno'
     };
 
     selectedTabs.forEach((tabId, index) => {
