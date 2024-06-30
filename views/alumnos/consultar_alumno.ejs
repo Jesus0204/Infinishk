@@ -515,7 +515,7 @@
                                                 Costo
                                             </th>
                                             <th style="text-align: left;">
-                                                <!-- botón dar de baja -->
+                                                Eliminar
                                             </th>
                                         </tr>
                                     </thead>
@@ -552,15 +552,14 @@
                                         <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
-                                                    <button type="submit"
-                                                        class="js-modal-trigger confirmar-button is-medium is-responsive"
-                                                        style="font-size: medium;" id="Boton_eliminar"
+                                                    <button type="button" id="Boton_eliminar"
+                                                        class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                        style="background-color: #f6d5d8;" 
                                                         data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
-                                                        <span class="icon is-medium">
-                                                            <i class="fa-solid fa-trash"></i>
+                                                        <span class="icon is-small" style="color: #f83362">
+                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </span>
-                                                        <span>DAR DE BAJA</span>
-                                                    </button>
+                                                    </button>    
                                                 </div>
                                             </div>
                                         </td>
