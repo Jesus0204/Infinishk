@@ -13,7 +13,6 @@ function mostrarNotificacionYRecargar(notificacion) {
     }, 3000);
 }
 
-
 const registrar_materias = () => {
     // Llamar la función con AJAX
     fetch('/configuracion/actualizarMaterias', {
