@@ -105,6 +105,12 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
 
+    const resultfetchBecaoriginal = await Alumno.fetchBeca(alumno);
+
+    let beca_original = resultfetchBecaoriginal[0][0].beca;
+
+    let beca_uso;
+
     let beca_new = beca;
 
     if (beca == "") {
@@ -115,6 +121,21 @@ exports.post_datos_modify = async (request, response, next) => {
         let data;
         if (alumno.startsWith("1")) {
             data = await EstudianteProfesional.update(alumno, ref, beca_new);
+            if(beca_new == 0){
+                beca_uso = 1
+            }
+            else{
+                beca_uso = (1 - (beca_new / 100)) 
+            }
+            console.log(beca_uso)
+            console.log(beca_original)
+            if (beca_uso != beca_original){
+            const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
+            const credito = resultfetchCredito[0][0].credito;
+            console.log(credito)
+            console.log('Cambio la beca')
+            await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+            }  
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
