@@ -157,23 +157,31 @@
                 <% if (solicitudes.length != 0){ %>
                 <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
                 <% } %>
+
                 <div id="pago_colegiatura">
                     <div class="columns">
                         <div class="column is-3">
                             <label class="label is-medium" for="motivo">Motivo: </label>
                         </div>
                         <div class="column">
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
-                                style="padding: 0.5em; margin-top: -1em;">Por favor
-                                escribe un motivo para el pago</p>
                             <div class="field">
+                                <% if (alumno[0].Matricula[0] == '1') { %>
                                 <p class="control has-icons-left">
                                     <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                        placeholder="Concepto del pago">
+                                        value="Colegiatura: <%= currentDate %>" readonly>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                     </span>
                                 </p>
+                                <% } else { %>
+                                <p class="control has-icons-left">
+                                    <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                        value="Diplomado: <%= currentDate %>" readonly>
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -218,6 +226,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="is-hidden" id="pago_extra">
                     <div class="columns">
                         <div class="column is-3">
