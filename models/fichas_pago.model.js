@@ -26,4 +26,8 @@ module.exports = class Fichas {
     static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito){
         db.execute(`CALL dar_baja_grupo(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
+
+    static update_fichas_beca(uMatricula, uBeca, uCredito){
+        db.execute(`CALL recalcularMontoTotalYAplicarBeca(?, ?, ?)`, [uMatricula, uBeca, uCredito])
+    }
 } 
