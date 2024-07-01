@@ -170,10 +170,10 @@ function muestra_otros_cargos() {
     const tab_horario = document.querySelector('#nav_horario');
 
     tab_solicitudes.classList.remove('is-active');
-     
+
     if (tab_historial_pagos) {
-         tab_historial_pagos.classList.remove('is-active');
-     }
+        tab_historial_pagos.classList.remove('is-active');
+    }
 
     if (tab_horario) {
         tab_horario.classList.remove('is-active');
@@ -281,7 +281,7 @@ function muestra_solicitudes() {
     const tab_historial_pagos = document.querySelector('#nav_historial_pagos');
     const tab_solicitudes = document.querySelector('#nav_solicitudes');
     const tab_pagos_Otros = document.querySelector('#nav_pagos_Otros');
-    
+
     tab_pagos_Otros.classList.remove('is-active');
 
     if (tab_historial_pagos) {
@@ -364,51 +364,51 @@ function darDeBajaGrupo(IDGrupo, matricula) {
             matricula: matricula
         })
     })
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
 
-        return response.json();
-    })
-    .then((data) => {
-        if (data.success) {
-            // Supongamos que tienes una fila en la tabla con un id correspondiente al IDGrupo
-            const rowId = `grupo-${IDGrupo}`; // Ajusta esto según tu lógica
-            const tableRow = document.getElementById(rowId);
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                // Supongamos que tienes una fila en la tabla con un id correspondiente al IDGrupo
+                const rowId = `grupo-${IDGrupo}`; // Ajusta esto según tu lógica
+                const tableRow = document.getElementById(rowId);
 
-            if (tableRow) {
-                tableRow.remove();
+                if (tableRow) {
+                    tableRow.remove();
+                } else {
+                    console.error(`No se encontró la fila con el id ${rowId}.`);
+                }
+
+                // Mostrar la notificación de eliminación
+                const notification = document.getElementById('eliminacion');
+                if (notification) {
+                    notification.classList.remove('is-hidden');
+                }
+
+                // Desplazar la página hacia arriba
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Recargar la página después de mostrar la notificación durante unos segundos
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); // 2000 milisegundos = 2 segundos
             } else {
-                console.error(`No se encontró la fila con el id ${rowId}.`);
+                console.error('Error en el servidor:', data.message);
             }
-
-            // Mostrar la notificación de eliminación
-            const notification = document.getElementById('eliminacion');
-            if (notification) {
-                notification.classList.remove('is-hidden');
-            }
-
-            // Desplazar la página hacia arriba
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Recargar la página después de mostrar la notificación durante unos segundos
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000); // 2000 milisegundos = 2 segundos
-        } else {
-            console.error('Error en el servidor:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error en la petición fetch:', error);
-    });
+        })
+        .catch(error => {
+            console.error('Error en la petición fetch:', error);
+        });
 }
 
 function downloadPDF(matricula) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
-    const margin = 10; // Define a margin for the content
+    const margin = 10; // Define un margen para el contenido
 
     // Obtener las selecciones de checkboxes
     const selectedTabs = [];
@@ -464,6 +464,7 @@ function downloadPDF(matricula) {
     const combinedContent = document.createElement('div');
     combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
     combinedContent.style.background = 'white'; // Asegurar que el fondo sea blanco
+    combinedContent.style.color = 'black'; // Asegurar que el texto sea negro para contraste
 
     // Mapear los IDs de las tabs a los títulos deseados para el PDF
     const tabTitles = {
@@ -474,9 +475,29 @@ function downloadPDF(matricula) {
         'horario': 'Horario del Alumno'
     };
 
+    const originalStyles = [];
+
     selectedTabs.forEach((tabId, index) => {
         const tabContent = document.getElementById(tabId);
         if (tabContent) {
+            // Almacenar estilos originales que se van a modificar
+            const modifiedStyles = [];
+
+            // Modificar estilos necesarios para la generación del PDF
+            const tags = tabContent.querySelectorAll('.tag');
+            tags.forEach(tag => {
+                const originalStyle = {
+                    element: tag,
+                    backgroundColor: tag.style.backgroundColor,
+                    color: tag.style.color
+                };
+                originalStyles.push(originalStyle);
+
+                tag.style.backgroundColor = 'transparent'; // Quitar el fondo
+                tag.style.color = 'black'; // Asegurar el color del texto para contraste
+                modifiedStyles.push(originalStyle);
+            });
+
             const title = document.createElement('p');
             title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
             title.textContent = tabTitles[tabId]; // Usar el título correspondiente al ID de la tab
@@ -513,6 +534,12 @@ function downloadPDF(matricula) {
         pdf.save(`${matricula}_EstadoCuenta.pdf`);
         document.body.removeChild(combinedContent);
 
+        // Restaurar los estilos originales modificados después de generar el PDF
+        originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
+        });
+
         // Restaurar la visibilidad original de las pestañas ocultas después de generar el PDF
         hiddenTabs.forEach(tabId => {
             const tabContent = document.getElementById(tabId);
@@ -534,10 +561,15 @@ function downloadPDF(matricula) {
             eliminarMateria.style.display = '';
         }
 
-
     }).catch(error => {
         console.error("Error al generar el PDF: ", error);
         document.body.removeChild(combinedContent);
+
+         // Restaurar los estilos originales modificados después de generar el PDF
+         originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
+        });
 
         // En caso de error, restaurar la visibilidad original de las pestañas ocultas
         hiddenTabs.forEach(tabId => {
@@ -559,6 +591,12 @@ function downloadPDF(matricula) {
         if (eliminarMateria) {
             eliminarMateria.style.display = '';
         }
+    });
+
+     // Restaurar los estilos originales modificados después de generar el PDF
+     originalStyles.forEach(style => {
+        style.element.style.backgroundColor = style.backgroundColor;
+        style.element.style.color = style.color;
     });
 
     // Restaurar la visibilidad original de las pestañas ocultas inmediatamente después de iniciar el proceso

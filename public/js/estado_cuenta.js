@@ -188,6 +188,7 @@ function downloadPDF(matricula) {
     const combinedContent = document.createElement('div');
     combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
     combinedContent.style.background = 'white'; // Asegurar que el fondo sea blanco
+    combinedContent.style.color = 'black'; // Asegurar que el texto sea negro para contraste
 
     // Mapear los IDs de las tabs a los títulos deseados para el PDF
     const tabTitles = {
@@ -197,9 +198,30 @@ function downloadPDF(matricula) {
         'pagosExtra': 'Historial Solicitudes'
     };
 
+    // Array para almacenar los estilos originales que se modificaron
+    const originalStyles = [];
+
     selectedTabs.forEach((tabId, index) => {
         const tabContent = document.getElementById(tabId);
         if (tabContent) {
+            // Almacenar estilos originales que se van a modificar
+            const modifiedStyles = [];
+
+            // Modificar estilos necesarios para la generación del PDF
+            const tags = tabContent.querySelectorAll('.tag');
+            tags.forEach(tag => {
+                const originalStyle = {
+                    element: tag,
+                    backgroundColor: tag.style.backgroundColor,
+                    color: tag.style.color
+                };
+                originalStyles.push(originalStyle);
+
+                tag.style.backgroundColor = 'transparent'; // Quitar el fondo
+                tag.style.color = 'black'; // Asegurar el color del texto para contraste
+                modifiedStyles.push(originalStyle);
+            });
+
             const title = document.createElement('p');
             title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
             title.textContent = tabTitles[tabId]; // Usar el título correspondiente al ID de la tab
@@ -236,6 +258,12 @@ function downloadPDF(matricula) {
         pdf.save(`${matricula}_EstadoCuenta.pdf`);
         document.body.removeChild(combinedContent);
 
+        // Restaurar los estilos originales modificados después de generar el PDF
+        originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
+        });
+
         // Restaurar la visibilidad original de las pestañas ocultas después de generar el PDF
         hiddenTabs.forEach(tabId => {
             const tabContent = document.getElementById(tabId);
@@ -243,18 +271,42 @@ function downloadPDF(matricula) {
                 tabContent.classList.add('is-hidden');
             }
         });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas" y elementos ocultos
+        restorePageState();
     }).catch(error => {
         console.error("Error al generar el PDF: ", error);
         document.body.removeChild(combinedContent);
 
-        // En caso de error, restaurar la visibilidad original de las pestañas ocultas
+        // En caso de error, restaurar los estilos originales modificados
+        originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
+        });
+
+        // Restaurar la visibilidad original de las pestañas ocultas
         hiddenTabs.forEach(tabId => {
             const tabContent = document.getElementById(tabId);
             if (tabContent && !tabContent.classList.contains('is-hidden')) {
                 tabContent.classList.add('is-hidden');
             }
         });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas" y elementos ocultos
+        restorePageState();
     });
+
+    // Función para restaurar el estado original de la página
+    function restorePageState() {
+
+        // Ocultar los elementos modificados durante la generación del PDF
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
+        });
+    }
 
     // Restaurar la visibilidad original de las pestañas ocultas inmediatamente después de iniciar el proceso
     hiddenTabs.forEach(tabId => {
@@ -262,5 +314,10 @@ function downloadPDF(matricula) {
         if (tabContent && !tabContent.classList.contains('is-hidden')) {
             tabContent.classList.add('is-hidden');
         }
+    });
+
+    originalStyles.forEach(style => {
+        style.element.style.backgroundColor = style.backgroundColor;
+        style.element.style.color = style.color;
     });
 }
