@@ -10,17 +10,14 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
     const descuento = document.querySelector('#descuento' + count);
     const nota = document.querySelector('#nota' + count);
+    const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
     const ayuda_nota = document.querySelector('#ayuda_nota' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
 
-    const montoPagar = document.getElementById('montoPagar' + count);
-
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled = nota.value.length === 0 ||
-            descuento.value.trim().toLowerCase().includes('e') ||
-                fecha_lim.value.length === 0
+        bt_Modificar.disabled = nota.value.length === 0 || fecha_lim.value.length === 0 || descuento.value.length === 0
     }
 
     const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
@@ -67,6 +64,13 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
             ayuda_descuento_exponente.classList.remove('is-hidden');
         } else {
             ayuda_descuento_exponente.classList.add('is-hidden');
+        }
+
+        if (descuento.value.length === 0) {
+            bt_Modificar.disabled = true;
+            ayuda_descuento_vacio.classList.remove('is-hidden');
+        } else {
+            ayuda_descuento_vacio.classList.add('is-hidden');
         }
     }
 
