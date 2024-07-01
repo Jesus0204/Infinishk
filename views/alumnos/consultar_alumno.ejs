@@ -514,9 +514,11 @@
                                             <th style="text-align: left;">
                                                 Costo
                                             </th>
-                                            <th style="text-align: left;">
+                                            <% if (mostrarEliminar) { %>
+                                            <th class="eliminar" style="text-align: left;">
                                                 Eliminar
-                                            </th>
+                                            </th>                                                
+                                            <% } %>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -549,6 +551,7 @@
                                                     }) %>
                                         </td>
 
+                                        <% if (mostrarEliminar) { %>
                                         <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
@@ -563,6 +566,7 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <% } %>
                                         </tr>
             
                                         <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
@@ -766,7 +770,7 @@
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                                             <p class="control">
-                                                <button class="confirmar-button is-responsive"
+                                                <button class="confirmar-button is-responsive fichas"
                                                     style="font-size: large;  padding-right: 1.5em;" type="submit">
                                                     <span class="icon is-large">
                                                         <i class="fa-solid fa-pen-to-square"></i>

@@ -444,6 +444,22 @@ function downloadPDF(matricula) {
         }
     });
 
+    // Ocultar temporalmente la sección de "Modificar Fichas"
+    const modificarFichasSection = document.querySelector('.fichas');
+    if (modificarFichasSection) {
+        modificarFichasSection.style.display = 'none';
+    }
+
+    const eliminarMateriaSection = document.querySelector('.btn-eliminar-materia');
+    if (eliminarMateriaSection) {
+        eliminarMateriaSection.style.display = 'none';
+    }
+
+    const eliminarMateria = document.querySelector('.eliminar');
+    if (eliminarMateria) {
+        eliminarMateria.style.display = 'none';
+    }
+
     // Crear el contenido combinado para el PDF
     const combinedContent = document.createElement('div');
     combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
@@ -504,6 +520,21 @@ function downloadPDF(matricula) {
                 tabContent.classList.add('is-hidden');
             }
         });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas"
+        if (modificarFichasSection) {
+            modificarFichasSection.style.display = '';
+        }
+
+        if (eliminarMateriaSection) {
+            eliminarMateriaSection.style.display = '';
+        }
+
+        if (eliminarMateria) {
+            eliminarMateria.style.display = '';
+        }
+
+
     }).catch(error => {
         console.error("Error al generar el PDF: ", error);
         document.body.removeChild(combinedContent);
@@ -515,6 +546,19 @@ function downloadPDF(matricula) {
                 tabContent.classList.add('is-hidden');
             }
         });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas"
+        if (modificarFichasSection) {
+            modificarFichasSection.style.display = '';
+        }
+
+        if (eliminarMateriaSection) {
+            eliminarMateriaSection.style.display = '';
+        }
+
+        if (eliminarMateria) {
+            eliminarMateria.style.display = '';
+        }
     });
 
     // Restaurar la visibilidad original de las pestañas ocultas inmediatamente después de iniciar el proceso
@@ -524,9 +568,20 @@ function downloadPDF(matricula) {
             tabContent.classList.add('is-hidden');
         }
     });
+
+    // Restaurar la visibilidad de la sección de "Modificar Fichas"
+    if (modificarFichasSection) {
+        modificarFichasSection.style.display = '';
+    }
+
+    if (eliminarMateriaSection) {
+        eliminarMateriaSection.style.display = '';
+    }
+
+    if (eliminarMateria) {
+        eliminarMateria.style.display = '';
+    }
 }
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const topinfo = document.getElementById('topinfo');

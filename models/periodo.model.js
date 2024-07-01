@@ -27,4 +27,8 @@ module.exports = class Periodo {
         return db.execute(`SELECT IDPeriodo, Nombre From Periodo WHERE periodoActivo = 1`);
     }
 
+    static fetchInicio(){
+        return db.execute(`SELECT fechaInicio From Periodo WHERE periodoActivo = 1`);
+    }
+
 }
