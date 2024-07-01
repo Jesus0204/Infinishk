@@ -56,6 +56,8 @@
                 <div id="resultadoActivo" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
                     No existen alumnos con los paramétros de busqueda.
                 </div>
+            </div>
+                
                 <div id="tablaAlumnos" class="table-container">
                     <table class="table is-hoverable is-fullwidth">
                         <thead>
@@ -81,7 +83,8 @@
                         <tbody>
                             <% for(let i=0; i < alumnos.length; i++) { %>
                                 <tr>
-                                    <td><input type="checkbox" name="alumno" value="<%= alumnos[i].matricula %>"></td>
+                                    <td><input type="checkbox" name="alumno" value="<%= alumnos[i].matricula %>"
+                                        id="checkbox"></td>
                                     <td style="text-align: left;">
                                         <%= alumnos[i].matricula %>
                                     </td>
@@ -100,8 +103,14 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="confirmar-button is-medium is-responsive" type="submit"
-                style="font-size: large; padding-right: 1em;">
+
+                <p id="ayuda_seleccion"
+                class="is-hidden has-text-danger-dark ayuda-seleccion"
+                style="font-size: medium; text-align: left; margin-bottom: 20px;">
+                Por favor selecciona al menos un alumno</p>
+
+                <button class="confirmar-button is-medium is-responsive" type="submit" id="boton_agregar"
+                style="font-size: large; padding-right: 1em;" disabled>
                     <span class="icon is-large">
                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                     </span>
@@ -110,7 +119,7 @@
                     </span>
                 </button>
             </form>
-        </div>
+
     </section>
 </body>
 <%- include('../includes/foot.ejs') %>
