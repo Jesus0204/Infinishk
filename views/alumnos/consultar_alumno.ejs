@@ -515,9 +515,9 @@
                                                 Costo
                                             </th>
                                             <% if (mostrarEliminar) { %>
-                                            <th style="text-align: left;">
+                                            <th class="eliminar" style="text-align: left;">
                                                 Eliminar
-                                            </th>
+                                            </th>                                                
                                             <% } %>
                                         </tr>
                                     </thead>
@@ -770,7 +770,7 @@
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                                             <p class="control">
-                                                <button class="confirmar-button is-responsive"
+                                                <button class="confirmar-button is-responsive fichas"
                                                     style="font-size: large;  padding-right: 1.5em;" type="submit">
                                                     <span class="icon is-large">
                                                         <i class="fa-solid fa-pen-to-square"></i>
