@@ -29,7 +29,6 @@ exports.set_recargos = (request, response, next) => {
 
             await Deuda.setRecargosDeuda(deuda.IDDeuda, montoRecargo);
         }
-        console.log('La base ha sido actualizada con los recargos :)');
     })
     .catch((error) => {
         response.status(500).render('500', {
