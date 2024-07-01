@@ -246,6 +246,13 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const startDateFormat = moment(startDate).format('LL');
                     const endDateFormat = moment(endDate).format('LL');
 
+                    console.log('DIA INICIO FORMATO')
+                    console.log(startDateFormat)
+
+                    console.log('DIA FIN FORMATO')
+                    console.log(endDateFormat)
+
+
                     const nombreSalon = `${room} ${nameSalon}`;
                     const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
 
