@@ -237,6 +237,12 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const startDate = new Date(start_date);
                     const endDate = new Date(end_date);
 
+                    console.log('DIA INICIO')
+                    console.log(startDate)
+
+                    console.log('DIA FIN')
+                    console.log(endDate)
+
                     const startDateFormat = moment(startDate).format('LL');
                     const endDateFormat = moment(endDate).format('LL');
 
