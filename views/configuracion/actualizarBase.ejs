@@ -22,6 +22,11 @@
                     style="background-color: #5a6581; color:#ffffff;">
                     ¡Materias registradas! Recargando página...
                 </div>
+
+                <div id="aceptar_periodos" class="notification is-hidden"
+                    style="background-color: #5a6581; color:#ffffff;">
+                    ¡Periodos confirmados! Recargando página...
+                </div>
                 
                 <div class="box">
                     <p class="has-text-weight-medium has-text-black">
@@ -29,7 +34,7 @@
                         a excepción de Obtener Alumnos, ya que se tiene que insertar su beca junto con su referencia bancaria.
                     </p>
                 </div>
-                <br>
+               
                 <div class="columns">
                     <div class="column is-6">
                         <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
@@ -54,12 +59,13 @@
                                 <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                             </span>
                         </button>
-                </div>
+                    </div>
                 </div>
                 <div class="columns">
                     <div class="column is-6">
-                        <form action="/configuracion/actualizarPeriodos" method="GET" class="form-button">
-                            <button type="submit" class="confirmar-button button is-large is-fullwidth is-responsive">
+                        <button type="submit"
+                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            onclick="registrar_periodos()">
                                 <span>
                                     Obtener Periodos
                                 </span>
@@ -88,3 +94,4 @@
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
 <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
+<script type="text/javascript" src="/js/actualizarPeriodos.js"></script>

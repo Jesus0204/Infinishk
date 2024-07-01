@@ -124,27 +124,24 @@
                                         <% } %>
                                         <strong>Ajuste:</strong>
                                         <% if (ficha1.Pagado != 1) { %>
+                                            <p class="has-text-grey has-text-weight-medium">
+                                                NOTA: Para aplicar un descuento, el ajuste debe ser negativo.
+                                            </p>
                                         <input id="descuento<%=display1%>" name="descuento" class="input is-medium"
                                             type="number" step="any" value="<%= ficha1.Descuento %>"
                                             placeholder="Valor del ajuste">
-                                        <p id="ayuda_descuento_vacio<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
-                                            style="padding: 0.5em; margin-bottom: -2em;">
-                                            Por favor escribe un valor de ajuste - si no deseas aplicar
-                                            <br>
-                                            un ajuste, escribe 0</p>
-                                        <p id="ayuda_descuento_negativo<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
-                                            style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser negativo.</p>
                                         <p id="ayuda_descuento_exponente<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El ajuste no puede tener exponentes</p>
-                                        <p id="ayuda_descuento_deuda<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                        <p id="ayuda_descuento_vacio<%=display1%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser mayor al saldo pendiente a pagar</p>
+                                            El ajuste no puede estar vacío</p>
+                                        <p id="ayuda_descuento_cero_negativo<%=display1%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El ajuste no puede ser un cero negativo</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha1.Descuento.toLocaleString('mx', {
@@ -242,27 +239,24 @@
                                         <% } %>
                                         <strong>Ajuste:</strong>
                                         <% if (ficha2.Pagado != 1) { %>
+                                        <p class="has-text-grey has-text-weight-medium">
+                                            NOTA: Para aplicar un descuento, el ajuste debe ser negativo.
+                                        </p>
                                         <input id="descuento<%=display2%>" name="descuento" class="input is-medium"
                                             type="number" step="any" value="<%= ficha2.Descuento %>"
                                             placeholder="Valor del ajuste">
-                                        <p id="ayuda_descuento_vacio<%=display2%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
-                                            style="padding: 0.5em; margin-bottom: -2em;">
-                                            Por favor escribe un valor de ajuste - si no deseas aplicar
-                                            <br>
-                                            un ajuste, escribe 0</p>
-                                        <p id="ayuda_descuento_negativo<%=display2%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
-                                            style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser negativo.</p>
                                         <p id="ayuda_descuento_exponente<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El ajuste no puede tener exponentes</p>
-                                        <p id="ayuda_descuento_deuda<%=display2%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-descuento-negativo"
+                                        <p id="ayuda_descuento_vacio<%=display2%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El descuento no puede ser mayor al saldo pendiente a pagar</p>
+                                            El ajuste no puede estar vacío</p>
+                                        <p id="ayuda_descuento_cero_negativo<%=display2%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El ajuste no puede ser un cero negativo</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha2.Descuento.toLocaleString('mx', {
@@ -290,7 +284,7 @@
                                             <% } %>
                                         <% } %>
                                         <% if (ficha2.Pagado != 1) { %>
-                                            <button id="Boton_modificar<%=display1%>" type="submit"
+                                            <button id="Boton_modificar<%=display2%>" type="submit"
                                                 class="button is-medium is-responsive"
                                                 onclick="modificar('<%= ficha1.descuento %>', '<%= ficha1.fecha_lim %>', '<%= ficha1.nota %>', '<%= ficha1.IDDeuda %>', '<%= display1 %>')"
                                                 style="font-size: medium; background: #000000;" disabled>

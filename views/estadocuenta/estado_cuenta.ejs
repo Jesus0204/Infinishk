@@ -4,111 +4,157 @@
     rol: rol })
     %>
 
-<style>
-    .card {
-        border: none !important;
-    }
-    .solicitdes {
-        border: 1px solid #dbdbdb; /* Adjust the border color as needed */
-        border-radius: 10px; /* Adjust the border radius as needed */
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .solicitdes .table {
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-</style>
+    <style>
+        .card {
+            border: none !important;
+        }
+        .solicitdes {
+            border: 1px solid #dbdbdb; /* Adjust the border color as needed */
+            border-radius: 10px; /* Adjust the border radius as needed */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    
+        .solicitdes .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+    
+        /* Estilos adicionales para asegurar visibilidad de los checkboxes */
+        .dropdown-content .dropdown-item {
+            display: flex;
+            align-items: center;
+        }
+    
+        .dropdown-content .dropdown-item label {
+            margin-left: 5px;
+        }
+    
+        .dropdown-content input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
 
 <section class="section">
     <div class="columns">
         <div class="column is-one-quarter">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title is-centered has-background-danger has-text-white is-size-4">
-                        Estado de Cuenta
-                        <a onclick="downloadPDF('<%= matricula %>')" class="icon is-large">
-                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
-                        </a>
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <div class="columns">
-                            <div class="column is-12" id="boxContent">
-                                <% if(matricula[0] == '1') { %>
-                                    <div class="box has-background-light" style="text-align: center;">
-                                        <p>CICLO ESCOLAR</p>
-                                        <p class="title is-2"><%= periodo.Nombre %></p>
-                                    </div>
-                                    <% if(estudianteProfesional.porcBeca !== 0) { %>
-                                        <div class="box has-background-light" style="text-align: center;">
-                                            <p>PORCENTAJE DE BECA</p>
-                                            <p class="title is-2"><%= estudianteProfesional.porcBeca %>%</p>
-                                        </div>
-                                <% } %>
-                                <% } else if (matricula[0] == '8') { %>
-                                    <% if (diplomados.length != 0) { %> 
-                                        <div class="box has-background-light" style="text-align: center;">
-                                            <p class="title is-4"> <%= diplomados[0].nombreDiplomado %></p>
-                                        </div>
-                                        <div class="columns">
-                                            <div class="column is-offset-1">
-                                                <strong>
-                                                    Fecha Inicio:
-                                                </strong>
-                                                <%= diplomados[0].fechaInicio %>
-                                            </div>
-                                            <div class="column">
-                                                <strong>
-                                                    Fecha Fin:
-                                                </strong>
-                                                <%= diplomados[0].fechaFin %>
-                                            </div>
-                                        </div>
-                                    <% } else { %>
-                                        <div class="box has-background-light" style="text-align: center;">
-                                            <p class="title is-4">Cursando Ningún Diplomado</p>
-                                        </div>
-                                        <div class="columns">
-                                            <div class="column is-offset-1">
-                                                <strong>
-                                                    Fecha Inicio:
-                                                </strong>
-                                                N/A
-                                            </div>
-                                            <div class="column">
-                                                <strong>
-                                                    Fecha Fin:
-                                                </strong>
-                                                N/A
-                                            </div>
-                                        </div>
-                                    <% } %>
-                                <% } %>
-                            </div>
+            <label class="label is-large has-text-danger has-text-weight-semibold">
+                ESTADO DE CUENTA 
+            </label>
+                  
+            <% if(matricula[0] == '1') { %>
+                <div class="box" style="text-align: center;">
+                    <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
+                        <p class="has-text-black has-text-weight-bold is-size-4">
+                            <%= periodo.Nombre %></p>
+                </div>
+
+            <% if(estudianteProfesional.porcBeca !== 0) { %>
+                <div class="box" style="text-align: center;">
+                    <p class="has-text-grey has-text-weight-medium">PORCENTAJE DE BECA</p>
+                        <p class="has-text-black has-text-weight-bold is-size-1">
+                            <%= estudianteProfesional.porcBeca %>%</p>
+                </div>
+            <% } %>
+
+            <% } else if (matricula[0] == '8') { %>
+                <% if (diplomados.length != 0) { %> 
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
+                            <p class="has-text-black has-text-weight-bold is-size-4">
+                                <%= diplomados[0].nombreDiplomado %></p>
+                    </div> 
+
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">FECHA INICIO</p>
+                            <p class="has-text-black has-text-weight-bold is-size-4">
+                                <%= diplomados[0].fechaInicio %></p>
+                    </div> 
+
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">FECHA FIN</p>
+                            <p class="has-text-black has-text-weight-bold is-size-4">
+                                <%= diplomados[0].fechaFin %></p>
+                    </div> 
+
+                    <% } else { %>
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">DIPLOMADO</p>
+                            <p class="has-text-black has-text-weight-bold is-size-2">
+                                N/A</p>
+                    </div> 
+                    <% } %>
+                <% } %>
+            
+            <a href="/estado_cuenta/pagar">
+                <button class="button is-large is-responsive is-fullwidth">
+                    <span>
+                        Realizar Pago
+                    </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                </button>
+            </a>
+            
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button is-large is-responsive is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"
+                        style="justify-content: space-between; align-items: center; padding: 0.3em 0.55em;">
+                        <span>
+                            Realizar Descarga
+                        </span>
+                            <span class="icon" style="padding-right: 0.5em;">
+                                <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                            </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <% if(matricula[0] == '1') { %>
+                        <div class="dropdown-item">
+                            <input type="checkbox" id="checkbox_deuda">
+                                <label class="checkbox">
+                                    Colegiatura
+                                </label>
                         </div>
-                        <div class="columns">
-                            <div class="column is-12">
-                                <a href="/estado_cuenta/pagar">
-                                    <button class="button is-responsive">
-                                        <span>
-                                            Realizar Pago
-                                        </span>
+                        <% } %>
+                        <div class="dropdown-item">
+                            <input type="checkbox" id="checkbox_pagos">
+                                <label class="checkbox">
+                                    Historial Colegiatura
+                                </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" id="checkbox_solicitudes">
+                                <label class="checkbox">
+                                    Solicitudes Pendientes
+                                </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <input type="checkbox" id="checkbox_pagosExtra">
+                                <label class="checkbox">
+                                    Historial Solicitudes
+                                </label>
+                        </div>
+                        <hr class="dropdown-divider">
+                            <div class="dropdown-item">
+                                <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
+                                    <span>
+                                        Descargar PDF
+                                    </span>
                                         <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
                                         </span>
-                                    </button>
                                 </a>
                             </div>
-                        </div>
-                    </div>
+                      
                 </div>
-            </div>
+            </div>                                
         </div>
+    </div>
+                   
         <div class="column is-three-quarters">
             <div class="card">
                 <div class="card-content">
@@ -129,7 +175,7 @@
                             <% } %>
                                  <a onclick="pagos()">
                                      <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                                     <span>Historial Pagos</span>
+                                     <span>Historial Colegiatura</span>
                                  </a>
                              </li>
                              <li id="nav_solicitudes">
@@ -141,7 +187,7 @@
                              <li id="nav_pagosExtra">
                                  <a onclick="pagosExtra()">
                                      <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                                     <span>Otros Pagos</span>
+                                     <span>Historial Otros Pagos</span>
                                  </a>
                              </li>
                          </ul>
@@ -194,7 +240,7 @@
                             <div class="box">
                                 <p class="has-text-weight-medium has-text-black">
                                     Actualmente no cuentas con solicitudes de pagos pendientes.
-                                    Por favor contacta a dirección si quieres pagar un Pago Extra.
+                                    Por favor contacta a dirección si quieres pagar un pago de tipo Otros Pagos.
                                 </p>
                             </div>
                         <% } %>
@@ -371,18 +417,24 @@
                                         <% for (let count = 0; count < deuda.length; count++) { %>
                                         <tr>
                                             <td>Pago #<%= count + 1 %></td>
-                                            <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                            <td>
+                                            <% if (deuda[count].saldoPendiente < 0) { %>
+                                                $0.00
+                                            <% } else { %>
+                                                $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
+                                            maximumFractionDigits: 2}) %>
+                                            <% } %></td>
                                             <td>$<%= deuda[count].Descuento.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         }) %></td>
-                                            <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
+                                            <td><% deuda_ajuste = deuda[count].montoAPagar + Math.abs(deuda[count].Descuento) %>
+                                                $<%= deuda_ajuste.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %>
+                                            </td>
                                             <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
@@ -431,9 +483,8 @@
                         <div class="notification is-danger">
                             <p>
                                 Todavía no se crea tu Colegiatura para este periodo.
-                                Si estas en la fecha de inscripción, por favor entra a Inscripción para confirmar tu
-                                horario y
-                                que se creen tus fichas de pago.
+                                Si estás en la fecha de inscripción, por favor entra a Materias para confirmar tu
+                                horario y se creen tus fichas de pago.
                             </p>
                         </div>
                         <% } %>

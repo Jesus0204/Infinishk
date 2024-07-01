@@ -91,7 +91,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
 
-        await destroyGroup(matricula, IDExterno);
+        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
@@ -105,16 +105,41 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
 
+    const resultfetchBecaoriginal = await Alumno.fetchBeca(alumno);
+
+    const resultfetchReforiginal = await Alumno.fetchRef(alumno);
+
+    let beca_original = resultfetchBecaoriginal[0][0].beca;
+
+    let ref_original = resultfetchReforiginal[0][0].referenciaBancaria
+
+    let beca_uso;
+
     let beca_new = beca;
 
     if (beca == "") {
         beca_new = '0';
     }
 
+    if(ref == ""){
+        ref = ref_original;
+    }
+
     try {
         let data;
         if (alumno.startsWith("1")) {
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);
+            if(beca_new == 0){
+                beca_uso = 1
+            }
+            else{
+                beca_uso = (1 - (beca_new / 100)) 
+            }
+            if (beca_uso != beca_original){
+            const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
+            const credito = resultfetchCredito[0][0].credito;
+            await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+            } 
+            data = await EstudianteProfesional.update(alumno, ref, beca_new); 
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
@@ -134,6 +159,20 @@ exports.post_fetch_datos = async (request, response, next) => {
     const matricula = matches[0];
     const periodo = await Periodo.fetchActivo();
     const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
+    const fechaInicio = await Periodo.fetchInicio();
+
+    // Extrae la fecha de `fechaInicio` asegurándote de que accedes correctamente al valor
+    const fecha = fechaInicio[0][0].fechaInicio; // Ajusta esto según la estructura correcta
+
+    // Calcula la fecha límite (dos semanas después de la fecha de inicio)
+    const fechaLimite = moment(fecha).add(2, 'weeks');
+
+    // Obtén la fecha actual
+    const fechaActual = moment();
+
+    // Compara la fecha actual con la fecha límite
+    const mostrarEliminar = fechaActual.isSameOrBefore(fechaLimite);
+
     try {
         let alumnoConsulta;
 
@@ -196,6 +235,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
                 pagosDiplomado: pagosDiplomado,
+                mostrarEliminar: mostrarEliminar,
                 csrfToken: request.csrfToken()
             });
         }
@@ -224,6 +264,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
+                mostrarEliminar: mostrarEliminar,
                 csrfToken: request.csrfToken()
             });
         }
@@ -293,6 +334,10 @@ exports.get_fichas = (request, response, next) => {
 exports.post_fichas_modify = async (request, response, next) => {
     const { descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
+
+    if (descuentoNum == null) {
+        descuentoNum = 0;
+    }
 
     try {
         const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);

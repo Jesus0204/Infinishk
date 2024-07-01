@@ -5,7 +5,7 @@
 }) %>
 <section class="section">
         <div class="columns">
-            <div class="column is-1">
+            <div class="column is-narrow">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
@@ -23,8 +23,8 @@
                     Selecciona el tipo de pago que vas a realizar:
                 </label>
                 <div class="control has-icons-left">
-                    <div class="select is-medium" style="width: 110%;">
-                        <select name="tipo" id="tipo" style="width: 110%;">
+                    <div class="select is-size-6" style="width: 100%;">
+                        <select name="tipo" id="tipo" style="width: 100%;">
                             <option value="Normal">
                                 <% if (alumno[0].Matricula[0] == '1') { %>
                                 Colegiatura
@@ -157,48 +157,56 @@
                 <% if (solicitudes.length != 0){ %>
                 <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
                 <% } %>
+
                 <div id="pago_colegiatura">
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="motivo">Motivo: </label>
                         </div>
                         <div class="column">
-                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo"
-                                style="padding: 0.5em; margin-top: -1em;">Por favor
-                                escribe un motivo del pago del alumno</p>
                             <div class="field">
+                                <% if (alumno[0].Matricula[0] == '1') { %>
                                 <p class="control has-icons-left">
                                     <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                        placeholder="Concepto del pago">
+                                        value="Colegiatura: <%= currentDate %>" readonly>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                     </span>
                                 </p>
+                                <% } else { %>
+                                <p class="control has-icons-left">
+                                    <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                        value="Diplomado: <%= currentDate %>" readonly>
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                                <% } %>
                             </div>
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="monto">Monto:</label>
                         </div>
                         <div class="column">
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
                                 style="padding: 0.5em; margin-top: -1em;">
-                                Por favor escribe un monto válido del Pago.
+                                Por favor escribe un monto válido del pago
                             </p>
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                                 style="padding: 0.5em; margin-top: -1em;">
-                                Por favor escribe un número mayor a 0.
+                                Por favor escribe un número mayor a 0
                             </p>
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
                                 style="padding: 0.5em; margin-top: -1em;">
-                                Por favor escribe un monto sin exponente.
+                                Por favor escribe un monto sin exponente
                             </p>
                             <div class="field">
                                 <% if (pago_col == true) { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                        placeholder="Monto a Pagar"
+                                        placeholder="Monto a pagar"
                                         value="<%= (deuda[0].montoAPagar - deuda[0].montoPagado).toFixed(2) %>">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
@@ -207,7 +215,7 @@
                                 <% } else { %>
                                 <p class="control has-icons-left">
                                     <input name="monto" class="input is-medium" type="number" step="any" id="monto"
-                                        placeholder="Monto a Pagar"
+                                        placeholder="Monto a pagar"
                                         value="<%= diplomado[0].precioDiplomado.toFixed(2) %>">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
@@ -218,9 +226,11 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="is-hidden" id="pago_extra">
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="motivo_no_usar">Motivo: </label>
                         </div>
                         <div class="column">
@@ -242,7 +252,7 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="monto_no_usar">Monto:</label>
                         </div>
                         <div class="column">
@@ -266,7 +276,7 @@
                 </div>
                 <br>
                 <div class="columns">
-                    <div class="column is-5">
+                    <div class="column is-3">
                         <label class="label is-medium" for="metodo">Método de Pago: </label>
                     </div>
                     <div class="column">
@@ -292,12 +302,12 @@
                     <br>
                 </div>
                 <div class="columns">
-                    <div class="column is-5">
-                        <label class="label is-medium" for="nota">Nota: </label>
+                    <div class="column is-3">
+                        <label class="label is-medium" for="nota">Nota (opcional): </label>
                     </div>
                     <div class="column">
                         <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
-                            placeholder="Escribe tu nota aquí."></textarea>
+                            placeholder="Escribe tu nota aquí"></textarea>
                     </div>
                 </div>
                 <div class="columns">
@@ -337,9 +347,9 @@
                 </div>
                 <% } else if (diplomado.length == 0 && pago_col == false) { %>
                 <article id="no_cursa_diplomado" class="message"
-                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    style="background-color: #5a6581; color:#ffffff; text-align: left;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                        <p>No se puede realizar un pago</p>
+                        <p>No se puede realizar un pago en este momento.</p>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
                         No te encuentras cursando un diplomado actualmente, por lo que no puedes pagar ningún diplomado.
@@ -347,9 +357,9 @@
                 </article>
                 <% } else if (colegiatura.length == 0 && pago_col == true) { %>
                 <article id="no_colegiatura" class="message"
-                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    style="background-color: #5a6581; color:#ffffff; text-align: left;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                        <p>No se puede realizar un pago</p>
+                        <p>No se puede realizar un pago en este momento.</p>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
                         No cuentas con una colegiatura para el periodo <%= periodo[0].Nombre %>.
@@ -357,9 +367,9 @@
                 </article>
                 <% } else if (pago_col == true && deuda.length == 0) {%>
                 <article id="no_colegiatura" class="message"
-                    style="background-color: #5a6581; color:#ffffff; text-align: center;">
+                    style="background-color: #5a6581; color:#ffffff; text-align: left;">
                     <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                        <p>No se puede realizar un pago</p>
+                        <p>No se puede realizar un pago en este momento.</p>
                     </div>
                     <div class="message-body" style="color:#ffffff;">
                         ¡Ya pagaste todos los meses de la colegiatura del periodo
@@ -375,9 +385,13 @@
                 <header class="modal-card-head">
                     <p id="modal_title" class="modal-card-title" style="text-align: center;">
                         <% if (pago_col == true) { %>
-                        <strong>Pago de Colegiatura</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE COLEGIATURA
+                            </label>
                         <% } else { %>
-                        <strong>Pago de Diplomado</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE DIPLOMADO
+                            </label>
                         <% } %>
                     </p>
                     <button type="button" class="delete" aria-label="delete"></button>
@@ -393,24 +407,28 @@
                 <header class="modal-card-head">
                     <p id="modal_title_2" class="modal-card-title" style="text-align: center;">
                         <% if (pago_col == true) { %>
-                        <strong>Pago de Colegiatura</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE COLEGIATURA
+                            </label>
                         <% } else { %>
-                        <strong>Pago de Diplomado</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE DIPLOMADO
+                            </label>
                         <% } %>
                     </p>
                     <button type="button" class="delete" aria-label="delete"></button>
                 </header>
                 <section class="modal-card-body">
                     <p>
-                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina:
+                        Para los pagos en Efectivo o Tarjeta con Terminal Punto Venta, favor de pasar a la oficina.
                     </p>
                     <br>
                     <div class="notification" style="background-color: #5a6581; color:#ffffff;">
                         <p>
-                            - Lunes a viernes (a excepción de días festivos).
+                            - Lunes a Viernes (a excepción de días festivos)
                         </p>
                         <p>
-                            - Horario 8:00 a 15:00 hrs.
+                            - Horario: 8:00 a 15:00 hrs
                         </p>
                     </div>
                 </section>
@@ -422,9 +440,13 @@
                 <header class="modal-card-head">
                     <p id="modal_title_3" class="modal-card-title" style="text-align: center;">
                         <% if (pago_col == true) { %>
-                        <strong>Pago de Colegiatura</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE COLEGIATURA
+                            </label>
                         <% } else { %>
-                        <strong>Pago de Diplomado</strong>
+                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                PAGO DE DIPLOMADO
+                            </label>
                         <% } %>
                     </p>
                     <button type="button" class="delete" aria-label="delete"></button>
@@ -433,7 +455,7 @@
                     <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
                         <div class="message-header"
                             style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                            <p>Datos a usar</p>
+                            <p>Datos a Usar</p>
                         </div>
                         <div class="message-body" style="color:#ffffff;">
                             <p>

@@ -64,7 +64,7 @@ for (let count = 0; count < usuarios_length.innerHTML; count++) {
             ayuda_referencia_vacio.classList.add('is-hidden');
         }
 
-        if (parseFloat(referencia.value) <= 0) {
+        if (parseFloat(referencia.value) <= 0 || referencia.value.includes("-")) {
             ayuda_referencia_negativo.classList.remove('is-hidden');
         } else {
             ayuda_referencia_negativo.classList.add('is-hidden');
@@ -84,7 +84,7 @@ for (let count = 0; count < usuarios_length.innerHTML; count++) {
             ayuda_beca_vacio.classList.add('is-hidden');
         }
 
-        if (parseFloat(beca.value) < 0 || parseFloat(beca.value) >= 101) {
+        if (parseFloat(beca.value) < 0 || parseFloat(beca.value) >= 101 || beca.value.includes("-0")) {
             ayuda_beca_negativo.classList.remove('is-hidden');
         } else {
             ayuda_beca_negativo.classList.add('is-hidden');

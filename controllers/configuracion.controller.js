@@ -891,7 +891,7 @@ exports.get_materias = async (request, response, next) => {
         for (const course of parsedCourses) {
             const courseExistente = await Materia.fetchOne(course.id)
             if (courseExistente && courseExistente.length > 0 && courseExistente[0].length > 0) {
-                // Si la comparación devuelve resultados, actualiza el usuario
+                // Si la comparación devuelve resultados, actualiza la materia
                 await Materia.updateMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id)
                 updatedCourses.push({ ...course, updated: true });
             } else {
@@ -899,7 +899,7 @@ exports.get_materias = async (request, response, next) => {
             }
         }
 
-        // Filtra los usuarios que no fueron actualizados
+        // Filtra las materias que no fueron actualizadas
         coursesSinActualizar = updatedCourses.filter(course => !course.updated);
 
         for(const course of coursesSinActualizar) {
@@ -986,16 +986,39 @@ exports.get_periodos = async (request, response, next) => {
             periodosSinActualizar[count].end = moment(periodosSinActualizar[count].end, 'YYYY-MM-DD').format('LL');
         }
 
-        response.render('configuracion/actualizarPeriodos', {
-            periodos: periodosSinActualizar,
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-            csrfToken: request.csrfToken()
-        });
-    }
+        // Guardar los periodos sin actualizar en la base de datos
+        for (const period of periodosSinActualizar) {
+            const idPeriodo = period.id;
+            const nombre = period.name;
+            const inicio_string = period.start;
+            const fin_string = period.end;
+            const status = period.status;
 
-    catch (error) {
+            const inicio = moment(inicio_string, 'LL').format('YYYY-MM-DD');
+            const fin = moment(fin_string, 'LL').format('YYYY-MM-DD');
+
+            try {
+                // Si el periodo no existe, registrarlo automaticamente
+                await Periodo.savePeriodo(idPeriodo, inicio, fin, nombre, status);
+
+                period.updated = true;
+            }
+                catch (error) {
+                    console.error('Error registrando period ${period.name}:', error);
+                    period.updated = false;
+                }
+            }
+
+        response.json({
+            success: true,
+            updatedPeriods: updatedPeriods.map(period => ({
+                ...period,
+                start: moment(period.start, 'YYYY-MM-DD').format('LL'),
+                end: moment(period.end, 'YYYY-MM-DD').format('LL'),
+            }))
+        });
+
+    } catch (error) {
         console.error('Error realizando operaciones:', error);
         response.status(500).render('500', {
             username: request.session.username || '',
@@ -1005,7 +1028,6 @@ exports.get_periodos = async (request, response, next) => {
         });
     }
 };
-
 
 
 exports.post_alumnos = async (request,response,next) => {
@@ -1053,33 +1075,6 @@ exports.post_alumnos = async (request,response,next) => {
         });
         
     } catch (error) {
-        let success = false;
-        console.log(error);
-        response.json({
-            success: success
-        });
-    };
-}
-
-
-exports.post_periodos = async (request,response,next) => {
-    try {
-        let success = true;
-        const idPeriodo= request.body.id;
-        const nombre = request.body.nombre;
-        let inicio_string = request.body.inicio;
-        let fin_string = request.body.fin;
-        const status = request.body.status;
-
-        const inicio = moment(inicio_string, 'LL').format('YYYY-MM-DD');
-        const fin = moment(fin_string, 'LL').format('YYYY-MM-DD');
-    
-        await Periodo.savePeriodo(idPeriodo,inicio,fin,nombre,status)
-        
-        response.json({
-            success: success
-        });
-    } catch(error) {
         let success = false;
         console.log(error);
         response.json({

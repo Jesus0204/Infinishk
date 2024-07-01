@@ -18,7 +18,7 @@
 
 <section class="section">
     <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow">
             <a id="Boton_regresar" type="submit" class="is-responsive"
                 onclick="regresar()">
                 <span class="icon">
@@ -241,7 +241,7 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="motivo_col">Motivo: </label>
                             </div>
                             <div class="column">
@@ -268,14 +268,14 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="monto_col">Monto:</label>
                             </div>
                             <div class="column">
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
                                     style="padding: 0.5em; margin-top: -1em;">
                                     Por favor
-                                    escribe un monto válido del pago</p>
+                                    escribe un monto válido para el pago</p>
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                                     style="padding: 0.5em; margin-top: -1em;">Por
                                     favor escribe un número mayor a 0</p>
@@ -305,7 +305,7 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="fechapago_col">Fecha de Pago:</label>
                             </div>
                             <div class="column">
@@ -316,7 +316,7 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="metodo_col">Método de Pago: </label>
                             </div>
                             <div class="column">
@@ -341,7 +341,7 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="nota_col">Nota (opcional): </label>
                             </div>
                             <div class="column">
@@ -448,7 +448,7 @@
                                     <div class="columns is-vcentered">
                                         <div class="column is-4 is-offset-1" style="text-align: center;">
                                             <label class="label is-medium">
-                                                Nota (opcional):
+                                                Nota:
                                             </label>
                                         </div>
                                         <div class="column">
@@ -535,7 +535,7 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="pago">Otros Pagos:</label>
                         </div>
                         <div class="column">
@@ -559,7 +559,7 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="monto">Monto:</label>
                         </div>
                         <div class="column">
@@ -579,7 +579,7 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
                         </div>
                         <div class="column">
@@ -590,7 +590,7 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="metodo">Método de Pago: </label>
                         </div>
                         <div class="column">
@@ -615,7 +615,7 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="nota">Nota (opcional): </label>
                         </div>
                         <div class="column">
@@ -708,7 +708,7 @@
                                 <div class="columns is-vcentered">
                                     <div class="column is-4 is-offset-1" style="text-align: center;">
                                         <label class="label is-medium">
-                                            Nota (opcional):
+                                            Nota:
                                         </label>
                                     </div>
                                     <div class="column">

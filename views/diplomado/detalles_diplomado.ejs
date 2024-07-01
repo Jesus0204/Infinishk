@@ -23,8 +23,8 @@
             <div class="container">
                 <div class="columns">
                     <div class="column is-1">
-                        <a id="Boton_regresar" type="submit" class="is-responsive"
-                            onclick="regresar()">
+                        <a id="Boton_regresar" class="is-responsive"
+                            href="/diplomado/consultar_diplomado">
                             <span class="icon">
                                 <i class="fas fa-arrow-left fa-2x"></i>
                             </span>
@@ -183,11 +183,9 @@
                 </nav> 
             </div>
             <% } %>
-            </div>
     </body>
     </section>
+    <%- include('../includes/foot.ejs') %>
     <script type="text/javascript" src="/js/pagination.js"></script>
-    <script type="text/javascript" src="/js/boton_regresar.js"></script>
     <script type="text/javascript" src="/js/detalles_diplomado.js"></script>
-    <script type="text/javascript" src="/js/boton_regresar.js"></script>
     </html>

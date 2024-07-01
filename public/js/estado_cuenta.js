@@ -149,70 +149,175 @@ function setText(activeContent, span) {
 }
 
 function downloadPDF(matricula) {
-    const {
-        jsPDF
-    } = window.jspdf;
+    const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     const margin = 10; // Define a margin for the content
 
-    setTimeout(() => {
-        const activeTab = document.querySelector('.tabs .is-active');
-        const activeContentId = activeTab.id.replace('nav_', '');
-        const activeContent = document.getElementById(activeContentId);
-        const boxContent = document.getElementById('boxContent');
+    // Obtener las selecciones de checkboxes
+    const selectedTabs = [];
+    if (document.getElementById('checkbox_deuda').checked) {
+        selectedTabs.push('deuda');
+    }
+    if (document.getElementById('checkbox_pagos').checked) {
+        selectedTabs.push('pagos');
+    }
+    if (document.getElementById('checkbox_solicitudes').checked) {
+        selectedTabs.push('solicitudes');
+    }
+    if (document.getElementById('checkbox_pagosExtra').checked) {
+        selectedTabs.push('pagosExtra');
+    }
 
-        if (!boxContent || !activeContent) {
-            console.error("Unable to find elements to clone.");
-            return;
+    // Guardar el ID de la pestaña activa
+    const activeTab = document.querySelector('.tabs .is-active');
+    const activeTabId = activeTab ? activeTab.id.replace('nav_', '') : null;
+
+    // Crear una copia oculta temporal de las pestañas para el PDF
+    const hiddenTabs = [];
+    selectedTabs.forEach(tabId => {
+        if (tabId !== activeTabId) {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.remove('is-hidden');
+                hiddenTabs.push(tabId);
+            }
         }
+    });
 
-        const edoCuenta = document.createElement('p');
-        edoCuenta.classList.add('card-header-title', 'is-centered', 'has-background-danger', 'has-text-white', 'is-size-3');
-        edoCuenta.textContent = 'Estado de Cuenta';
+    // Crear el contenido combinado para el PDF
+    const combinedContent = document.createElement('div');
+    combinedContent.style.padding = `${margin}px`; // Agregar padding para el margen
+    combinedContent.style.background = 'white'; // Asegurar que el fondo sea blanco
+    combinedContent.style.color = 'black'; // Asegurar que el texto sea negro para contraste
 
-        const title = document.createElement('p');
-        title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
-        setText(activeContentId, title);
+    // Mapear los IDs de las tabs a los títulos deseados para el PDF
+    const tabTitles = {
+        'deuda': 'Colegiatura',
+        'pagos': 'Historial de Colegiatura',
+        'solicitudes': 'Solicitudes',
+        'pagosExtra': 'Historial Solicitudes'
+    };
 
-        const br = document.createElement('br');
+    // Array para almacenar los estilos originales que se modificaron
+    const originalStyles = [];
 
-        // Create a temporary container for the combined content
-        const combinedContent = document.createElement('div');
-        combinedContent.style.padding = `${margin}px`; // Add padding for margin
-        combinedContent.style.background = 'white'; // Ensure background is white
-        combinedContent.appendChild(edoCuenta);
-        combinedContent.appendChild(boxContent.cloneNode(true));
-        combinedContent.appendChild(br);
-        combinedContent.appendChild(title);
-        combinedContent.appendChild(br);
-        combinedContent.appendChild(activeContent.cloneNode(true));
-        combinedContent.style.display = 'block';
-        combinedContent.style.position = 'absolute';
-        combinedContent.style.top = '-9999px';
-        document.body.appendChild(combinedContent);
+    selectedTabs.forEach((tabId, index) => {
+        const tabContent = document.getElementById(tabId);
+        if (tabContent) {
+            // Almacenar estilos originales que se van a modificar
+            const modifiedStyles = [];
 
-        html2canvas(combinedContent, {
-            scale: 2
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-            const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+            // Modificar estilos necesarios para la generación del PDF
+            const tags = tabContent.querySelectorAll('.tag');
+            tags.forEach(tag => {
+                const originalStyle = {
+                    element: tag,
+                    backgroundColor: tag.style.backgroundColor,
+                    color: tag.style.color
+                };
+                originalStyles.push(originalStyle);
 
-            const imgWidth = imgProps.width / 2; // Since we scaled canvas by 2
-            const imgHeight = imgProps.height / 2; // Since we scaled canvas by 2
+                tag.style.backgroundColor = 'transparent'; // Quitar el fondo
+                tag.style.color = 'black'; // Asegurar el color del texto para contraste
+                modifiedStyles.push(originalStyle);
+            });
 
-            let scaleFactor = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const title = document.createElement('p');
+            title.classList.add('card-header-title', 'is-centered', 'is-size-5', 'has-background-link', 'has-text-white');
+            title.textContent = tabTitles[tabId]; // Usar el título correspondiente al ID de la tab
+            combinedContent.appendChild(title);
+            combinedContent.appendChild(tabContent.cloneNode(true));
 
-            let scaledWidth = imgWidth * scaleFactor;
-            let scaledHeight = imgHeight * scaleFactor;
+            if (index < selectedTabs.length - 1) {
+                const br = document.createElement('br');
+                combinedContent.appendChild(br); // Agregar un salto de línea entre los contenidos de las tabs
+            }
+        }
+    });
 
-            pdf.addImage(imgData, 'PNG', margin, margin, scaledWidth, scaledHeight);
-            pdf.save(`${matricula}_EstadoCuenta.pdf`);
-            document.body.removeChild(combinedContent);
-        }).catch(error => {
-            console.error("Error generating PDF: ", error);
-            document.body.removeChild(combinedContent);
+    combinedContent.style.display = 'block';
+    combinedContent.style.position = 'absolute';
+    combinedContent.style.top = '-9999px';
+    document.body.appendChild(combinedContent);
+
+    html2canvas(combinedContent, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+
+        const imgWidth = imgProps.width / 2; // Dado que escalamos el lienzo por 2
+        const imgHeight = imgProps.height / 2; // Dado que escalamos el lienzo por 2
+
+        let scaleFactor = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+
+        let scaledWidth = imgWidth * scaleFactor;
+        let scaledHeight = imgHeight * scaleFactor;
+
+        pdf.addImage(imgData, 'PNG', margin, margin, scaledWidth, scaledHeight);
+        pdf.save(`${matricula}_EstadoCuenta.pdf`);
+        document.body.removeChild(combinedContent);
+
+        // Restaurar los estilos originales modificados después de generar el PDF
+        originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
         });
-    }, 1000); // Delay to ensure elements are fully loaded
+
+        // Restaurar la visibilidad original de las pestañas ocultas después de generar el PDF
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
+        });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas" y elementos ocultos
+        restorePageState();
+    }).catch(error => {
+        console.error("Error al generar el PDF: ", error);
+        document.body.removeChild(combinedContent);
+
+        // En caso de error, restaurar los estilos originales modificados
+        originalStyles.forEach(style => {
+            style.element.style.backgroundColor = style.backgroundColor;
+            style.element.style.color = style.color;
+        });
+
+        // Restaurar la visibilidad original de las pestañas ocultas
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
+        });
+
+        // Restaurar la visibilidad de la sección de "Modificar Fichas" y elementos ocultos
+        restorePageState();
+    });
+
+    // Función para restaurar el estado original de la página
+    function restorePageState() {
+
+        // Ocultar los elementos modificados durante la generación del PDF
+        hiddenTabs.forEach(tabId => {
+            const tabContent = document.getElementById(tabId);
+            if (tabContent && !tabContent.classList.contains('is-hidden')) {
+                tabContent.classList.add('is-hidden');
+            }
+        });
+    }
+
+    // Restaurar la visibilidad original de las pestañas ocultas inmediatamente después de iniciar el proceso
+    hiddenTabs.forEach(tabId => {
+        const tabContent = document.getElementById(tabId);
+        if (tabContent && !tabContent.classList.contains('is-hidden')) {
+            tabContent.classList.add('is-hidden');
+        }
+    });
+
+    originalStyles.forEach(style => {
+        style.element.style.backgroundColor = style.backgroundColor;
+        style.element.style.color = style.color;
+    });
 }

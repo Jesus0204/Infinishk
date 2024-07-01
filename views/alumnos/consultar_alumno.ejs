@@ -40,8 +40,8 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-1">
-                    <a id="Boton_regresar" type="submit" class="is-responsive"
-                        onclick="regresar()">
+                    <a id="Boton_regresar" class="is-responsive"
+                        href="/alumnos/fetch_datos">
                         <span class="icon">
                             <i class="fas fa-arrow-left fa-2x"></i>
                         </span>
@@ -101,6 +101,8 @@
                     </div>
                 </div>
                 <div class="column">
+                    <p id="ayuda_beca_vacia" class="help is-hidden has-text-danger-dark ayuda-beca-vacia"
+                        style="padding: 0.5em;">El porcentaje de beca no puede estar vacío. Si no deseas aplicar una beca, escribe 0</p>
                     <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
                         style="padding: 0.5em;">El porcentaje de beca no puede ser negativo</p>
                     <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
@@ -150,7 +152,69 @@
                 </div>
             </div>
             <div class="columns">
-                <div class="column is-4 is-offset-8">
+                <div class="column is-2">
+                    <div class="dropdown is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button is-large is-responsive is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"
+                                style="justify-content: space-between; align-items: center; padding: 0.3em 0.55em;">
+                                <span>
+                                    Realizar Descarga
+                                </span>
+                                <span class="icon" style="padding-right: 0.5em;">
+                                    <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <% if(matricula[0] == '1') { %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_deuda">
+                                    <label class="checkbox">
+                                        Colegiatura
+                                    </label>
+                                </div>
+                                <% } %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagos">
+                                    <label class="checkbox">
+                                        Historial Colegiatura
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_solicitudes">
+                                    <label class="checkbox">
+                                        Solicitudes Pendientes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagosExtra">
+                                    <label class="checkbox">
+                                        Historial Solicitudes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_materias">
+                                    <label class="checkbox">
+                                        Materias
+                                    </label>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div class="dropdown-item">
+                                    <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
+                                        <span>
+                                            Descargar PDF
+                                        </span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-4 is-offset-6">
                     <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
                         style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
                         <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
@@ -158,6 +222,7 @@
                     </button>
                 </div>
             </div>
+            
 
             <!-- menú de tabs -->
             <div class="columns">
@@ -451,9 +516,11 @@
                                             <th style="text-align: left;">
                                                 Costo
                                             </th>
-                                            <th style="text-align: left;">
-                                                <!-- botón dar de baja -->
-                                            </th>
+                                            <% if (mostrarEliminar) { %>
+                                            <th class="eliminar" style="text-align: left;">
+                                                Eliminar
+                                            </th>                                                
+                                            <% } %>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -486,21 +553,22 @@
                                                     }) %>
                                         </td>
 
+                                        <% if (mostrarEliminar) { %>
                                         <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
-                                                    <button type="submit"
-                                                        class="js-modal-trigger confirmar-button is-medium is-responsive"
-                                                        style="font-size: medium;" id="Boton_eliminar"
+                                                    <button type="button" id="Boton_eliminar"
+                                                        class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                        style="background-color: #f6d5d8;" 
                                                         data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
-                                                        <span class="icon is-medium">
-                                                            <i class="fa-solid fa-trash"></i>
+                                                        <span class="icon is-small" style="color: #f83362">
+                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </span>
-                                                        <span>DAR DE BAJA</span>
-                                                    </button>
+                                                    </button>    
                                                 </div>
                                             </div>
                                         </td>
+                                        <% } %>
                                         </tr>
             
                                         <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
@@ -664,7 +732,7 @@
                                                         <span class="icon is-small" style="color: #21c85b">
                                                             <i class="fa-solid fa-circle-check"></i>
                                                         </span>
-                                                        <span style="color: #21c85b">
+                                                        <span style="color: #21c85b !important;">
                                                             Pagado
                                                         </span>
                                                     </span>
@@ -675,7 +743,7 @@
                                                         <span class="icon is-small" style="color: #fec416">
                                                             <i class="fa-solid fa-clock"></i>
                                                         </span>
-                                                        <span style="color: #fec416">
+                                                        <span style="color: #fec416 !important;">
                                                             Pendiente
                                                         </span>
                                                     </span>
@@ -686,7 +754,7 @@
                                                         <span class="icon is-small" style="color: #f83362">
                                                             <i class="fa-solid fa-circle-xmark"></i>
                                                         </span>
-                                                        <span style="color: #f83362">
+                                                        <span style="color: #f83362 !important;">
                                                             Atrasado
                                                         </span>
                                                     </span>
@@ -704,7 +772,7 @@
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                                             <p class="control">
-                                                <button class="confirmar-button is-responsive"
+                                                <button class="confirmar-button is-responsive fichas"
                                                     style="font-size: large;  padding-right: 1.5em;" type="submit">
                                                     <span class="icon is-large">
                                                         <i class="fa-solid fa-pen-to-square"></i>
