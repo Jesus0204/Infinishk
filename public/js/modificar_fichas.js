@@ -12,6 +12,7 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     const nota = document.querySelector('#nota' + count);
     const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
+    const ayuda_descuento_cero_negativo = document.querySelector('#ayuda_descuento_cero_negativo' + count);
     const ayuda_nota = document.querySelector('#ayuda_nota' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
 
@@ -71,6 +72,13 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
             ayuda_descuento_vacio.classList.remove('is-hidden');
         } else {
             ayuda_descuento_vacio.classList.add('is-hidden');
+        }
+
+        if (descuento.value.includes("-0")){
+            bt_Modificar.disabled = true;
+            ayuda_descuento_cero_negativo.classList.remove('is-hidden');
+        } else {
+            ayuda_descuento_cero_negativo.classList.add('is-hidden');
         }
     }
 

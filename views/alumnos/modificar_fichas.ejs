@@ -138,6 +138,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El ajuste no puede estar vacío</p>
+                                        <p id="ayuda_descuento_cero_negativo<%=display1%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El ajuste no puede ser un cero negativo</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha1.Descuento.toLocaleString('mx', {
@@ -249,6 +253,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             El ajuste no puede estar vacío</p>
+                                        <p id="ayuda_descuento_cero_negativo<%=display2%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
+                                            style="padding: 0.5em; margin-bottom: -2em;">
+                                            El ajuste no puede ser un cero negativo</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha2.Descuento.toLocaleString('mx', {
