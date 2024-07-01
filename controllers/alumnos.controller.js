@@ -138,8 +138,8 @@ exports.post_datos_modify = async (request, response, next) => {
             const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
             const credito = resultfetchCredito[0][0].credito;
             await Fichas.update_fichas_beca(alumno,beca_uso,credito);
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);
-            }  
+            } 
+            data = await EstudianteProfesional.update(alumno, ref, beca_new); 
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
