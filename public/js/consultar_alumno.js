@@ -6,13 +6,14 @@ const ayuda_ref_vacia = document.querySelector('#ayuda_ref_vacia');
 const ayuda_ref_negativa = document.querySelector('#ayuda_ref_negativa');
 const ayuda_ref_exponente = document.querySelector('#ayuda_ref_exponente');
 
+const ayuda_beca_vacia = document.querySelector('#ayuda_beca_vacia');
 const ayuda_beca_negativa = document.querySelector('#ayuda_beca_negativa');
 const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente');
 const ayuda_beca_rango = document.querySelector('#ayuda_beca_rango');
 
 // Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
-    if (ref.value.length === 0) {
+    if (ref.value.length === 0 || beca.value.length === 0) {
         bt_Modificar.disabled = true;
     } else {
         bt_Modificar.disabled = false;
@@ -47,6 +48,13 @@ function mensaje_beca() {
         ayuda_beca_negativa.classList.remove('is-hidden');
     } else {
         ayuda_beca_negativa.classList.add('is-hidden');
+    }
+
+    if (beca.value.length === 0) {
+        bt_Modificar.disabled = true;
+        ayuda_beca_vacia.classList.remove('is-hidden');
+    } else {
+        ayuda_beca_vacia.classList.add('is-hidden');
     }
 
     if (beca.value.trim().toLowerCase().includes('e')) {
