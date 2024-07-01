@@ -107,7 +107,11 @@ exports.post_datos_modify = async (request, response, next) => {
 
     const resultfetchBecaoriginal = await Alumno.fetchBeca(alumno);
 
+    const resultfetchReforiginal = await Alumno.fetchRef(alumno);
+
     let beca_original = resultfetchBecaoriginal[0][0].beca;
+
+    let ref_original = resultfetchReforiginal[0][0].referenciaBancaria
 
     let beca_uso;
 
@@ -115,6 +119,10 @@ exports.post_datos_modify = async (request, response, next) => {
 
     if (beca == "") {
         beca_new = '0';
+    }
+
+    if(ref == ""){
+        ref = ref_original;
     }
 
     try {
@@ -130,8 +138,8 @@ exports.post_datos_modify = async (request, response, next) => {
             const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
             const credito = resultfetchCredito[0][0].credito;
             await Fichas.update_fichas_beca(alumno,beca_uso,credito);
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);
-            }  
+            } 
+            data = await EstudianteProfesional.update(alumno, ref, beca_new); 
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {

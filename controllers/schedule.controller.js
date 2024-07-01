@@ -171,7 +171,7 @@ async function sendEmail(message){
 
     // Crear el mensaje para enviar el correo
     const msg = {
-        to: 'jaczmx@gmail.com',
+        to: 'samirbaidonpardo@hotmail.com',
         from: {
             name: 'VIA PAGO',
             email: 'soporte@pagos.ivd.edu.mx ',
@@ -216,58 +216,60 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         professor = {},
                         school_cycle = {}
                     } = schedule;
-            
+
                     const {
                         id = periodoActivo,
                         name = '',
                         credits = ''
                     } = course;
-            
+
                     const {
                         name: nombreProfesor = '',
                         first_surname = '',
                         second_surname = ''
                     } = professor;
-            
+
                     const {
                         start_date = '',
                         end_date = '',
                     } = school_cycle;
-            
+
                     const startDate = new Date(start_date);
                     const endDate = new Date(end_date);
-            
-                    const startDateFormat = moment(startDate).format('YYYY-MM-DD');
-                    const endDateFormat = moment(endDate).format('YYYY-MM-DD');
-            
+
+                    const startDateFormat = moment(startDate).format('LL');
+                    const endDateFormat = moment(endDate).format('LL');
+
                     const nombreSalon = `${room} ${nameSalon}`;
                     const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
-            
+
                     const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
-            
+
                     const precioMateria = credits * precioActual;
-            
+
+                    const idGrupo = schedules[0]?.group_id || '';
+
                     const horarios = schedules.map(schedule => {
                         const {
                             weekday = '',
                             start_hour = '',
                             end_hour = '',
                         } = schedule;
-            
+
                         // Crear objetos Date a partir de las horas de inicio y final
                         const startDate = new Date(start_hour);
                         const endDate = new Date(end_hour);
-            
+
                         const fechaInicio = moment(startDate).format('HH:mm');
                         const fechaTermino = moment(endDate).format('HH:mm');
-            
+
                         return {
                             diaSemana: weekday,
                             fechaInicio,
                             fechaTermino
                         };
                     });
-            
+
                     return {
                         idMateria: id,
                         nombreMat: name,
@@ -279,9 +281,10 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         horarios,
                         startDateFormat,
                         endDateFormat,
+                        idGrupo
                     }
                 });
-        
+                
                 for (let curso of cursos) {
                     // Agarrar el horario y formatearlo para la base
                     const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
@@ -302,7 +305,8 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         curso.nombreSalon,
                         claseFormato,
                         curso.startDateFormat,
-                        curso.endDateFormat
+                        curso.endDateFormat,
+                        curso.idGrupo
                     );
                 }
     
