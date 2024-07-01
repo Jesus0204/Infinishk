@@ -514,9 +514,11 @@
                                             <th style="text-align: left;">
                                                 Costo
                                             </th>
+                                            <% if (mostrarEliminar) { %>
                                             <th style="text-align: left;">
                                                 Eliminar
                                             </th>
+                                            <% } %>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -549,6 +551,7 @@
                                                     }) %>
                                         </td>
 
+                                        <% if (mostrarEliminar) { %>
                                         <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
@@ -563,6 +566,7 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <% } %>
                                         </tr>
             
                                         <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
