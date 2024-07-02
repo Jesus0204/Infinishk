@@ -1,10 +1,20 @@
+const btnSubmit = document.querySelector('#btnSubmit');
+const nombre = document.querySelector('#nombre');
+const precio = document.querySelector('#precio');
+const fecha = document.querySelector('#fecha');
 
 // Obtén las fechas de inicio y fin del diplomado
 var fechaInicio = document.getElementById('fechaInicio').value;
 var fechaFin = document.getElementById('fechaFin').value;
 
-// Initialize all input of date type.
-const calendars = bulmaCalendar.attach('[type="date"]', {
+const ayuda_nombre_vacio = document.querySelector('#ayuda_nombre_vacio');
+const ayuda_precio_vacio = document.querySelector('#ayuda_precio_vacio');
+const ayuda_precio_exponente = document.querySelector('#ayuda_precio_exponente');
+const ayuda_precio_negativo = document.querySelector('#ayuda_precio_negativo');
+const ayuda_fecha_vacia = document.querySelector('#ayuda_fecha_vacia');
+
+//Initialize all input of date type
+const calendars = bulmaCalendar.attach('#fecha', {
     startDate: fechaInicio,
     endDate: fechaFin,
     displayMode: 'dialog',
@@ -15,51 +25,72 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
     isRange: true
 });
 
-$(document).ready(function () {
-    // Inicializar el botón desactivado
-    actualizarBotonYMensaje();
+function message_clear_button(){
+    ayuda_fecha_vacia.classList.add('is-hidden');
+    checar_contenido();
+}
 
-    // Evento para cada vez que se modifica un campo
-    $('input').on('input', function () {
-        actualizarBotonYMensaje();
-    });
+calendars.forEach((calendar) => {
+    calendar.on('hide', message_clear_button)
+});
 
-    function actualizarBotonYMensaje() {
-        var duracion = $('#Duracion').val().trim();
-        var precio = $('#precioDiplomado').val().trim();
-        var nombre = $('#nombreDiplomado').val().trim();
-        var mensaje = '';
-        var camposCompletos = duracion && precio && nombre;
-        var valor = document.getElementById('precioDiplomado').value;
+function clear_button() {
+    ayuda_fecha_vacia.classList.remove('is-hidden');
+    btnSubmit.disabled = true;
+}
 
-        if (!camposCompletos) {
-            mensaje = 'Por favor completa todos los campos.';
-            $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true);
-        } else if (parseFloat(precio) <= 0) {
-            mensaje = 'El precio debe ser mayor a 0.';
-            $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true);
-        } else if (valor.match(/[eE]/)) { // Verificar si hay caracteres de exponente
-            mensaje = 'El precio no puede tener exponentes';
-            $('#alerta').text(mensaje).show();
-            $('button[type="submit"]').prop('disabled', true);
-        } else {
-            $('#alerta').hide();
-            $('button[type="submit"]').prop('disabled', false);
-        }
+const clear_fecha = document.querySelector('.datetimepicker-clear-button');
+    if (clear_fecha) {
+        clear_fecha.addEventListener('click', clear_button);
     }
-});
 
-document.getElementById('statusDiplomado').addEventListener('change', function () {
-    var hiddenInput = document.getElementById('statusDiplomadoHidden');
-    hiddenInput.value = this.checked ? 'on' : 'off';
-});
+// Checar si hay contenido dentro del input, para desactivar el boton
+function checar_contenido() {
+    btnSubmit.disabled = nombre.value.length === 0 || precio.value.length === 0 || fecha.value.length === 0;
+}
 
+function mensaje_nombre() {
+    if (nombre.value.length === 0) {
+        ayuda_nombre_vacio.classList.remove('is-hidden');
+    } else {
+        ayuda_nombre_vacio.classList.add('is-hidden');
+    }
+}
 
-document.querySelector('form').addEventListener('submit', function () {
-    var inputs = document.querySelectorAll('#Duracion, #precioDiplomado, #nombreDiplomado');
-    inputs.forEach(function (input) {
-        input.disabled = false;
-    });
-});
+function mensaje_precio() {
+    if (precio.value.length === 0) {
+        ayuda_precio_vacio.classList.remove('is-hidden');
+    } else {
+        ayuda_precio_vacio.classList.add('is-hidden');
+    }
+
+    if (precio.value.match(/[eE]/)) {
+        ayuda_precio_exponente.classList.remove('is-hidden');
+        btnSubmit.disabled = true;
+    } else {
+        ayuda_precio_exponente.classList.add('is-hidden');
+    }
+
+    if (parseFloat(precio.value) <= 0) {
+        ayuda_precio_negativo.classList.remove('is-hidden');
+        btnSubmit.disabled = true;
+    } else {
+        ayuda_precio_negativo.classList.add('is-hidden');
+    }
+}
+
+if (nombre){
+    // Detectar si el usuario maneja input y llamar las funciones anteriores
+    nombre.addEventListener('input', checar_contenido);
+    nombre.addEventListener('input', mensaje_nombre);
+}
+
+if (precio){
+    // Detectar si el usuario maneja input y llamar las funciones anteriores
+    precio.addEventListener('input', checar_contenido);
+    precio.addEventListener('input', mensaje_precio);
+}
+
+if (fecha){
+    fecha.addEventListener('input', checar_contenido);
+}

@@ -1,3 +1,35 @@
+function checkSeleccion() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const boton = document.getElementById('boton_agregar');
+    const mensaje = document.getElementById('ayuda_seleccion');
+    
+    // Revisar si se ha seleccionado al menos un alumno
+    var seleccionAlumno = false;
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            seleccionAlumno = true;
+        }
+    });
+    
+    // Activar / desactivar botón cuando hay una selección
+    if (seleccionAlumno) {
+        boton.removeAttribute('disabled');
+        mensaje.classList.add('is-hidden');
+    } else {
+        boton.setAttribute('disabled', 'disabled');
+        mensaje.classList.remove('is-hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkSeleccion();
+    
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', checkSeleccion);
+    });
+});
+
 const resultadoActivo = document.querySelector('#resultadoActivo');
 
 $(document).ready(function () {

@@ -148,6 +148,10 @@
                 </div>
             </div>
             <div class="column is-offset-1">
+                <div id="mensaje_tarjeta" class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    ¡Lo sentimos! Los pagos en línea estarán disponibles próximamente. 
+                    Por el momento, por favor selecciona otro método de pago.
+                </div>
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                 <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
@@ -157,7 +161,6 @@
                 <% if (solicitudes.length != 0){ %>
                 <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
                 <% } %>
-
                 <div id="pago_colegiatura">
                     <div class="columns">
                         <div class="column is-3">
@@ -165,22 +168,23 @@
                         </div>
                         <div class="column">
                             <div class="field">
+                                <% let currentDate = new Date() %>
                                 <% if (alumno[0].Matricula[0] == '1') { %>
                                 <p class="control has-icons-left">
                                     <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                        value="Colegiatura: <%= currentDate %>" readonly>
+                                    value="Colegiatura: <%= moment(currentDate).format('DD-MM-YYYY') %>" readonly>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                     </span>
                                 </p>
                                 <% } else { %>
-                                <p class="control has-icons-left">
-                                    <input name="motivo" class="input is-medium" type="text" id="motivo"
-                                        value="Diplomado: <%= currentDate %>" readonly>
-                                    <span class="icon is-small is-left">
-                                        <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
-                                    </span>
-                                </p>
+                                    <p class="control has-icons-left">
+                                        <input name="motivo" class="input is-medium" type="text" id="motivo"
+                                            value="Diplomado: <%= moment(currentDate).format('DD-MM-YYYY') %>" readonly>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                                        </span>
+                                    </p>
                                 <% } %>
                             </div>
                         </div>
@@ -226,8 +230,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="is-hidden" id="pago_extra">
                     <div class="columns">
                         <div class="column is-3">
@@ -326,7 +328,7 @@
                         <div id="boton_efectivo" class="is-hidden">
                             <button class="js-modal-trigger confirmar-button is-responsive"
                                 style="font-size: large; padding-left: 1.5em;" id="Boton_pagar_2"
-                                data-target="modal-pago-efectivo" disabled>
+                                data-target="modal-pago-efectivo">
                                 <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -336,7 +338,7 @@
                         <div id="boton_transferencia" class="is-hidden">
                             <button class="js-modal-trigger confirmar-button is-responsive"
                                 style="font-size: large; padding-left: 1.5em;" id="Boton_pagar_3"
-                                data-target="modal-pago-transferencia" disabled>
+                                data-target="modal-pago-transferencia">
                                 <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -462,7 +464,7 @@
                                 - Banco: SANTANDER
                             </p>
                             <p>
-                                - Número de cuenta: 65508892112
+                                - Número de Cuenta: 65508892112
                             </p>
                             <p>
                                 - CLABE: 0146 8065 5088 9211 24

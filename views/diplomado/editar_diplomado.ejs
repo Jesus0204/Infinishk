@@ -30,12 +30,15 @@
 
                     <div class="columns">
                         <div class="column is-3">
-                            <label for="nombreDiplomado" class="label is-medium">Nombre: </label>
+                            <label class="label is-medium">Nombre: </label>
                         </div>
                         <div class="column">
+                            <p id="ayuda_nombre_vacio"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            Por favor escribe un nombre para el diplomado</p>
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input type="text" id="nombreDiplomado" name="nombreDiplomado"
+                                    <input type="text" id="nombre" name="nombreDiplomado"
                                         value="<%= diplomado.nombreDiplomado %>" class="input is-medium"
                                         placeholder="Nombre del diplomado">
                                     <span class="icon is-small is-left">
@@ -48,12 +51,21 @@
 
                     <div class="columns">
                         <div class="column is-3">
-                            <label for="precioDiplomado" class="label is-medium">Precio: </label>
+                            <label class="label is-medium">Precio: </label>
                         </div>
                         <div class="column">
+                            <p id="ayuda_precio_vacio"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            Por favor escribe un precio para el diplomado</p>
+                        <p id="ayuda_precio_exponente"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            El precio no puede tener exponentes</p>
+                        <p id="ayuda_precio_negativo"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            El precio no puede ser negativo</p>
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input type="number" id="precioDiplomado" name="precioDiplomado"
+                                    <input type="number" id="precio" name="precioDiplomado"
                                         value="<%= diplomado.precioDiplomado.toFixed(2) %>" step="any"
                                         class="input is-medium" pattern="^\d+(\.\d+)?$" placeholder="Precio del diplomado">
                                     <span class="icon is-small is-left">
@@ -66,26 +78,28 @@
 
                     <div class="columns">
                         <div class="column">
-                            <label for="Fecha Inicio" class="label is-medium">Fecha Inicio / Fecha Fin: </label>
+                            <label class="label is-medium">Fecha Inicio / Fecha Fin: </label>
                         </div>
                     </div>
+                    <p id="ayuda_fecha_vacia"
+                        class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                        Por favor escoge fechas para el diplomado</p>
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input type="date" id="fecha" name="fecha" class="datepicker">
+                                <input type="date" id="fecha" name="fechaDiplomado" class="datepicker">
                             </p>
                         </div>
 
                     <div class="column is-offset-5">
                         <p class="control">
                             <button type="submit" class="confirmar-button is-medium is-responsive"
-                                style="font-size: large; padding-left: 1em;">
+                                style="font-size: large; padding-left: 1em;" id="btnSubmit">
                                     <span>REGISTRAR CAMBIOS</span>
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
                                     </span>
                             </button>
                         </p>
-                    <p id="alerta" class="help is-danger" style="display: none;"></p>
                 </form>
             </div>
         </section>
