@@ -21,11 +21,11 @@ function hideNormal() {
     }
 }
 
-// Checar si hay contenido dentro del input, pata desactivar el boton
+// Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
-    boton_pagar.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
-    boton_pagar_2.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
-    boton_pagar_3.disabled = motivo.value.length === 0 || monto.value.length === 0 || parseFloat(monto.value) <= 0;
+    boton_pagar.disabled = monto.value.length === 0 || parseFloat(monto.value) <= 0;
+    boton_pagar_2.disabled = monto.value.length === 0 || parseFloat(monto.value) <= 0;
+    boton_pagar_3.disabled = monto.value.length === 0 || parseFloat(monto.value) <= 0;
 }
 
 function change_input() {
@@ -210,16 +210,21 @@ const boton_tarjeta = document.querySelector('#boton_tarjeta');
 const boton_efectivo = document.querySelector('#boton_efectivo');
 const boton_transferencia = document.querySelector('#boton_transferencia');
 
+const mensaje_tarjeta = document.querySelector('#mensaje_tarjeta');
+
 function change_modal() {
     if (metodo.value == 'Web Tarjeta') {
+        mensaje_tarjeta.classList.remove('is-hidden');
         boton_tarjeta.classList.remove('is-hidden');
         boton_efectivo.classList.add('is-hidden');
         boton_transferencia.classList.add('is-hidden');
     } else if (metodo.value == 'Efectivo') {
+        mensaje_tarjeta.classList.add('is-hidden');
         boton_tarjeta.classList.add('is-hidden');
         boton_efectivo.classList.remove('is-hidden');
         boton_transferencia.classList.add('is-hidden');
     } else if (metodo.value == 'Transferencia') {
+        mensaje_tarjeta.classList.add('is-hidden');
         boton_tarjeta.classList.add('is-hidden');
         boton_efectivo.classList.add('is-hidden');
         boton_transferencia.classList.remove('is-hidden');
@@ -236,15 +241,6 @@ const ayuda_motivo = document.querySelector('#ayuda_motivo');
 const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
 const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
 const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
-
-// Activar mensaje si el motivo no tiene input
-function mensaje_motivo() {
-    if (motivo.value.length === 0) {
-        ayuda_motivo.classList.remove('is-hidden');
-    } else {
-        ayuda_motivo.classList.add('is-hidden');
-    }
-}
 
 function mensaje_monto() {
     ayuda_monto_negativo.style.marginBottom = '0em';
@@ -277,5 +273,4 @@ function mensaje_monto() {
 // Detectar si el usuario maneja input y llamar las funciones anteriores
 motivo.addEventListener('input', checar_contenido);
 monto.addEventListener('input', checar_contenido);
-motivo.addEventListener('input', mensaje_motivo);
 monto.addEventListener('input', mensaje_monto);
