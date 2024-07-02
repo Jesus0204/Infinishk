@@ -94,12 +94,6 @@ function modificar() {
         beca_alumno = beca.value;
     }
 
-    console.log('Data to be sent:', { ref, beca, alumno });
-
-    // Mostrar la notificación de modificación
-    const notificacion = document.getElementById('modificacion_datos');
-    notificacion.classList.remove('is-hidden');
-
     fetch('/alumnos/datos_alumno/modify', {
         method: 'POST',
         headers: {
@@ -116,15 +110,18 @@ function modificar() {
         .then(data => {
             console.log('Response from server:', data);
             if (data.success) {
-
                 // Desplazar la página hacia arriba
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Mostrar la notificación de modificación
+                const notificacion = document.getElementById('modificacion_datos');
+                notificacion.classList.remove('is-hidden');
 
                 console.log('Modificación exitosa: ', data);
                 // Recargar la página después de mostrar la notificación durante unos segundos
                 setTimeout(() => {
                     window.location.reload();
-                }, 2000); // 3000 milisegundos = 3 segundos
+                }, 2000); // 2000 milisegundos = 2 segundos
             } else {
                 console.error('Error en la modificación: ', data.message);
                 // Reactivar el botón en caso de error para permitir nuevos intentos
@@ -396,9 +393,6 @@ function darDeBajaGrupo(IDGrupo, matricula) {
                 if (notification) {
                     notification.classList.remove('is-hidden');
                 }
-
-                // Desplazar la página hacia arriba
-                window.scrollTo({ top: 0, behavior: 'smooth' });
 
                 // Recargar la página después de mostrar la notificación durante unos segundos
                 setTimeout(() => {
