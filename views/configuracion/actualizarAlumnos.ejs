@@ -168,7 +168,7 @@
                                     id="ayuda_plan<%= count %>">
                                     Por favor escribe un plan de estudios 
                                 </p>
-                                <%= usuario.planEstudio %> - <%= planE.plan_id %>
+                                <%= usuario.planEstudio %> <% if (usuario.planVersion !== null) {  %> - <%= usuario.planVersion %> <% } %>
                                 <input type="hidden" name="planEstudio" value="<%= usuario.planEstudio %>"
                                 id="planEstudio<%= count %>">
                             </td>
@@ -179,7 +179,7 @@
                                         Por favor escribe un plan de estudios
                                     </p>
                                     <textarea name="planEstudio" placeholder="Ingresa el nombre del plan de estudios"
-                                    id="planEstudio<%= count %>"></textarea> - <%= planE.plan_id %> 
+                                    id="planEstudio<%= count %>"></textarea>
                                 </td>
                                 <% } %>
 

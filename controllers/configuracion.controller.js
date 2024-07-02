@@ -797,6 +797,7 @@ exports.get_alumnos = async (request, response, next) => {
                 status,
                 semester,
                 degree_name,
+                version,
             } = user;
 
             const apellidos = `${first_surname} ${second_surname}`;
@@ -808,6 +809,7 @@ exports.get_alumnos = async (request, response, next) => {
                 status: status,
                 semester: semester,
                 planEstudio: degree_name,
+                planVersion: version,
             };
         });
 
@@ -815,23 +817,6 @@ exports.get_alumnos = async (request, response, next) => {
             (user.ivd_id.toString().startsWith('1') || user.ivd_id.toString().startsWith('8')) &&
             user.status === 'active'
         ));
-
-        // Llamar función para sacar datos de plan de estudios
-        // Obtener ID de periodo activo
-        const periodoActivo = await fetchIDActivo();
-
-        const idActivo = periodoActivo[0][0].IDPeriodo;
-        
-        // Llamar función para sacar datos de plan de estudios para cada usuario filtrado
-        const parsedPlanEs = await Promise.all(filteredUsers.map(async user => {
-            const planEs = await getUserGroups(idActivo, user.ivd_id);
-            return planEs.plan_courses.map(planE => {
-                const { plan_id } = planE;
-                return {
-                    plan_id: plan_id,
-                };
-            });
-        }));
 
         // Realiza la comparación para cada usuario
         const updatedUsers = [];
@@ -858,7 +843,7 @@ exports.get_alumnos = async (request, response, next) => {
 
         response.render('configuracion/actualizarAlumnos', {
             usuarios: usuariosSinActualizar, // Utiliza la lista de usuarios actualizados
-            plan_id: plan_id,
+            //cursos: cursos,
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
