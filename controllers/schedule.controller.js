@@ -29,7 +29,6 @@ exports.set_recargos = (request, response, next) => {
 
             await Deuda.setRecargosDeuda(deuda.IDDeuda, montoRecargo);
         }
-        console.log('La base ha sido actualizada con los recargos :)');
     })
     .catch((error) => {
         response.status(500).render('500', {
@@ -112,7 +111,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
         for (count = 0; count < deudasNoPagadas.length; count++) {
             // Le sumas días a la fecha para enviar el correo
             let fecha_correo = moment(deudasNoPagadas[count].fechaLimitePago).add(1, 'days').format();
-            
+
             // Si la fecha (un dia despues) se envia el correo notificando de los recargos y del atraso
              if (fecha_correo == fecha_actual) {
                 // Creas el mensaje para enviar el correo
@@ -237,8 +236,8 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const startDate = new Date(start_date);
                     const endDate = new Date(end_date);
 
-                    const startDateFormat = moment(startDate).format('LL');
-                    const endDateFormat = moment(endDate).format('LL');
+                    const startDateFormat = moment(startDate).format('YYYY-MM-DD');
+                    const endDateFormat = moment(endDate).format('YYYY-MM-DD');
 
                     const nombreSalon = `${room} ${nameSalon}`;
                     const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
