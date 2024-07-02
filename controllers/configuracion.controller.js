@@ -22,7 +22,8 @@ const {
     getAllCourses,
     getAllPeriods,
     getUser,
-    getAllAdmins
+    getAllAdmins,
+    getUserGroups,
 } = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
@@ -44,6 +45,7 @@ const secretKey = config.jwtSecret;
 const moment = require('moment-timezone');
 moment.locale('es-mx');
 
+const { fetchIDActivo } = require('../models/periodo.model');
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -814,6 +816,23 @@ exports.get_alumnos = async (request, response, next) => {
             user.status === 'active'
         ));
 
+        // Llamar función para sacar datos de plan de estudios
+        // Obtener ID de periodo activo
+        const periodoActivo = await fetchIDActivo();
+
+        const idActivo = periodoActivo[0][0].IDPeriodo;
+        
+        // Llamar función para sacar datos de plan de estudios para cada usuario filtrado
+        const parsedPlanEs = await Promise.all(filteredUsers.map(async user => {
+            const planEs = await getUserGroups(idActivo, user.ivd_id);
+            return planEs.plan_courses.map(planE => {
+                const { plan_id } = planE;
+                return {
+                    plan_id: plan_id,
+                };
+            });
+        }));
+
         // Realiza la comparación para cada usuario
         const updatedUsers = [];
         for (const user of filteredUsers) {
@@ -839,6 +858,7 @@ exports.get_alumnos = async (request, response, next) => {
 
         response.render('configuracion/actualizarAlumnos', {
             usuarios: usuariosSinActualizar, // Utiliza la lista de usuarios actualizados
+            plan_id: plan_id,
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
