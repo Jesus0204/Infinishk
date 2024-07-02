@@ -1,8 +1,17 @@
-document.getElementById('formDiplomado').addEventListener('input', validateForm);
-document.getElementById('nombreDiplomado').addEventListener('blur', checkDiplomadoExists);
+const btnSubmit = document.querySelector('#btnSubmit');
+const nombre = document.querySelector('#nombre');
+const precio = document.querySelector('#precio');
+const fecha = document.querySelector('#fecha');
 
-// Initialize all input of date type.
-const calendars = bulmaCalendar.attach('[type="date"]', {
+const ayuda_nombre_vacio = document.querySelector('#ayuda_nombre_vacio');
+const ayuda_nombre_duplicado = document.querySelector('#ayuda_nombre_duplicado');
+const ayuda_precio_vacio = document.querySelector('#ayuda_precio_vacio');
+const ayuda_precio_exponente = document.querySelector('#ayuda_precio_exponente');
+const ayuda_precio_negativo = document.querySelector('#ayuda_precio_negativo');
+const ayuda_fecha_vacia = document.querySelector('#ayuda_fecha_vacia');
+
+//Initialize all input of date type
+const calendars = bulmaCalendar.attach('#fecha', {
     startDate: new Date(),
     endDate: new Date(),
     displayMode: 'dialog',
@@ -13,111 +22,95 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
     isRange: true
 });
 
-function validateForm() {
-    var precio = document.getElementById("precioDiplomado").value;
-    var nombre = document.getElementById("nombreDiplomado").value;
-    var valor = document.getElementById('precioDiplomado').value;
-    var formValid = true;
+function message_clear_button(){
+    ayuda_fecha_vacia.classList.add('is-hidden');
+    checar_contenido();
+}
 
-    if (!precio || !nombre) {
-        displayError("Por favor rellena todos los datos.", 'form');
-        formValid = false;
-    } else if (parseFloat(precio) <= 0) {
-        displayError("El precio debe ser mayor a 0.", 'precio');
-        formValid = false;
-    } else if (valor.match(/[eE]/)) { // Verificar si hay caracteres de exponente
-        displayError("El precio no puede tener exponentes.", 'precio');
-        formValid = false; // Marcar el formulario como no válido
-    } else {
-        clearError('form');
+calendars.forEach((calendar) => {
+    calendar.on('hide', message_clear_button)
+});
+
+function clear_button() {
+    ayuda_fecha_vacia.classList.remove('is-hidden');
+    btnSubmit.disabled = true;
+}
+
+const clear_fecha = document.querySelector('.datetimepicker-clear-button');
+    if (clear_fecha) {
+        clear_fecha.addEventListener('click', clear_button);
     }
 
-    return formValid;
+// Checar si hay contenido dentro del input, para desactivar el boton
+function checar_contenido() {
+    btnSubmit.disabled = nombre.value.length === 0 || precio.value.length === 0 || fecha.value.length === 0;
+}
+
+function mensaje_nombre() {
+    if (nombre.value.length === 0) {
+        ayuda_nombre_vacio.classList.remove('is-hidden');
+    } else {
+        ayuda_nombre_vacio.classList.add('is-hidden');
+    }
+}
+
+function mensaje_precio() {
+    if (precio.value.length === 0) {
+        ayuda_precio_vacio.classList.remove('is-hidden');
+    } else {
+        ayuda_precio_vacio.classList.add('is-hidden');
+    }
+
+    if (precio.value.match(/[eE]/)) {
+        ayuda_precio_exponente.classList.remove('is-hidden');
+        btnSubmit.disabled = true;
+    } else {
+        ayuda_precio_exponente.classList.add('is-hidden');
+    }
+
+    if (parseFloat(precio.value) <= 0) {
+        ayuda_precio_negativo.classList.remove('is-hidden');
+        btnSubmit.disabled = true;
+    } else {
+        ayuda_precio_negativo.classList.add('is-hidden');
+    }
 }
 
 function checkDiplomadoExists(callback) {
-    var nombre = document.getElementById("nombreDiplomado").value;
+    var nombreCheck = document.getElementById('nombre').value;
     var xmlhttp = new XMLHttpRequest();
+
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var exists = JSON.parse(this.responseText).exists;
             if (exists) {
-                displayError("Ese diplomado ya existe.", 'nombre');
+                ayuda_nombre_duplicado.classList.remove('is-hidden');
+                btnSubmit.disabled = true;
             } else {
-                clearError('nombre');
+                ayuda_nombre_duplicado.classList.add('is-hidden');
             }
             if (typeof callback === 'function') {
                 callback(!exists); // Llama al callback con true si el diplomado no existe
             }
         }
     };
-    xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + encodeURIComponent(nombre), true);
+    xmlhttp.open("GET", "/diplomado/check_diplomado?nombre=" + encodeURIComponent(nombreCheck), true);
     xmlhttp.send();
 }
 
-function validateAll() {
-    var formValid = validateForm();
-    checkDiplomadoExists(function (diplomadoNoExiste) {
-        formValid = formValid && diplomadoNoExiste; // Solo si ambas validaciones son true, el formulario es válido
-        document.getElementById('btnSubmit').disabled = !formValid;
-    });
+if (nombre){
+    // Detectar si el usuario maneja input y llamar las funciones anteriores
+    nombre.addEventListener('input', checar_contenido);
+    nombre.addEventListener('input', mensaje_nombre);
+    nombre.addEventListener('blur', checkDiplomadoExists);
 }
 
-function displayError(message, type) {
-    var errorElement;
-    if (type === 'form') {
-        errorElement = document.getElementById('errorForm');
-    } else if (type === 'precio') {
-        errorElement = document.getElementById('errorPrecio');
-    } else if (type === 'nombre') {
-        errorElement = document.getElementById('errorNombre');
-    }
-
-    if (errorElement) {
-        errorElement.textContent = message; // Mostrar el mensaje de error
-    }
+if (precio){
+    // Detectar si el usuario maneja input y llamar las funciones anteriores
+    precio.addEventListener('input', checar_contenido);
+    precio.addEventListener('input', mensaje_precio);
 }
 
-function clearError(type) {
-    var errorElement;
-    if (type === 'form') {
-        errorElement = document.getElementById('errorForm');
-    } else if (type === 'precio') {
-        errorElement = document.getElementById('errorPrecio');
-    } else if (type === 'nombre') {
-        errorElement = document.getElementById('errorNombre');
-    }
-
-    if (errorElement) {
-        errorElement.textContent = ''; // Limpiar el mensaje de error
-    }
-}
-
-function validateAll() {
-    var formValid = validateForm();
-    checkDiplomadoExists(function (diplomadoNoExiste) {
-        formValid = formValid && diplomadoNoExiste; // Solo si ambas validaciones son true, el formulario es válido
-        document.getElementById('btnSubmit').disabled = !formValid;
-    });
-}
-
-
-function validateAll() {
-    var formValid = validateForm();
-    checkDiplomadoExists(function (diplomadoNoExiste) {
-        formValid = formValid && diplomadoNoExiste; // Solo si ambas validaciones son true, el formulario es válido
-        document.getElementById('btnSubmit').disabled = !formValid;
-    });
-}
-
-function displayError(message) {
-    var errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-}
-
-function clearError() {
-    var errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
+if (fecha){
+    fecha.addEventListener('input', checar_contenido);
 }
