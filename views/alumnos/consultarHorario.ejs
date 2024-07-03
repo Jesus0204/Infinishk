@@ -289,7 +289,7 @@
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
             <div class="box is-hidden" id="informacionMateria">
                 <label class="label is-medium has-text-danger has-text-weight-semibold">IMPORTANTE</label>
-                <p class="has-text-weight-medium" style="color: #5a6581">
+                <p class="has-text-weight-medium">
                     Por favor agrega al menos una materia para poder confirmar tu horario.
                 </p>
             </div>
@@ -416,7 +416,7 @@
                 </div>
             </div>
             <div class="columns">
-                <div class="column is-8">
+                <div class="column">
                     <div id="materiasEliminadasContainer" class="is-hidden">
                         <label class="label is-medium has-text-danger has-text-weight-semibold">MATERIAS ELIMINADAS</label>
                         <div class="table-container">
@@ -456,6 +456,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="column is-half is-offset-6">
                 <div class="column is-flex is-flex-direction-column is-justify-content-flex-end">
                     <div class="box">
                         <% if (porcBeca || credito != 0) { %>

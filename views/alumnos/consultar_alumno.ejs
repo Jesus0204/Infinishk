@@ -214,6 +214,7 @@
                         </div>
                     </div>
                 </div>
+                <% if (contienePermiso(permisos, 'Modificar Datos Alumno') == true) { %>
                 <div class="column is-4 is-offset-6">
                     <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
                         style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
@@ -221,6 +222,7 @@
                         <span>GUARDAR CAMBIOS</span>
                     </button>
                 </div>
+                <% } %>
             </div>
             
 
@@ -521,10 +523,12 @@
                                             <th style="text-align: left;">
                                                 Costo
                                             </th>
+                                            <% if (contienePermiso(permisos, 'Eliminar Materias Alumno') == true) { %>
                                             <% if (mostrarEliminar) { %>
                                             <th class="eliminar" style="text-align: left;">
                                                 Eliminar
                                             </th>                                                
+                                            <% } %>
                                             <% } %>
                                         </tr>
                                     </thead>
@@ -558,6 +562,7 @@
                                                     }) %>
                                         </td>
 
+                                        <% if (contienePermiso(permisos, 'Eliminar Materias Alumno') == true) { %>
                                         <% if (mostrarEliminar) { %>
                                         <td>
                                             <div class="columns is-vcentered">
@@ -573,6 +578,7 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <% } %>
                                         <% } %>
                                         </tr>
             

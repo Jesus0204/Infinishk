@@ -22,7 +22,8 @@ const {
     getAllCourses,
     getAllPeriods,
     getUser,
-    getAllAdmins
+    getAllAdmins,
+    getUserGroups,
 } = require('../util/adminApiClient');
 
 const sgMail = require('@sendgrid/mail');
@@ -44,6 +45,7 @@ const secretKey = config.jwtSecret;
 const moment = require('moment-timezone');
 moment.locale('es-mx');
 
+const { fetchIDActivo } = require('../models/periodo.model');
 
 exports.get_configuracion = (request, response, next) => {
     response.render('configuracion/configuracion');
@@ -795,6 +797,7 @@ exports.get_alumnos = async (request, response, next) => {
                 status,
                 semester,
                 degree_name,
+                version,
             } = user;
 
             const apellidos = `${first_surname} ${second_surname}`;
@@ -806,6 +809,7 @@ exports.get_alumnos = async (request, response, next) => {
                 status: status,
                 semester: semester,
                 planEstudio: degree_name,
+                planVersion: version,
             };
         });
 
@@ -839,6 +843,7 @@ exports.get_alumnos = async (request, response, next) => {
 
         response.render('configuracion/actualizarAlumnos', {
             usuarios: usuariosSinActualizar, // Utiliza la lista de usuarios actualizados
+            //cursos: cursos,
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
