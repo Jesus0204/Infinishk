@@ -42,12 +42,14 @@
             <div class="container">
                 <div class="columns">
                     <div class="column is-7">
-                        <h3 class="title is-3">Configuración Usuarios</h3>
+                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                            CONFIGURACIÓN USUARIOS
+                        </label>
                     </div>
                     <% if (contienePermiso(permisos, 'Registrar usuario' )== true) { %>
                         <div class="column is-offset-1">
                             <p class="control">
-                                <a class="button is-rounded is-responsive" style="font-size: large;"
+                                <a class="button is-responsive" style="font-size: large;"
                                     href="/configuracion/registrar_usuario">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-plus"></i>
@@ -61,7 +63,7 @@
                                 <div class="column is-12">
                                     <% if (contienePermiso(permisos, 'Registrar usuario' )== true) { %>
                                         <p class="control">
-                                            <a class="button is-rounded is-responsive" style="font-size: large;"
+                                            <a class="button is-responsive" style="font-size: large;"
                                                 href="/configuracion/obtener_usuario">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-circle-plus"></i>
@@ -78,7 +80,7 @@
                     <% } %>
                 </div>
 
-                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
                 <div class="tabs is-boxed" style="margin-top: -1.3em;">
                     <ul>
@@ -103,7 +105,7 @@
                         <div id="modificacion_estatus_activar" class="notification is-hidden"
                             style="background-color: #5a6581; color:#ffffff;">
                             <button id="btn_eliminar_estatus" class="delete"></button>
-                            ¡Usuario Desactivado! Recargando datos...
+                            ¡Usuario desactivado! Recargando página...
                         </div>
 
                         <% if (usuariosActivos.length===0) { %>
@@ -120,17 +122,17 @@
                                     No existen usuarios con los paramétros de busqueda.
                                 </div>
                                 <div id="tablaActivos" class="table-container">
-                                    <table class="table is-bordered is-hoverable is-fullwidth">
+                                    <table class="table is-hoverable is-fullwidth">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Nombre: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Nombre
                                                 </th>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Email: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Correo Electrónico
                                                 </th>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Status: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Estatus
                                                 </th>
                                             </tr>
                                         </thead>
@@ -152,7 +154,8 @@
                                                                 value="<%= usuario.IDUsuario %>">
                                                             <input type="hidden" name="statusUsuario" value="off">
                                                             <button type="submit"
-                                                                class="button is-danger">Desactivar</button>
+                                                                class="button is-danger"
+                                                                style="background-color: #000000;">DESACTIVAR</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -170,12 +173,12 @@
                         <div id="modificacion_estatus_desactivar" class="notification is-hidden"
                             style="background-color: #5a6581; color:#ffffff;">
                             <button id="btn_eliminar_estatus" class="delete"></button>
-                            ¡Usuario Activado! Recargando datos...
+                            ¡Usuario activado! Recargando página...
                         </div>
 
                         <% if (usuariosNoActivos.length===0) { %>
                             <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                                No hay usuarios No Activos por el momento.
+                                No hay usuarios que no estén activos por el momento.
                             </div>
                             <% } else { %>
                                 <div class="search-bar">
@@ -187,17 +190,17 @@
                                     No existen usuarios con los paramétros de busqueda.
                                 </div>
                                 <div id="tablaNoActivos" class="table-container">
-                                    <table class="table is-bordered is-hoverable is-fullwidth">
+                                    <table class="table is-hoverable is-fullwidth">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Nombre: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Nombre
                                                 </th>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Email: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Correo Electrónico
                                                 </th>
-                                                <th>
-                                                    <p class="is-size-5"><strong>Status: </strong></p>
+                                                <th style="text-align: left;">
+                                                    Estatus
                                                 </th>
                                             </tr>
                                         </thead>
@@ -219,7 +222,7 @@
                                                                 value="<%= usuario.IDUsuario %>">
                                                             <input type="hidden" name="statusUsuario" value="on">
                                                             <button type="submit"
-                                                                class="button is-success">Activar</button>
+                                                                class="button is-success">ACTIVAR</button>
                                                         </form>
                                                     </td>
                                                 </tr>

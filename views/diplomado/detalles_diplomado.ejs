@@ -21,86 +21,93 @@
     <body>
         <section class="section">
             <div class="container">
-
                 <div class="columns">
                     <div class="column is-1">
-                        <a id="Boton_regresar" type="submit" class="is-responsive"
-                            onclick="regresar()">
+                        <a id="Boton_regresar" class="is-responsive"
+                            href="/diplomado/consultar_diplomado">
                             <span class="icon">
                                 <i class="fas fa-arrow-left fa-2x"></i>
                             </span>
                         </a>
                     </div>
                     <div class="column is-8">
-                        <h3 class="title is-3">Información de Diplomado:
+                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                        INFORMACIÓN DE DIPLOMADO:
                             <br>
                             <%= diplomado[0].nombreDiplomado %>
                             <%= diplomado[0].IDDiplomado %>
-                        </h3>
+                        </label>
                     </div>
+                    <div class="column">
+                        <div class="columns is-multiline">
                     <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
-                        <div class="column">
-                            <form action="/diplomado/editar_diplomado" method="POST">
-                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
-                                <p class="control">
-                                    <button class="button is-rounded big-button" type="submit">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>
-                                            Modificar Diplomado
-                                        </span>
-                                    </button>
-                                </p>
-                            </form>
+                                <div class="column is-full">
+                                    <form action="/diplomado/editar_diplomado" method="POST">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
+                                        <p class="control">
+                                            <button class="button is-responsive" type="submit">
+                                                <span class="icon is-large">
+                                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                </span>
+                                                <span>
+                                                    Modificar Diplomado
+                                                </span>
+                                            </button>
+                                        </p>
+                                    </form>
+                                </div>
+                                <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
+                                    <div class="column is-full">
+                                        <form action="/diplomado/agregar_alumnos" method="POST">
+                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
+                                            <p class="control">
+                                                <button class="button is-responsive" type="submit">
+                                                    <span class="icon is-large">
+                                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                    </span>
+                                                    <span>
+                                                        Agregar Alumnos
+                                                    </span>
+                                                </button>
+                                            </p>
+                                        </form>
+                                    </div>
+                                <% } %>
+                         <% } %>
                         </div>
-                    <% } %>
-                    <% if (contienePermiso(permisos, 'Modificar diplomado') == true && new Date() < new Date(diplomado[0].fechaInicio)) { %> 
-                        <div class="column">
-                            <form action="/diplomado/agregar_alumnos" method="POST">
-                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                <input type="hidden" value="<%= diplomado[0].nombreDiplomado %>" name="nombre" id="nombre">
-                                <p class="control">
-                                    <button class="button is-rounded big-button" type="submit">
-                                        <span class="icon is-large">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                        <span>
-                                            Agregar Alumnos
-                                        </span>
-                                    </button>
-                                </p>
-                            </form>
-                        </div>
-                    <% } %>
+                    </div>
                 </div>
 
-                <div class="notification">
-                    <div class="columns is-vcentered">
-                        <div class="column is-3">
-                            <label class="block font-semibold"><strong>Fecha Inicio:</strong></label>
-                            <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
-                                    month: 'long' , day: 'numeric' }) %>
-                                    </label>
-                        </div>
-                        <div class="column is-3">
-                            <label class="block font-semibold"><strong>Fecha Fin:</strong></label>
-                            <p class="block small-label">
-                                <%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
-                                    month: 'long' , day: 'numeric' }) %>
-                                    </label>
-                        </div>
-                        <div class="column is-3">
-                            <label class="block font-semibold"><strong>Precio:</strong></label>
-                            <p class="block small-label">
-                                $<%= diplomado[0].precioDiplomado.toLocaleString('mx', { minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2 }) %>
-                                    </label>
-                        </div>
+                <div class="columns is-flex is-align-items-stretch" id="topinfo">
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">FECHA INICIO</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= new Date(diplomado[0].fechaInicio).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %></p>
                     </div>
                 </div>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">FECHA FIN</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= new Date(diplomado[0].fechaFin).toLocaleDateString('es-MX', { year: 'numeric' ,
+                                    month: 'long' , day: 'numeric' }) %></p>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">PRECIO</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            $<%= diplomado[0].precioDiplomado.toLocaleString('mx', { minimumFractionDigits: 2,
+                                maximumFractionDigits: 2 }) %></p>
+                    </div>
+                </div>
+                </div>
+
+                <br>
 
                 <% if (registro) { %>
                     <div class="columns is-vcentered">
@@ -114,8 +121,6 @@
                     </div>
                 <% } %>
                 
-            </div>
-
             <div id="alumnosDiplomado"></div>
             <% let count_alumnos = 0 %>
 
@@ -131,21 +136,21 @@
                 <% } else { %>
 
             <div id="tablaAlumnos" class="table-container">
-                <table class="table is-bordered is-hoverable is-fullwidth">
+                <table class="table is-hoverable is-fullwidth">
                     <thead>
                         <tr>
                         <tr>
-                            <th>
-                                <p class="is-size-5"><strong>Matricula: </strong></p>
+                            <th style="text-align: left;">
+                                Matrícula
                             </th>
-                            <th>
-                                <p class="is-size-5"><strong>Nombre: </strong></p>
+                            <th style="text-align: left;">
+                                Nombre
                             </th>
-                            <th>
-                                <p class="is-size-5"><strong>Apellidos: </strong></p>
+                            <th style="text-align: left;">
+                                Apellidos
                             </th>
-                            <th>
-                                <p class="is-size-5"><strong>Fecha Inscripción: </strong></p>
+                            <th style="text-align: left;">
+                                Fecha Inscripción
                             </th>
                         </tr>
                     </thead>
@@ -178,11 +183,9 @@
                 </nav> 
             </div>
             <% } %>
-            </div>
     </body>
     </section>
+    <%- include('../includes/foot.ejs') %>
     <script type="text/javascript" src="/js/pagination.js"></script>
-    <script type="text/javascript" src="/js/boton_regresar.js"></script>
     <script type="text/javascript" src="/js/detalles_diplomado.js"></script>
-    <script type="text/javascript" src="/js/boton_regresar.js"></script>
     </html>

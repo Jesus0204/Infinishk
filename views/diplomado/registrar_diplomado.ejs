@@ -5,9 +5,9 @@
 %>
 <body>
     <section class="section">
-        <div class="container" style="display: flex; justify-content: center;">
+        <div class="container">
             <div class="columns">
-            <div class="column is-1">
+            <div class="column is-1 is-offset-3">
                 <a id="Boton_regresar" type="submit" class="is-responsive"
                     onclick="regresar()">
                     <span class="icon">
@@ -15,45 +15,96 @@
                     </span>
                 </a>
             </div>
-            <div class="column is-12">
-                <p class="title" style="text-align: center;">Registrar Diplomado</p>
+            <div class="column">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    REGISTRAR DIPLOMADO
+                </label>
             </div>
         </div>
+        </div>
         
+        <div class="container" style="display: flex; justify-content: center;">
             <form id="formDiplomado" action="/diplomado/registrar_diplomado" method="POST" style="width: 50%; margin-top: 50px;" placeholder="Horas / meses">
                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
-                
-                <label for="nombreDiplomado" class="label is-large">Nombre:</label>
-                <input type="text" id="nombreDiplomado" name="nombreDiplomado" required class="input is-large" onchange="validateAll()" placeholder="Nombre del Diplomado">
-                <div id="errorNombre" style="color: red;"></div> <!-- Mensaje de error para el nombre -->
-                
-                <label for="precioDiplomado" class="label is-large">Precio:</label>
-                <input type="number" id="precioDiplomado" name="precioDiplomado" step="any" required class="input is-large" onchange="validateAll()" placeholder="Precio del Diplomado">
-                <div id="errorPrecio" style="color: red;"></div> <!-- Mensaje de error para el precio -->
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium">Nombre:</label>
+                    </div>
+                    <div class="column">
+                        <p id="ayuda_nombre_vacio"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            Por favor escribe un nombre para el diplomado</p>
+                        <p id="ayuda_nombre_duplicado"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            Ese diplomado ya está registrado</p>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input name="nombreDiplomado" class="input is-medium" id="nombre"
+                                    placeholder="Nombre del diplomado" type="text">
+                                <span class="icon is-small is-left">
+                                    <i class="fa-solid fa-graduation-cap" style="color: #95404c;"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-                <label for="Fecha Inicio" class="label is-large">Fecha Inicio/Fecha Fin:</label>
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium">Precio:</label>
+                    </div>
+                    <div class="column">
+                        <p id="ayuda_precio_vacio"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            Por favor escribe un precio para el diplomado</p>
+                        <p id="ayuda_precio_exponente"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            El precio no puede tener exponentes</p>
+                        <p id="ayuda_precio_negativo"
+                            class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                            El precio no puede ser negativo</p>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input name="precioDiplomado" class="input is-medium" id="precio"
+                                    placeholder="Precio del diplomado" type="number">
+                                <span class="icon is-small is-left">
+                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="columns">
+                    <div class="column">
+                        <label class="label is-medium">Fecha Inicio / Fecha Fin:</label>
+                    </div>
+                </div>
+                    <p id="ayuda_fecha_vacia"
+                        class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
+                        Por favor escoge fechas para el diplomado</p>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input type="date" id="fecha" name="fecha" class="datepicker">
-                            <span class="icon is-small is-left">
-                                <i class="fa-solid fa-calendar-week" style="color: #95404c;"></i>
-                            </span>
+                            <input type="date" id="fecha" name="fechaDiplomado" class="datepicker">
                         </p>
                     </div>
-                <br>
-                <br>
-                <button type="submit" id="btnSubmit" class="button is-large is-rounded is-responsive">
-                    <span>Registrar Diplomado</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
-                <p id="errorMessage" style="color: red;"></p>
+
+                <div class="column is-offset-5">
+                    <p class="control">
+                        <button type="submit" id="btnSubmit" class="confirmar-button is-medium is-responsive"
+                            style="font-size: large; padding-left: 1em;" disabled>
+                            <span>REGISTRAR DIPLOMADO</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </p>
+                </div>
             </form>
         </div>
     </section>
+
     <script type="text/javascript" src="/js/registrar_diplomado.js"></script>
     <script type="text/javascript" src="/js/boton_regresar.js"></script>
 </body>

@@ -18,7 +18,7 @@
 
 <section class="section">
     <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow">
             <a id="Boton_regresar" type="submit" class="is-responsive"
                 onclick="regresar()">
                 <span class="icon">
@@ -241,7 +241,7 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="motivo_col">Motivo: </label>
                             </div>
                             <div class="column">
@@ -268,20 +268,20 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="monto_col">Monto:</label>
                             </div>
                             <div class="column">
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio"
                                     style="padding: 0.5em; margin-top: -1em;">
                                     Por favor
-                                    escribe un monto válido del Pago.</p>
+                                    escribe un monto válido para el pago</p>
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo"
                                     style="padding: 0.5em; margin-top: -1em;">Por
-                                    favor escribe un número mayor a 0.</p>
+                                    favor escribe un número mayor a 0</p>
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente"
                                     style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
-                                    exponente.
+                                    exponente
                                 </p>
                                 <div class="field">
                                     <p class="control has-icons-left">
@@ -305,18 +305,18 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="fechapago_col">Fecha de Pago:</label>
                             </div>
                             <div class="column">
                                 <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_col"
                                     style="padding: 0.5em; margin-top: -1em;">
-                                    Por favor selecciona una fecha. </p>
+                                    Por favor selecciona una fecha</p>
                                 <input name="fecha" id="fechapago_col" class="input is-medium" type="date">
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
+                            <div class="column is-3">
                                 <label class="label is-medium" for="metodo_col">Método de Pago: </label>
                             </div>
                             <div class="column">
@@ -341,11 +341,11 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-5">
-                                <label class="label is-medium" for="nota_col">Nota: </label>
+                            <div class="column is-3">
+                                <label class="label is-medium" for="nota_col">Nota (opcional): </label>
                             </div>
                             <div class="column">
-                                <textarea name="nota" id="nota_col" class="input is-medium"
+                                <textarea name="nota" id="nota_col" class="textarea is-medium" rows="2"
                                     placeholder="Escribe tu nota aquí."></textarea>
                             </div>
                         </div>
@@ -363,8 +363,8 @@
                                     </button>
                                 <% } else { %>
                                     <button class="js-modal-trigger confirmar-button is-responsive"
-                                        type="button" style="font-size: large; padding-left: 1.5em;" id="boton_pago_col"
-                                        data-target="modal-confirmar-registro_colegiatura" type="button">
+                                        type="button" style="font-size: large; padding-left: 1.5em; background-color: #000000;" id="boton_pago_col"
+                                        data-target="modal-confirmar-registro_colegiatura">
                                         <span>REGISTRAR PAGO</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -379,9 +379,13 @@
                                 <header class="modal-card-head">
                                     <p class="modal-card-title" style="text-align: center;">
                                         <% if (alumno[0].Matricula[0] == 1) { %>
-                                        <strong>Registrar Pago: Colegiatura</strong>
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                REGISTRAR PAGO: COLEGIATURA
+                                            </label>
                                         <% } else if (alumno[0].Matricula[0] == 8) {%>
-                                        <strong>Registrar Pago: Diplomado</strong>
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                REGISTRAR PAGO: DIPLOMADO
+                                            </label>
                                         <% } %>
                                     </p>
                                     <button type="button" class="delete" aria-label="delete"></button>
@@ -400,14 +404,14 @@
                                         </div>
                                         <div class=" column is-5">
                                             <p class="is-size-5" style="text-align: center;">
-                                                <strong>Matricula: </strong><%= alumno[0].Matricula %>
+                                                <strong>Matrícula: </strong><%= alumno[0].Matricula %>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="columns is-vcentered">
                                         <div class="column is-half">
                                             <p class="is-size-5" style="text-align: center;" id="motivo_modal_col">
-                                                <strong>Motivo: </strong> Motivo
+                                                <strong>Motivo: </strong>
                                             </p>
                                         </div>
                                         <div class=" column is-half">
@@ -457,25 +461,27 @@
                                 <footer class="modal-card-foot" style="justify-content: center;">
                                     <div class="field is-grouped">
                                         <p class="control">
-                                            <button class="button is-rounded is-medium is-responsive"
-                                                aria-label="close" style="font-size: large; margin: 8px 2px;"
+                                            <button class="button is-medium is-responsive"
+                                                aria-label="close" style="font-size: large; margin: 8px 2px;
+                                                padding-left: 0.5em;"
                                                 type="button">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-circle-chevron-left"
                                                         style="color: #ffffff;"></i>
                                                 </span>
-                                                <span>Regresar</span>
+                                                <span>REGRESAR</span>
                                             </button>
                                         </p>
                                         <p class="control">
-                                            <button class="button is-rounded is-medium is-responsive"
-                                                style="font-size: large; margin: 8px 2px; background-color: #000000;"
+                                            <button class="button is-medium is-responsive"
+                                                style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                padding-left: 0.7em;"
                                                 type="submit">
                                                 <span class="icon is-large">
                                                     <i class="fa-solid fa-cash-register"
                                                         style="color: #ffffff;"></i>
                                                 </span>
-                                                <span>Registrar Pago</span>
+                                                <span>REGISTRAR PAGO</span>
                                             </button>
                                         </p>
                                 </footer>
@@ -487,11 +493,11 @@
                         style="background-color: #5a6581; color:#ffffff; text-align: center;">
                         <div class="message-header"
                             style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                            <p>No se puede registrar un pago a este alumno</p>
+                            <p>No se puede registrar un pago a este alumno.</p>
                             <button id="btn_cursa_diplomado" class="delete" aria-label="delete"></button>
                         </div>
                         <div class="message-body" style="color:#ffffff;">
-                            Este alumno no se encuentra cursando un Diplomado, por lo que no se puede registrar un
+                            Este alumno no se encuentra cursando un diplomado, por lo que no se puede registrar un
                             pago.
                         </div>
                     </article>
@@ -500,7 +506,7 @@
                         style="background-color: #5a6581; color:#ffffff; text-align: center;">
                         <div class="message-header"
                             style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                            <p>No se puede registrar un pago a este alumno</p>
+                            <p>No se puede registrar un pago a este alumno.</p>
                             <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
                         </div>
                         <div class="message-body" style="color:#ffffff;">
@@ -514,7 +520,7 @@
                         style="background-color: #5a6581; color:#ffffff; text-align: center;">
                         <div class="message-header"
                             style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                            <p>No se puede registrar un pago a este alumno</p>
+                            <p>No se puede registrar un pago a este alumno.</p>
                             <button id="btn_no_colegiatura" class="delete" aria-label="delete"></button>
                         </div>
                         <div class="message-body" style="color:#ffffff;">
@@ -528,24 +534,20 @@
                 <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <p class="is-size-5" id="monto">
-                                <strong>Monto: </strong>
-                                $<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                             }) %>
-                            </p>
+                    <div class="columns">
+                        <div class="column is-3">
+                            <label class="label is-medium" for="pago">Otros Pagos:</label>
                         </div>
                         <div class="column">
-                            <label class="label is-medium" for="pago">Otros pagos:</label>
                             <div class="control has-icons-left">
-                                <div class="select is-medium">
-                                    <select name="pago" id="pago">
+                                <div class="select is-medium" style="width: 110%;">
+                                    <select name="pago" id="pago" style="width: 110%;">
                                         <% for (let pago of pagos_extra) { %>
                                         <option value="<%= pago.IDPagosExtras %>"
-                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
+                                            data-monto="<%= pago.montoPagar.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                             })  %>">
                                             <%= pago.motivoPago %></option>
                                         <% } %>
                                     </select>
@@ -557,18 +559,38 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
+                            <label class="label is-medium" for="monto">Monto:</label>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input name="monto" class="input is-medium" id="monto"
+                                        placeholder="Monto" readonly
+                                        value="<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                             }) %>">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-3">
                             <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
                         </div>
                         <div class="column">
                             <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_extra"
                                 style="padding: 0.5em; margin-top: -1em;">
-                                Por favor selecciona una fecha. </p>
+                                Por favor selecciona una fecha </p>
                             <input name="fecha" id="fechapago" class="input is-medium" type="date">
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
+                        <div class="column is-3">
                             <label class="label is-medium" for="metodo">Método de Pago: </label>
                         </div>
                         <div class="column">
@@ -593,11 +615,11 @@
                         </div>
                     </div>
                     <div class="columns">
-                        <div class="column is-5">
-                            <label class="label is-medium" for="nota">Nota: </label>
+                        <div class="column is-3">
+                            <label class="label is-medium" for="nota">Nota (opcional): </label>
                         </div>
                         <div class="column">
-                            <textarea name="nota" id="nota" class="input is-medium"
+                            <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
                                 placeholder="Escribe tu nota aquí."></textarea>
                         </div>
                     </div>
@@ -619,7 +641,9 @@
                         <div class="modal-card">
                             <header class="modal-card-head">
                                 <p class="modal-card-title" style="text-align: center;">
-                                    <strong>Registrar Pago: Otros Pagos</strong>
+                                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                                        REGISTRAR PAGO: OTROS PAGOS
+                                    </label>
                                 </p>
                                 <button type="button" class="delete" aria-label="delete"></button>
                             </header>
@@ -637,7 +661,7 @@
                                     </div>
                                     <div class=" column is-5">
                                         <p class="is-size-5" style="text-align: center;">
-                                            <strong>Matricula: </strong><%= alumno[0].Matricula %>
+                                            <strong>Matrícula: </strong><%= alumno[0].Matricula %>
                                         </p>
                                     </div>
                                 </div>
@@ -697,23 +721,23 @@
                             <footer class="modal-card-foot" style="justify-content: center;">
                                 <div class="field is-grouped">
                                     <p class="control">
-                                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
+                                        <button class="button is-medium is-responsive" aria-label="close"
                                             style="font-size: large; margin: 8px 2px;" type="button">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-circle-chevron-left"
                                                     style="color: #ffffff;"></i>
                                             </span>
-                                            <span>Regresar</span>
+                                            <span>REGRESAR</span>
                                         </button>
                                     </p>
                                     <p class="control">
-                                        <button class="button is-rounded is-medium is-responsive"
+                                        <button class="button is-medium is-responsive"
                                             style="font-size: large; margin: 8px 2px; background-color: #000000;"
                                             type="submit">
                                             <span class="icon is-large">
                                                 <i class="fa-solid fa-cash-register" style="color: #ffffff;"></i>
                                             </span>
-                                            <span>Registrar Pago</span>
+                                            <span>REGISTRAR PAGO</span>
                                         </button>
                                     </p>
                             </footer>

@@ -335,11 +335,11 @@ exports.post_recibir_pago = async (request, response, next) => {
                                     } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
                                         // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
                                         await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                                        await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
+                                        await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), IDCol);
                                     } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                                         // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                                         await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
-                                        await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
+                                        await Colegiatura.update_Colegiatura(monto_a_usar, IDCol);
                                     }
 
                                     // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando

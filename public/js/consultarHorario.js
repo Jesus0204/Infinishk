@@ -6,6 +6,51 @@ const table2_body = document.querySelector('#table_2_body');
 const column_table1 = document.querySelector('#column_table1');
 const column_table2 = document.querySelector('#column_table2');
 
+moment.locale('es-mx');
+
+function getPaymentDates(numPagos, semesterStart) {
+    let paymentDates = [];
+    let startDate, endDate;
+
+    // Determine start and end dates based on the semester
+    if (semesterStart === 'first') {
+        startDate = new Date(new Date().getFullYear(), 0, 20); // 20th January
+        endDate = new Date(new Date().getFullYear(), 5, 5); // 5th June
+    } else if (semesterStart === 'second') {
+        startDate = new Date(new Date().getFullYear(), 6, 20); // 20th July
+        endDate = new Date(new Date().getFullYear(), 11, 5); // 5th December
+    } else {
+        throw new Error('Invalid semester start. Use "first" or "second".');
+    }
+
+    if (numPagos == 1) {
+        // If only one payment, set it to the start date
+        paymentDates.push(moment(startDate).format('LL'));
+    } else if (numPagos == 6) {
+        // Special case: six payments
+        let currentPaymentDate = moment(startDate);
+        paymentDates.push(moment(currentPaymentDate).format('LL'));
+        for (let i = 1; i < numPagos; i++) {
+            currentPaymentDate.add(1, 'month').date(5); // Move to the 5th of the next month
+            paymentDates.push(moment(currentPaymentDate).format('LL'));
+        }
+    } else {
+        // Calculate the interval between payments in days
+        const interval = (endDate - startDate) / (numPagos - 1);
+
+        // Generate payment dates
+        for (let i = 0; i < numPagos; i++) {
+            let paymentDate = new Date(startDate.getTime() + interval * i);
+            paymentDates.push(moment(paymentDate).format('LL'));
+        }
+
+        // Ensure the last payment date is correctly set to the end date
+        paymentDates[paymentDates.length - 1] = moment(endDate).format('LL');
+    }
+
+    return paymentDates;
+}
+
 function plans_desktop(precioFinal) {
     let plans = [];
     for (let plan of select_plan) {
@@ -13,8 +58,19 @@ function plans_desktop(precioFinal) {
         let table_1 = '';
         let table_2 = '';
 
+        let now = moment().format('MM');
+        let semesterStart;
+
+        if (now >= 1 && now <= 6) {
+            semesterStart = 'first'
+        } else if (now >= 7 && now <= 12) {
+            semesterStart = 'second'
+        }
+
+        let paymentDates = getPaymentDates(numPagos, semesterStart);
+
         if (numPagos == 1) {
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
             plans.push({
                 numPagos: numPagos,
                 table_1: table_1,
@@ -23,8 +79,8 @@ function plans_desktop(precioFinal) {
         } else if (numPagos == 2) {
             let pago1 = precioFinal * 0.6;
             let precioRestante = precioFinal * 0.4;
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[1]}</td></tr>`;
             table_2 = '';
             plans.push({
                 numPagos: numPagos,
@@ -34,9 +90,9 @@ function plans_desktop(precioFinal) {
         } else if (numPagos == 3) {
             let pago1 = precioFinal * 0.4;
             let precioRestante = (precioFinal * 0.6) / 2;
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #3</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[1]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #3</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[2]}</td></tr>`;
             plans.push({
                 numPagos: numPagos,
                 table_1: table_1,
@@ -46,20 +102,20 @@ function plans_desktop(precioFinal) {
             let half_up = Math.ceil(numPagos / 2);
             let pago1 = precioFinal * 0.23;
             let precioRestante = precioFinal * 0.77;
-            let pagoMensual = precioRestante / (numPagos - 1);
+            let pagoMensual = parseFloat((precioRestante / (numPagos - 1)).toFixed(2));
 
-            let totalCalculated = pago1 + pagoMensual.toFixed(2) * (numPagos - 1);
-            let adjustment = precioFinal - totalCalculated;
+            let totalCalculated = pago1 + (pagoMensual * (numPagos - 1));
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
 
             // La primera tabla se llena
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
             for (let table1_pago = 1; table1_pago < half_up; table1_pago++) {
                 if (table1_pago + 1 == numPagos) {
                     // Último pago ajustado
                     let pagoFinal = pagoMensual + adjustment;
-                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${table1_pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${table1_pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[table1_pago]}</td></tr>`;
                 } else {
-                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${table1_pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${table1_pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[table1_pago]}</td></tr>`;
                 }
             }
 
@@ -68,9 +124,9 @@ function plans_desktop(precioFinal) {
                 if (table2_pago + 1 == numPagos) {
                     // Último pago ajustado
                     let pagoFinal = pagoMensual + adjustment;
-                    table_2 += `<tr><td class="has-text-weight-semibold">Pago #${table2_pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_2 += `<tr><td class="has-text-weight-semibold">Pago #${table2_pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[table2_pago]}</td></tr>`;
                 } else {
-                    table_2 += `<tr><td class="has-text-weight-semibold">Pago #${table2_pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_2 += `<tr><td class="has-text-weight-semibold">Pago #${table2_pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[table2_pago]}</td></tr>`;
                 }
             }
 
@@ -93,8 +149,19 @@ function plans_mobile(precioFinal){
         let table_1 = '';
         let table_2 = '';
 
+        let now = moment().format('MM');
+        let semesterStart;
+
+        if (now >= 1 && now <= 6) {
+            semesterStart = 'first'
+        } else if (now >= 7 && now <= 12) {
+            semesterStart = 'second'
+        }
+
+        let paymentDates = getPaymentDates(numPagos, semesterStart);
+
         if (numPagos == 1){
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
 
             plans.push({
                 numPagos: numPagos,
@@ -104,8 +171,8 @@ function plans_mobile(precioFinal){
         } else if (numPagos == 2) {
             let pago1 = precioFinal * 0.6;
             let precioRestante = precioFinal * 0.4;
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[1]}</td></tr>`;
             table_2 = '';
             plans.push({
                 numPagos: numPagos,
@@ -115,9 +182,9 @@ function plans_mobile(precioFinal){
         } else if (numPagos == 3) {
             let pago1 = precioFinal * 0.4;
             let precioRestante = (precioFinal * 0.6) / 2;
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>
-                       <tr><td class="has-text-weight-semibold">Pago #3</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[1]}</td></tr>
+                       <tr><td class="has-text-weight-semibold">Pago #3</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[2]}</td></tr>`;
             plans.push({
                 numPagos: numPagos,
                 table_1: table_1,
@@ -126,20 +193,20 @@ function plans_mobile(precioFinal){
         } else {
             let pago1 = precioFinal * 0.23;
             let precioRestante = precioFinal * 0.77;
-            let pagoMensual = precioRestante / (numPagos - 1);
+            let pagoMensual = parseFloat((precioRestante / (numPagos - 1)).toFixed(2));
 
-            let totalCalculated = pago1 + pagoMensual.toFixed(2) * (numPagos - 1);
-            let adjustment = precioFinal - totalCalculated;
+            let totalCalculated = pago1 + (pagoMensual * (numPagos - 1));
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
 
-            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', {minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+            table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', {minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
 
             for (let pago = 1; pago < numPagos; pago++) {
                 if (pago + 1 == numPagos) {
                     // Último pago ajustado
                     let pagoFinal = pagoMensual + adjustment;
-                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
                 } else {
-                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>20 de Septiembre</td></tr>`;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
                 }
             }
             plans.push({
@@ -223,6 +290,7 @@ function eliminar(materiaRow) {
     const horario = document.querySelector('#horario' + materiaRow).value;
     const horarioTexto = document.querySelector('#horarioTexto' + materiaRow).value;
     const precio = document.querySelector('#precio' + materiaRow).value;
+    const idGrupo = document.querySelector('#idGrupo' + materiaRow).value;
 
     // Sacar la tabla donde se va a agregar datos y el container
     const table_eliminados = document.querySelector('#table_eliminados');
@@ -293,6 +361,7 @@ function eliminar(materiaRow) {
     createHiddenInput(newRow, 'fechaInicioEliminado[]', fechaInicio, `fechaInicioEliminado${materiaRow}`);
     createHiddenInput(newRow, 'fechaFinEliminado[]', fechaFin, `fechaFinEliminado${materiaRow}`);
     createHiddenInput(newRow, 'grupoHorarioEliminado[]', horario, `horarioEliminado${materiaRow}`);
+    createHiddenInput(newRow, 'idGrupoEliminado[]', idGrupo, `idGrupoEliminado${materiaRow}`);
     createHiddenInput(newRow, '', horarioTexto, `horarioTextoEliminado${materiaRow}`);
 
     // Borrar la tabla del front end
@@ -311,30 +380,38 @@ function eliminar(materiaRow) {
         informacionMateria.classList.remove('is-hidden');
     }
 
-
     const subtotal = document.querySelector('#subtotal');
     const precioFinal = document.querySelector('#precioFinalModificado');
     const porcBeca = document.querySelector('#porcBeca').value;
 
+    // Function to clean and convert the currency string to a number
+    function parseCurrency(value) {
+        return parseFloat(value.trim().replace(/\$|,/g, ''));
+    }
+    
     // Limpia el número para poder hacer matemáticas con él
-    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
-    const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
-    const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
-
-    const newSubtotal = subtotalNum - precioMateriaNum;
+    const precioFinalNum = parseCurrency(precioFinal.textContent);
+    const precioMateriaNum = parseCurrency(precio);
+    
     const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
     const newPrecioFinal = precioFinalNum - materiaPrecioBeca;
-
-    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    
     precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 
-    const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
+    if (subtotal) {
+        const subtotalNum = parseCurrency(subtotal.textContent);
+        const newSubtotal = subtotalNum - precioMateriaNum;
+    
+        subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    const precioFinalNumTabla = parseCurrency(precioFinal.textContent);
     setTable(precioFinalNumTabla);
 }
 
@@ -350,6 +427,7 @@ function agregar(materiaRow) {
     const horario = document.querySelector('#horarioEliminado' + materiaRow).value;
     const horarioTexto = document.querySelector('#horarioTextoEliminado' + materiaRow).value;
     const precio = document.querySelector('#precioEliminado' + materiaRow).value;
+    const idGrupo = document.querySelector('#idGrupoEliminado' + materiaRow).value;
 
     const table_confirmar = document.querySelector('#table_confirmar');
     const materiasPorConfirmar = document.querySelector('#materiasPorConfirmar');
@@ -430,6 +508,7 @@ function agregar(materiaRow) {
     createHiddenInput(newRow, 'fechaFin[]', fechaFin, `fechaFin${materiaRow}`);
     createHiddenInput(newRow, 'grupoHorario[]', horario, `horario${materiaRow}`);
     createHiddenInput(newRow, '', horarioTexto, `horarioTexto${materiaRow}`);
+    createHiddenInput(newRow, 'idGrupo[]', idGrupo, `idGrupo${materiaRow}`);
 
     // Borrar la tabla del front end
     document.querySelector('#tablaEliminados' + materiaRow).remove();
@@ -448,22 +527,26 @@ function agregar(materiaRow) {
     const porcBeca = document.querySelector('#porcBeca').value;
 
     // Limpia el número para poder hacer matemáticas con él
-    const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
     const precioFinalNum = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
     const precioMateriaNum = parseFloat(precio.replace(/\$|,/g, ''));
-
-    const newSubtotal = subtotalNum + precioMateriaNum;
+    
     const materiaPrecioBeca = precioMateriaNum - (precioMateriaNum * (porcBeca / 100));
     const newPrecioFinal = precioFinalNum + materiaPrecioBeca;
-
-    subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    
     precioFinal.textContent = '$' + newPrecioFinal.toLocaleString('mx', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+    
+    if (subtotal) {
+        const subtotalNum = parseFloat(subtotal.textContent.trim().replace(/\$|,/g, ''));
+        const newSubtotal = subtotalNum + precioMateriaNum;
+    
+        subtotal.textContent = '$' + newSubtotal.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
 
     const precioFinalNumTabla = parseFloat(precioFinal.textContent.trim().replace(/\$|,/g, ''));
     setTable(precioFinalNumTabla);

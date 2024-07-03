@@ -40,8 +40,8 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-1">
-                    <a id="Boton_regresar" type="submit" class="is-responsive"
-                        onclick="regresar()">
+                    <a id="Boton_regresar" class="is-responsive"
+                        href="/alumnos/fetch_datos">
                         <span class="icon">
                             <i class="fas fa-arrow-left fa-2x"></i>
                         </span>
@@ -63,7 +63,7 @@
                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                             <p class="control">
-                                <button class="button is-rounded is-responsive" style="font-size: large;" type="submit">
+                                <button class="button is-responsive" style="font-size: large;" type="submit">
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-circle-plus"></i>
                                     </span>
@@ -81,7 +81,7 @@
 
             <div id="modificacion_datos" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
-                ¡Datos modificados! Recargando datos...
+                ¡Datos modificados! Recargando página...
             </div>
             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="alumno" id="alumno" value="<%= alumnoConsulta[0].Matricula %>">
@@ -101,12 +101,14 @@
                     </div>
                 </div>
                 <div class="column">
+                    <p id="ayuda_beca_vacia" class="help is-hidden has-text-danger-dark ayuda-beca-vacia"
+                        style="padding: 0.5em;">El porcentaje de beca no puede estar vacío. Si no deseas aplicar una beca, escribe 0</p>
                     <p id="ayuda_beca_negativa" class="help is-hidden has-text-danger-dark ayuda-beca-negativa"
-                        style="padding: 0.5em;">El porcentaje de beca no puede ser negativo.</p>
+                        style="padding: 0.5em;">El porcentaje de beca no puede ser negativo</p>
                     <p id="ayuda_beca_exponente" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                        style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes.</p>
+                        style="padding: 0.5em;">El porcentaje de beca no puede tener exponentes</p>
                     <p id="ayuda_beca_rango" class="help is-hidden has-text-danger-dark ayuda-beca-exponente"
-                        style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100.</p>
+                        style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
                         <input id="beca" name="beca"
@@ -137,11 +139,11 @@
                 <% } %>
                 <div class="column">
                     <p id="ayuda_ref_vacia" class="help is-hidden has-text-danger-dark ayuda-ref-vacia"
-                        style="padding: 0.5em;">Por favor escribe una referencia bancaria.</p>
+                        style="padding: 0.5em;">Por favor escribe una referencia bancaria</p>
                     <p id="ayuda_ref_negativa" class="help is-hidden has-text-danger-dark ayuda-ref-negativa"
-                        style="padding: 0.5em;">La referencia bancaria no puede ser negativa.</p>
+                        style="padding: 0.5em;">La referencia bancaria no puede ser negativa</p>
                     <p id="ayuda_ref_exponente" class="help is-hidden has-text-danger-dark ayuda-ref-exponente"
-                        style="padding: 0.5em;">La referencia bancaria no puede tener exponentes.</p>
+                        style="padding: 0.5em;">La referencia bancaria no puede tener exponentes</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
                         <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
@@ -150,7 +152,69 @@
                 </div>
             </div>
             <div class="columns">
-                <div class="column is-4 is-offset-8">
+                <div class="column is-2">
+                    <div class="dropdown is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button is-large is-responsive is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu"
+                                style="justify-content: space-between; align-items: center; padding: 0.3em 0.55em;">
+                                <span>
+                                    Realizar Descarga
+                                </span>
+                                <span class="icon" style="padding-right: 0.5em;">
+                                    <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <% if(matricula[0] == '1') { %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_deuda">
+                                    <label class="checkbox">
+                                        Colegiatura
+                                    </label>
+                                </div>
+                                <% } %>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagos">
+                                    <label class="checkbox">
+                                        Historial Colegiatura
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_solicitudes">
+                                    <label class="checkbox">
+                                        Solicitudes Pendientes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_pagosExtra">
+                                    <label class="checkbox">
+                                        Historial Solicitudes
+                                    </label>
+                                </div>
+                                <div class="dropdown-item">
+                                    <input type="checkbox" id="checkbox_materias">
+                                    <label class="checkbox">
+                                        Materias
+                                    </label>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <div class="dropdown-item">
+                                    <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
+                                        <span>
+                                            Descargar PDF
+                                        </span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-4 is-offset-6">
                     <button id="Boton_modificar" type="submit" class="confirmar-button is-responsive"
                         style="font-size: large; padding-right: 1.5em;" onclick="modificar()">
                         <span class="icon is-large"><i class="fa-solid fa-floppy-disk"></i></span>
@@ -158,6 +222,7 @@
                     </button>
                 </div>
             </div>
+            
 
             <!-- menú de tabs -->
             <div class="columns">
@@ -191,7 +256,7 @@
                             <li id="nav_pagos_Otros">
                                 <a onclick="muestra_otros_cargos()">
                                     <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                                    <span>Otros Pagos</span>
+                                    <span>Historial Otros Pagos</span>
                                 </a>
                             </li>
                             <li id="nav_solicitudes">
@@ -304,7 +369,7 @@
                     <% } else { %>
                     <div class="box">
                         <p class="has-text-weight-medium has-text-black">
-                            Este alumno no ha pagado nada dentro de "Otros Pagos".
+                            Este alumno todavía no ha pagado ningún pago de tipo Otros Pagos.
                         </p>
                     </div>
                     <% } %>
@@ -353,9 +418,6 @@
                                 </tbody>
                             </table>
                         <% } else { %>
-                            <label class="label is-medium has-text-danger has-text-weight-semibold" for="IDPlanPago">
-                                IMPORTANTE
-                            </label>
                             <div class="box">
                                 <p class="has-text-weight-medium has-text-black">
                                     Este alumno todavía no ha pagado ningún diplomado. 
@@ -415,91 +477,113 @@
                         <div id="diplomados_activos" class="container">
                             <% if (error) { %>
                                 <div id="errorNotification" class="notification is-danger">
-                                    Este alumno aun no ha confirmado sus materias.
+                                    Este alumno aún no ha confirmado sus materias.
                                 </div>
                             <% } %>
+
+                            <!-- HORARIO EMPIEZA AQUI  -->
+
                             <% if(confirmacion){%>
-                                <h3 class="title is-2">Consultar Horario</h3>
                             <%}%>
                             <% if(confirmacion === 1){%>
                             <% if (schedule[0].length === 0) { %>
-                            <h3 class="title is-2">Horario no disponible por el momento.</h3>
+                            <div class="box">
+                                <p class="has-text-weight-medium has-text-black">
+                                    Las materias de este alumno no están disponible por el momento. 
+                                </p>
+                            </div>
                             <% } else { %>
+                                <div id="eliminacion" class="notification is-hidden"
+                                    style="background-color: #5a6581; color:#ffffff;">
+                                    ¡Materia eliminada! Recargando página...
+                                </div>
+
+                                <div class="table-container">    
+                                    <table class="table is-hoverable is-fullwidth">
+                                    <!-- encabezado de la tabla -->
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">
+                                                Materia
+                                            </th>
+                                            <th style="text-align: left;">
+                                                Profesor
+                                            </th>
+                                            <th style="text-align: left;">
+                                                Horario
+                                            </th>
+                                            <th style="text-align: left;">
+                                                Salón
+                                            </th>
+                                            <th style="text-align: left;">
+                                                Créditos
+                                            </th>
+                                            <th style="text-align: left;">
+                                                Costo
+                                            </th>
+                                            <% if (mostrarEliminar) { %>
+                                            <th class="eliminar" style="text-align: left;">
+                                                Eliminar
+                                            </th>                                                
+                                            <% } %>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                             <% for (let grupo of schedule[0]) { %>
-                            <table class="table is bordered is hoverable is-fullwidth">
-                                <tbody>
                                     <tr>
                                         <td>
-                                            <div class="column">
-                                                <p>Unidad de Formación: <%= grupo.IDGrupo %>
-                                                </p>
-                                                <h3 class="title is-5">
-                                                    <%= grupo.Nombre %>
-                                                </h3>
-                                                <p>
-                                                    <span class="icon is-small">
-                                                        <i class="fa-regular fa-user"></i>
-                                                    </span>
-                                                    <strong>Profesor: </strong>
-                                                    <%= grupo.Profesor %>
-                                                </p>
-                                                <p>
-                                                    <span class="icon is-small">
-                                                        <i class="fa-regular fa-clock"></i>
-                                                    </span>
-                                                    <strong>Horario: </strong>
-                                                    <%= grupo.Horario %>
-                                                </p>
-                                                <p>
-                                                    <span class="icon is-small">
-                                                        <i class="fa-regular fa-building"></i>
-                                                    </span>
-                                                    <strong>Salón: </strong>
-                                                    <%= grupo.Salon %>
-                                                </p>
-                                                <p>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-graduation-cap"></i>
-                                                    </span>
-                                                    <strong>Créditos: </strong>
-                                                    <%= grupo.Creditos.toLocaleString('mx', {
-                                                        minimumFractionDigits: 1, maximumFractionDigits: 1
-                                                    }) %>
-                                                </p>
-                                                <p>
-                                                    <span class="icon is-small">
-                                                        <i class="fa-solid fa-tags"></i>
-                                                    </span>
-                                                    <strong>Costo (MXN): </strong>$<%=
-                                                                                            grupo.Precio_materia.toLocaleString('mx', {
-                                                                                            minimumFractionDigits: 2, maximumFractionDigits: 2
-                                                                                            }) %>
-                                                </p>
-                                            </div>
+                                            <strong>
+                                                <%= grupo.Nombre %>
+                                            </strong>
                                         </td>
-                                        <td style="display: block;">
-                                            <br><br><br><br>
+                                        <td><%= grupo.Profesor %></td>
+                                        <td>
+                                            <%- grupo.Horario.replace(/, /g, '<br>') %>
+                                            <br>
+                                            <br>
+                                        </td>
+                                        <td style="padding-top: 0.7em;"><%= grupo.Salon %></td>
+                                        <td>
+                                            <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                                <span style="color: #21c85b">
+                                                    <%= grupo.Creditos.toLocaleString('mx', {
+                                                                minimumFractionDigits: 1, maximumFractionDigits: 1
+                                                            }) %>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            $<%= grupo.Precio_materia.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                    }) %>
+                                        </td>
+
+                                        <% if (mostrarEliminar) { %>
+                                        <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
-                                                    <button type="submit"
-                                                        class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                                        style="font-size: medium; background-color: #000000;" id="Boton_eliminar"
+                                                    <button type="button" id="Boton_eliminar"
+                                                        class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                        style="background-color: #f6d5d8;" 
                                                         data-target="modal-confirmar-dar_baja<%= grupo.IDGrupo %>">
-                                                        <span class="icon is-large">
-                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                        <span class="icon is-small" style="color: #f83362">
+                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </span>
-                                                        <span>Dar de Baja</span>
-                                                    </button>
+                                                    </button>    
                                                 </div>
                                             </div>
                                         </td>
+                                        <% } %>
+                                        </tr>
             
                                         <div id="modal-confirmar-dar_baja<%= grupo.IDGrupo %>" class="modal">
                                             <div class="modal-background"></div>
                                             <div class="modal-card">
                                                 <header class="modal-card-head">
                                                     <p class="modal-card-title" style="text-align: center;">
-                                                        <strong> Dar de Baja Materia Extra</strong>
+                                                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                            DAR DE BAJA MATERIA
+                                                        </label>
                                                     </p>
                                                     <button class="delete" aria-label="delete"></button>
                                                 </header>
@@ -509,7 +593,7 @@
                                                     </p>
                                                     <br>
                                                     <p class="is-size-5" style="text-align: center;">
-                                                        Los datos del grupo a dar de baja son los siguientes:
+                                                        Los datos de la materia a dar de baja son los siguientes:
                                                     </p>
                                                     <br>
                                                     <br>
@@ -533,7 +617,7 @@
                                                                 }) %>
                                                         </p>
                                                         <p class="is-size-5" style="text-align: center;">
-                                                            <strong>Costo (MXN): </strong>
+                                                            <strong>Costo: </strong>
                                                             $<%=grupo.Precio_materia.toLocaleString('mx', {
                                                                 minimumFractionDigits: 2, maximumFractionDigits: 2
                                                             }) %>
@@ -543,37 +627,62 @@
                                                 <footer class="modal-card-foot" style="justify-content: center;">
                                                     <div class="field is-grouped">
                                                         <p class="control">
-                                                            <button class="button is-rounded is-medium is-responsive"
-                                                                aria-label="close" style="font-size: large; margin: 8px 2px;">
+                                                            <button class="button is-medium is-responsive"
+                                                                aria-label="close" style="font-size: large; margin: 8px 2px; 
+                                                                padding-right: 5px; padding-left: 10px;">
                                                                 <span class="icon is-large">
                                                                     <i class="fa-solid fa-circle-chevron-left"
                                                                         style="color: #ffffff;"></i>
                                                                 </span>
-                                                                <span>Regresar</span>
+                                                                <span>REGRESAR</span>
                                                             </button> </p>
                                                         <p class="control">
-                                                            <button class="button is-rounded is-medium is-responsive"
+                                                            <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
-                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;">
+                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
                                                                 <span class="icon is-large">
                                                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                                                 </span>
-                                                                <span>Dar de Baja</span>
+                                                                <span>DAR DE BAJA</span>
                                                             </button>
                                                         </p>
                                                 </footer>
                                             </div>
                                         </div>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    
                             <% } %>
+                        </tbody>
+                        </table>
+                        </div>
                             <% } %>
-                            <h3 class="title is-4" style="text-align: center;">Costo Total (MXN): $
-                                <%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
-                                                                maximumFractionDigits: 2 }) %>
-                            </h3>
-                            <br>
+                            <div class="columns">
+                                <div class="column is-8"></div>
+                                <div class="column">
+                                    <div class="box">
+                            <div class="columns is-mobile">
+                                <div class="column is-6">
+                                    <strong>
+                                        <p class="has-text-danger has-text-weight-semibold">
+                                            COSTO TOTAL
+                                        </p>
+                                    </strong>
+                                </div>
+                                <div class="column is-6">
+                                    <p class="has-text-danger">
+                                        <span class=" has-text-weight-bold">
+                                            $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2 }) %>
+                                        </span>
+                                        <span class="has-text-weight-light is-size-7">
+                                            MXN
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
                             <% } %>
                         </div>
                     </div>
@@ -589,9 +698,9 @@
                                                 <th style="text-align: left;">Pendiente</th>
                                                 <th style="text-align: left;">Total</th>
                                                 <th style="text-align: left;">Pagado</th>
-                                                <th style="text-align: left;">Descuento</th>
+                                                <th style="text-align: left;">Ajuste</th>
                                                 <th style="text-align: left;">Fecha Límite de Pago</th>
-                                                <th style="text-align: left;">Status</th>
+                                                <th style="text-align: left;">Estatus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -599,10 +708,14 @@
                                             <% for (let count = 0; count < deuda.length; count++) { %>
                                             <tr>
                                                 <td>Pago #<%= count + 1 %></td>
-                                                <td>$<%= deuda[count].saldoPendiente.toLocaleString('mx', {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2
-                                                        }) %></td>
+                                                <td><% if (deuda[count].saldoPendiente < 0) { %>
+                                                    $0.00
+                                                <% } else { %>
+                                                    $<%= deuda[count].saldoPendiente.toLocaleString('mx', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    }) %>
+                                                <% } %></td>
                                                 <td>$<%= deuda[count].montoAPagar.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
@@ -624,7 +737,7 @@
                                                         <span class="icon is-small" style="color: #21c85b">
                                                             <i class="fa-solid fa-circle-check"></i>
                                                         </span>
-                                                        <span style="color: #21c85b">
+                                                        <span style="color: #21c85b !important;">
                                                             Pagado
                                                         </span>
                                                     </span>
@@ -635,7 +748,7 @@
                                                         <span class="icon is-small" style="color: #fec416">
                                                             <i class="fa-solid fa-clock"></i>
                                                         </span>
-                                                        <span style="color: #fec416">
+                                                        <span style="color: #fec416 !important;">
                                                             Pendiente
                                                         </span>
                                                     </span>
@@ -646,7 +759,7 @@
                                                         <span class="icon is-small" style="color: #f83362">
                                                             <i class="fa-solid fa-circle-xmark"></i>
                                                         </span>
-                                                        <span style="color: #f83362">
+                                                        <span style="color: #f83362 !important;">
                                                             Atrasado
                                                         </span>
                                                     </span>
@@ -664,7 +777,7 @@
                                             <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
                                             <p class="control">
-                                                <button class="confirmar-button is-responsive"
+                                                <button class="confirmar-button is-responsive fichas"
                                                     style="font-size: large;  padding-right: 1.5em;" type="submit">
                                                     <span class="icon is-large">
                                                         <i class="fa-solid fa-pen-to-square"></i>
@@ -679,9 +792,6 @@
                                     <% } %>
                                 </div>
                             <% } else { %>
-                                <label class="label is-medium has-text-danger has-text-weight-semibold"
-                                     for="IDPlanPago">
-                                    IMPORTANTE
                                 </label>
                                 <div class="box">
                                     <p class="has-text-weight-medium has-text-black">

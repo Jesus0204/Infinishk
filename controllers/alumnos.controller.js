@@ -13,7 +13,7 @@ const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
-const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups,destroyGroup } = require('../util/adminApiClient');
 const { request, response } = require('express');
 
 // Configuras a moment con el locale. 
@@ -64,7 +64,7 @@ exports.get_alumnos_atrasados = (request, response, next) => {
 exports.get_datos = async (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
-        solicitud_pago: false, 
+        solicitud_pago: false,
         fichas_pago: false,
         datos_alumno: true,
         username: request.session.username || '',
@@ -75,25 +75,25 @@ exports.get_datos = async (request, response, next) => {
 };
 
 exports.post_dar_baja_grupo = async (request, response, next) => {
-    const { IDGrupo, matricula} = request.body;
+    const { IDGrupo, matricula } = request.body;
 
-    // Formateas la fecha y hora en el formato deseado
-    const fecha_actual = moment().tz('America/Mexico_City');
-    
     try {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo,matricula);
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
+        const Credito = resultfetchCredito[0][0].credito;
+        const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
+        
+        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
 
-        await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, fecha_actual);
-        console.log('exito :)')
-
-        // Función Modificar fichas de pago
-        // Función Eliminar Grupo
-        response.status(200).json({success: true});
+        // await destroyGroup(matricula, IDExterno);
+        
+        response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
@@ -102,19 +102,44 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
 }
 
 
-exports.post_datos_modify = async (request, response, next) => { 
+exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
+
+    const resultfetchBecaoriginal = await Alumno.fetchBeca(alumno);
+
+    const resultfetchReforiginal = await Alumno.fetchRef(alumno);
+
+    let beca_original = resultfetchBecaoriginal[0][0].beca;
+
+    let ref_original = resultfetchReforiginal[0][0].referenciaBancaria
+
+    let beca_uso;
 
     let beca_new = beca;
 
-    if (beca == ""){
+    if (beca == "") {
         beca_new = '0';
+    }
+
+    if(ref == ""){
+        ref = ref_original;
     }
 
     try {
         let data;
         if (alumno.startsWith("1")) {
-            data = await EstudianteProfesional.update(alumno, ref, beca_new);        
+            if(beca_new == 0){
+                beca_uso = 1
+            }
+            else{
+                beca_uso = (1 - (beca_new / 100)) 
+            }
+            if (beca_uso != beca_original){
+            const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
+            const credito = resultfetchCredito[0][0].credito;
+            await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+            } 
+            data = await EstudianteProfesional.update(alumno, ref, beca_new); 
         } else if (alumno.startsWith("8")) {
             data = await EstudianteDiplomado.update(alumno, ref);
         } else {
@@ -134,6 +159,20 @@ exports.post_fetch_datos = async (request, response, next) => {
     const matricula = matches[0];
     const periodo = await Periodo.fetchActivo();
     const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
+    const fechaInicio = await Periodo.fetchInicio();
+
+    // Extrae la fecha de `fechaInicio` asegurándote de que accedes correctamente al valor
+    const fecha = fechaInicio[0][0].fechaInicio; // Ajusta esto según la estructura correcta
+
+    // Calcula la fecha límite (dos semanas después de la fecha de inicio)
+    const fechaLimite = moment(fecha).add(2, 'weeks');
+
+    // Obtén la fecha actual
+    const fechaActual = moment();
+
+    // Compara la fecha actual con la fecha límite
+    const mostrarEliminar = fechaActual.isSameOrBefore(fechaLimite);
+
     try {
         let alumnoConsulta;
 
@@ -166,21 +205,21 @@ exports.post_fetch_datos = async (request, response, next) => {
 
         let confirmacion;
         let alumnoDiplomadoActualConsulta = "";
-        if(matricula.startsWith('1')) {
+        if (matricula.startsWith('1')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
             const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
             confirmacion = conf[0][0].horarioConfirmado;
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
-            
+
             let fechaActual = moment().tz('America/Mexico_City').format('YYYY-MM-DD');
             alumnoDiplomadoActualConsulta = await EstudianteDiplomado.fetchDiplomadoCursando(matricula, fechaActual);
             confirmacion = 0;
         }
         if (confirmacion === 0) {
             response.render('alumnos/consultar_alumno', {
-                error:true,
+                error: true,
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
@@ -196,18 +235,19 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
                 pagosDiplomado: pagosDiplomado,
+                mostrarEliminar: mostrarEliminar,
                 csrfToken: request.csrfToken()
             });
         }
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(matricula)
             const precio = await Grupo.fetchPrecioTotal(matricula)
-            const descuento = await Alumno.fetchCredito(matricula)
-            const desc = descuento[0][0].Credito
-            const precioTotal = (precio[0][0].Preciototal - desc)
+            const credito = await Alumno.fetchCredito(matricula)
+            const cred = (credito[0][0].Credito) ?? 0;
+            const precioTotal = (precio[0][0].Preciototal - cred)
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
-                error:false,
+                error: false,
                 periodo: periodo[0][0],
                 periodoExistente: periodoExistente,
                 schedule: schedule,
@@ -224,10 +264,11 @@ exports.post_fetch_datos = async (request, response, next) => {
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
                 matricula: matricula,
+                mostrarEliminar: mostrarEliminar,
                 csrfToken: request.csrfToken()
             });
         }
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         response.status(500).render('500', {
             username: request.session.username || '',
@@ -248,7 +289,7 @@ exports.post_fetch_fichas = (request, response, next) => {
                 .then(([fichas, fieldData]) => {
                     response.render('alumnos/modificar_fichas', {
                         alumno: alumno,
-                        fichas: fichas, 
+                        fichas: fichas,
                         fechaActual: now,
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
@@ -280,7 +321,7 @@ exports.post_fetch_fichas = (request, response, next) => {
 exports.get_fichas = (request, response, next) => {
     response.render('fetch_alumno', {
         pago_manual: false,
-        solicitud_pago: false, 
+        solicitud_pago: false,
         fichas_pago: true,
         datos_alumno: false,
         username: request.session.username || '',
@@ -290,9 +331,13 @@ exports.get_fichas = (request, response, next) => {
     });
 };
 
-exports.post_fichas_modify = async (request, response, next) => { 
+exports.post_fichas_modify = async (request, response, next) => {
     const { descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
+
+    if (descuentoNum == null) {
+        descuentoNum = 0;
+    }
 
     try {
         const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);

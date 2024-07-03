@@ -18,10 +18,12 @@
             <div class="column is-half">
                 <form id="formRegistro" action="/pagos/reporte_ingresos" method="POST">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                    <h3 class="title is-3">Reporte Ingresos</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        REPORTE INGRESOS
+                    </label>
                     <div class="columns is-vcentered">
                         <div class="column is-4">
-                            <label class="label is-size-5" for="periodo">Periodo:</label>
+                            <label class="label is-medium" for="periodo">Periodo:</label>
                         </div>
                         <div class="column is-8">
                             <div class="select is-fullwidth">
@@ -37,7 +39,7 @@
                     </div>
                     <div class="columns is-vcentered">
                         <div class="column is-4">
-                            <label class="label is-size-5" for="tipo">Tipo de Pago:</label>
+                            <label class="label is-medium" for="tipo">Tipo de Pago:</label>
                         </div>
                         <div class="column is-8">
                             <div class="select is-fullwidth">
@@ -51,16 +53,20 @@
                         </div>
                     </div>
                 </form>
-                <button id="btnSubmit" class="button is-large is-rounded is-responsive" style="margin-top: 40px;" onclick="generateReport()">
-                    <span>Generar Reporte</span>
-                    <span class="icon is-large">
-                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                    </span>
-                </button>
+
+                    <p class="control">
+                        <button id="btnSubmit" type="submit" class="confirmar-button is-medium is-responsive"
+                            style="font-size: large; padding-left: 1em; margin-top: 20px;" onclick="generateReport()">
+                                <span>GENERAR REPORTE</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                        </button>
+                    </p>
             </div>
-            <div class="column is-1"></div>
-            <div class="column is-3">
-                <div class="table is-fullwidth">
+            
+            <div class="column is-3 is-offset-1">
+                <div class="table is-fullwidth is-hoverable">
                     <table id="tabla" style="display: none;">
                         <thead>
                             <tr>

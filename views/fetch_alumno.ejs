@@ -7,8 +7,8 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
+            <div class="column is-2"></div>
+            <div class="column is-8">
                 <% if (solicitud_pago == true) { %>
                     <div class="columns">
                         <div class="column is-narrow">
@@ -20,15 +20,17 @@
                             </a>
                     </div>
                     <div class="column">
-                        <h3 class="title is-3">Registrar Solicitud de Pago</h3>
+                        <label class="label is-large has-text-danger has-text-weight-semibold">
+                            REGISTRAR SOLICITUD DE PAGO
+                        </label>
                     </div>
                 </div>
                 <% } else if (pago_manual == true) { %>
-                <h3 class="title is-3">Registrar Pago Manual</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">REGISTRAR PAGO MANUAL</label>
                 <% } else if (fichas_pago == true) { %>
-                    <h3 class="title is-3">Modificar Fichas de Pago</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">MODIFICAR FICHAS DE PAGO</label>
                 <% } else if (datos_alumno == true) { %>
-                    <h3 class="title is-3">Consultar Alumno</h3>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">CONSULTAR ALUMNO</label>
                 <% } %>
             </div>
         </div>
@@ -36,8 +38,8 @@
         <form action="/pagos/fetch_registrar_<% if (solicitud_pago) { %>solicitud <% } else { %>pago_manual <% } %>" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-6">
+                <div class="column is-2"></div>
+                <div class="column is-8">
                     <label class="label is-medium" for="buscar"> Busca a un alumno:</label>
                     <p class="help is-hidden has-text-danger-dark" id="ayuda_buscar"
                         style="padding: 0.5em; margin-top: -1em;">Por favor
@@ -50,7 +52,7 @@
                     <div class="field">
                         <p class="control has-icons-left">
                             <input name="buscar" class="input is-medium" type="text" id="buscar"
-                                placeholder="Nombre o Matrícula del Alumno" />
+                                placeholder="Nombre o matrícula del alumno" />
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
                             </span>
@@ -59,10 +61,10 @@
                 </div>
             </div>
             <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-6">
-                    <button class="button is-rounded is-medium is-responsive" type="submit"
-                        style="font-size: large; margin: 8px 2px;" id="Boton_buscar" disabled>
+                <div class="column is-2"></div>
+                <div class="column is-8">
+                    <button class="button is-responsive" style="font-size: large; padding-left: 1.5em;"
+                        type="submit" id="Boton_buscar" disabled>
                         <% if (solicitud_pago == true) { %>
                         <span>Registrar Solicitud al Alumno</span>
                         <% } else if (pago_manual == true) { %>
@@ -73,7 +75,7 @@
                         </span>
                     </button>
                 </div>
-                <div class="column is-3"></div>
+                <div class="column is-2"></div>
             </div>
         </form>
     </div>
@@ -81,8 +83,8 @@
     <form action="/alumnos/<% if (fichas_pago) { %>fichas <% } else { %>datos_alumno <% } %>" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
+            <div class="column is-2"></div>
+            <div class="column is-8">
                 <label class="label is-medium" for="buscar">Busca a un alumno:</label>
                 <p class="help is-hidden has-text-danger-dark" id="ayuda_buscar"
                     style="padding: 0.5em; margin-top: -1em;">Por favor
@@ -95,7 +97,7 @@
                 <div class="field">
                     <p class="control has-icons-left">
                         <input name="buscar" class="input is-medium" type="text" id="buscar"
-                            placeholder="Nombre o Matrícula del Alumno" />
+                            placeholder="Nombre o matrícula del alumno" />
                         <span class="icon is-small is-left">
                             <i class="fa-solid fa-magnifying-glass" style="color: #95404c;"></i>
                         </span>
@@ -104,10 +106,10 @@
             </div>
         </div>
         <div class="columns">
-            <div class="column is-3"></div>
-            <div class="column is-6">
-                <button class="button is-rounded is-medium is-responsive" type="submit"
-                    style="font-size: large; margin: 8px 2px;" id="Boton_buscar" disabled>
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <button class="button is-responsive" style="font-size: large; padding-left: 1.5em;"
+                    type="submit" id="Boton_buscar" disabled>
                     <% if (fichas_pago == true) { %>
                     <span>Modificar Fichas de Pago</span>
                     <% } else if (datos_alumno == true) { %>
@@ -118,7 +120,7 @@
                     </span>
                 </button>
             </div>
-            <div class="column is-3"></div>
+            <div class="column is-2"></div>
         </div>
     </form>
 </div>

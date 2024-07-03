@@ -38,18 +38,19 @@
         <input type="hidden" id="_csrf" value="<%= csrfToken %>">
         <div class="columns">
             <div class="column is-6">
-                <h3 class="title is-3">Solicitudes Pendientes</h3>
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    SOLICITUDES PENDIENTES</label>
             </div>
             <% if (contienePermiso(permisos, 'Registrar Solicitud de Pago') == true) { %>
             <div class="column is-offset-2">
                 <p class="control">
-                    <a class="button is-rounded is-responsive" style="font-size: large;"
+                    <a class="button is-responsive" style="font-size: large;"
                         href="/pagos/registrar_solicitud">
                         <span class="icon is-large">
                             <i class="fa-solid fa-circle-plus"></i>
                         </span>
                         <span>
-                            Registrar Solicitud
+                            Registrar Solicitud de Pago
                         </span>
                     </a>
                 </p>
@@ -64,7 +65,7 @@
         <% if (solicitudes.length == 0) { %>
         <article class="message" style="background-color: #5a6581; color:#ffffff; text-align: center;">
             <div class="message-header" style="background-color: #3e4d72; color:#ffffff; text-align: center;">
-                <p>No existen solicitudes pendientes</p>
+                <p>No existen solicitudes pendientes.</p>
                 <button class="delete" aria-label="delete"></button>
             </div>
             <div class="message-body" style="color:#ffffff;">
@@ -74,119 +75,123 @@
         <% } %>
         <p id="solicitudes_length" class="is-hidden"><%= solicitudes.length %></p>
         <% for (let solicitud of solicitudes) { %>
-        <table class="table is-hoverable is-fullwidth" id="<%= solicitud.IDLiquida %>">
-            <tbody>
-                <tr style="display: table-cell;">
-                    <form action="/pagos/solicitudes/modify" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <td style="display: block; border: none">
+        <table class="table ficha-table is-fullwidth" id="<%= solicitud.IDLiquida %>">
+            <tr>
+                <form action="/pagos/solicitudes/modify" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <td style="padding: 5px 15px">
                             <div class="columns is-vcentered">
-                                <div class="column is-7">
-                                    <p class="is-size-5" style="padding-left: 0.7em;">
-                                        <strong>Nombre: </strong><%= solicitud.Nombre %>
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        NOMBRE: <%= solicitud.Nombre %>
                                         <%= solicitud.Apellidos %>
                                     </p>
                                 </div>
-                                <div class="column is-5">
-                                    <p class="is-size-5">
-                                        <strong>Matricula: </strong><%= solicitud.Matricula %>
+                                <div class="column is-6">
+                                    <p class="has-text-danger has-text-weight-semibold" style="margin: 5px 0">
+                                        MATRÍCULA: <%= solicitud.Matricula %>
                                     </p>
                                 </div>
                             </div>
                         </td>
-                            <td style="display: block;">
-                                <div class="columns is-vcentered">
-                                        <div class="column is-vcentered" style="text-align: center;">
-                                            <div class="column">
-                                                <p class="is-size-5" id="motivo<%= count %>"
-                                                    style="margin-bottom: -1.3em;">
-                                                    <strong>Motivo Actual: </strong>
-                                                    <%= solicitud.motivoPago %>
-                                                </p>
-                                            </div>
-                                            <br>
-                                            <div class="column is-narrow">
-                                                <p class="is-size-5">
-                                                    <strong>Monto Actual: </strong>
-                                                    $<%= solicitud.montoPagar.toLocaleString('mx', {
-                                                         minimumFractionDigits: 2,
-                                                         maximumFractionDigits: 2
-                                                        }) %>
-                                                </p>
-                                            </div>
-                                    </div>
-                                    <div class="column">
-                                        <div class=" columns is-vcentered" style="text-align: center;">
-                                            <div class="column">
-                                                <label class="label is-size-5" for="pago<%= count %>" style="display: inline-block;
-                                            width: 150px; text-align: right; padding-right:3px; padding-top: 0.2em;">Motivo
-                                                    Pago:</label>
-                                                <div class="select">
-                                                    <select class="select_pago" name="pago" id="pago<%= count %>"
-                                                        style="border: 2px solid #7c7f80;">
-                                                        <% for (let pago of pagos) { %>
-                                                        <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
-                                                        <option value="<%= pago.IDPagosExtras %>"
-                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>"
-                                                            selected>
-                                                            <%= pago.motivoPago %></option>
-                                                        <% } else { %>
-                                                        <option value="<%= pago.IDPagosExtras %>"
-                                                            data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
-                                                            <%= pago.motivoPago %></option>
-                                                        <% } %>
-                                                        <% } %>
-                                                    </select>
-                                                </div>
-                                                <div class="column is-narrow">
-                                                    <p class="is-size-5" id="monto<%= count %>">
-                                                        <strong>Monto: </strong>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                </tr>
-                <tr style="display: table-cell; width:130px;">
-                    <td style="display: block;" class="is-hidden" id="modificar<%= count %>">
+            </tr>
+                    <td style="padding: 5px 15px">
                         <div class="columns is-vcentered">
-                            <div class="column is-full" style="text-align: center;">
-                                <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
-                                <button type="submit" class="button is-rounded is-medium is-responsive"
-                                    style="font-size: medium;">
-                                    <span>Guardar</span>
-                                    <span class="icon is-large">
-                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                    </span>
-                                </button>
+                            <div class="column is-6">
+                                <p class="has-text-black has-text-weight-bold" id="motivo<%= count %>">
+                                    Motivo Actual:
+                                    <%= solicitud.motivoPago %>
+                                </p>
                             </div>
-                            </form>
-                    <td style="display: block;">
+                            <div class="column is-6">
+                                <p class="has-text-black has-text-weight-bold">
+                                    Monto Actual:
+                                    $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </p>
+                            </div>
+                        </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 15px">
                         <div class="columns is-vcentered">
-                            <div class="column is-full" style="text-align: center;">
-                                <button class="js-modal-trigger button is-rounded is-medium is-responsive"
-                                    style="font-size: medium; background-color: #000000;"
+                            <div class="column is-6">
+                                <p class="has-text-black has-text-weight-bold" for="pago<%= count %>">
+                                    Motivo Nuevo:
+                                </p>
+                                    <div class="select">
+                                        <select class="select_pago" name="pago" id="pago<%= count %>"
+                                            style="border: 2px solid #7c7f80;">
+                                            <% for (let pago of pagos) { %>
+                                            <% if (solicitud.IDPagosExtras == pago.IDPagosExtras) { %>
+                                            <option value="<%= pago.IDPagosExtras %>"
+                                                data-monto="<%= pago.montoPagar.toLocaleString('mx') %>"
+                                                selected>
+                                                <%= pago.motivoPago %></option>
+                                            <% } else { %>
+                                            <option value="<%= pago.IDPagosExtras %>"
+                                                data-monto="<%= pago.montoPagar.toLocaleString('mx') %>">
+                                                <%= pago.motivoPago %></option>
+                                            <% } %>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="column is-6">
+                                    <p class="has-text-black has-text-weight-bold" id="monto<%= count %>">
+                                        Monto Nuevo:
+                                    </p>
+                                </div>
+                                <div class="column is-2">
+                                    <div class="buttons are-vertical">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <tr>
+                    <td style="padding: 5px 15px">
+                        <div class="columns is-vcentered">
+                            <div class="column is-6" style="text-align: left;">
+                                <div class="is-hidden" id="modificar<%= count %>">
+                                    <input type="hidden" name="id" id="id" value="<%= solicitud.IDLiquida %>">
+                                    <button type="submit" class="button is-medium is-responsive"
+                                        style="font-size: medium; padding-right: 10px;">
+                                        <span>GUARDAR</span>
+                                        <span class="icon is-medium">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                            <div class="column is-6" style="text-align: right;">
+                                <button class="js-modal-trigger button is-medium is-responsive"
+                                    style="font-size: medium; background-color: #000000; padding-right: 2px;"
                                     id="Boton_eliminar<%= count %>" data-target="modal-confirmar-eliminar<%= count %>">
-                                    <span class="icon is-large">
+                                    <span class="icon is-medium">
                                         <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                     </span>
-                                    <span>Eliminar</span>
+                                    <span>ELIMINAR</span>
                                 </button>
                             </div>
                         </div>
                     </td>
-    </div>
-    </tr>
-    </tbody>
+                </div>
+            </tr>
     </table>
+    
     <div id="modal-confirmar-eliminar<%= count %>" class="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title" style="text-align: center;">
-                    <strong> Eliminar Solicitud</strong>
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        ELIMINAR SOLICITUD</label>
                 </p>
                 <button class="delete" aria-label="delete"></button>
             </header>
@@ -208,7 +213,7 @@
                     </div>
                     <div class=" column is-5">
                         <p class="is-size-5" style="text-align: center;">
-                            <strong>Matricula: </strong><%= solicitud.Matricula %>
+                            <strong>Matrícula: </strong><%= solicitud.Matricula %>
                         </p>
                     </div>
                 </div>
@@ -233,22 +238,23 @@
             <footer class="modal-card-foot" style="justify-content: center;">
                 <div class="field is-grouped">
                     <p class="control">
-                        <button class="button is-rounded is-medium is-responsive" aria-label="close"
-                            style="font-size: large; margin: 8px 2px;">
-                            <span class="icon is-large">
+                        <button class="button is-medium is-responsive" aria-label="close"
+                            style="font-size: large; margin: 8px 2px; padding-right: 5px; padding-left: 10px;">
+                            <span class="icon is-medium">
                                 <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
                             </span>
-                            <span>Regresar</span>
+                            <span>REGRESAR</span>
                         </button>
                     </p>
                     <p class="control">
-                        <button class="button is-rounded is-medium is-responsive"
+                        <button class="button is-medium is-responsive"
                             onclick="eliminar('<%= solicitud.IDLiquida %>')"
-                            style="font-size: large; margin: 8px 2px; background-color: #000000;">
-                            <span class="icon is-large">
+                            style="font-size: large; margin: 8px 2px; background-color: #000000;
+                            padding-right: 5px; padding-left: 10px;">
+                            <span class="icon is-medium">
                                 <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                             </span>
-                            <span>Eliminar</span>
+                            <span>ELIMINAR</span>
                         </button>
             </footer>
         </div>

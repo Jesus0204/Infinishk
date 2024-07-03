@@ -122,6 +122,11 @@ const modify_status = (id, estatus) => {
             $('html, body').animate({
                 scrollTop: 0
             }, 'slow');
+
+            // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
+            setTimeout(function () {
+                window.location.reload(); // Recargar la página
+            }, 3000);
         })
         .catch(error => {
             console.error('Error en la petición fetch:', error);
@@ -160,6 +165,11 @@ const eliminar = (id) => {
             $('html, body').animate({
                 scrollTop: 0
             }, 'slow');
+
+            // Recargar la página después de mostrar la notificación por 3 segundos (3000 milisegundos)
+            setTimeout(function () {
+                window.location.reload(); // Recargar la página
+            }, 3000);
         })
         .catch(error => {
             console.error('Error en la petición fetch:', error);
