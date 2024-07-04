@@ -6,6 +6,12 @@ const table2_body = document.querySelector('#table_2_body');
 const column_table1 = document.querySelector('#column_table1');
 const column_table2 = document.querySelector('#column_table2');
 
+// Para poder utilizar porcBeca en las comparaciones
+let porcBeca = document.getElementById('porcBeca').value;
+
+// Convertir de string a número
+porcBeca = Number(porcBeca);
+
 moment.locale('es-mx');
 
 function getPaymentDates(numPagos, semesterStart) {
@@ -69,14 +75,14 @@ function plans_desktop(precioFinal) {
 
         let paymentDates = getPaymentDates(numPagos, semesterStart);
 
-        if (numPagos == 1) {
+        if (numPagos == 1 && porcBeca === 0) {
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
             plans.push({
                 numPagos: numPagos,
                 table_1: table_1,
                 table_2: table_2
             });
-        } else if (numPagos == 2) {
+        } else if (numPagos == 2 && porcBeca === 0) {
             let pago1 = precioFinal * 0.6;
             let precioRestante = precioFinal * 0.4;
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
@@ -87,7 +93,7 @@ function plans_desktop(precioFinal) {
                 table_1: table_1,
                 table_2: table_2
             });
-        } else if (numPagos == 3) {
+        } else if (numPagos == 3 && porcBeca === 0) {
             let pago1 = precioFinal * 0.4;
             let precioRestante = (precioFinal * 0.6) / 2;
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
@@ -98,6 +104,39 @@ function plans_desktop(precioFinal) {
                 table_1: table_1,
                 table_2: table_2
             });
+        } else if (porcBeca !== 0) {
+            let pagoMensual = parseFloat((precioFinal / numPagos).toFixed(2));
+            let totalCalculated = pagoMensual * numPagos;
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
+            let half_up = Math.ceil(numPagos / 2);
+
+            // Primeros 3 pagos se imprimen en la misma tabla
+            if(numPagos <= 3) {
+                for (let pago = 0; pago < Math.min(3, numPagos); pago++) {
+                    let pagoFinal = pagoMensual + adjustment;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
+                }
+            
+            } else {
+                // El resto de los pagos se dividen entre table_1 and table_2
+                for (let pago = 0; pago < numPagos; pago++) {
+                    let pagoFinal = pagoMensual + adjustment;
+                    if (pago < half_up) {
+                        // Mitad de los pagos a table_1 (con prioridad)
+                        table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
+                    } else {
+                        // Resto de los pagos a table_2
+                        table_2 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
+                    }
+                }
+            }
+            
+            plans.push({
+                numPagos: numPagos,
+                table_1: table_1,
+                table_2: table_2
+            });
+            
         } else {
             let half_up = Math.ceil(numPagos / 2);
             let pago1 = precioFinal * 0.23;
@@ -160,7 +199,7 @@ function plans_mobile(precioFinal){
 
         let paymentDates = getPaymentDates(numPagos, semesterStart);
 
-        if (numPagos == 1){
+        if (numPagos == 1 && porcBeca === 0){
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${precioFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>`;
 
             plans.push({
@@ -168,7 +207,7 @@ function plans_mobile(precioFinal){
                 table_1: table_1,
                 table_2: table_2
             });
-        } else if (numPagos == 2) {
+        } else if (numPagos == 2 && porcBeca === 0) {
             let pago1 = precioFinal * 0.6;
             let precioRestante = precioFinal * 0.4;
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
@@ -179,12 +218,32 @@ function plans_mobile(precioFinal){
                 table_1: table_1,
                 table_2: table_2
             });
-        } else if (numPagos == 3) {
+        } else if (numPagos == 3 && porcBeca === 0) {
             let pago1 = precioFinal * 0.4;
             let precioRestante = (precioFinal * 0.6) / 2;
             table_1 = `<tr><td class="has-text-weight-semibold">Pago #1</td><td>$${pago1.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[0]}</td></tr>
                        <tr><td class="has-text-weight-semibold">Pago #2</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[1]}</td></tr>
                        <tr><td class="has-text-weight-semibold">Pago #3</td><td>$${precioRestante.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[2]}</td></tr>`;
+            plans.push({
+                numPagos: numPagos,
+                table_1: table_1,
+                table_2: table_2
+            });
+        } else if (porcBeca !== 0) {
+            let pagoMensual = parseFloat((precioFinal / numPagos).toFixed(2));
+            let totalCalculated = pagoMensual * numPagos;
+            let adjustment = parseFloat((precioFinal - totalCalculated).toFixed(2));
+            let half_up = Math.ceil(numPagos / 2);
+
+            for (let pago = 0; pago < numPagos; pago++) {
+                if (pago + 1 == numPagos) {
+                    // Último pago ajustado
+                    let pagoFinal = pagoMensual + adjustment;
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoFinal.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
+                } else {
+                    table_1 += `<tr><td class="has-text-weight-semibold">Pago #${pago + 1}</td><td>$${pagoMensual.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td>${paymentDates[pago]}</td></tr>`;
+                }
+            }
             plans.push({
                 numPagos: numPagos,
                 table_1: table_1,
