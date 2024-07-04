@@ -91,7 +91,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
 
-        // await destroyGroup(matricula, IDExterno);
+        await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
