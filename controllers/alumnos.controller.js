@@ -101,6 +101,60 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     // response.redirect('/alumnos/datos_alumno');
 }
 
+exports.post_dar_baja_grupo60 = async (request, response, next) => {
+    const { IDGrupo, matricula } = request.body;
+
+    try {
+        const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
+        const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
+        const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo,matricula);
+        const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
+        const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
+        const Beca = resultfetchBeca[0][0].beca;
+        const Credito = resultfetchCredito[0][0].credito;
+        const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
+        
+        await Fichas.delete_grupo_update_fichas60(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        // await destroyGroup(matricula, IDExterno);
+        
+        response.status(200).json({ success: true });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
+
+    // response.redirect('/alumnos/datos_alumno');
+}
+
+exports.post_dar_baja_grupo100 = async (request, response, next) => {
+    const { IDGrupo, matricula } = request.body;
+
+    try {
+        const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo(); // Espera a que la promesa se resuelva
+        const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
+        const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo,matricula);
+        const creditoactual = resultfetchCreditoActivo[0][0].precioPesos; // Acceder al valor numérico
+        const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
+        const Beca = resultfetchBeca[0][0].beca;
+        const Credito = resultfetchCredito[0][0].credito;
+        const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
+        
+        await Fichas.delete_grupo_update_fichas100(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        // await destroyGroup(matricula, IDExterno);
+        
+        response.status(200).json({ success: true });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    }
+
+    // response.redirect('/alumnos/datos_alumno');
+}
+
 
 exports.post_datos_modify = async (request, response, next) => {
     const { ref, beca, alumno, csrf } = request.body;
