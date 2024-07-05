@@ -139,36 +139,27 @@
                                 </label>
                         </div>
                         <hr class="dropdown-divider">
-                        <div class="dropdown-item">
-                            <a id="downloadButton" onclick="downloadPDF('<%= matricula %>')" class="button is-primary" disabled>
-                                <span>
-                                    Descargar PDF
-                                </span>
+                            <div class="dropdown-item">
+                                <!-- Botón que se muestra por defecto -->
+                                <button class="button is-primary" id="downloadButton" disabled>
+                                    <span>Descargar PDF</span>
                                     <span class="icon is-large">
                                         <i class="fa-solid fa-download" style="color: #ffffff;"></i>
                                     </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>                                
-            </div>
-            
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const checkboxes = document.querySelectorAll('.download-checkbox');
-                    const downloadButton = document.getElementById('downloadButton');
-            
-                    checkboxes.forEach(checkbox => {
-                        checkbox.addEventListener('change', function () {
-                            if (Array.from(checkboxes).some(checkbox => checkbox.checked)) {
-                                downloadButton.removeAttribute('disabled');
-                            } else {
-                                downloadButton.setAttribute('disabled', 'disabled');
-                            }
-                        });
-                    });
-                });
-            </script>
+                                </button>
+                                <!-- Enlace oculto hasta elegir algo -->
+                                <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary is-hidden" id="downloadLink">
+                                    <span>Descargar PDF</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-download" style="color: #ffffff;"></i>
+                                    </span>
+                                </a>
+                            </div>
+                      
+                </div>
+            </div>                                
+        </div>
+    </div>
                    
         <div class="column is-three-quarters">
             <div class="card">
@@ -510,5 +501,7 @@
         </div>
     </div>
 </section>
+
+
 <script type="text/javascript" src="/js/estado_cuenta.js"></script>
 <%- include('../includes/foot.ejs') %>
