@@ -243,14 +243,17 @@
                 <div class="column is-3">
                     <div class="select is-medium">
                         <select name="IDPlanPago" id="IDPlanPago">
-                            <% for (let plan of planesPago){%>
-                            <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
-                                data-num="<%= plan.numeroPagos %>">
-                                <%= plan.nombrePlan %>
-                            </option>
+                            <% for (let plan of planesPago) { %>
+                                <option value="<%= plan.IDPlanPago %>"
+                                        data-nombre="<%= plan.nombrePlan %>"
+                                        data-num="<%= plan.numeroPagos %>"
+                                        <% if (plan.numeroPagos === 6) { %> selected <% } %> >
+                                    <%= plan.nombrePlan %>
+                                </option>
                             <% } %>
                         </select>
                     </div>
+                    
                 </div>
                 <div class="column" id="column_table1">
                     <div class="table-container">
