@@ -157,8 +157,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
 };
 
 async function sendEmail(message){
-
-    // Crear el texto del correo para los horarios no acetados
+    // Crear el texto del correo para los horarios no aceptados
     let mensaje = `<p>¡Hola!</p>
                    <p>
                        Este es un correo automatizado para avisar que los horarios de los alumnos:
