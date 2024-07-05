@@ -524,11 +524,9 @@
                                                 Costo
                                             </th>
                                             <% if (contienePermiso(permisos, 'Eliminar Materias Alumno') == true) { %>
-                                            <% if (mostrarEliminar) { %>
                                             <th class="eliminar" style="text-align: left;">
                                                 Eliminar
                                             </th>                                                
-                                            <% } %>
                                             <% } %>
                                         </tr>
                                     </thead>
@@ -563,7 +561,6 @@
                                         </td>
 
                                         <% if (contienePermiso(permisos, 'Eliminar Materias Alumno') == true) { %>
-                                        <% if (mostrarEliminar) { %>
                                         <td>
                                             <div class="columns is-vcentered">
                                                 <div class="column" style="text-align: center;">
@@ -578,7 +575,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <% } %>
                                         <% } %>
                                         </tr>
             
@@ -620,18 +616,18 @@
                                                             <strong>Créditos: </strong>
                                                             <%= grupo.Creditos.toLocaleString('mx', {
                                                                 minimumFractionDigits: 1, maximumFractionDigits: 1
-                                                                }) %>
+                                                            }) %>
                                                         </p>
                                                         <p class="is-size-5" style="text-align: center;">
                                                             <strong>Costo: </strong>
-                                                            $<%=grupo.Precio_materia.toLocaleString('mx', {
+                                                            $<%= grupo.Precio_materia.toLocaleString('mx', {
                                                                 minimumFractionDigits: 2, maximumFractionDigits: 2
                                                             }) %>
                                                         </p>
                                                     </div>
                                                 </section>
                                                 <footer class="modal-card-foot" style="justify-content: center;">
-                                                    <div class="field is-grouped">
+                                                    <div class="field is-grouped is-grouped-multiline">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 aria-label="close" style="font-size: large; margin: 8px 2px; 
@@ -641,7 +637,8 @@
                                                                         style="color: #ffffff;"></i>
                                                                 </span>
                                                                 <span>REGRESAR</span>
-                                                            </button> </p>
+                                                            </button>
+                                                        </p>
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
@@ -650,13 +647,36 @@
                                                                 <span class="icon is-large">
                                                                     <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                                                                 </span>
-                                                                <span>DAR DE BAJA</span>
+                                                                <span>DAR DE BAJA SIN RECARGOS</span>
                                                             </button>
                                                         </p>
+                                                        <p class="control">
+                                                            <button class="button is-medium is-responsive"
+                                                                onclick="darDeBajaGrupo60('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
+                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                                <span class="icon is-large">
+                                                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                </span>
+                                                                <span>DAR DE BAJA 60%</span>
+                                                            </button>
+                                                        </p>
+                                                        <p class="control">
+                                                            <button class="button is-medium is-responsive"
+                                                                onclick="darDeBajaGrupo100('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
+                                                                style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                                <span class="icon is-large">
+                                                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                </span>
+                                                                <span>DAR DE BAJA 100%</span>
+                                                            </button>
+                                                        </p>
+                                                    </div>
                                                 </footer>
                                             </div>
                                         </div>
-                                    
+                                                     
                             <% } %>
                         </tbody>
                         </table>

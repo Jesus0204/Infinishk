@@ -13,7 +13,7 @@
                 <div class="box">
                     <p class="has-text-weight-medium has-text-black">
                         Tus materias todavía no están listas. Via Diseño se encuentra trabajando en tu propuesta de
-                        horario. Estaté atento, porque cuando estén listas tus materias se encontrarán en este mismo
+                        horario. Estate atento, porque cuando estén listas tus materias se encontrarán en este mismo
                         espacio. Por favor contacta a tu coordinador si crees que esto sea un error.
                         ¡Gracias por tu comprensión!
                     </p>
@@ -243,14 +243,17 @@
                 <div class="column is-3">
                     <div class="select is-medium">
                         <select name="IDPlanPago" id="IDPlanPago">
-                            <% for (let plan of planesPago){%>
-                            <option value="<%= plan.IDPlanPago %>" data-nombre="<%= plan.nombrePlan %>"
-                                data-num="<%= plan.numeroPagos %>">
-                                <%= plan.nombrePlan %>
-                            </option>
+                            <% for (let plan of planesPago) { %>
+                                <option value="<%= plan.IDPlanPago %>"
+                                        data-nombre="<%= plan.nombrePlan %>"
+                                        data-num="<%= plan.numeroPagos %>"
+                                        <% if (plan.numeroPagos === 6) { %> selected <% } %> >
+                                    <%= plan.nombrePlan %>
+                                </option>
                             <% } %>
                         </select>
                     </div>
+                    
                 </div>
                 <div class="column" id="column_table1">
                     <div class="table-container">

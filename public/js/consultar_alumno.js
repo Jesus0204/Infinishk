@@ -407,6 +407,114 @@ function darDeBajaGrupo(IDGrupo, matricula) {
         });
 }
 
+function darDeBajaGrupo60(IDGrupo, matricula) {
+    // El token de protección CSRF
+    const csrf = document.getElementById('_csrf').value;
+
+    // Enviar los datos al servidor
+    fetch('/alumnos/datos_alumno/dar_baja_grupo60', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            IDGrupo: IDGrupo,
+            matricula: matricula
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                // Supongamos que tienes una fila en la tabla con un id correspondiente al IDGrupo
+                const rowId = `grupo-${IDGrupo}`; // Ajusta esto según tu lógica
+                const tableRow = document.getElementById(rowId);
+
+                if (tableRow) {
+                    tableRow.remove();
+                } else {
+                    console.error(`No se encontró la fila con el id ${rowId}.`);
+                }
+
+                // Mostrar la notificación de eliminación
+                const notification = document.getElementById('eliminacion');
+                if (notification) {
+                    notification.classList.remove('is-hidden');
+                }
+
+                // Recargar la página después de mostrar la notificación durante unos segundos
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); // 2000 milisegundos = 2 segundos
+            } else {
+                console.error('Error en el servidor:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la petición fetch:', error);
+        });
+}
+
+function darDeBajaGrupo100(IDGrupo, matricula) {
+    // El token de protección CSRF
+    const csrf = document.getElementById('_csrf').value;
+
+    // Enviar los datos al servidor
+    fetch('/alumnos/datos_alumno/dar_baja_grupo100', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            IDGrupo: IDGrupo,
+            matricula: matricula
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                // Supongamos que tienes una fila en la tabla con un id correspondiente al IDGrupo
+                const rowId = `grupo-${IDGrupo}`; // Ajusta esto según tu lógica
+                const tableRow = document.getElementById(rowId);
+
+                if (tableRow) {
+                    tableRow.remove();
+                } else {
+                    console.error(`No se encontró la fila con el id ${rowId}.`);
+                }
+
+                // Mostrar la notificación de eliminación
+                const notification = document.getElementById('eliminacion');
+                if (notification) {
+                    notification.classList.remove('is-hidden');
+                }
+
+                // Recargar la página después de mostrar la notificación durante unos segundos
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); // 2000 milisegundos = 2 segundos
+            } else {
+                console.error('Error en el servidor:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la petición fetch:', error);
+        });
+}
+
 function downloadPDF(matricula) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();

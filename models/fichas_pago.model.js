@@ -24,7 +24,15 @@ module.exports = class Fichas {
     }
     
     static delete_grupo_update_fichas(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito){
-        db.execute(`CALL dar_baja_grupo(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
+        db.execute(`CALL dar_baja_grupo_sin_recargo(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
+    }
+
+    static delete_grupo_update_fichas60(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito){
+        db.execute(`CALL dar_baja_grupo_60(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
+    }
+
+    static delete_grupo_update_fichas100(uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito){
+        db.execute(`CALL dar_baja_grupo_100(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
 
     static update_fichas_beca(uMatricula, uBeca, uCredito){

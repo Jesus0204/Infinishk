@@ -148,24 +148,26 @@
                 </form>
 
                 <% } else if (revisar) { %>
-                    <% if (datos.some(fila=> fila.tipoPago === 'Pago Completo')) { %>
-                        <div class="table-container">
+                    <div class="table-container">
+                        <% if (datos.some(fila => fila.tipoPago === 'Pago Completo')) { %>
                             <div id="tablaCompleta">
                                 <div id="titulo">
                                     <div class="columns">
                                         <div class="column is-narrow">
-                                            <a id="Boton_regresar" type="submit" class="is-responsive"
-                                                onclick="regresar()">
+                                            <a id="Boton_regresar" type="submit" class="is-responsive" onclick="regresar()">
                                                 <span class="icon">
                                                     <i class="fas fa-arrow-left fa-2x"></i>
                                                 </span>
                                             </a>
                                         </div>
-                                    <label class="label is-large has-text-danger has-text-weight-semibold">
-                                        PAGOS YA REALIZADOS</label>
+                                        <div class="column">
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                PAGOS YA REALIZADOS
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="column"></div>
+                                <div class="column"></div>
                                 <table class="table is-fullwidth is-hoverable">
                                     <thead>
                                         <tr>
@@ -178,59 +180,42 @@
                                             <th style="text-align: left;">Tipo de Pago</th>
                                         </tr>
                                     </thead>
-                                    <% datos.forEach((fila,index)=> { %>
-                                        <tbody>
-                                            <% if (fila.tipoPago==='Pago Completo' ) { %>
+                                    <tbody>
+                                        <% datos.forEach((fila, index) => { %>
+                                            <% if (fila.tipoPago === 'Pago Completo') { %>
                                                 <tr id="pagination-content">
-                                                    <td>
-                                                        <%= fila.nombre %>
-                                                            <%= fila.apellidos %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.Matricula %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.Referencia %>
-                                                    </td>
-                                                    <td>
-                                                        <%= fila.fechaFormato %>
-                                                    </td>
-                                                    <td>
-                                                        <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                                    </td>
-                                                    <td>
-                                                        <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                                    </td>                                                    
-                                                    <td>
-                                                        <%= fila.tipoPago %>
-                                                    </td>
+                                                    <td><%= fila.nombre %> <%= fila.apellidos %></td>
+                                                    <td><%= fila.Matricula %></td>
+                                                    <td><%= fila.Referencia %></td>
+                                                    <td><%= fila.fechaFormato %></td>
+                                                    <td><%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                                    <td><%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                                    <td><%= fila.tipoPago %></td>
                                                 </tr>
-                                                <% } %>
-                                                    <% }); %>
+                                            <% } %>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                                    <a class="pagination-previous" id="prev-button">Anterior</a>
+                                    <a class="pagination-next" id="next-button">Siguiente</a>
+                                    <ul class="pagination-list" id="pagination-list">
+                                        <div id="pagination-numbers"></div>
+                                    </ul>
+                                </nav>
+                                <button id="toggleButtonCompleto" class="button is-medium is-responsive">
+                                    <span>Revisar No Completos</span>
+                                    <span class="icon is-large">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                                </button>
                             </div>
-                            </tbody>
-                            </table>
-                            <br>
-                            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-                                <a class="pagination-previous" id="prev-button">Anterior</a>
-                                <a class="pagination-next" id="next-button">Siguiente</a>
-                                <ul class="pagination-list" id="pagination-list">
-                                    <div id="pagination-numbers">
-
-                                    </div>
-                                </ul>
-                            </nav>
-                            <button id="toggleButton" class="button is-medium is-responsive">
-                                <span>Revisar No Completos</span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                            <% } else { %>
+                        <% } else { %>
+                            <div id="tablaCompleta">
                                 <div class="columns">
                                     <div class="column is-1 is-offset-2">
-                                        <a id="Boton_regresar" type="submit" class="is-responsive"
-                                            onclick="regresar()">
+                                        <a id="Boton_regresar" type="submit" class="is-responsive" onclick="regresar()">
                                             <span class="icon">
                                                 <i class="fas fa-arrow-left fa-2x"></i>
                                             </span>
@@ -238,10 +223,10 @@
                                     </div>
                                     <div class="column is-7">
                                         <label class="label is-large has-text-danger has-text-weight-semibold">
-                                            REGISTRAR ARCHIVO CSV DE TRANSFERENCIA</label>
+                                            REGISTRAR ARCHIVO CSV DE TRANSFERENCIA
+                                        </label>
                                     </div>
                                 </div>
-
                                 <div class="columns">
                                     <div class="column is-2"></div>
                                     <div class="column is-8">
@@ -250,20 +235,16 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                    <button id="toggleButton" class="button is-medium is-responsive">
-                                        <span>
-                                            Revisar No Completos
-                                        </span>
-                                        <span class="icon is-middle">
-                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                                <% } %>
-                        </div>
-
-
+                                <button id="toggleButtonCompleto" class="button is-medium is-responsive">
+                                    <span>Revisar No Completos</span>
+                                    <span class="icon is-middle">
+                                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        <% } %>
+                    </div>
+                    
                         <% if (!datos.some(fila=> ['Pago Colegiatura', 'Pago a Registrar', 'Pago de Diplomado'].includes(fila.tipoPago))) { %>
                             <div class="columns">
                                 <div class="column is-2"></div>
