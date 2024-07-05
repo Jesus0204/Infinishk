@@ -388,11 +388,7 @@ exports.get_fichas = (request, response, next) => {
 exports.post_fichas_modify = async (request, response, next) => {
     const { descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
-
-    if (descuentoNum == null) {
-        descuentoNum = 0;
-    }
-
+    
     try {
         const data = await Fichas.update(descuentoNum, fechaFormat, notaNum, modificador, id);
         response.status(200).json({ success: true, data: data });
