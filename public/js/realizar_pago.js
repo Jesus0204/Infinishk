@@ -206,26 +206,15 @@ if (boton_pagar) {
 }
 
 
-const boton_tarjeta = document.querySelector('#boton_tarjeta');
 const boton_efectivo = document.querySelector('#boton_efectivo');
 const boton_transferencia = document.querySelector('#boton_transferencia');
 
-const mensaje_tarjeta = document.querySelector('#mensaje_tarjeta');
 
 function change_modal() {
-    if (metodo.value == 'Web Tarjeta') {
-        mensaje_tarjeta.classList.remove('is-hidden');
-        boton_tarjeta.classList.remove('is-hidden');
-        boton_efectivo.classList.add('is-hidden');
-        boton_transferencia.classList.add('is-hidden');
-    } else if (metodo.value == 'Efectivo') {
-        mensaje_tarjeta.classList.add('is-hidden');
-        boton_tarjeta.classList.add('is-hidden');
+    if (metodo.value == 'Efectivo') {
         boton_efectivo.classList.remove('is-hidden');
         boton_transferencia.classList.add('is-hidden');
     } else if (metodo.value == 'Transferencia') {
-        mensaje_tarjeta.classList.add('is-hidden');
-        boton_tarjeta.classList.add('is-hidden');
         boton_efectivo.classList.add('is-hidden');
         boton_transferencia.classList.remove('is-hidden');
     }
