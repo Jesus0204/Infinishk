@@ -326,7 +326,7 @@ exports.post_getAdmins = async(request, response, next) => {
             return unregisteredAdmins.filter(number => number.includes(userInput));
         }
 
-        // llamas la función con el input
+        // Llamas la función con el input
         const filteredResults = filterArray(input);
 
         // Sacas si existe un usuario con el input
@@ -334,7 +334,13 @@ exports.post_getAdmins = async(request, response, next) => {
 
         let usuarioExist = JSON.stringify(usuarioExistente);
 
+        let parsedUsuario = JSON.parse(usuarioExist);
+
+        // Actualizar usuario si ya existe
         if (usuarioExist.length != 2) {
+            id = parsedUsuario[0].IDUsuario;
+            correo = parsedUsuario[0].correoElectronico;
+            Usuario.updateUsuario(id,correo);
             registeredAdmins.push(input)
         }
 
