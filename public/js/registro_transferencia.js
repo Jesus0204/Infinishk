@@ -57,7 +57,7 @@ if (tablaNoCompleta){
     tablaNoCompleta.style.display = 'none';
 }
 
-const toggleButton = document.getElementById('toggleButton');
+const toggleButton = document.getElementById('toggleButtonCompleto');
 
 if (toggleButton) {
     // Agregar un evento de click al botón
