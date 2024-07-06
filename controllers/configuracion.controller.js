@@ -1047,7 +1047,7 @@ exports.post_alumnos = async (request,response,next) => {
         const referencia = request.body.referenciaBancaria;
         const beca = request.body.beca;
     
-        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '11d' });
             
             // Enlace con el token incluido
         const setPasswordLink = `http://localhost:4000/auth/set_password?token=${token}`;
