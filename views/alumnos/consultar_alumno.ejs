@@ -111,9 +111,14 @@
                         style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
-                        <input id="beca" name="beca"
-                            class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
-                            value="<%= alumnoConsulta[0].porcBeca %>">
+                        <% if (contienePermiso(permisos, 'Modificar Datos Alumno') == true) { %>
+                            <input id="beca" name="beca"
+                                class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
+                                value="<%= alumnoConsulta[0].porcBeca %>">
+                        <% } else {%>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].porcBeca %></p>
+                        <% } %>
                     </div>
                 </div>
                 <% } else { %>
@@ -146,8 +151,13 @@
                         style="padding: 0.5em;">La referencia bancaria no puede tener exponentes</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
-                        <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
-                            type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                        <% if (contienePermiso(permisos, 'Modificar Datos Alumno') == true) { %>
+                            <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
+                                type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                        <% } else { %>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].referenciaBancaria %></p>
+                        <% } %>
                     </div>
                 </div>
             </div>
