@@ -5,7 +5,7 @@ const ayuda_usuario = document.querySelector('#ayuda_usuario');
 const ayuda_vacio = document.querySelector('#ayuda_vacio');
 const ayuda_registrado = document.querySelector('#ayuda_registrado');
 
-// Checar si hay contenido dentro del input, pata desactivar el boton
+// Checar si hay contenido dentro del input, para desactivar el botón
 function checar_usuario() {
     if (user.value != admin) {
         registrarAdmin.disabled = true;
@@ -42,8 +42,13 @@ const getAdmins = () => {
     .then((data) => {
         if (data.registered.length > 0){
             ayuda_registrado.classList.remove('is-hidden');
+            // Redireccionar después de mostrar la notificación durante unos segundos
+            setTimeout(() => {
+                window.location.href = '/configuracion/consultar_usuario';
+            }, 2000); // 2000 milisegundos = 2 segundos
         } else {
             ayuda_registrado.classList.add('is-hidden');
+            console.error('Error en la modificación: ', data.message);
         }
         if (data.admins.length == 0 && registrarAdmin.disabled == true && data.registered.length == 0) {
             ayuda_vacio.classList.remove('is-hidden');
@@ -81,7 +86,7 @@ $("#user").on("autocompleteselect", function (event, ui) {
 
 const ayuda_buscar = document.querySelector('#ayuda_buscar');
 
-// Checar si hay contenido dentro del input, pata desactivar el boton
+// Checar si hay contenido dentro del input, para desactivar el botón
 function checar_contenido() {
     registrarAdmin.disabled = user.value.length === 0;
     if (user.value.length === 0) {
