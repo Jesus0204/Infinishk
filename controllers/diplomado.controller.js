@@ -38,7 +38,6 @@ exports.get_check_diplomado = (request, response, next) => {
 };
 
 
-
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
     Diplomado.fetchOne(nombre)
@@ -78,13 +77,6 @@ exports.post_fetch_diplomado = (request, response, next) => {
 exports.get_consultar_diplomado = (request, response, next) => {
     Diplomado.fetchAllActives()
         .then(([diplomadosActivos, fieldData]) => {
-            // Formatear las fechas
-            diplomadosActivos = diplomadosActivos.map(diplomado => {
-                diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
-                diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
-                return diplomado;
-            });
-
             // Formatear las fechas
             diplomadosActivos = diplomadosActivos.map(diplomado => {
                 diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
@@ -174,7 +166,6 @@ exports.post_modificar_diplomado = (request, response, next) => {
             console.log(error)
         });
 }
-
 
 exports.post_registrar_diplomado = (request, response, next) => {
     const precio = request.body.precioDiplomado;
