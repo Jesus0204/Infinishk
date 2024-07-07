@@ -37,17 +37,28 @@ exports.get_check_diplomado = (request, response, next) => {
         });
 };
 
+
 exports.post_fetch_diplomado = (request, response, next) => {
     const nombre = request.body.nombre;
     Diplomado.fetchOne(nombre)
         .then(([diplomados, fieldData]) => {
             if (diplomados.length > 0) {
+                // Guardar las fechas originales para las comparaciones
+                let fechaInicioOriginal = moment(diplomados[0].fechaInicio).format('YYYY-MM-DD');
+                let fechaFinOriginal = moment(diplomados[0].fechaFin).format('YYYY-MM-DD');
+
+                // Formatear las fechas para mostrarlas
+                diplomados[0].fechaInicio = moment(diplomados[0].fechaInicio).format('LL');
+                diplomados[0].fechaFin = moment(diplomados[0].fechaFin).format('LL');
+
                 response.render('diplomado/editar_diplomado', {
                     diplomado: diplomados[0],
                     csrfToken: request.csrfToken(),
                     permisos: request.session.permisos || [],
                     rol: request.session.rol || "",
                     username: request.session.username || '',
+                    fechaInicioOriginal: fechaInicioOriginal,
+                    fechaFinOriginal: fechaFinOriginal
                 });
             }
         })
@@ -58,15 +69,30 @@ exports.post_fetch_diplomado = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 };
+
 
 exports.get_consultar_diplomado = (request, response, next) => {
     Diplomado.fetchAllActives()
         .then(([diplomadosActivos, fieldData]) => {
+            // Formatear las fechas
+            diplomadosActivos = diplomadosActivos.map(diplomado => {
+                diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
+                diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                return diplomado;
+            });
+
             Diplomado.fetchAllNoActives()
                 .then(([diplomadosNoActivos, fieldData]) => {
+                    // Formatear las fechas
+                    diplomadosNoActivos = diplomadosNoActivos.map(diplomado => {
+                        diplomado.fechaInicio = moment(diplomado.fechaInicio).format('LL');
+                        diplomado.fechaFin = moment(diplomado.fechaFin).format('LL');
+                        return diplomado;
+                    });
+
                     response.render('diplomado/consultar_diplomado', {
                         diplomadosActivos: diplomadosActivos,
                         diplomadosNoActivos: diplomadosNoActivos,
@@ -98,6 +124,7 @@ exports.get_consultar_diplomado = (request, response, next) => {
         });
 };
 
+
 exports.post_modificar_diplomado = (request, response, next) => {
     const id = request.body.IDDiplomado;
     const precio = request.body.precioDiplomado;
@@ -111,8 +138,8 @@ exports.post_modificar_diplomado = (request, response, next) => {
     const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
     const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
 
-    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();;
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(6, 'hours').format();;
+    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
     Diplomado.update(id, fechaInicio, fechaFin, precio, nombre)
         .then(() => {
@@ -145,14 +172,11 @@ exports.post_registrar_diplomado = (request, response, next) => {
     const nombre = request.body.nombreDiplomado;
 
     const fechas = request.body.fecha.split("-");
+    const fechaInicio_temp = fechas[0].trim();
+    const fechaFin_temp = fechas[1].trim();
 
-    const fechaInicio_temp = fechas[0];
-    const fechaFin_temp = fechas[1];
-    const fechaInicio_utc = fechaInicio_temp.replace(/\s/g, '');
-    const fechaFin_utc = fechaFin_temp.replace(/\s/g, '');
-
-    const fechaInicio = moment(fechaInicio_utc, 'DD MM YYYY').add(6, 'hours').format();
-    const fechaFin = moment(fechaFin_utc, 'DD MM YYYY').add(6, 'hours').format();
+    const fechaInicio = moment(fechaInicio_temp, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    const fechaFin = moment(fechaFin_temp, 'DD MM YYYY').add(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
     Diplomado.save(fechaInicio, fechaFin, precio, nombre)
         .then(() => {
@@ -176,14 +200,25 @@ exports.post_registrar_diplomado = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 }
 
+
 exports.post_detalles_diplomado = (request, response, next) => {
-    const id = request.body.id
+    const id = request.body.id;
     Diplomado.fetchDatos(id)
         .then(([diplomadoInfo, fieldData]) => {
+            // Guardar las fechas originales para las comparaciones
+            let fechaInicioOriginal = diplomadoInfo[0].fechaInicio;
+
+            // Formatear las fechas para mostrarlas
+            diplomadoInfo = diplomadoInfo.map(diplomado => {
+                diplomado.fechaInicioFormateada = moment(diplomado.fechaInicio).format('LL');
+                diplomado.fechaFinFormateada = moment(diplomado.fechaFin).format('LL');
+                return diplomado;
+            });
+
             Diplomado.fetchAlumnos(id)
                 .then(([alumnosDiplomado, fieldData]) => {
                     response.render('diplomado/detalles_diplomado', {
@@ -204,7 +239,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                         rol: request.session.rol || "",
                         error_alumno: false
                     });
-                    console.log(error)
+                    console.log(error);
                 });
         })
         .catch((error) => {
@@ -214,7 +249,7 @@ exports.post_detalles_diplomado = (request, response, next) => {
                 rol: request.session.rol || "",
                 error_alumno: false
             });
-            console.log(error)
+            console.log(error);
         });
 }
 
