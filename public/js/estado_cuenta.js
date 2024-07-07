@@ -182,8 +182,11 @@ function downloadPDF(matricula) {
 
     // Obtener las selecciones de checkboxes
     const selectedTabs = [];
-    if (document.getElementById('checkbox_deuda').checked) {
-        selectedTabs.push('deuda');
+
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_deuda').checked) {
+            selectedTabs.push('deuda');
+        }
     }
     if (document.getElementById('checkbox_pagos').checked) {
         selectedTabs.push('pagos');

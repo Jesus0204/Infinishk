@@ -1053,7 +1053,7 @@ exports.post_alumnos = async (request,response,next) => {
         const referencia = request.body.referenciaBancaria;
         const beca = request.body.beca;
     
-        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
+        const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '11d' });
             
             // Enlace con el token incluido
         const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
@@ -1070,7 +1070,7 @@ exports.post_alumnos = async (request,response,next) => {
                 email: 'soporte@pagos.ivd.edu.mx',
             },
             subject: 'Bienvenido a VIA Pago',
-            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 3 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
+            html: `<p>Hola!</p><p>Haz clic en el siguiente enlace para establecer tu contraseña. Toma en cuenta que la liga tiene una validez de 11 días: <a href="${setPasswordLink}">Establecer Contraseña</a></p>`
         };
     
         try {

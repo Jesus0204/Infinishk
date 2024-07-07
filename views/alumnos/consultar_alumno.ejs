@@ -111,9 +111,14 @@
                         style="padding: 0.5em;">El porcentaje de beca no puede ser mayor a 100</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">% DE BECA</p>
-                        <input id="beca" name="beca"
-                            class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
-                            value="<%= alumnoConsulta[0].porcBeca %>">
+                        <% if (contienePermiso(permisos, 'Modificar Datos Alumno') == true) { %>
+                            <input id="beca" name="beca"
+                                class="input has-text-black has-text-weight-bold is-size-5" type="number" step="any"
+                                value="<%= alumnoConsulta[0].porcBeca %>">
+                        <% } else {%>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].porcBeca %></p>
+                        <% } %>
                     </div>
                 </div>
                 <% } else { %>
@@ -146,8 +151,13 @@
                         style="padding: 0.5em;">La referencia bancaria no puede tener exponentes</p>
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">REFERENCIA BANCARIA</p>
-                        <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
-                            type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                        <% if (contienePermiso(permisos, 'Modificar Datos Alumno') == true) { %>
+                            <input id="ref" name="ref" class="input has-text-black has-text-weight-bold is-size-5"
+                                type="number" step="any" value="<%= alumnoConsulta[0].referenciaBancaria %>">
+                        <% } else { %>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= alumnoConsulta[0].referenciaBancaria %></p>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -171,14 +181,18 @@
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_deuda">
                                     <label class="checkbox">
-                                        Colegiatura
+                                        Estado de Cuenta
                                     </label>
                                 </div>
                                 <% } %>
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_pagos">
                                     <label class="checkbox">
-                                        Historial Colegiatura
+                                        <% if(matricula[0] == '1') { %>
+                                            Historial Colegiatura
+                                        <% } else { %>
+                                            Historial Diplomado
+                                        <% } %>
                                     </label>
                                 </div>
                                 <div class="dropdown-item">
@@ -190,15 +204,17 @@
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_pagosExtra">
                                     <label class="checkbox">
-                                        Historial Solicitudes
+                                        Historial Otros Pagos
                                     </label>
                                 </div>
+                                <% if(matricula[0] == '1') { %>
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_materias">
                                     <label class="checkbox">
                                         Materias
                                     </label>
                                 </div>
+                                <% } %>
                                 <hr class="dropdown-divider">
                                 <div class="dropdown-item">
                                     <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
@@ -626,8 +642,11 @@
                                                         </p>
                                                     </div>
                                                 </section>
+
+
                                                 <footer class="modal-card-foot" style="justify-content: center;">
                                                     <div class="field is-grouped is-grouped-multiline">
+                                                        <div class="column">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 aria-label="close" style="font-size: large; margin: 8px 2px; 
@@ -639,6 +658,8 @@
                                                                 <span>REGRESAR</span>
                                                             </button>
                                                         </p>
+                                                        </div>
+                                                        <div class="column">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
@@ -650,6 +671,8 @@
                                                                 <span>DAR DE BAJA SIN RECARGOS</span>
                                                             </button>
                                                         </p>
+                                                        </div>
+                                                        <div class="column">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo60('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
@@ -661,6 +684,8 @@
                                                                 <span>DAR DE BAJA 60%</span>
                                                             </button>
                                                         </p>
+                                                        </div>
+                                                        <div class="column">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo100('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
@@ -672,6 +697,7 @@
                                                                 <span>DAR DE BAJA 100%</span>
                                                             </button>
                                                         </p>
+                                                        </div>
                                                     </div>
                                                 </footer>
                                             </div>
