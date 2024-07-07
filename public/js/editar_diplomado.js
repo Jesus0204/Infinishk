@@ -4,8 +4,8 @@ const precio = document.querySelector('#precio');
 const fecha = document.querySelector('#fecha');
 
 // Obtén las fechas de inicio y fin del diplomado
-var fechaInicio = new Date(document.getElementById('fechaInicio').value);
-var fechaFin = new Date(document.getElementById('fechaFin').value);
+var fechaInicio = document.getElementById('fechaInicio').value;
+var fechaFin = document.getElementById('fechaFin').value;
 
 const ayuda_nombre_vacio = document.querySelector('#ayuda_nombre_vacio');
 const ayuda_precio_vacio = document.querySelector('#ayuda_precio_vacio');
@@ -93,4 +93,4 @@ if (precio){
 
 if (fecha){
     fecha.addEventListener('input', checar_contenido);
-}
+}s
