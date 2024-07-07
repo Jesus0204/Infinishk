@@ -181,14 +181,18 @@
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_deuda">
                                     <label class="checkbox">
-                                        Colegiatura
+                                        Estado de Cuenta
                                     </label>
                                 </div>
                                 <% } %>
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_pagos">
                                     <label class="checkbox">
-                                        Historial Colegiatura
+                                        <% if(matricula[0] == '1') { %>
+                                            Historial Colegiatura
+                                        <% } else { %>
+                                            Historial Diplomado
+                                        <% } %>
                                     </label>
                                 </div>
                                 <div class="dropdown-item">
@@ -200,15 +204,17 @@
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_pagosExtra">
                                     <label class="checkbox">
-                                        Historial Solicitudes
+                                        Historial Otros Pagos
                                     </label>
                                 </div>
+                                <% if(matricula[0] == '1') { %>
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_materias">
                                     <label class="checkbox">
                                         Materias
                                     </label>
                                 </div>
+                                <% } %>
                                 <hr class="dropdown-divider">
                                 <div class="dropdown-item">
                                     <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
@@ -247,7 +253,7 @@
                         <li class="is-active" id="nav_pagos_Diplomado">
                             <a onclick="muestra_pagos_diplomado()">
                                 <span class="icon is-small"><i class="fa-solid fa-clipboard-list"></i></span>
-                                <span>Historial Diplomado</span>
+                                <span>Pagos Diplomado</span>
                             </a>
                         </li>
                         <% } %>
