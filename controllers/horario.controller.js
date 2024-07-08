@@ -154,7 +154,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                         username: request.session.username || '',
                         permisos: request.session.permisos || [],
                         rol: request.session.rol || "",
-                        error_alumno: false
+                        error_alumno: true
                     });
                 }
             }
@@ -198,7 +198,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
-            error_alumno: false
+            error_alumno: true
         });
         console.log(error);
     }
