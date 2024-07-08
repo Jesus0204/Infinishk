@@ -39,7 +39,6 @@
             <% } %>
         </div>
 
-        <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
         <div id="notificationPlanPago" class="notification is-hidden" style="background-color: #5a6581; color:#ffffff;">
             <button id="btn_eliminar_estatus" class="delete"></button>
             ¡Plan de pago modificado! Recargando página...
@@ -48,6 +47,7 @@
         <% let count = 0 %>
         
         <p class="is-hidden" id="planPagoLength"><%= planpago.length %></p>
+        <% if (contienePermiso(permisos, 'Modificar Plan de Pago' )==true) { %>
         <% planpago.forEach(plan=> { %>
         <table class="table ficha-table is-fullwidth">
             <form class="formModificarPlanPago" action="/configuracion/modificar_planpago"
@@ -129,7 +129,7 @@
                         </td>
                     </tr>
                 <% count++ %>
-                <% }) %>
+            <% }) %>
         </table>
 
         <% } else { %>
@@ -184,6 +184,5 @@
                 <% } %>
             </table>
         <script type="text/javascript" src="/js/administrar_planpago.js"></script>
-    </div>
 </section>
 <%- include('../includes/foot.ejs') %>

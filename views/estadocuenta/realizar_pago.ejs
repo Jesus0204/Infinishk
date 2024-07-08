@@ -281,6 +281,9 @@
                         <div class="control has-icons-left">
                             <div class="select is-medium" style="width: 110%;">
                                 <select name="metodo" id="metodo" style="width: 110%;">
+                                    <option value="Web Tarjeta">
+                                        Tarjeta
+                                    </option>
                                     <option value="Efectivo">
                                         Efectivo o TPV
                                     </option>
@@ -292,14 +295,37 @@
                             <div class="icon is-medium is-left">
                                 <i class="fa-solid fa-credit-card" style="color: #95404c;"></i>
                             </div>
+                            <br>
+                            <div id="mensaje_tarjeta" class="notification" style="background-color: #5a6581; color:#ffffff;">
+                                Los pagos en línea con tarjeta estarán disponibles próximamente.
+                            </div>
                         </div>
                     </div>
                     <br>
                 </div>
                 <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="nota">Nota (opcional): </label>
+                    </div>
+                    <div class="column">
+                        <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
+                            placeholder="Escribe tu nota aquí"></textarea>
+                    </div>
+                </div>
+                <div class="columns">
                     <div class="column is-6"></div>
                     <div class="column is-6">
-                        <div id="boton_efectivo">
+                        <div id="boton_tarjeta">
+                            <button class="js-modal-trigger confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
+                                id="Boton_pagar_1"
+                                data-target="modal-pago-tarjeta" disabled>
+                                <span>REALIZAR PAGO</span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="boton_efectivo" class="is-hidden">
                             <button class="js-modal-trigger confirmar-button is-responsive"
                                 style="font-size: large; padding-left: 1.5em;" id="Boton_pagar_2"
                                 data-target="modal-pago-efectivo">

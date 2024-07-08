@@ -93,4 +93,4 @@ if (precio){
 
 if (fecha){
     fecha.addEventListener('input', checar_contenido);
-}
+}s

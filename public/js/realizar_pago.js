@@ -206,17 +206,32 @@ if (boton_pagar) {
 }
 
 
+const boton_tarjeta = document.querySelector('#boton_tarjeta');
 const boton_efectivo = document.querySelector('#boton_efectivo');
 const boton_transferencia = document.querySelector('#boton_transferencia');
 
+const mensaje_tarjeta = document.querySelector('#mensaje_tarjeta');
+const notaSection = document.getElementById('nota').parentElement.parentElement;
 
 function change_modal() {
-    if (metodo.value == 'Efectivo') {
+    if (metodo.value == 'Web Tarjeta') {
+        mensaje_tarjeta.classList.remove('is-hidden');
+        boton_tarjeta.classList.remove('is-hidden');
+        boton_efectivo.classList.add('is-hidden');
+        boton_transferencia.classList.add('is-hidden');
+        notaSection.style.display = 'block';
+    } else if (metodo.value == 'Efectivo') {
+        mensaje_tarjeta.classList.add('is-hidden');
+        boton_tarjeta.classList.add('is-hidden');
         boton_efectivo.classList.remove('is-hidden');
         boton_transferencia.classList.add('is-hidden');
+        notaSection.style.display = 'none';
     } else if (metodo.value == 'Transferencia') {
+        mensaje_tarjeta.classList.add('is-hidden');
+        boton_tarjeta.classList.add('is-hidden');
         boton_efectivo.classList.add('is-hidden');
         boton_transferencia.classList.remove('is-hidden');
+        notaSection.style.display = 'none';
     }
 }
 
@@ -258,6 +273,8 @@ function mensaje_monto() {
         ayuda_monto_exponente.classList.add('is-hidden');
     }
 };
+
+
 
 // Detectar si el usuario maneja input y llamar las funciones anteriores
 motivo.addEventListener('input', checar_contenido);
