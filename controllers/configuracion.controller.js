@@ -1056,7 +1056,7 @@ exports.post_alumnos = async (request,response,next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '11d' });
             
             // Enlace con el token incluido
-        const setPasswordLink = `http://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
     
         await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
         await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
