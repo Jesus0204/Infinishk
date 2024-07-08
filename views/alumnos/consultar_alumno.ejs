@@ -179,14 +179,14 @@
                             <div class="dropdown-content">
                                 <% if(matricula[0] == '1') { %>
                                 <div class="dropdown-item">
-                                    <input type="checkbox" id="checkbox_deuda">
+                                    <input type="checkbox" id="checkbox_deuda" class="download-checkbox">
                                     <label class="checkbox">
                                         Estado de Cuenta
                                     </label>
                                 </div>
                                 <% } %>
                                 <div class="dropdown-item">
-                                    <input type="checkbox" id="checkbox_pagos">
+                                    <input type="checkbox" id="checkbox_pagos" class="download-checkbox">
                                     <label class="checkbox">
                                         <% if(matricula[0] == '1') { %>
                                             Historial Colegiatura
@@ -196,20 +196,20 @@
                                     </label>
                                 </div>
                                 <div class="dropdown-item">
-                                    <input type="checkbox" id="checkbox_solicitudes">
+                                    <input type="checkbox" id="checkbox_solicitudes" class="download-checkbox">
                                     <label class="checkbox">
                                         Solicitudes Pendientes
                                     </label>
                                 </div>
                                 <div class="dropdown-item">
-                                    <input type="checkbox" id="checkbox_pagosExtra">
+                                    <input type="checkbox" id="checkbox_pagosExtra" class="download-checkbox">
                                     <label class="checkbox">
                                         Historial Otros Pagos
                                     </label>
                                 </div>
                                 <% if(matricula[0] == '1') { %>
                                 <div class="dropdown-item">
-                                    <input type="checkbox" id="checkbox_materias">
+                                    <input type="checkbox" id="checkbox_materias" class="download-checkbox">
                                     <label class="checkbox">
                                         Materias
                                     </label>
@@ -217,10 +217,16 @@
                                 <% } %>
                                 <hr class="dropdown-divider">
                                 <div class="dropdown-item">
-                                    <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary">
-                                        <span>
-                                            Descargar PDF
+                                    <!-- Botón que se muestra por defecto -->
+                                    <button class="button is-primary" id="downloadButton" disabled>
+                                        <span>Descargar PDF</span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-download" style="color: #ffffff;"></i>
                                         </span>
+                                    </button>
+                                    <!-- Enlace oculto hasta elegir algo -->
+                                    <a onclick="downloadPDF('<%= matricula %>')" class="button is-primary is-hidden" id="downloadLink">
+                                        <span>Descargar PDF</span>
                                         <span class="icon is-large">
                                             <i class="fa-solid fa-download" style="color: #ffffff;"></i>
                                         </span>

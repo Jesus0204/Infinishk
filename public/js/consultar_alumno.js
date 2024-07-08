@@ -515,6 +515,33 @@ function darDeBajaGrupo100(IDGrupo, matricula) {
         });
 }
 
+function desactivarBotonPDF() {
+    const checkboxes = document.querySelectorAll('.download-checkbox');
+    const downloadButton = document.getElementById('downloadButton');
+    const downloadLink = document.getElementById('downloadLink');
+    
+    // Verificar si al menos un checkbox está seleccionado
+    const atLeastOneChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+    if (atLeastOneChecked) {
+        downloadButton.classList.add('is-hidden');
+        downloadButton.disabled = true;
+        downloadLink.classList.remove('is-hidden');
+    } else {
+        downloadButton.classList.remove('is-hidden');
+        downloadButton.disabled = true;
+        downloadLink.classList.add('is-hidden');
+    }
+}
+
+// Añadir event listeners a todos los checkboxes
+document.querySelectorAll('.download-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', desactivarBotonPDF);
+});
+
+// Llamar a la función al cargar la página por si hay cambios iniciales
+desactivarBotonPDF();
+
 function downloadPDF(matricula) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
