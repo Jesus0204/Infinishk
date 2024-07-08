@@ -122,7 +122,11 @@
                                 <div class="dropdown-item">
                                     <input type="checkbox" id="checkbox_pagos" class="download-checkbox">
                                         <label class="checkbox">
-                                            Historial Colegiatura
+                                            <% if(matricula[0] == '1') { %>
+                                                Historial Colegiatura
+                                            <% } else { %>
+                                                Historial Diplomado
+                                            <% } %>
                                         </label>
                                 </div>
                                 <div class="dropdown-item">
@@ -181,7 +185,12 @@
                             <% } %>
                                  <a onclick="pagos()">
                                      <span class="icon is-small"><i class="fa-solid fa-timeline"></i></span>
-                                     <span>Historial Colegiatura</span>
+                                     <span> <% if (matricula[0] == '1') { %>
+                                            Historial Colegiatura
+                                        <% } else if (matricula[0] == '8') { %>
+                                            Historial Diplomado
+                                        <% } %>
+                                    </span>
                                  </a>
                              </li>
                              <li id="nav_solicitudes">
@@ -255,7 +264,7 @@
                     <% if (matricula[0] == '1') { %>
                         <div id="pagos" class="is-hidden">
                     <% } else if (matricula[0] == '8') { %>
-                        <div id="pagos">
+                        <div id="pagosdipl">
                     <% } %>
                         <% if(matricula[0] == '1') { %>
                             <% if (pagos.length != 0) { %>

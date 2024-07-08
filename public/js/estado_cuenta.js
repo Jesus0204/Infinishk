@@ -188,8 +188,14 @@ function downloadPDF(matricula) {
             selectedTabs.push('deuda');
         }
     }
-    if (document.getElementById('checkbox_pagos').checked) {
-        selectedTabs.push('pagos');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_pagos').checked) {
+            selectedTabs.push('pagos');
+        }
+    } else if(matricula[0] == '8'){
+        if (document.getElementById('checkbox_pagos').checked) {
+            selectedTabs.push('pagosdipl');
+        }
     }
     if (document.getElementById('checkbox_solicitudes').checked) {
         selectedTabs.push('solicitudes');
@@ -226,6 +232,7 @@ function downloadPDF(matricula) {
     const tabTitles = {
         'deuda': 'Colegiatura',
         'pagos': 'Historial de Colegiatura',
+        'pagosdipl': 'Historial de Diplomado',
         'solicitudes': 'Solicitudes',
         'pagosExtra': 'Historial Solicitudes'
     };
