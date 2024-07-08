@@ -522,8 +522,10 @@ function downloadPDF(matricula) {
 
     // Obtener las selecciones de checkboxes
     const selectedTabs = [];
-    if (document.getElementById('checkbox_deuda').checked) {
-        selectedTabs.push('estado_cuenta');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_deuda').checked) {
+            selectedTabs.push('estado_cuenta');
+        }
     }
     if (document.getElementById('checkbox_pagos').checked) {
         selectedTabs.push('historial');
@@ -534,8 +536,10 @@ function downloadPDF(matricula) {
     if (document.getElementById('checkbox_pagosExtra').checked) {
         selectedTabs.push('extras');
     }
-    if (document.getElementById('checkbox_materias').checked) {
-        selectedTabs.push('horario');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_materias').checked) {
+            selectedTabs.push('horario');
+        }
     }
 
     // Guardar el ID de la pestaña activa
