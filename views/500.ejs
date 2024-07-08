@@ -10,13 +10,12 @@
             500 - ERROR EN LA PETICIÓN
         </label>
         <div class="box">
-            <p>Lo sentimos. Hubo un error al procesar la petición. Favor de intentar de nuevo.</p>
+            <% if (error_alumno == true) { %>
+                <p>¡No has hecho nada malo, no te preocupes! Por el momento el servicio para tu horario no está disponible. Por favor intenta más tarde.</p>
+            <% } else { %> 
+                <p>Lo sentimos. Hubo un error al procesar la petición. Favor de intentar de nuevo.</p>
+            <% } %>
         </div>
-        <% if (error_alumno == true) { %> 
-            <div class="notification" style="background-color: #5a6581; color:#ffffff;">
-                ¡No has hecho nada malo, no te preocupes! Por el momento el servicio para confirmar horario no está disponible. Por favor intenta más tarde.
-            </div>
-        <% } %>
     </div>
 </section>
 <%- include('./includes/foot.ejs') %>
