@@ -167,16 +167,20 @@
                                         ESTATUS
                                     </p>
                                     <% if (plan.planPagoActivo===1) { %>
-                                        Activo
+                                        <p class="is-size-5">
+                                            Activo
+                                        </p>
                                     <% } %>
                                     <% if (plan.planPagoActivo===0) { %>
-                                        No Activo
+                                        <p class="is-size-5">
+                                            No Activo
+                                        </p>
                                     <% } %>
                                 </div>
-                                <% }) %>
                             </div>
                         </td>
                     </tr>
+                    <% }) %>
                 <% } %>
             </table>
         <script type="text/javascript" src="/js/administrar_planpago.js"></script>
