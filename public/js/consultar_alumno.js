@@ -522,11 +522,19 @@ function downloadPDF(matricula) {
 
     // Obtener las selecciones de checkboxes
     const selectedTabs = [];
-    if (document.getElementById('checkbox_deuda').checked) {
-        selectedTabs.push('estado_cuenta');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_deuda').checked) {
+            selectedTabs.push('estado_cuenta');
+        }
     }
-    if (document.getElementById('checkbox_pagos').checked) {
-        selectedTabs.push('historial');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_pagos').checked) {
+            selectedTabs.push('historial');
+        }
+    } else if(matricula[0] == '8'){
+        if (document.getElementById('checkbox_pagos').checked) {
+            selectedTabs.push('pagosdipl');
+        }
     }
     if (document.getElementById('checkbox_solicitudes').checked) {
         selectedTabs.push('solicitudes');
@@ -534,8 +542,10 @@ function downloadPDF(matricula) {
     if (document.getElementById('checkbox_pagosExtra').checked) {
         selectedTabs.push('extras');
     }
-    if (document.getElementById('checkbox_materias').checked) {
-        selectedTabs.push('horario');
+    if(matricula[0] == '1'){
+        if (document.getElementById('checkbox_materias').checked) {
+            selectedTabs.push('horario');
+        }
     }
 
     // Guardar el ID de la pestaña activa
@@ -580,6 +590,7 @@ function downloadPDF(matricula) {
     const tabTitles = {
         'estado_cuenta': 'Colegiatura',
         'historial': 'Historial de Colegiatura',
+        'pagosdipl': 'Historial de Diplomado',
         'solicitudes': 'Solicitudes',
         'extras': 'Historial Solicitudes',
         'horario': 'Horario del Alumno'
