@@ -90,6 +90,8 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
         
         await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
@@ -113,6 +115,8 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
         
         await Fichas.delete_grupo_update_fichas60(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
@@ -136,6 +140,8 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
         
         await Fichas.delete_grupo_update_fichas100(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
+
+        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
