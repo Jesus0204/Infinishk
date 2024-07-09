@@ -720,6 +720,60 @@
                                 <div class="column is-8"></div>
                                 <div class="column">
                                     <div class="box">
+                                        <% if (alumnoConsulta[0].porcBeca || credito != 0) { %>
+                                            <div class="columns is-mobile">
+                                                <div class="column is-6">
+                                                    <p class="has-text-black has-text-weight-medium">
+                                                        Subtotal
+                                                    </p>
+                                                </div>
+                                                <div class="column is-6">
+                                                    <p class="has-text-black">
+                                                        <span class="has-text-weight-bold">
+                                                            $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                            maximumFractionDigits: 2 }) %>
+                                                        </span>
+                                                        <span class="has-text-weight-light is-size-7">
+                                                            MXN
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% if (alumnoConsulta[0].porcBeca) { %>
+                                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                                    <div class="column is-6">
+                                                        <p class="has-text-weight-medium has-text-black">
+                                                            Porcentaje de Beca
+                                                        </p>
+                                                    </div>
+                                                    <div class="column is-6">
+                                                        <p class="has-text-black has-text-weight-medium">
+                                                            <%= alumnoConsulta[0].porcBeca %>%
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            <% if (credito != 0) { %>
+                                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                                    <div class="column is-6">
+                                                        <p class="has-text-weight-medium has-text-black">
+                                                            Crédito
+                                                        </p>
+                                                    </div>
+                                                    <div class="column is-6">
+                                                        <p class="has-text-black">
+                                                            <span class="has-text-weight-semibold">
+                                                                -$<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2 }) %>
+                                                            </span>
+                                                            <span class="has-text-weight-light is-size-7">
+                                                                MXN
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                <% } %>
                             <div class="columns is-mobile">
                                 <div class="column is-6">
                                     <strong>
@@ -729,9 +783,10 @@
                                     </strong>
                                 </div>
                                 <div class="column is-6">
+                                    <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - credito %>
                                     <p class="has-text-danger">
                                         <span class=" has-text-weight-bold">
-                                            $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                            $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2 }) %>
                                         </span>
                                         <span class="has-text-weight-light is-size-7">
