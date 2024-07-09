@@ -42,6 +42,11 @@ module.exports = class Alumno {
         WHERE Matricula = ?`, [credito, matricula]);
     }
 
+    static set_credito(matricula, credito) {
+        return db.execute(`UPDATE Alumno SET Credito = ?
+        WHERE Matricula = ?`, [credito, matricula]);
+    }
+
     static fetchCredito(matricula){
         return db.execute(`SELECT CAST(credito AS CHAR(20)) FROM Alumno WHERE Matricula = ?`,[matricula]);
     }
