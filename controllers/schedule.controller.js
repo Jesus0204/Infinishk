@@ -169,7 +169,7 @@ async function sendEmail(message){
 
     // Crear el mensaje para enviar el correo
     const msg = {
-        to: 'samirbaidonpardo@hotmail.com',
+        to: 'administracion@ivd.edu.mx',
         from: {
             name: 'VIA PAGO',
             email: 'soporte@pagos.ivd.edu.mx ',

@@ -97,8 +97,6 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
-
-    // response.redirect('/alumnos/datos_alumno');
 }
 
 exports.post_dar_baja_grupo60 = async (request, response, next) => {
@@ -117,15 +115,11 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno
         
         await Fichas.delete_grupo_update_fichas60(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-
-        // await destroyGroup(matricula, IDExterno);
         
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
-
-    // response.redirect('/alumnos/datos_alumno');
 }
 
 exports.post_dar_baja_grupo100 = async (request, response, next) => {
@@ -151,8 +145,6 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
-
-    // response.redirect('/alumnos/datos_alumno');
 }
 
 
@@ -236,6 +228,7 @@ exports.post_fetch_datos = async (request, response, next) => {
         const [deuda] = await Deuda.fetchDeudaConsultarAlumno(matricula);
         const [pagosDiplomado] = await PagaDiplomado.fetchPagosDiplomado(matricula);
         const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
+        const credito = await Alumno.fetchCreditoINT(matricula)
 
         // Conviertes la fecha si existe
         for (let count = 0; count < deuda.length; count++) {
@@ -277,6 +270,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 periodo: periodo[0][0],
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
+                credito: credito[0][0].credito,
                 alumnoDiplomadoActual: alumnoDiplomadoActualConsulta,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
@@ -296,7 +290,7 @@ exports.post_fetch_datos = async (request, response, next) => {
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(matricula)
             const precio = await Grupo.fetchPrecioTotal(matricula)
-            const credito = await Alumno.fetchCredito(matricula)
+            const credito = await Alumno.fetchCreditoINT(matricula)
             const cred = (credito[0][0].Credito) ?? 0;
             const precioTotal = (precio[0][0].Preciototal - cred)
             const periodoExistente = 1;
@@ -308,6 +302,7 @@ exports.post_fetch_datos = async (request, response, next) => {
                 precioTotal: precioTotal,
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
+                credito: credito[0][0].credito,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",

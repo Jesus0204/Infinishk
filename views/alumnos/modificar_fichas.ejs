@@ -9,12 +9,16 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-1">
-                    <a id="Boton_regresar" type="submit" class="is-responsive"
-                        onclick="regresar()">
-                        <span class="icon">
-                            <i class="fas fa-arrow-left fa-2x"></i>
-                        </span>
-                    </a>
+                    <form id="redireccionar" action="/alumnos/datos_alumno" method="POST">
+                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="buscar" id="buscar"
+                            value="<%= alumno[0].Matricula %>">
+                            <a id="Boton_regresar_fichas" type="submit" class="is-responsive">
+                                <span class="icon">
+                                    <i class="fas fa-arrow-left fa-2x"></i>
+                                </span>
+                            </a>
+                    </form>
                 </div>
             <input type="hidden" id="_csrf" value="<%= csrfToken %>">
             <input type="hidden" id="alumno" value="<%= alumno[0].Matricula %>">
