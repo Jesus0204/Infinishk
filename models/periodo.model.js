@@ -30,4 +30,8 @@ module.exports = class Periodo {
     static fetchInicio(){
         return db.execute(`SELECT fechaInicio From Periodo WHERE periodoActivo = 1`);
     }
+
+    static fetchFin(){
+        return db.execute(`SELECT fechaFin From Periodo WHERE periodoActivo = 1`);
+    }
 }
