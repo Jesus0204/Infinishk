@@ -42,11 +42,12 @@ function getPaymentDates(numPagos, semesterStart) {
         }
     } else {
         // Calculate the interval between payments in days
-        const interval = (endDate - startDate) / (numPagos - 1);
+        const interval = (endDate - startDate) / (numPagos - 1) / (1000 * 60 * 60 * 24);
 
         // Generate payment dates
         for (let i = 0; i < numPagos; i++) {
-            let paymentDate = new Date(startDate.getTime() + interval * i);
+            let paymentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            paymentDate.setDate(paymentDate.getDate() + Math.round(interval * i));
             paymentDates.push(moment(paymentDate).format('LL'));
         }
 
