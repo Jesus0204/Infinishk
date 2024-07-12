@@ -38,4 +38,17 @@ module.exports = class Fichas {
     static update_fichas_beca(uMatricula, uBeca, uCredito){
         db.execute(`CALL recalcularMontoTotalYAplicarBeca(?, ?, ?)`, [uMatricula, uBeca, uCredito])
     }
+
+    static async calcularNumeroDeudas(uMatricula, uFechaInicio, uFechaFin) {
+        const [rows] = await db.execute(`
+            SELECT COUNT(*) AS total
+            FROM deuda
+            WHERE Matricula = ?
+              AND fechaLimitePago >= ?
+              AND fechaLimitePago <= ?
+              AND Pagado = 0
+        `, [uMatricula, uFechaInicio, uFechaFin]);
+        return rows[0].total;
+    }
+    
 } 
