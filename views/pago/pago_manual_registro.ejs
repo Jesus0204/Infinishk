@@ -530,6 +530,7 @@
                     </article>
                     <% } %>
             </div>
+            <% if (pagos_extra) { %>
             <div id="pago_extra" class="is-hidden">
                 <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -744,6 +745,7 @@
                         </div>
                 </form>
             </div>
+            <% } %>
         </div>
     </div>
 </section>
