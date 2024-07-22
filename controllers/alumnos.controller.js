@@ -243,25 +243,25 @@ exports.post_datos_modify = async (request, response, next) => {
 };
 
 exports.post_fetch_datos = async (request, response, next) => {
-    let matches = request.body.buscar.match(/(\d+)/);
-    const matricula = matches[0];
-    const periodo = await Periodo.fetchActivo();
-    const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
-    const fechaInicio = await Periodo.fetchInicio();
-
-    // Extrae la fecha de `fechaInicio` asegurándote de que accedes correctamente al valor
-    const fecha = fechaInicio[0][0].fechaInicio; // Ajusta esto según la estructura correcta
-
-    // Calcula la fecha límite (dos semanas después de la fecha de inicio)
-    const fechaLimite = moment(fecha).add(2, 'weeks');
-
-    // Obtén la fecha actual
-    const fechaActual = moment();
-
-    // Compara la fecha actual con la fecha límite
-    const mostrarEliminar = fechaActual.isSameOrBefore(fechaLimite);
-
     try {
+        let matches = request.body.buscar.match(/(\d+)/);
+        const matricula = matches[0];
+        const periodo = await Periodo.fetchActivo();
+        const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
+        const fechaInicio = await Periodo.fetchInicio();
+
+        // Extrae la fecha de `fechaInicio` asegurándote de que accedes correctamente al valor
+        const fecha = fechaInicio[0][0].fechaInicio; // Ajusta esto según la estructura correcta
+
+        // Calcula la fecha límite (dos semanas después de la fecha de inicio)
+        const fechaLimite = moment(fecha).add(2, 'weeks');
+
+        // Obtén la fecha actual
+        const fechaActual = moment();
+
+        // Compara la fecha actual con la fecha límite
+        const mostrarEliminar = fechaActual.isSameOrBefore(fechaLimite);
+
         let alumnoConsulta;
 
         const [pagos] = await Pago.fetchOne(matricula);
