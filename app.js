@@ -11,8 +11,8 @@ app.set('views', 'views');
 const path = require('path');
 
 // Para que se puede usar cookie parser de forma mas facil
-const cookieParser = require('cookie-parser')
-app.use(cookieParser('Un secreto'))
+const cookieParser = require('cookie-parser');
+app.use(cookieParser('Un secreto'));
 
 // Para usar las sesiones
 const session = require('express-session');
@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
     cookie: {
         maxAge: 900000 // Tiempo en milisegundos para que expire la sesión
-      }
+    }
 }));
 
 // La aplicacion va a tener acceso a todo lo que esta en public
@@ -48,7 +48,7 @@ const csrfProtection = csrf();
 //...Y después del código para inicializar la sesión... 
 app.use(csrfProtection);
 
-const helmet = require("helmet");
+const helmet = require('helmet');
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -61,12 +61,12 @@ app.use(helmet({
     },
 }));
 
-const compression = require("compression");
+const compression = require('compression');
 
 app.use(compression());
 
 // Para utilizar chartist para la generación de gráficos
-const chartist = require("chartist");
+const chartist = require('chartist');
 
 const rutasSession = require('./routes/session.routes');
 app.use('/auth', rutasSession);
@@ -74,30 +74,46 @@ app.use('/auth', rutasSession);
 app.use(bodyParser.json());
 
 const rutasDiplomado = require('./routes/diplomado.routes');
-app.use('/diplomado', rutasDiplomado);
+app.use('/diplomado', checkSession, rutasDiplomado);
 
 const rutasConfiguracion = require('./routes/configuracion.routes');
-app.use('/configuracion', rutasConfiguracion);
+app.use('/configuracion', checkSession, rutasConfiguracion);
 
 const rutasPago = require('./routes/pagos.routes');
-app.use('/pagos', rutasPago);
+app.use('/pagos', checkSession, rutasPago);
 
 const rutasHorario = require('./routes/horario.routes');
-app.use('/horario', rutasHorario);
+app.use('/horario', checkSession, rutasHorario);
 
 const rutasAlumno = require('./routes/alumnos.routes');
-app.use('/alumnos', rutasAlumno);
+app.use('/alumnos', checkSession, rutasAlumno);
 
 const rutasEstadoCuenta = require('./routes/estadocuenta.routes');
-app.use('/estado_cuenta', rutasEstadoCuenta);
+app.use('/estado_cuenta', checkSession, rutasEstadoCuenta);
+
+// Middleware para verificar si la sesión está activa
+function checkSession(req, res, next) {
+    if (!req.session.username) {
+        // Redirigir al login si no hay una sesión activa
+        return res.redirect('/auth/login');
+    }
+    next();
+}
+
+// Middleware para manejar errores de CSRF
+app.use((err, req, res, next) => {
+    if (err.code === 'EBADCSRFTOKEN') {
+        // Redirigir al login cuando se detecte un token CSRF inválido
+        return res.redirect('/auth/login');
+    }
+    next(err);
+});
 
 // Agregar funcion para iterar la lista del ejs, y que el codigo se vea limpio
 app.locals.contienePermiso = (permisos, casoUso) => {
-
     const contains = !!permisos.find(caso => {
         return caso.funcion === casoUso;
-    })
-
+    });
     return contains;
 };
 
