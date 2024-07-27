@@ -17,7 +17,7 @@ module.exports = class Materia {
     }
 
     static updateMateria(id,nombre,planEstudios,semestre,creditos,idexterno) {
-        return db.execute('UPDATE Materia SET IDMateria=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateriaExterna=?', [id,nombre,planEstudios,semestre,creditos,idexterno])
+        return db.execute('UPDATE Materia SET IDMateriaExterna=?, Nombre=?, planEstudios=?, semestreImpartido=?, Creditos=?  WHERE IDMateria=?', [idexterno,nombre,planEstudios,semestre,creditos,id])
     }
 
     static saveMateria(id,nombre,plan,semestre,creditos,idexterno){

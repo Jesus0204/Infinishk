@@ -905,6 +905,7 @@ exports.get_materias = async (request, response, next) => {
                 // Si la comparación devuelve resultados, actualiza la materia
                 await Materia.updateMateria(course.id, course.name, course.carrera, course.semestre, course.credits, course.sep_id)
                 updatedCourses.push({ ...course, updated: true });
+                
             } else {
                 updatedCourses.push({...course, updated: false});
             }
