@@ -9,7 +9,6 @@ const Periodo = require('../models/periodo.model');
 const Colegiatura = require('../models/colegiatura.model');
 const Usuario = require('../models/usuario.model');
 const Reporte = require('../models/reporte.model');
-const Fichas = require('../models/fichas_pago.model');
 
 const {
     post_fetch_datos
@@ -754,22 +753,6 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
             }
 
-            const resultfetchInicio = await Periodo.fetchInicio();
-            const resultfetchFin = await Periodo.fetchFin();
-            const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
-            const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
-        
-            // Obtener número de fichas sin pagar
-            const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
-
-            let monto_reinicio = 0
-
-            // Si hay fichas sin pagar, realiza la baja y elimina el grupo
-            if (numeroFichasSinPagar == 0) {
-                console.log('Se reinicia a 0')
-                await Alumno.set_credito(matricula, monto_reinicio);
-            }
-
             // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
             if (monto_a_usar > 0) {
                 await Alumno.update_credito(matricula, monto_a_usar);
@@ -1017,18 +1000,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             await Deuda.update_transferencia(importe_trans, idDeuda[0][0].IDDeuda)
             const deudaNext = await Deuda.fetchIDDeuda(matricula)
 
-            const resultfetchInicio = await Periodo.fetchInicio();
-            const resultfetchFin = await Periodo.fetchFin();
-            const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
-            const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
-        
-            // Obtener número de fichas sin pagar
-            const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
-
-            // Si hay fichas sin pagar, realiza la baja y elimina el grupo
-            if (numeroFichasSinPagar == 0) {
-                await Alumno.set_credito(matricula, 0);
-            }
+            if (diferencia > 0) {
 
                 if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
                     await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
@@ -1036,6 +1008,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                     await Alumno.update_credito(matricula, diferencia);
                 }
 
+            }
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
             PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
