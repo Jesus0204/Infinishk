@@ -25,7 +25,7 @@ exports.set_recargos = (request, response, next) => {
             let montoPagar = deuda.montoAPagar;
 
             // Calculas los recargos del 5%
-            let montoRecargo = montoPagar + (montoPagar * 0.05);
+            let montoRecargo = montoPagar * 0.05;
 
             await Deuda.setRecargosDeuda(deuda.IDDeuda, montoRecargo);
         }
