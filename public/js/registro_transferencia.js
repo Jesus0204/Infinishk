@@ -104,27 +104,30 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
             method: 'POST',
             body: formData,
         })
-            .then(response => response.json()) // Convertir la respuesta a JSON
-            .then(data => {
-                let mensajeAlerta = '';
-                if (!data.success) {
-                    mensajeAlerta = data.message || 'Por favor verifica tu tipo de pago';
-                    alert(mensajeAlerta);
+        .then(response => response.json()) // Convertir la respuesta a JSON
+        .then(data => {
+            let mensajeAlerta = '';
+            if (!data.success) {
+                if (data.message && data.message.includes('Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.')) {
+                    mensajeAlerta = data.message;
                 } else {
-                    const filaId = form.parentElement.parentElement.id;
-                    const fila = document.getElementById(filaId);
-                    if (fila) {
-                        fila.remove();
-                    } else {
-                        console.error(`No se encontró la fila ${filaId}.`);
-                    }
+                    mensajeAlerta = 'Por favor verifica tu tipo de pago';
                 }
-            })
-            .catch(error => {
-                console.error('Error en la petición fetch:', error);
-                alert('Hubo un error al procesar la solicitud. Por favor inténtalo de nuevo más tarde.');
-            });
-            
+                alert(mensajeAlerta);
+            } else {
+                const filaId = form.parentElement.parentElement.id;
+                const fila = document.getElementById(filaId);
+                if (fila) {
+                    fila.remove();
+                } else {
+                    console.error(`No se encontró la fila ${filaId}.`);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error en la petición fetch:', error);
+            alert('Hubo un error al procesar la solicitud. Por favor inténtalo de nuevo más tarde.');
+        });
     });
 });
 

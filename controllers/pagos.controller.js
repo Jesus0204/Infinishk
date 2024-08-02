@@ -975,6 +975,17 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             const idDeuda = await Deuda.fetchIDDeuda(matricula);
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
+
+            console.log(deuda)
+
+            if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
+                response.json({
+                    success: false,
+                    message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
+                });
+                return;
+            }            
+
             Deuda.fetchNoPagadas(idColegiatura)
                 .then(async ([deudas_noPagadas, fieldData]) => {
                     // Guardas el pago completo del alumno
@@ -1046,6 +1057,4 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             success: success
         });
     }
-
-
 }
