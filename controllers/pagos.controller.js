@@ -968,47 +968,42 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const fecha = request.body.fecha;
     const nota = request.body.nota;
 
+
     try {
         if (tipoPago === 'Pago de Colegiatura') {
-            let diferencia = 0;
-            let montoAPagar = 0;
-
             const deuda = await Deuda.fetchDeuda(matricula);
             const idDeuda = await Deuda.fetchIDDeuda(matricula);
-
-            if (deuda[0] && deuda[0][0] && typeof deuda[0][0].montoAPagar !== 'undefined') {
-                montoAPagar = Number(deuda[0][0].montoAPagar.toFixed(2));
-            } else {
-                success = false;
-                response.json({
-                    success: success,
-                    message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
-                });
-                return;
-            }
-
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
+            Deuda.fetchNoPagadas(idColegiatura)
+                .then(async ([deudas_noPagadas, fieldData]) => {
+                    // Guardas el pago completo del alumno
+                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha)
 
-            if (importe > montoAPagar) {
-                diferencia = importe - montoAPagar;
-            }
+                    // El monto inicial a usar es lo que el usuario decidió
+                    let monto_a_usar = request.body.importe;
+                    for (let deuda of deudas_noPagadas) {
+                        if (monto_a_usar <= 0) {
+                            break;
+                        } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                            // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                            await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
+                        } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                            // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                            await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
+                        }
 
-            let importe_trans = importe - diferencia;
-            await Pago.save_transferencia(idDeuda[0][0].IDDeuda, importe, nota, fecha);
-            await Colegiatura.update_transferencia(importe, idColegiatura)
-            await Deuda.update_transferencia(importe_trans, idDeuda[0][0].IDDeuda)
-            const deudaNext = await Deuda.fetchIDDeuda(matricula)
+                        // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
+                        monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
+                    }
 
-            if (diferencia > 0) {
-
-                if (deudaNext[0] && deudaNext[0][0] && typeof deudaNext[0][0].IDDeuda !== 'undefined') {
-                    await Deuda.update_transferencia(diferencia, deudaNext[0][0].IDDeuda);
-                } else {
-                    await Alumno.update_credito(matricula, diferencia);
-                }
-
-            }
+                    // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
+                    if (monto_a_usar > 0) {
+                        await Alumno.update_credito(matricula, monto_a_usar);
+                    }
+                })
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
             PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
