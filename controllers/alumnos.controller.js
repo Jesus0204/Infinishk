@@ -197,48 +197,67 @@ exports.post_datos_modify = async (request, response, next) => {
 
     const resultfetchReforiginal = await Alumno.fetchRef(alumno);
 
-    let beca_original = resultfetchBecaoriginal[0][0].beca;
-
     let ref_original = resultfetchReforiginal[0][0].referenciaBancaria
-
+    
     let beca_uso;
-
+    
     let beca_new = beca;
-
+    
     if (beca == "") {
         beca_new = '0';
     }
-
+    
     if(ref == ""){
         ref = ref_original;
     }
-
-    try {
-        let data;
-        if (alumno.startsWith("1")) {
-            if(beca_new == 0){
+    
+    let data;
+    if (alumno.startsWith("1")) {
+        try {
+            let beca_original = resultfetchBecaoriginal[0][0].beca;
+            if (beca_new == 0){
                 beca_uso = 1
             }
-            else{
+            else {
                 beca_uso = (1 - (beca_new / 100)) 
             }
             if (beca_uso != beca_original){
-            const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
-            const credito = resultfetchCredito[0][0].credito;
-            await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+                const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
+                const credito = resultfetchCredito[0][0].credito;
+                await Fichas.update_fichas_beca(alumno,beca_uso,credito);
             } 
             data = await EstudianteProfesional.update(alumno, ref, beca_new); 
-        } else if (alumno.startsWith("8")) {
-            data = await EstudianteDiplomado.update(alumno, ref);
-        } else {
-            // Manejar otros casos según sea necesario
-            response.status(500).json({ success: false, message: 'Matrícula no válida' });
-            return;
+
+            response.status(200).json({
+                success: true,
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            response.status(500).json({
+                success: false,
+                message: 'Error actualizando los datos'
+            });
         }
-        response.status(200).json({ success: true, data: data });
-    } catch (error) {
-        console.log(error);
-        response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
+    } else if (alumno.startsWith("8")) {
+        try {
+            data = await EstudianteDiplomado.update(alumno, ref);
+
+            response.status(200).json({
+                success: true,
+                data: data
+            });
+        } catch (error) {
+            console.log(error);
+            response.status(500).json({
+                success: false,
+                message: 'Error actualizando los datos'
+            });
+        }
+    } else {
+        // Manejar otros casos según sea necesario
+        response.status(500).json({ success: false, message: 'Matrícula no válida' });
+        return;
     }
 };
 
