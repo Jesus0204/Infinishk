@@ -12,8 +12,16 @@ const ayuda_beca_exponente = document.querySelector('#ayuda_beca_exponente');
 const ayuda_beca_rango = document.querySelector('#ayuda_beca_rango');
 
 // Checar si hay contenido dentro del input, para desactivar el boton
-function checar_contenido() {
-    if (ref.value.length === 0 || beca.value.length === 0) {
+function checar_contenido_ref() {
+    if (ref.value.length === 0) {
+        bt_Modificar.disabled = true;
+    } else {
+        bt_Modificar.disabled = false;
+    }
+}
+
+function checar_contenido_beca() {
+    if (beca.value.length === 0) {
         bt_Modificar.disabled = true;
     } else {
         bt_Modificar.disabled = false;
@@ -72,11 +80,11 @@ function mensaje_beca() {
     }
 }
 
-ref.addEventListener('input', checar_contenido);
+ref.addEventListener('input', checar_contenido_ref);
 ref.addEventListener('input', mensaje_ref);
 
 if (beca) {
-    beca.addEventListener('input', checar_contenido);
+    beca.addEventListener('input', checar_contenido_beca);
     beca.addEventListener('input', mensaje_beca);
 }
 
