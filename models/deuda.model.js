@@ -149,7 +149,7 @@ module.exports = class Deuda {
     }
 
     static setRecargosDeuda(IDDeuda, montoRecargo) {
-        return db.execute(`UPDATE Deuda SET Descuento = ?, Recargos = 1, notaModificacion = 'Se aplico un recargo',
+        return db.execute(`UPDATE Deuda SET Descuento = ?, Recargos = 1, notaModificacion = 'Se aplicó un recargo'
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     };
 

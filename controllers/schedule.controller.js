@@ -31,12 +31,6 @@ exports.set_recargos = (request, response, next) => {
         }
     })
     .catch((error) => {
-        response.status(500).render('500', {
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            rol: request.session.rol || "",
-            error_alumno: false
-        });
         console.log(error);
     })
 };
