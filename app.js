@@ -140,12 +140,12 @@ cron.schedule('0 9 * * *', () => {
     timezone: "America/Mexico_City"
 });
 
-cron.schedule('0 9 * * *', () => {
-    scheduleController.enviarCorreoAtrasado();
-}, {
-    scheduled: true,
-    timezone: "America/Mexico_City"
-});
+// cron.schedule('0 9 * * *', () => {
+//     scheduleController.enviarCorreoAtrasado();
+// }, {
+//     scheduled: true,
+//     timezone: "America/Mexico_City"
+// });
 
 cron.schedule('0 4 20 Jan,Jul *', () => {
     scheduleController.aceptar_horario_resagados();
