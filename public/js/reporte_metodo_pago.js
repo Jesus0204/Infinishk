@@ -13,7 +13,7 @@ function generateReport() {
             periodo,
             tipo
         })
-    })
+    }) 
     .then(response => response.json())
     .then(metodoPagoData => {
         if (typeof metodoPagoData !== 'undefined') {

@@ -112,6 +112,11 @@ module.exports = class Deuda {
         return db.execute('SELECT IDDeuda FROM Deuda WHERE Matricula = ? AND Pagado = 1',
             [matricula]);
     };
+    
+    static fetchIDColegiatura(matricula){
+        return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
+        [matricula]);
+    }
 
     static fetchNoPagadas(IDColegiatura) {
         return db.execute(`SELECT IDDeuda, (montoAPagar + Descuento) AS 'montoAPagar', 

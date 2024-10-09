@@ -1,7 +1,7 @@
 const db = require('../util/database');
 const bcrypt = require('bcryptjs');
 
-module.exports = class Usuario{
+module.exports = class Usuario {
     // Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(mi_IDUsuario, mi_password) {
         this.IDUsuario = mi_IDUsuario;
@@ -56,7 +56,7 @@ module.exports = class Usuario{
     static getPermisos(IDUsuario) {
         return db.execute(
             `SELECT funcion
-            FROM Usuario U, Posee P, Rol R, Contiene C, CasoUso Ca
+            FROM Usuario U, Posee P, Rol R, Contiene C, casoUso Ca
             WHERE U.IDUsuario = ? AND U.IDUsuario = P.IDUsuario
             AND P.IDRol = R.IDRol AND R.IDRol = C.IDRol 
             AND C.IDCasoUso = Ca.IDCasoUso`,
@@ -69,7 +69,7 @@ module.exports = class Usuario{
         JOIN Posee P ON U.IDUsuario = P.IDUsuario
         JOIN Rol R ON P.IDRol = R.IDRol
         JOIN Contiene C ON R.IDRol = C.IDRol
-        JOIN CasoUso Ca ON C.IDCasoUso = Ca.IDCasoUso
+        JOIN casoUso Ca ON C.IDCasoUso = Ca.IDCasoUso
         WHERE U.IDUsuario = ?`, [IDUsuario]);
     }
 
@@ -81,9 +81,9 @@ module.exports = class Usuario{
         return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 0');
     }
 
-    static update(IDUsuario,estado){
+    static update(IDUsuario, estado) {
         return db.execute('UPDATE Usuario SET UsuarioActivo = ? WHERE IDUsuario = ?',
-        [estado,IDUsuario])
+            [estado, IDUsuario])
     }
 
     static buscarActivos(consulta) {
@@ -95,7 +95,7 @@ module.exports = class Usuario{
 
     static buscarNoActivos(consulta) {
         return db.execute(
-            'SELECT usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 0',
+            'SELECT Usuario.* FROM Usuario WHERE IDUsuario LIKE ? AND UsuarioActivo = 0',
             [`%${consulta}%`]
         );
     }
@@ -108,8 +108,8 @@ module.exports = class Usuario{
         return db.execute('INSERT INTO Usuario (`IDUsuario`, `usuarioActivo`, `correoElectronico`) VALUES (?,0,?)',[id,correo]);
     }
 
-    static fetchUser(correo){
-        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?',[correo]);
+    static fetchUser(correo) {
+        return db.execute('SELECT IDUsuario FROM Usuario WHERE correoElectronico= ?', [correo]);
     }
 
     static updateToken(token,id){

@@ -976,8 +976,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
 
-            console.log(deuda)
-
             if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
                 response.json({
                     success: false,

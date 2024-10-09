@@ -42,7 +42,7 @@ module.exports = class Fichas {
     static async calcularNumeroDeudas(uMatricula, uFechaInicio, uFechaFin) {
         const [rows] = await db.execute(`
             SELECT COUNT(*) AS total
-            FROM deuda
+            FROM Deuda
             WHERE Matricula = ?
               AND fechaLimitePago >= ?
               AND fechaLimitePago <= ?
