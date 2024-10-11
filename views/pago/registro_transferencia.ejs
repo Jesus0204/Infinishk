@@ -285,10 +285,10 @@
                                                     <th class="th-faltantes">Nombre</th>
                                                     <th class="th-faltantes">Matrícula</th>
                                                     <th class="th-faltantes">Referencia</th>
-                                                    <th class="th-faltantes">Fecha y Hora</th>
                                                     <th class="th-faltantes">Importe</th>
                                                     <th class="th-faltantes">Deuda</th>
                                                     <th class="th-faltantes">Tipo de Pago</th>
+                                                    <th class="th-faltantes">Fecha y Hora</th>
                                                     <th class="th-faltantes">Nota</th>
                                                     <th class="th-faltantes">Acciones</th>
                                                 </tr>
@@ -308,9 +308,6 @@
                                                             </td>
                                                             <td class="td-faltantes">
                                                                 <%= fila.Referencia %>
-                                                            </td>
-                                                            <td class="td-faltantes">
-                                                                <%= fila.fechaFormato %>
                                                             </td>
                                                             <td class="td-faltantes">
                                                                 <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
@@ -387,6 +384,9 @@
                                                                                                 <% } %>
                                                                                                 <% } %>
                                                                                 </select>
+                                                                        </td>
+                                                                        <td class="td-faltantes">
+                                                                            <input type="datetime-local" name="fecha" value="<%= new Date(fila.fechaFormato).toISOString().slice(0, 16) %>" class="input" required>
                                                                         </td>
                                                                         <td class="td-faltantes">
                                                                             <textarea name="nota"

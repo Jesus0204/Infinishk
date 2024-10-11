@@ -967,7 +967,9 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const tipoPago = request.body.tipoPago;
     const fecha = request.body.fecha;
     const nota = request.body.nota;
+    const fechaFormateada = fecha[1];
 
+    console.log(fechaFormateada);
 
     try {
         if (tipoPago === 'Pago de Colegiatura') {
@@ -989,7 +991,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             Deuda.fetchNoPagadas(idColegiatura)
                 .then(async ([deudas_noPagadas, fieldData]) => {
                     // Guardas el pago completo del alumno
-                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha)
+                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fechaFormateada)
 
                     // El monto inicial a usar es lo que el usuario decidió
                     let monto_a_usar = request.body.importe;
@@ -1017,7 +1019,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 })
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
-            PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
+            PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fechaFormateada, importe, nota);
         } else if (tipoPago === 'Pago a Registrar') {
             pagosRegistrar.push({
                 nombre,
@@ -1034,14 +1036,14 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
+                    Liquida.update_transferencia(nota, fechaFormateada, idLiquida[0][0].IDLiquida)
                 } else {
                     success = false;
                 }
             } else {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
+                    Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fechaFormateada, nota);
                 } else {
                     success = false;
                 }
