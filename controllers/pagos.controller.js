@@ -976,17 +976,25 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         if (tipoPago === 'Pago de Colegiatura') {
             const deuda = await Deuda.fetchDeuda(matricula);
             const idDeuda = await Deuda.fetchIDDeuda(matricula);
+
+            // Verificar si idDeuda está definido
+            if (!idDeuda || !idDeuda[0] || !idDeuda[0][0] || !idDeuda[0][0].IDDeuda) {
+                return response.json({
+                    success: false,
+                    message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
+                });
+            }
+
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
 
             console.log(deuda);
 
             if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
-                response.json({
+                return response.json({
                     success: false,
                     message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
                 });
-                return;
             }
 
             await Deuda.fetchNoPagadas(idColegiatura)
@@ -1019,7 +1027,21 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 });
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
-            await PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
+            
+            if (!idDiplomado || !idDiplomado[0] || !idDiplomado[0][0] || !idDiplomado[0][0].IDDiplomado) {
+                return response.json({
+                    success: false,
+                    message: 'No se pudo encontrar el Diplomado asociado al alumno.'
+                });
+            }
+
+            await PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota)
+                .catch(error => {
+                    success = false;
+                    mensajeError = 'Error al registrar el pago del diplomado';
+                    console.error(error);
+                });
+
         } else if (tipoPago === 'Pago a Registrar') {
             pagosRegistrar.push({
                 nombre,
@@ -1030,6 +1052,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 tipoPago,
                 fecha
             });
+            // Aquí podrías procesar los pagos a registrar más adelante
         } else if (tipoPago === 'Pago Extra') {
             const idLiquida = await Liquida.fetchID(matricula);
 
@@ -1039,7 +1062,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                     await Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida);
                 } else {
                     success = false;
-                    mensajeError = 'No se pudo encontrar el pago extra';
+                    mensajeError = 'No se pudo encontrar el pago extra.';
                 }
             } else {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
@@ -1047,7 +1070,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                     await Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
                 } else {
                     success = false;
-                    mensajeError = 'No se pudo encontrar el pago extra';
+                    mensajeError = 'No se pudo encontrar el pago extra.';
                 }
             }
         }
@@ -1059,14 +1082,14 @@ exports.post_registrar_transferencia = async (request, response, next) => {
         } else {
             response.json({
                 success: false,
-                message: mensajeError || 'Hubo un problema al registrar la transferencia'
+                message: mensajeError || 'Hubo un problema al registrar la transferencia.'
             });
         }
     } catch (error) {
         console.error(error);
         response.json({
             success: false,
-            message: 'Error inesperado en el servidor, por favor contacta a ayuda'
+            message: 'Error inesperado en el servidor, por favor contacta a ayuda.'
         });
     }
-}
+};

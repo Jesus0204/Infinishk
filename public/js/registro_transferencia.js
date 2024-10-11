@@ -99,7 +99,17 @@ document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach(
 document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
+        
+        // Obtener la fecha manualmente
+        const fechaInput = form.querySelector('input[name="fecha"]');
+        const fechaValue = fechaInput ? fechaInput.value : '';
+
+        // Crear FormData
         const formData = new FormData(form);
+
+        // Agregar la fecha manualmente si es necesario
+        formData.set('fecha', fechaValue); // Sobrescribe el campo de fecha en caso de que no se haya incluido
+
         fetch('/pagos/resultadoTransferencia', {
             method: 'POST',
             body: formData,
@@ -126,6 +136,7 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
         });
     });
 });
+
 
 
 document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
@@ -175,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', function () {
     var calendars = bulmaCalendar.attach('[data-type="datetime"]', {
-        type: 'datetime',
         displayMode: 'dialog',
         dateFormat: 'YYYY-MM-DD', // Formato personalizado
         showFooter: true
