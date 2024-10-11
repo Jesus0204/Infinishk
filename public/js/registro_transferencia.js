@@ -104,15 +104,11 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
             method: 'POST',
             body: formData,
         })
-        .then(response => response.json()) // Convertir la respuesta a JSON
+        .then(response => response.json())
         .then(data => {
             let mensajeAlerta = '';
             if (!data.success) {
-                if (data.message && data.message.includes('Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.')) {
-                    mensajeAlerta = data.message;
-                } else {
-                    mensajeAlerta = 'Por favor verifica tu tipo de pago';
-                }
+                mensajeAlerta = data.message || 'Por favor verifica tu tipo de pago';
                 alert(mensajeAlerta);
             } else {
                 const filaId = form.parentElement.parentElement.id;
@@ -130,6 +126,7 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
         });
     });
 });
+
 
 document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach((select) => {
     select.addEventListener('change', (event) => {
@@ -174,6 +171,22 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     };
 
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var calendars = bulmaCalendar.attach('[data-type="datetime"]', {
+        type: 'datetime',
+        displayMode: 'dialog',
+        dateFormat: 'YYYY-MM-DD', // Formato personalizado
+        showFooter: true
+    });
+
+    // Si quieres manejar el valor seleccionado en el input
+    calendars.forEach(calendar => {
+        calendar.on('select', date => {
+            console.log(date); // Date seleccionado
+        });
+    });
 });
 
 

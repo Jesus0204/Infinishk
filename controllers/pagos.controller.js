@@ -958,6 +958,7 @@ exports.post_subir_archivo = (request, response, next) => {
 
 exports.post_registrar_transferencia = async (request, response, next) => {
     let success = true;
+    let mensajeError = ''; // Variable para almacenar mensajes de error
     const pagosRegistrar = [];
     const nombre = request.body.nombre;
     const matricula = request.body.matricula;
@@ -967,9 +968,9 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const tipoPago = request.body.tipoPago;
     const fecha = request.body.fecha;
     const nota = request.body.nota;
-    const fechaFormateada = fecha[1];
 
-    console.log(fechaFormateada);
+    console.log(request.body);
+    console.log(fecha);
 
     try {
         if (tipoPago === 'Pago de Colegiatura') {
@@ -978,7 +979,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
 
-            console.log(deuda)
+            console.log(deuda);
 
             if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
                 response.json({
@@ -986,40 +987,39 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                     message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
                 });
                 return;
-            }            
+            }
 
-            Deuda.fetchNoPagadas(idColegiatura)
+            await Deuda.fetchNoPagadas(idColegiatura)
                 .then(async ([deudas_noPagadas, fieldData]) => {
-                    // Guardas el pago completo del alumno
-                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fechaFormateada)
+                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha);
 
-                    // El monto inicial a usar es lo que el usuario decidió
                     let monto_a_usar = request.body.importe;
                     for (let deuda of deudas_noPagadas) {
                         if (monto_a_usar <= 0) {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
-                            // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
                             await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
-                            // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                             await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
                         }
 
-                        // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
                         monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
                     }
 
-                    // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
                     if (monto_a_usar > 0) {
                         await Alumno.update_credito(matricula, monto_a_usar);
                     }
                 })
+                .catch(error => {
+                    success = false;
+                    mensajeError = 'Error al procesar el pago de colegiatura';
+                    console.error(error);
+                });
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
-            PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fechaFormateada, importe, nota);
+            await PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
         } else if (tipoPago === 'Pago a Registrar') {
             pagosRegistrar.push({
                 nombre,
@@ -1036,27 +1036,37 @@ exports.post_registrar_transferencia = async (request, response, next) => {
             if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.update_transferencia(nota, fechaFormateada, idLiquida[0][0].IDLiquida)
+                    await Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida);
                 } else {
                     success = false;
+                    mensajeError = 'No se pudo encontrar el pago extra';
                 }
             } else {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fechaFormateada, nota);
+                    await Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
                 } else {
                     success = false;
+                    mensajeError = 'No se pudo encontrar el pago extra';
                 }
             }
         }
-        response.json({
-            success: success
-        });
+
+        if (success) {
+            response.json({
+                success: true
+            });
+        } else {
+            response.json({
+                success: false,
+                message: mensajeError || 'Hubo un problema al registrar la transferencia'
+            });
+        }
     } catch (error) {
-        success = false;
-        console.log(error);
+        console.error(error);
         response.json({
-            success: success
+            success: false,
+            message: 'Error inesperado en el servidor, por favor contacta a ayuda'
         });
     }
 }
