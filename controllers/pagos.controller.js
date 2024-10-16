@@ -815,7 +815,7 @@ exports.post_subir_archivo = (request, response, next) => {
         const dia = Fecha.substring(1, 3);
         const mes = Fecha.substring(3, 5);
         const anio = Fecha.substring(5, 9);
-        const fechaFormato = `${anio}-${mes}-${dia} ${Hora}`;
+        const fechaFormato = `${anio}-${mes}-${dia}`;
         filas.push({
             fechaFormato,
             Hora,

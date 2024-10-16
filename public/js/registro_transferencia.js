@@ -100,15 +100,8 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         
-        // Obtener la fecha manualmente
-        const fechaInput = form.querySelector('input[name="fecha"]');
-        const fechaValue = fechaInput ? fechaInput.value : '';
-
         // Crear FormData
         const formData = new FormData(form);
-
-        // Agregar la fecha manualmente si es necesario
-        formData.set('fecha', fechaValue); // Sobrescribe el campo de fecha en caso de que no se haya incluido
 
         fetch('/pagos/resultadoTransferencia', {
             method: 'POST',

@@ -386,7 +386,7 @@
                                                                                 </select>
                                                                         </td>
                                                                         <td class="td-faltantes">
-                                                                            <input type="text" name="fecha" value="<%= new Date(fila.fechaFormato).toISOString().slice(0, 19).replace('T', ' ') %>" class="input bulma-calendar" data-type="datetime" required>
+                                                                            <input type="date" id="fecha" name="fecha" class="datepicker" value="<%= fila.fechaFormato %>">
                                                                         </td>                                                                        
                                                                         <td class="td-faltantes">
                                                                             <textarea name="nota"
