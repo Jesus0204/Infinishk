@@ -1,4 +1,8 @@
-<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}); %>
 
     <body>
         <section class="section">
@@ -44,7 +48,7 @@
                     </div>
                     <div class="column is-6">
                         <button type="submit"
-                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            class="confirmar-button button is-large is-responsive form-button"
                             onclick="registrar_materias()">
                             <span>
                                 Registrar Materias
@@ -99,7 +103,7 @@
             </div>
         </section>
     </body>
-<%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
 <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
 <script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
+<%- include('../includes/foot.ejs') %>
