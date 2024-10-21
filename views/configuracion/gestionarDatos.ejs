@@ -1,16 +1,14 @@
-<%- include('../includes/head.ejs', { username: username, permisos: permisos, rol: rol }) %>
-<style>
-    .form-button {
-        margin-bottom: 20px;
-        /* Ajusta este valor según la separación que desees */
-    }
-</style>
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}); %>
 
     <body>
         <section class="section">
             <div class="container">
                 <label class="label is-large has-text-danger has-text-weight-semibold">
-                    SINCRONIZAR BASE DE DATOS
+                    GESTIÓN DE DATOS
                 </label>
                 <br>
                 <div id="aceptar_resagados" class="notification is-hidden"
@@ -38,7 +36,7 @@
                 <div class="columns">
                     <div class="column is-6">
                         <form action="/configuracion/actualizarAlumnos" method="GET" class="form-button">
-                            <button type="submit" class="confirmar-button button is-large is-fullwidth is-responsive">
+                            <button type="submit" class="confirmar-button button is-large is-responsive">
                                 <span>
                                     Obtener Alumnos
                                 </span>
@@ -50,7 +48,7 @@
                     </div>
                     <div class="column is-6">
                         <button type="submit"
-                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            class="confirmar-button button is-large is-responsive form-button"
                             onclick="registrar_materias()">
                             <span>
                                 Registrar Materias
@@ -64,20 +62,19 @@
                 <div class="columns">
                     <div class="column is-6">
                         <button type="submit"
-                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            class="confirmar-button button is-large is-responsive form-button"
                             onclick="registrar_periodos()">
-                                <span>
-                                    Obtener Periodos
-                                </span>
-                                <span class="icon is-large">
-                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                </span>
-                            </button>
-                        </form>
+                            <span>
+                                Obtener Ciclos
+                            </span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
                     </div>
                     <div class="column is-6">
                         <button type="submit"
-                            class="confirmar-button button is-large is-fullwidth is-responsive form-button"
+                            class="confirmar-button button is-large is-responsive form-button"
                             onclick="aceptar_horarios()">
                             <span>
                                 Confirmar Horarios Rezagados
@@ -88,10 +85,26 @@
                         </button>
                     </div>
                 </div>
+                <div class="columns">
+                    <div class="column is-6">
+                         <form action="/configuracion/visualizarPeriodos" method="GET" class="form-button">
+                             <button
+                                 class="confirmar-button button is-large is-responsive form-button">
+                                 <span>
+                                     Visualizar Ciclos
+                                 </span>
+                                 <span class="icon is-large">
+                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                 </span>
+                             </button>
+                         </form>
+                    </div>
+                    <div class="column is-6"></div>
+                </div>
             </div>
         </section>
     </body>
-<%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
 <script type="text/javascript" src="/js/actualizarMaterias.js"></script>
 <script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
+<%- include('../includes/foot.ejs') %>

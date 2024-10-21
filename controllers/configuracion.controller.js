@@ -778,7 +778,7 @@ exports.post_exportar_datos = async (request, response, next) => {
 }
 
 exports.get_actualizar_base = (request, response, next) => {
-    response.render('configuracion/actualizarBase', {
+    response.render('configuracion/gestionarDatos', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
@@ -940,6 +940,15 @@ exports.get_materias = async (request, response, next) => {
         }
 };
 
+function limpiarGuionFecha(fecha) {
+    // Verificamos si la fecha empieza con un guion '-'
+    if (fecha.startsWith('-')) {
+        // Eliminamos solo el primer guion
+        return fecha.replace('-', '');
+    }
+    // Si no tiene guion, devolvemos la fecha original
+    return fecha;
+}
 
 exports.get_periodos = async (request, response, next) => {
 
@@ -961,19 +970,14 @@ exports.get_periodos = async (request, response, next) => {
             const endDate = new Date(end_date);
             const status = active ? 1 : 0;
 
-            const yearStart = startDate.getFullYear();
-            const monthStart = startDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
-            const dayStart = startDate.getDate();
-
-            const yearEnd = endDate.getFullYear();
-            const monthEnd = endDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
-            const dayEnd = endDate.getDate();
+            const start = limpiarGuionFecha(moment(startDate).format('YYYY-MM-DD'));
+            const end = limpiarGuionFecha(moment(endDate).format('YYYY-MM-DD'));
 
             return {
                 id: id,
                 name: code,
-                start: `${yearStart}-${monthStart}-${dayStart}`,
-                end: `${yearEnd}-${monthEnd}-${dayEnd}`,
+                start: start,
+                end: end,
                 status: status,
             };
         });
@@ -990,7 +994,6 @@ exports.get_periodos = async (request, response, next) => {
             }
         }
 
-        // Filtra los usuarios que no fueron actualizados
         const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
 
         for (let count = 0; count < periodosSinActualizar.length; count++){
@@ -1115,4 +1118,59 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
         });
     }
 
-}
+};
+
+exports.fetchPeriodos = async (request, response, next) => {
+    try {
+        const periods = await Periodo.fetchAll();
+
+        const parsedPeriods = periods[0].map(period => {
+            const {
+                IDPeriodo,
+                fechaInicio,
+                fechaFin,
+                Nombre,
+                periodoActivo
+            } = period;
+
+            const formattedStartDate = moment(fechaInicio).tz('America/Mexico_City').format('LL');
+            const formattedEndDate = moment(fechaFin).tz('America/Mexico_City').format('LL');
+            const status = periodoActivo ? 1 : 0;
+
+            return {
+                id: IDPeriodo,
+                name: Nombre,
+                start: formattedStartDate,
+                end: formattedEndDate,
+                startDateRaw: fechaInicio,
+                status: status,
+            };
+        });
+
+        const sortedPeriods = parsedPeriods.sort((a, b) => {
+
+            if (b.status !== a.status) {
+                return b.status - a.status;
+            }
+
+            return new Date(b.startDateRaw) - new Date(a.startDateRaw);
+        });
+
+        response.render('configuracion/visualizarPeriodos', {
+            periodos: sortedPeriods,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los periodos:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
