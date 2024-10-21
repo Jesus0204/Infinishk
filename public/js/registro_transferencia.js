@@ -177,21 +177,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    var calendars = bulmaCalendar.attach('[data-type="datetime"]', {
-        displayMode: 'dialog',
-        dateFormat: 'YYYY-MM-DD', // Formato personalizado
-        showFooter: true
-    });
+function formatFecha(fecha) {
+    const partes = fecha.split("-");
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
 
-    // Si quieres manejar el valor seleccionado en el input
-    calendars.forEach(calendar => {
-        calendar.on('select', date => {
-            console.log(date); // Date seleccionado
-        });
+// Al cargar la página, convierte el valor del input si ya existe
+document.addEventListener("DOMContentLoaded", function () {
+    const inputFecha = document.getElementById("fecha");
+    const valorActual = inputFecha.value;
+
+    if (valorActual) {
+        inputFecha.value = formatFecha(valorActual);
+    }
+
+    // Si el usuario selecciona una fecha con el datepicker (si lo usas), puedes formatearla aquí también
+    inputFecha.addEventListener("change", function (e) {
+        const fechaSeleccionada = e.target.value;
+        if (fechaSeleccionada) {
+            e.target.value = formatFecha(fechaSeleccionada);
+        }
     });
 });
-
-
 
 

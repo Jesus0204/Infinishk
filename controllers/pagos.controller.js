@@ -809,13 +809,19 @@ exports.post_subir_archivo = (request, response, next) => {
             Importe,
             Concepto
         } = data;
+
+        const rawFecha = Fecha.replace(/['"]+/g, '');
+
         const Referencia = Concepto.substring(0, 7);
         const Matricula = Concepto.substring(0, 6);
         const inicioRef = Concepto.substring(0, 1);
-        const dia = Fecha.substring(1, 3);
-        const mes = Fecha.substring(3, 5);
-        const anio = Fecha.substring(5, 9);
+        const dia = rawFecha.substring(0, 2);  // Extrae el día
+        const mes = rawFecha.substring(2, 4);  // Extrae el mes
+        const anio = rawFecha.substring(4, 8);  // Extrae el año
+
+        // Formatear correctamente la fecha como yyyy-mm-dd
         const fechaFormato = `${anio}-${mes}-${dia}`;
+
         filas.push({
             fechaFormato,
             Hora,
@@ -969,9 +975,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const fecha = request.body.fecha;
     const nota = request.body.nota;
 
-    console.log(request.body);
-    console.log(fecha);
-
     try {
         if (tipoPago === 'Pago de Colegiatura') {
             const deuda = await Deuda.fetchDeuda(matricula);
@@ -987,8 +990,6 @@ exports.post_registrar_transferencia = async (request, response, next) => {
 
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
-
-            console.log(deuda);
 
             if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
                 return response.json({
