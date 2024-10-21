@@ -778,7 +778,7 @@ exports.post_exportar_datos = async (request, response, next) => {
 }
 
 exports.get_actualizar_base = (request, response, next) => {
-    response.render('configuracion/actualizarBase', {
+    response.render('configuracion/gestionarDatos', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
