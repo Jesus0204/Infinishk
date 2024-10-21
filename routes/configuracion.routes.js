@@ -59,4 +59,6 @@ router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionControll
 
 router.get('/aceptar_horarios_resagados', isAuth, can_ActualizarBase, configuracionController.aceptar_horario_resagados);
 
+router.get('/visualizarPeriodos', isAuth, can_ActualizarBase, configuracionController.fetchPeriodos);
+
 module.exports = router;
