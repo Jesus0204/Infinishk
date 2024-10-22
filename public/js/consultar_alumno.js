@@ -820,7 +820,7 @@ function actualizarMaterias(matricula) {
             if (data.success) {
    
                 // Mostrar la notificación de eliminación
-                const notification = document.getElementById('eliminacion');
+                const notification = document.getElementById('actualizacion');
                 if (notification) {
                     notification.classList.remove('is-hidden');
                 }

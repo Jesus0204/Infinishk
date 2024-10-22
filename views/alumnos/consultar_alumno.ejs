@@ -524,6 +524,11 @@
                                     ¡Materia eliminada! Recargando página...
                                 </div>
 
+                                <div id="actualizacion" class="notification is-hidden"
+                                    style="background-color: #5a6581; color:#ffffff;">
+                                    ¡Materias actualizadas! Recargando página...
+                                </div>
+
                                 <div class="table-container">    
                                     <table class="table is-hoverable is-fullwidth">    
                                     <thead>
@@ -666,6 +671,7 @@
                                                             </button>
                                                         </p>
                                                         </div>
+                                                        <div class="column">
                                                         <p class="control">
                                                             <button class="button is-medium is-responsive"
                                                                 onclick="darDeBajaGrupo('<%= grupo.IDGrupo %>', '<%= alumnoConsulta[0].Matricula %>')"
@@ -707,9 +713,9 @@
                                                     </div>
                                                 </footer>
                                             </div>
-                                        </div>
-                                                     
+                                        </div>           
                             <% } %>
+                                </tr>
                         </tbody>
                         </table>
                         </div>

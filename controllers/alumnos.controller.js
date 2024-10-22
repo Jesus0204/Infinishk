@@ -100,7 +100,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            await destroyGroup(matricula, IDExterno);
+            // await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -577,13 +577,13 @@ exports.post_actualizar_horarios = async (request, response, next) => {
             }
         }
 
-        return response.status(200).json({
+        return response.status(200).json({ success: true,
             message: `El horario del alumno con matrícula ${matricula} ha sido aceptado y los grupos nuevos han sido registrados.`
         });
 
     } catch (error) {
         console.log(error);
-        return response.status(500).json({
+        return response.status(500).json({ success: false,
             message: 'Ocurrió un error al procesar el horario del alumno.'
         });
     }
