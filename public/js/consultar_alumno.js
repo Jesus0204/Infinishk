@@ -830,7 +830,15 @@ function actualizarMaterias(matricula) {
                     window.location.reload();
                 }, 2000); // 2000 milisegundos = 2 segundos
             } else {
-                console.error('Error en el servidor:', data.message);
+                const notification = document.getElementById('actualizacionfallida');
+                if (notification) {
+                    notification.classList.remove('is-hidden');
+                }
+
+                // Recargar la página después de mostrar la notificación durante unos segundos
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000); // 2000 milisegundos = 2 segundos
             }
         })
         .catch(error => {

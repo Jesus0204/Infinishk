@@ -543,8 +543,10 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                     startDateFormat,
                     endDateFormat,
                     idGrupo
-                }
+                };
             });
+
+            let gruposNuevosGuardados = false; // Variable de control
 
             for (let curso of cursos) {
                 // Verificamos si el grupo ya está registrado
@@ -573,17 +575,29 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                         curso.endDateFormat,
                         curso.idGrupo
                     );
+
+                    gruposNuevosGuardados = true; // Se ha guardado al menos un grupo nuevo
                 }
+            }
+
+            // Si no se guardó ningún grupo nuevo
+            if (!gruposNuevosGuardados) {
+                return response.status(200).json({
+                    success: false,
+                    message: `No se encontraron grupos nuevos para el alumno con matrícula ${matricula}.`
+                });
             }
         }
 
-        return response.status(200).json({ success: true,
+        return response.status(200).json({
+            success: true,
             message: `El horario del alumno con matrícula ${matricula} ha sido aceptado y los grupos nuevos han sido registrados.`
         });
 
     } catch (error) {
         console.log(error);
-        return response.status(500).json({ success: false,
+        return response.status(500).json({
+            success: false,
             message: 'Ocurrió un error al procesar el horario del alumno.'
         });
     }
