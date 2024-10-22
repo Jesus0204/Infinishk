@@ -273,12 +273,13 @@
                                     Completos</button>
                             </div>
                             <% } else { %>
-                                <div class="table-container">
-                                    <div id="tablaNoCompleta">
-                                        <div class="titulo">
+                                <div id="tablaNoCompleta">
+                                    <div class="titulo">
                                         <label class="label is-large has-text-danger has-text-weight-semibold">
-                                            PAGOS FALTANTES</label>
-                                        </div>
+                                            PAGOS FALTANTES
+                                        </label>
+                                    </div>
+                                    <div class="table-container">
                                         <table class="ta">
                                             <thead class="thead-faltantes">
                                                 <tr class="has-text-white">
@@ -293,15 +294,12 @@
                                                     <th class="th-faltantes">Acciones</th>
                                                 </tr>
                                             </thead>
-
                                             <tbody>
-                                                <% datos.forEach((fila,index)=> { %>
-                                                    <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' || fila.tipoPago==='Pago de Diplomado' || fila.tipoPago === 'Pago no Reconocido' ) { %>
-                                                        <tr id="fila<%= index %>"
-                                                            class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
+                                                <% datos.forEach((fila, index) => { %>
+                                                    <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar' || fila.tipoPago === 'Pago de Diplomado' || fila.tipoPago === 'Pago no Reconocido') { %>
+                                                        <tr id="fila<%= index %>" class="<%= fila.tipoPago.replace(/\s/g, '-') %>">
                                                             <td class="td-faltantes">
-                                                                <%= fila.nombre %>
-                                                                    <%= fila.apellidos %>
+                                                                <%= fila.nombre %> <%= fila.apellidos %>
                                                             </td>
                                                             <td class="td-faltantes">
                                                                 <%= fila.Matricula %>
@@ -311,129 +309,73 @@
                                                             </td>
                                                             <td class="td-faltantes">
                                                                 <%= '$' + fila.Importe.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                                            </td>                                                            
-                                                            <% if (fila.tipoPago==='Pago de Colegiatura' || fila.tipoPago==='Pago a Registrar' ) { %>
+                                                            </td>
+                                                            <% if (fila.tipoPago === 'Pago de Colegiatura' || fila.tipoPago === 'Pago a Registrar') { %>
                                                                 <td class="td-faltantes">
                                                                     <%= '$' + fila.deudaEstudiante.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                                                </td>                                                                
-                                                                <% } 
-                                                                else { %>
-                                                                    <td class="td-faltantes">N/A</td>
-                                                                    <% } %>
-                                                                        <td class="td-faltantes">
-                                                                            <form action="/pagos/resultadoTransferencia"
-                                                                                method="POST" id="form<%= index %>"
-                                                                                class="form-enviar-datos">
-                                                                                <input type="hidden" name="_csrf"
-                                                                                    id="_csrf" value="<%= csrfToken %>">
-                                                                                <select name="tipoPago">
-                                                                                    <% if(fila.Matricula.charAt(0)==='1'){ %>
-                                                                                        <% if ( fila.tipoPago === 'Pago no Reconocido' ){ %>
-                                                                                            <option
-                                                                                                value="Pago no Reconocido"
-                                                                                                <%=fila.tipoPago==='Pago no Reconocido'
-                                                                                                ? 'selected' : '' %>>Pago no
-                                                                                                Reconocido
-                                                                                            </option>
-                                                                                            <% } else { %>
-                                                                                        <option
-                                                                                            value="Pago de Colegiatura"
-                                                                                            <%=fila.tipoPago==='Pago de Colegiatura'
-                                                                                            ? 'selected' : '' %>>Pago de
-                                                                                            Colegiatura
-                                                                                        </option>
-                                                                                        <option value="Pago a Registrar"
-                                                                                            <%=fila.tipoPago==='Pago a Registrar'
-                                                                                            ? 'selected' : '' %>>Pago a
-                                                                                            Registrar
-                                                                                        </option>
-                                                                                        <option value="Pago Extra"
-                                                                                            <%=fila.tipoPago==='Pago Extra'
-                                                                                            ? 'selected' : '' %>>Otro Pago
-                                                                                        </option>
-                                                                                        <% } %>
-                                                                                        <% } %>
-
-                                                                                            <% if (fila.Matricula.charAt(0)==='8'){ %>
-                                                                                                <% if ( fila.tipoPago === 'Pago no Reconocido' ){ %>
-                                                                                                    <option
-                                                                                                        value="Pago no Reconocido"
-                                                                                                        <%=fila.tipoPago==='Pago no Reconocido'
-                                                                                                        ? 'selected' : '' %>>Pago no
-                                                                                                        Reconocido
-                                                                                                    </option>
-                                                                                                    <% } else { %>
-                                                                                                <option
-                                                                                                    value="Pago a Registrar"
-                                                                                                    <%=fila.tipoPago==='Pago a Registrar'
-                                                                                                    ? 'selected' : '' %>
-                                                                                                    >Pago a
-                                                                                                    Registrar</option>
-                                                                                                <option
-                                                                                                    value="Pago de Diplomado"
-                                                                                                    <%=fila.tipoPago==='Pago de Diplomado'
-                                                                                                    ? 'selected' : '' %>
-                                                                                                    >Pago de
-                                                                                                    Diplomado</option>
-                                                                                                <option
-                                                                                                    value="Pago Extra"
-                                                                                                    <%=fila.tipoPago==='Pago Extra'
-                                                                                                    ? 'selected' : '' %>
-                                                                                                    >Otro Pago
-                                                                                                </option>
-                                                                                                <% } %>
-                                                                                                <% } %>
-                                                                                </select>
-                                                                        </td>
-                                                                        <td class="td-faltantes">
-                                                                            <input type="date" id="fecha" name="fecha" class="datepicker" value="<%= fila.fechaFormato %>">
-                                                                        </td>                                                                        
-                                                                        <td class="td-faltantes">
-                                                                            <textarea name="nota"
-                                                                                placeholder="Escribe tu nota aquí"></textarea>
-                                                                        </td>
-                                                                        <td class="td-faltantes">
-                                                                            <input type="hidden" name="nombre"
-                                                                                value="<%= fila.nombre %> <%= fila.apellidos %>">
-                                                                            <input type="hidden" name="matricula"
-                                                                                value="<%= fila.Matricula %>">
-                                                                            <input type="hidden" name="referencia"
-                                                                                value="<%= fila.Referencia %>">
-                                                                            <input type="hidden" name="importe"
-                                                                                value="<%= fila.Importe %>">
-                                                                            <input type="hidden" name="deuda"
-                                                                                value="<%= fila.deudaEstudiante %>">
-                                                                            <% if (fila.tipoPago==='Pago a Registrar' ) { %>
-                                                                                <button type="submit"
-                                                                                    class="button my-button is-medium is-responsive">
-                                                                                    <span>
-                                                                                        POSPONER
-                                                                                    </span>
-                                                                                    <span class="icon is-small">
-                                                                                        <i class="fa-solid fa-circle-chevron-right"
-                                                                                            style="color: #ffffff;"></i>
-                                                                                    </span>
-                                                                                </button>
-                                                                            
-                                                                                <% } else if (fila.tipoPago==='Pago no Reconocido' ) { %>
-                                                                                        Esta referencia no está registrada en la base, por favor revisa los datos de este alumno.
-                                                                                <% } else { %>
-                                                                                    <button type="submit"
-                                                                                        class="button my-button is-medium is-responsive">
-                                                                                        <span>
-                                                                                            REGISTRAR
-                                                                                        </span>
-                                                                                        <span class="icon is-small">
-                                                                                            <i class="fa-solid fa-circle-chevron-right"
-                                                                                                style="color: #ffffff;"></i>
-                                                                                        </span>
-                                                                                    </button>
-                                                                                <% } %>
-                                                                             </form>
-                                                                        </td>
-                                                                    </tr>
+                                                                </td>
+                                                            <% } else { %>
+                                                                <td class="td-faltantes">N/A</td>
                                                             <% } %>
-                                                    <% }); %>
+                                                            <td class="td-faltantes">
+                                                                <form action="/pagos/resultadoTransferencia" method="POST" id="form<%= index %>" class="form-enviar-datos" data-index="<%= index %>">
+                                                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                                                    <select name="tipoPago">
+                                                                        <% if (fila.Matricula.charAt(0) === '1') { %>
+                                                                            <% if (fila.tipoPago === 'Pago no Reconocido') { %>
+                                                                                <option value="Pago no Reconocido" <%= fila.tipoPago === 'Pago no Reconocido' ? 'selected' : '' %>>Pago no Reconocido</option>
+                                                                            <% } else { %>
+                                                                                <option value="Pago de Colegiatura" <%= fila.tipoPago === 'Pago de Colegiatura' ? 'selected' : '' %>>Pago de Colegiatura</option>
+                                                                                <option value="Pago a Registrar" <%= fila.tipoPago === 'Pago a Registrar' ? 'selected' : '' %>>Pago a Registrar</option>
+                                                                                <option value="Pago Extra" <%= fila.tipoPago === 'Pago Extra' ? 'selected' : '' %>>Otro Pago</option>
+                                                                            <% } %>
+                                                                        <% } %>
+
+                                                                        <% if (fila.Matricula.charAt(0) === '8') { %>
+                                                                            <% if (fila.tipoPago === 'Pago no Reconocido') { %>
+                                                                                <option value="Pago no Reconocido" <%= fila.tipoPago === 'Pago no Reconocido' ? 'selected' : '' %>>Pago no Reconocido</option>
+                                                                            <% } else { %>
+                                                                                <option value="Pago a Registrar" <%= fila.tipoPago === 'Pago a Registrar' ? 'selected' : '' %>>Pago a Registrar</option>
+                                                                                <option value="Pago de Diplomado" <%= fila.tipoPago === 'Pago de Diplomado' ? 'selected' : '' %>>Pago de Diplomado</option>
+                                                                                <option value="Pago Extra" <%= fila.tipoPago === 'Pago Extra' ? 'selected' : '' %>>Otro Pago</option>
+                                                                            <% } %>
+                                                                        <% } %>
+                                                                    </select>
+                                                            </td>
+                                                            <td class="td-faltantes">
+                                                                <input type="date" id="fecha<%= index %>" name="fecha" class="input is-medium" value="<%= fila.fechaFormato %>" data-index="<%= index %>">
+                                                            </td>
+                                                            <td class="td-faltantes">
+                                                                <textarea class="textarea is-small" rows="2" name="nota" placeholder="Escribe tu nota aquí"></textarea>
+                                                            </td>
+                                                            <td class="td-faltantes">
+                                                                <input type="hidden" name="nombre" value="<%= fila.nombre %> <%= fila.apellidos %>">
+                                                                <input type="hidden" name="matricula" value="<%= fila.Matricula %>">
+                                                                <input type="hidden" name="referencia" value="<%= fila.Referencia %>">
+                                                                <input type="hidden" name="importe" value="<%= fila.Importe %>">
+                                                                <input type="hidden" name="deuda" value="<%= fila.deudaEstudiante %>">
+                                                                <% if (fila.tipoPago === 'Pago a Registrar') { %>
+                                                                    <button type="submit" class="button my-button is-medium is-responsive" data-index="<%= index %>">
+                                                                        <span>POSPONER</span>
+                                                                        <span class="icon is-small">
+                                                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                <% } else if (fila.tipoPago === 'Pago no Reconocido') { %>
+                                                                    Esta referencia no está registrada en la base, por favor revisa los datos de este alumno.
+                                                                <% } else { %>
+                                                                    <button type="submit" class="button my-button is-medium is-responsive" data-index="<%= index %>">
+                                                                        <span>REGISTRAR</span>
+                                                                        <span class="icon is-small">
+                                                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                <% } %>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                <% }); %>
                                             </tbody>
                                         </table>
                                         <br>
@@ -461,7 +403,6 @@
                                     <script type="text/javascript" src="/js/pagination_activos.js"></script>
                                     <script type="text/javascript" src="/js/registro_transferencia.js"></script>
                                     <script type="text/javascript" src="/js/boton_regresar.js"></script>
-                                    <script src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.0.9/dist/js/bulma-calendar.min.js"></script>
+                                </section>
         </body>
-    </section>
 <%- include('../includes/foot.ejs') %>

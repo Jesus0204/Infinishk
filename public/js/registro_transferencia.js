@@ -103,6 +103,21 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
         // Crear FormData
         const formData = new FormData(form);
 
+        const index = form.getAttribute('data-index');
+        if (!index) {
+            console.error('No se encontró el atributo data-index en el formulario.');
+            return;
+        }
+
+        // Usar el index para acceder al campo de fecha con el ID generado en el servidor
+        const fechaInput = document.getElementById(`fecha${index}`);
+        if (!fechaInput) {
+            console.error(`No se encontró el campo de fecha con id: fecha${index}`);
+        } else {
+            const fechaValue = fechaInput.value;
+            formData.append('fecha', formatFecha(fechaValue));
+        }
+
         fetch('/pagos/resultadoTransferencia', {
             method: 'POST',
             body: formData,
@@ -178,26 +193,65 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function formatFecha(fecha) {
-    const partes = fecha.split("-");
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    const [day, month, year] = fecha.split('/');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate
 }
 
 // Al cargar la página, convierte el valor del input si ya existe
 document.addEventListener("DOMContentLoaded", function () {
-    const inputFecha = document.getElementById("fecha");
-    const valorActual = inputFecha.value;
+    // Selecciona todos los inputs de tipo date
+    const inputsFecha = document.querySelectorAll('input[type="date"]');
 
-    if (valorActual) {
-        inputFecha.value = formatFecha(valorActual);
-    }
+    inputsFecha.forEach((inputFecha) => {
+        let fechaUsar;
 
-    // Si el usuario selecciona una fecha con el datepicker (si lo usas), puedes formatearla aquí también
-    inputFecha.addEventListener("change", function (e) {
-        const fechaSeleccionada = e.target.value;
-        if (fechaSeleccionada) {
-            e.target.value = formatFecha(fechaSeleccionada);
+        // Verifica si el input tiene valor
+        if (inputFecha) {
+            fechaUsar = inputFecha.value;
+        } else {
+            fechaUsar = new Date(); // Usa la fecha actual si no hay valor
         }
+
+        const index = inputFecha.getAttribute('data-index');
+        console.log(index)
+
+        // Inicializa Bulma Calendar
+        const calendars = bulmaCalendar.attach(`#fecha${index}`, { // Usa el ID único
+            startDate: fechaUsar,
+            displayMode: 'dialog',
+            dateFormat: 'dd/MM/yyyy',
+            maxDate: new Date(),
+            weekStart: 1,
+            lang: 'es',
+            showFooter: false
+        });
+
+        const submitButton = document.querySelector(`.my-button[data-index="${index}"]`);
+
+        // Actualiza el valor del input al seleccionar una fecha
+        calendars.forEach(calendar => {
+            calendar.on('change', function (date) {
+                inputFecha.value = date; // Actualiza el valor del input
+            });
+
+            calendar.on('clear', function () {
+                // Si existe el botón (o sea no sale que la referencia no existe en la base)
+                if (submitButton) {
+                    checarContenido(submitButton, inputFecha)
+                }
+            });
+
+            calendar.on('hide', function () {
+                checarContenido(submitButton, inputFecha)
+            })
+        });
+
     });
 });
 
+function checarContenido(button, inputFecha) {
+    button.disabled = inputFecha.value.length === 0;
+}
 
