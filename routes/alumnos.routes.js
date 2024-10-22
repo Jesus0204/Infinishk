@@ -21,6 +21,7 @@ router.post('/datos_alumno/modify', isAuth, can_ConsultarAlumno, alumnosControll
 router.post('/datos_alumno/dar_baja_grupo', isAuth, can_ConsultarAlumno, alumnosController.post_dar_baja_grupo);
 router.post('/datos_alumno/dar_baja_grupo60', isAuth, can_ConsultarAlumno, alumnosController.post_dar_baja_grupo60);
 router.post('/datos_alumno/dar_baja_grupo100', isAuth, can_ConsultarAlumno, alumnosController.post_dar_baja_grupo100);
+router.post('/datos_alumno/actualizarHorarios', isAuth, can_ConsultarAlumno, alumnosController.post_actualizar_horarios);
 
 // Modificar Fichas
 router.get('/fetch_fichas', isAuth, can_ModificarDeuda, alumnosController.get_fichas);
