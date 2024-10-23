@@ -1233,6 +1233,7 @@ exports.fetchMaterias = async (request, response, next) => {
 
         // Renderizando la vista EJS con las materias por semestre
         response.render('configuracion/visualizarMaterias', {
+            nombrePlan,
             semestres,
             username: request.session.username || '',
             permisos: request.session.permisos || [],

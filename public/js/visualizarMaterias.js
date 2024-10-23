@@ -12,7 +12,9 @@ function showSemestre(semestre) {
     document.getElementById('nav_' + semestre).classList.add('is-active');
 }
 
-// Mostrar el primer semestre por defecto al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    showSemestre('<%= semestres[0].semestre %>');
+    // Usar setTimeout para asegurar que se carguen todos los elementos
+    setTimeout(() => {
+        showSemestre('<%= semestres[0].semestre %>'); // Asegúrate de que se renderice correctamente
+    }, 0); // 0 milisegundos, para que se ejecute en el siguiente ciclo del event loop
 });
