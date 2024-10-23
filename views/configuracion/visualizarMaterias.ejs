@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+
+<section class="section">
+    <div class="tabs is-boxed">
+        <ul>
+            <% semestres.forEach((semestre, index) => { %>
+                <li class="<%= index === 0 ? 'is-active' : '' %>" id="nav_<%= semestre.semestre %>">
+                    <a onclick="showSemestre('<%= semestre.semestre %>')">
+                        <span class="icon is-small"><i class="fa-solid fa-book"></i></span>
+                        <span><%= semestre.semestre %></span>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <% semestres.forEach((semestre) => { %>
+        <div id="<%= semestre.semestre %>" class="is-hidden">
+            <table class="table is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% semestre.materias.forEach(materia => { %>
+                        <tr>
+                            <td><%= materia.nombre %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% }) %>
+</section>
+
+<%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/pagination.js"></script>
+<script type="text/javascript" src="/js/visualizarMaterias.js"></script>
