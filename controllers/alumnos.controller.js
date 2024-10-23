@@ -100,7 +100,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            await destroyGroup(matricula, IDExterno);
+            // await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -177,7 +177,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas100(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            await destroyGroup(matricula, IDExterno);
+            // await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -453,3 +453,175 @@ exports.post_fichas_modify = async (request, response, next) => {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
     }
 };
+
+exports.post_actualizar_horarios = async (request, response, next) => {
+    const { matricula } = request.body; // Obtenemos la matrícula desde el input
+
+    const [periodo, fieldData] = await Periodo.fetchActivo();
+    const periodoActivo = periodo[0].IDPeriodo;
+
+    const precioCredito = await PrecioCredito.fetchIDActual();
+    const precioActual = precioCredito[0][0].IDPrecioCredito;
+
+    const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
+    const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
+
+    const resultfetchBeca = await Alumno.fetchBeca(matricula);
+    const Beca = resultfetchBeca[0][0].beca;
+
+    const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+    const Credito = resultfetchCredito[0][0].credito;
+
+    const resultfetchInicio = await Periodo.fetchInicio();
+    const resultfetchFin = await Periodo.fetchFin();
+    
+    const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
+    const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
+    const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
+
+    if (numeroFichasSinPagar > 0) {
+
+        try {
+            const schedule = await getUserGroups(periodoActivo, Number(matricula));
+
+            if (schedule.data.length == 0) {
+                return response.status(404).json({
+                    message: `El alumno con matrícula ${matricula} no tiene un horario asignado.`
+                });
+            } else {
+                const cursos = schedule.data.map(schedule => {
+                    const {
+                        room = '',
+                        name: nameSalon = '',
+                        schedules = [],
+                        course = {},
+                        professor = {},
+                        school_cycle = {}
+                    } = schedule;
+
+                    const {
+                        id = periodoActivo,
+                        name = '',
+                        credits = ''
+                    } = course;
+
+                    const {
+                        name: nombreProfesor = '',
+                        first_surname = '',
+                        second_surname = ''
+                    } = professor;
+
+                    const {
+                        start_date = '',
+                        end_date = '',
+                    } = school_cycle;
+
+                    const startDate = new Date(start_date);
+                    const endDate = new Date(end_date);
+
+                    const startDateFormat = moment(startDate).format('YYYY-MM-DD');
+                    const endDateFormat = moment(endDate).format('YYYY-MM-DD');
+
+                    const nombreSalon = `${room} ${nameSalon}`;
+                    const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
+
+                    const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
+
+                    const precioMateria = credits * precioActual;
+
+                    const idGrupo = schedules[0]?.group_id || '';
+
+                    const horarios = schedules.map(schedule => {
+                        const {
+                            weekday = '',
+                            start_hour = '',
+                            end_hour = '',
+                        } = schedule;
+
+                        const startDate = new Date(start_hour);
+                        const endDate = new Date(end_hour);
+
+                        const fechaInicio = moment(startDate).format('HH:mm');
+                        const fechaTermino = moment(endDate).format('HH:mm');
+
+                        return {
+                            diaSemana: weekday,
+                            fechaInicio,
+                            fechaTermino
+                        };
+                    });
+
+                    return {
+                        idMateria: id,
+                        nombreMat: name,
+                        creditos: credits,
+                        nombreProfesorCompleto,
+                        nombreSalon,
+                        semestre,
+                        precioMateria,
+                        horarios,
+                        startDateFormat,
+                        endDateFormat,
+                        idGrupo
+                    };
+                });
+
+                let gruposNuevosGuardados = false; // Variable de control
+
+                for (let curso of cursos) {
+                    // Verificamos si el grupo ya está registrado
+                    const grupoExistente = await Grupo.fetchGrupo(matricula, curso.idMateria, curso.idGrupo);
+                    
+                    if (!grupoExistente.length) {
+                        // Si el grupo no existe, lo guardamos
+                        const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
+                        let claseFormato = '';
+                        for (let countClase = 0; countClase < grupoHorarioValidado.length; countClase++) {
+                            if ((countClase + 1) == grupoHorarioValidado.length) {
+                                claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino;
+                            } else {
+                                claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino + ', ';
+                            }
+                        }
+                        // Guardamos el nuevo grupo
+                        await Grupo.saveGrupo(
+                            matricula,
+                            curso.idMateria,
+                            precioActual,
+                            curso.nombreProfesorCompleto,
+                            curso.nombreSalon,
+                            claseFormato,
+                            curso.startDateFormat,
+                            curso.endDateFormat,
+                            curso.idGrupo
+                        );
+
+                        await Fichas.actualizarMaterias(matricula, creditoactual, curso.idMateria, Beca, Credito);
+
+                        gruposNuevosGuardados = true; // Se ha guardado al menos un grupo nuevo
+                    }
+                }
+
+                // Si no se guardó ningún grupo nuevo
+                if (!gruposNuevosGuardados) {
+                    return response.status(200).json({
+                        success: false,
+                        message: `No se encontraron grupos nuevos para el alumno con matrícula ${matricula}.`
+                    });
+                }
+            }
+
+            return response.status(200).json({
+                success: true,
+                message: `El horario del alumno con matrícula ${matricula} ha sido aceptado y los grupos nuevos han sido registrados.`
+            });
+
+        } catch (error) {
+            console.log(error);
+            return response.status(500).json({
+                success: false,
+                message: 'Ocurrió un error al procesar el horario del alumno.'
+            });
+        }
+    }
+}
