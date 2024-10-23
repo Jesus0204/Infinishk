@@ -1,8 +1,8 @@
 <%- include('../includes/head.ejs', { 
     username: username, 
     permisos: permisos, 
-    rol: rol 
-}) %>
+    rol: rol }) 
+    %>
 
 <style>
     input:focus {
@@ -54,7 +54,6 @@
             </div>
         <% } %>
     </div>
-    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
 
         <div id="planes_estudio">
             <% if (planes.length === 0) { %>

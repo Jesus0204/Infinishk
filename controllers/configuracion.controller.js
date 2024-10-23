@@ -1210,8 +1210,6 @@ exports.fetchMaterias = async (request, response, next) => {
     try {
         const nombrePlan = request.body.plan;
 
-        console.log(nombrePlan);
-
         // Fetch materias from the database
         const [materias] = await Materia.fetchMaterias(nombrePlan);
 
