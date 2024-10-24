@@ -48,4 +48,19 @@ module.exports = class Alumno {
         [IDGrupo,matricula]);
     }
 
+    static async fetchGrupo(matricula, idMateria, idGrupo) {
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM Grupo 
+                 WHERE Matricula = ? 
+                 AND IDMateria = ? 
+                 AND IDGrupoExterno = ?`,
+                [matricula, idMateria, idGrupo]
+            );
+            return rows; // Regresamos las filas obtenidas de la base de datos
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
