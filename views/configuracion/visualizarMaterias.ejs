@@ -38,10 +38,10 @@
         margin-bottom: 20px; /* Espacio debajo del botón */
         background: none; /* Sin fondo */
         border: none; /* Sin borde */
-        padding: 0; /* Sin padding */
+        padding-left: 10px; /* Sin padding */
         cursor: pointer; /* Cursor de mano */
         font-size: 1.5em; /* Tamaño de fuente */
-        color: black; /* Color de la flecha */
+        color: #910106; /* Color de la flecha */
     }
 
     /* Estilo para bajar el nombre del plan */
@@ -57,7 +57,7 @@
             <i class="fa-solid fa-arrow-left"></i> <!-- Icono de flecha de Font Awesome -->
         </button>
     </form>
-    <label class="label is-large has-text-danger has-text-weight-semibold plan-name"> <!-- Clase para el nombre -->
+    <label class="label is-large has-text-danger has-text-weight-semibold" style="padding-left: 20px;"> <!-- Clase para el nombre -->
         <%= nombrePlan %>
     </label>
 </div>
@@ -81,7 +81,7 @@
             <table class="table is-hoverable is-fullwidth">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th style="text-align: left;">Nombre</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody_<%= semestre.semestre %>">
