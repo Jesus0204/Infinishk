@@ -1229,7 +1229,6 @@ exports.fetchMaterias = async (request, response, next) => {
             materias: materiasPorSemestre[semestre],
         }));
 
-        // Renderizando la vista EJS con las materias por semestre
         response.render('configuracion/visualizarMaterias', {
             nombrePlan,
             semestres,

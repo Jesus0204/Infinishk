@@ -1,20 +1,28 @@
 function showSemestre(semestre) {
-    // Ocultar todos los divs
-    const semestres = document.querySelectorAll('div[id]');
-    semestres.forEach(div => div.classList.add('is-hidden'));
+    // Obtener todos los semestres desde el contenido de semestresData
+    const allSemestres = JSON.parse(document.getElementById('semestresData').textContent);
+    
+    allSemestres.forEach(s => {
+        // Seleccionar el tab y el contenido correspondiente al semestre
+        const tab = document.querySelector(`#nav_${s.semestre}`);
+        const content = document.getElementById(s.semestre);
 
-    // Mostrar el div del semestre seleccionado
-    document.getElementById(semestre).classList.remove('is-hidden');
-
-    // Activar el tab correspondiente
-    const tabs = document.querySelectorAll('.tabs li');
-    tabs.forEach(tab => tab.classList.remove('is-active'));
-    document.getElementById('nav_' + semestre).classList.add('is-active');
+        // Alternar la clase activa y la visibilidad del contenido
+        if (s.semestre === semestre) {
+            tab.classList.add('is-active'); // Activa la pestaña
+            content.classList.remove('is-hidden'); // Muestra el contenido
+        } else {
+            tab.classList.remove('is-active'); // Desactiva la pestaña
+            content.classList.add('is-hidden'); // Oculta el contenido
+        }
+    });
 }
 
+// Inicializar mostrando la primera pestaña
 document.addEventListener('DOMContentLoaded', () => {
-    // Usar setTimeout para asegurar que se carguen todos los elementos
-    setTimeout(() => {
-        showSemestre('<%= semestres[0].semestre %>'); // Asegúrate de que se renderice correctamente
-    }, 0); // 0 milisegundos, para que se ejecute en el siguiente ciclo del event loop
+    const allSemestres = JSON.parse(document.getElementById('semestresData').textContent);
+    if (allSemestres.length > 0) {
+        const initialSemestre = allSemestres[0].semestre; // Obtiene el primer semestre
+        showSemestre(initialSemestre); // Muestra el primer semestre al cargar
+    }
 });
