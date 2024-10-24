@@ -1,3 +1,70 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const semestresData = JSON.parse(document.getElementById('semestresData').innerText);
+    const pageSize = 5; // Número de materias por página
+
+    semestresData.forEach(semestre => {
+        let currentPage = 1;
+        const totalPages = Math.ceil(semestre.materias.length / pageSize);
+
+        // Mostrar la primera página al cargar
+        showPage(semestre.semestre, currentPage);
+
+        // Manejar el botón "Siguiente"
+        document.getElementById(`next-button_${semestre.semestre}`).addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(semestre.semestre, currentPage);
+            }
+        });
+
+        // Manejar el botón "Anterior"
+        document.getElementById(`prev-button_${semestre.semestre}`).addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(semestre.semestre, currentPage);
+            }
+        });
+
+        // Función para mostrar las materias paginadas
+        function showPage(semestreId, page) {
+            const tableBody = document.getElementById(`tableBody_${semestreId}`);
+            tableBody.innerHTML = ''; // Limpiar la tabla
+
+            const start = (page - 1) * pageSize;
+            const end = start + pageSize;
+            const paginatedMaterias = semestre.materias.slice(start, end);
+
+            paginatedMaterias.forEach(materia => {
+                const row = `<tr><td>${materia.nombre}</td></tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            // Actualizar los números de paginación
+            updatePaginationNumbers(semestreId, page);
+        }
+
+        // Función para actualizar los números de paginación
+        function updatePaginationNumbers(semestreId, page) {
+            const paginationNumbers = document.getElementById(`pagination-numbers_${semestreId}`);
+            paginationNumbers.innerHTML = ''; // Limpiar los números previos
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageNumber = document.createElement('li');
+                pageNumber.innerHTML = `<a class="pagination-link ${i === page ? 'is-current' : ''}">${i}</a>`;
+
+                pageNumber.addEventListener('click', () => {
+                    currentPage = i;
+                    showPage(semestreId, i);
+                });
+
+                paginationNumbers.appendChild(pageNumber);
+            }
+        }
+    });
+});
+
+
+
 function showSemestre(semestre) {
     // Obtener todos los semestres desde el contenido de semestresData
     const allSemestres = JSON.parse(document.getElementById('semestresData').textContent);

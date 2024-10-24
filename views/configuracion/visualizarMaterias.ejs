@@ -84,14 +84,19 @@
                         <th>Nombre</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% semestre.materias.forEach(materia => { %>
-                        <tr>
-                            <td><%= materia.nombre %></td>
-                        </tr>
-                    <% }) %>
+                <tbody id="tableBody_<%= semestre.semestre %>">
+                    <!-- Aquí se insertarán las materias paginadas -->
                 </tbody>
             </table>
+
+            <!-- Contenedor de la paginación -->
+            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" id="prev-button_<%= semestre.semestre %>">Anterior</a>
+                <a class="pagination-next" id="next-button_<%= semestre.semestre %>">Siguiente</a>
+                <ul class="pagination-list pagination-numbers-container" id="pagination-numbers_<%= semestre.semestre %>">
+                    <!-- Números de paginación aquí -->
+                </ul>
+            </nav>
         </div>
     <% }) %>
 </section>
