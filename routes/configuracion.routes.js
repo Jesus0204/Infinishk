@@ -62,4 +62,8 @@ router.get('/aceptar_horarios_resagados', isAuth, can_ActualizarBase, configurac
 
 router.get('/visualizarPeriodos', isAuth, can_ActualizarBase, configuracionController.fetchPeriodos);
 
+router.get('/visualizarPlanes', isAuth, can_ActualizarBase, configuracionController.fetchPlanes);
+
+router.post('/visualizarMaterias', isAuth, can_ActualizarBase, configuracionController.fetchMaterias);
+
 module.exports = router;

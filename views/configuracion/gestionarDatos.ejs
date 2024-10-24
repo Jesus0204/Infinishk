@@ -16,11 +16,6 @@
                     ¡Horarios confirmados! Recargando página...
                 </div>
 
-                <div id="aceptar_materias" class="notification is-hidden"
-                    style="background-color: #5a6581; color:#ffffff;">
-                    ¡Materias registradas! Recargando página...
-                </div>
-
                 <div id="aceptar_periodos" class="notification is-hidden"
                     style="background-color: #5a6581; color:#ffffff;">
                     ¡Periodos confirmados! Recargando página...
@@ -46,18 +41,20 @@
                             </button>
                         </form>
                     </div>
+
                     <div class="column is-6">
-                        <button type="submit"
-                            class="confirmar-button button is-large is-responsive form-button"
-                            onclick="registrar_materias()">
-                            <span>
-                                Registrar Materias
-                            </span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
+                        <form action="/configuracion/visualizarPlanes" method="GET" class="form-button">
+                            <button type="submit" class="confirmar-button button is-large is-responsive">
+                                <span>
+                                    Revisar Planes de Estudio
+                                </span>
+                                <span class="icon is-large">
+                                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                </span>
+                            </button>
+                        </form>
                     </div>
+
                 </div>
                 <div class="columns">
                     <div class="column is-6">
@@ -105,6 +102,5 @@
         </section>
     </body>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
-<script type="text/javascript" src="/js/actualizarMaterias.js"></script>
 <script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
 <%- include('../includes/foot.ejs') %>

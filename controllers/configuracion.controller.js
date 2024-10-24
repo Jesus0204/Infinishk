@@ -1174,3 +1174,78 @@ exports.fetchPeriodos = async (request, response, next) => {
         });
     }
 };
+
+exports.fetchPlanes = async (request, response, next) => {
+    try {
+        const planes = await Materia.fetchPlanes();
+
+        // Mapeo de los planes obtenidos
+        const parsedPlanes = planes[0].map(plan => {
+            return {
+                name: plan.planEstudios
+            };
+        });
+
+        // Renderizando la vista EJS con los planes de estudio
+        response.render('configuracion/visualizarPlanes', {
+            planes: parsedPlanes,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los planes de estudio:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
+exports.fetchMaterias = async (request, response, next) => {
+    try {
+        const nombrePlan = request.body.plan;
+
+        // Fetch materias from the database
+        const [materias] = await Materia.fetchMaterias(nombrePlan);
+
+        // Agrupar materias por semestre
+        const materiasPorSemestre = materias.reduce((acc, materia) => {
+            const semestre = materia.semestreImpartido || "Sin semestre"; // Manejo de semestres
+            if (!acc[semestre]) {
+                acc[semestre] = [];
+            }
+            acc[semestre].push(materia);
+            return acc;
+        }, {});
+
+        // Convertir el objeto a un array para pasar a la vista
+        const semestres = Object.keys(materiasPorSemestre).map(semestre => ({
+            semestre,
+            materias: materiasPorSemestre[semestre],
+        }));
+
+        response.render('configuracion/visualizarMaterias', {
+            nombrePlan,
+            semestres,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener las materias:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
