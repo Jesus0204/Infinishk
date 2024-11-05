@@ -420,9 +420,10 @@
                                         <tr>
                                             <th style="text-align: left;">#</th>
                                             <th style="text-align: left;">Pendiente</th>
-                                            <th style="text-align: left;">Ajuste</th>
                                             <th style="text-align: left;">Total</th>
                                             <th style="text-align: left;">Pagado</th>
+                                            <th style="text-align: left;">Recargos</th>
+                                            <th style="text-align: left;">Ajuste</th>
                                             <th style="text-align: left;">Fecha Límite de Pago</th>
                                             <th style="text-align: left;">Estatus</th>
                                         </tr>
@@ -431,7 +432,7 @@
                                         <% let currentDate = fechaActual %>
                                         <% for (let count = 0; count < deuda.length; count++) { %>
                                         <tr>
-                                            <td>Pago #<%= count + 1 %></td>
+                                            <td>#<%= count + 1 %></td>
                                             <td>
                                             <% if (deuda[count].saldoPendiente < 0) { %>
                                                 $0.00
@@ -440,20 +441,24 @@
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2}) %>
                                             <% } %></td>
-                                            <td>$<%= deuda[count].Descuento.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
-                                            <td><% deuda_ajuste = deuda[count].montoAPagar + Math.abs(deuda[count].Descuento) %>
+                                            <td><% deuda_ajuste = deuda[count].montoAPagar %>
                                                 $<%= deuda_ajuste.toLocaleString('mx', {
                                                     minimumFractionDigits: 2,
                                                     maximumFractionDigits: 2
                                                 }) %>
                                             </td>
                                             <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) %></td>
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %></td>
+                                            <td>$<%= deuda[count].montoRecargos.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                            <td>$<%= deuda[count].Descuento.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %></td>
                                             <td><%= deuda[count].fechaLimitePago %></td>
                                             <% if (deuda[count].Pagado == 1) { %>
                                                 <td>

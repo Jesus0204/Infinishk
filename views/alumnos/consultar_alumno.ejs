@@ -833,6 +833,7 @@
                                                 <th style="text-align: left;">Pendiente</th>
                                                 <th style="text-align: left;">Total</th>
                                                 <th style="text-align: left;">Pagado</th>
+                                                <th style="text-align: left;">Recargos</th>
                                                 <th style="text-align: left;">Ajuste</th>
                                                 <th style="text-align: left;">Fecha Límite de Pago</th>
                                                 <th style="text-align: left;">Estatus</th>
@@ -856,6 +857,10 @@
                                                             maximumFractionDigits: 2
                                                         }) %></td>
                                                 <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                                <td>$<%= deuda[count].montoRecargos.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
                                                         }) %></td>
