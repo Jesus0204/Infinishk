@@ -34,13 +34,21 @@
     </div>
 
     <div class="columns">
+        <div class="column is-1">
+            <a id="Boton_regresar" class="is-responsive"
+                href="/configuracion/actualizarBase">
+                <span class="icon">
+                    <i class="fas fa-arrow-left fa-2x"></i>
+                </span>
+            </a>
+        </div>
         <div class="column is-6">
             <label class="label is-large has-text-danger has-text-weight-semibold">
                 PLANES DE ESTUDIO
             </label>
         </div>
         <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
-            <div class="column is-offset-3">
+            <div class="column is-offset-2">
                 <button type="submit"
                     class="confirmar-button button is-medium is-responsive form-button"
                     onclick="registrar_materias()">

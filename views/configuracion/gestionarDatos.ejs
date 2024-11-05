@@ -58,16 +58,17 @@
                 </div>
                 <div class="columns">
                     <div class="column is-6">
-                        <button type="submit"
-                            class="confirmar-button button is-large is-responsive form-button"
-                            onclick="registrar_periodos()">
-                            <span>
-                                Obtener Ciclos
-                            </span>
-                            <span class="icon is-large">
-                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                            </span>
-                        </button>
+                         <form action="/configuracion/visualizarPeriodos" method="GET" class="form-button">
+                             <button
+                                 class="confirmar-button button is-large is-responsive form-button">
+                                 <span>
+                                     Visualizar Ciclos
+                                 </span>
+                                 <span class="icon is-large">
+                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                 </span>
+                             </button>
+                         </form>
                     </div>
                     <div class="column is-6">
                         <button type="submit"
@@ -82,25 +83,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="columns">
-                    <div class="column is-6">
-                         <form action="/configuracion/visualizarPeriodos" method="GET" class="form-button">
-                             <button
-                                 class="confirmar-button button is-large is-responsive form-button">
-                                 <span>
-                                     Visualizar Ciclos
-                                 </span>
-                                 <span class="icon is-large">
-                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                                 </span>
-                             </button>
-                         </form>
-                    </div>
-                    <div class="column is-6"></div>
-                </div>
             </div>
         </section>
     </body>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
-<script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
 <%- include('../includes/foot.ejs') %>

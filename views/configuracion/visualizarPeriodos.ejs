@@ -5,6 +5,12 @@
 }) %>
 <section class="section">
     <div class="container">
+
+        <div id="aceptar_periodos" class="notification is-hidden"
+                style="background-color: #5a6581; color:#ffffff;">
+                ¡Periodos confirmados! Recargando página...
+            </div>
+
         <div class="columns">
             <div class="column is-1">
                 <a id="Boton_regresar" class="is-responsive"
@@ -19,6 +25,20 @@
                     CICLOS ESCOLARES 
                 </label>
             </div>
+            <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
+                <div class="column is-offset-2">
+                    <button type="submit"
+                        class="confirmar-button button is-medium is-responsive form-button"
+                        onclick="registrar_periodos()">
+                        <span>
+                            Sincronizar Ciclos
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            <% } %>
         </div>
         <br>
         <table class="table is-fullwidth is-striped is-hoverable">
@@ -63,5 +83,6 @@
         </table>
     </div>
 </section>
+<script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
 
 <%- include('../includes/foot.ejs') %>
