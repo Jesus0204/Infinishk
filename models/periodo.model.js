@@ -12,7 +12,7 @@ module.exports = class Periodo {
 
     static fetchOne(id) {
         return db.execute(`SELECT IDPeriodo, fechaInicio, fechaFin, Nombre, periodoActivo
-        FROM periodo WHERE IDPeriodo = ?`, [id]);
+        FROM Periodo WHERE IDPeriodo = ?`, [id]);
     }
 
     static updatePeriodo(id, inicio, fin, nombre, status) {

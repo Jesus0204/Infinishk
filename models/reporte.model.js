@@ -10,19 +10,19 @@ module.exports = class Reporte {
         return db.execute(`SELECT * FROM Periodo WHERE periodoActivo = 0 ORDER BY IDPeriodo DESC`);
     }
 
-    static async fetchFechaInicio(id){
-        const [rows] = await db.execute(`SELECT fechaInicio from Periodo WHERE nombre= ?`,[id]);
+    static async fetchFechaInicio(id) {
+        const [rows] = await db.execute(`SELECT fechaInicio from Periodo WHERE nombre= ?`, [id]);
         const fechaInicio = rows[0].fechaInicio;
         return fechaInicio;
     }
 
-    static async fetchFechaFin(id){
-        const [rows] = await db.execute(`SELECT fechaFin from Periodo WHERE nombre= ?`,[id]);
+    static async fetchFechaFin(id) {
+        const [rows] = await db.execute(`SELECT fechaFin from Periodo WHERE nombre= ?`, [id]);
         const fechaFin = rows[0].fechaFin;
         return fechaFin;
     }
 
-    static async fetchMetodosPagoPeriodo(fechaInicio, fechaFin){
+    static async fetchMetodosPagoPeriodo(fechaInicio, fechaFin) {
         const [rows] = await db.execute(`
             SELECT ((SELECT COUNT(DISTINCT IDPago) AS Colegiatura
             FROM Pago 
@@ -67,18 +67,19 @@ module.exports = class Reporte {
             WHERE metodoPago = 'Transferencia'
             AND Pagado = 1
             AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras
-            )) AS TotalGeneralEfectivo`, 
+            )) AS TotalGeneralEfectivo`,
             [fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin,
-            fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin,
-            fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin]);
+                fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin,
+                fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin
+            ]);
     }
-    
+
     /* fetchMetodoPago para cada mes */
 
-    static async fetchIngresosColegiatura(fechaInicio,fechaFin){
+    static async fetchIngresosColegiatura(fechaInicio, fechaFin) {
         const [rows] = await db.execute(`SELECT ROUND(SUM(pago.montoPagado),2) AS totalColegiatura
         FROM Pago
-        WHERE fechaPago >= ? AND fechaPago <= ?`,[fechaInicio,fechaFin]);
+        WHERE fechaPago >= ? AND fechaPago <= ?`, [fechaInicio, fechaFin]);
         const montoColegiatura = rows[0].montoColegiatura;
         return montoColegiatura;
     }
@@ -92,38 +93,51 @@ module.exports = class Reporte {
                  FROM Liquida
                  JOIN pagosExtras ON Liquida.IDPagosExtras = pagosExtras.IDPagosExtras
                  WHERE Liquida.Pagado = 1
-                 AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras;`, 
-                 [fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin]);
-    
+                 AND (fechaPago >= ? AND fechaPago <= ?)) AS montoPagosExtras;`,
+            [fechaInicio, fechaFin, fechaInicio, fechaFin, fechaInicio, fechaFin]);
+
         const montoColegiatura = rows[0].montoColegiatura;
         const montoDiplomado = rows[0].montoDiplomado;
         const montoPagosExtras = rows[0].montoPagosExtras;
-    
-        return { montoColegiatura, montoDiplomado, montoPagosExtras };
+
+        return {
+            montoColegiatura,
+            montoDiplomado,
+            montoPagosExtras
+        };
     }
 
     /* fetchIngresos para cada mes */
 
-    static async fetchIngresosMes(mes, fechaInicio, fechaFin){
+    static async fetchIngresosMes(mes, fechaInicio, fechaFin) {
         const [rows, fieldData] = await db.execute(`
-            CALL fetchIngresosMes(?, ?, ?)`, 
-               [mes, fechaInicio, fechaFin]);
+            CALL fetchIngresosMes(?, ?, ?)`,
+            [mes, fechaInicio, fechaFin]);
         const data = rows[0][0]
         const Colegiatura = data.totalColegiatura;
         const Diplomado = data.totalDiplomado;
-        const PagosExtras = data.totalPagosExtras;        
-        return { Colegiatura, Diplomado, PagosExtras };
+        const PagosExtras = data.totalPagosExtras;
+        return {
+            Colegiatura,
+            Diplomado,
+            PagosExtras
+        };
     }
 
-    static async fetchMetodosPagoMes(mes, fechaInicio, fechaFin){
+    static async fetchMetodosPagoMes(mes, fechaInicio, fechaFin) {
         const [rows, fieldData] = await db.execute(`
-            CALL fetchMetodosPagoMes(?, ?, ?)`, 
-               [mes, fechaInicio, fechaFin]);
+            CALL fetchMetodosPagoMes(?, ?, ?)`,
+            [mes, fechaInicio, fechaFin]);
         const data = rows[0][0]
         const Tarjeta_Terminal = data.Tarjeta_Terminal;
         const Web_Tarjeta = data.Web_Tarjeta
         const Efectivo = data.Efectivo;
-        const Transferencia = data.Transferencia;        
-        return { Tarjeta_Terminal, Web_Tarjeta, Efectivo, Transferencia };
+        const Transferencia = data.Transferencia;
+        return {
+            Tarjeta_Terminal,
+            Web_Tarjeta,
+            Efectivo,
+            Transferencia
+        };
     }
 }

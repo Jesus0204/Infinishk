@@ -13,7 +13,7 @@ module.exports = class Pago {
     }
 
     static fetch_fecha_pago(fecha){
-        return db.execute('SELECT fechaPago,montoPagado FROM pago WHERE fechaPago = ?',
+        return db.execute('SELECT fechaPago,montoPagado FROM Pago WHERE fechaPago = ?',
         [fecha]);
     }
 

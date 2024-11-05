@@ -8,7 +8,7 @@ module.exports = class Posee {
     }
 
     static savePosee(id,rol){
-        return db.execute('INSERT INTO `Posee`(`IDUsuario`, `IDRol`) VALUES (?,?)',[id,rol])
+        return db.execute('INSERT INTO Posee (`IDUsuario`, `IDRol`) VALUES (?,?)',[id,rol])
     }
 
 }
