@@ -1,0 +1,88 @@
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+<section class="section">
+    <div class="container">
+
+        <div id="aceptar_periodos" class="notification is-hidden"
+                style="background-color: #5a6581; color:#ffffff;">
+                ¡Periodos confirmados! Recargando página...
+            </div>
+
+        <div class="columns">
+            <div class="column is-1">
+                <a id="Boton_regresar" class="is-responsive"
+                    href="/configuracion/actualizarBase">
+                    <span class="icon">
+                        <i class="fas fa-arrow-left fa-2x"></i>
+                    </span>
+                </a>
+            </div>
+            <div class="column">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    CICLOS ESCOLARES 
+                </label>
+            </div>
+            <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
+                <div class="column is-offset-2">
+                    <button type="submit"
+                        class="confirmar-button button is-medium is-responsive form-button"
+                        onclick="registrar_periodos()">
+                        <span>
+                            Sincronizar Ciclos
+                        </span>
+                        <span class="icon is-large">
+                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                        </span>
+                    </button>
+                </div>
+            <% } %>
+        </div>
+        <br>
+        <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th style="text-align: left;">Clave ciclo</th>
+                    <th style="text-align: left;">Fecha de Inicio</th>
+                    <th style="text-align: left;">Fecha de Fin</th>
+                    <th style="text-align: left;">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% periodos.forEach(function(periodo) { %>
+                    <tr>
+                        <td><%= periodo.name %></td>
+                        <td><%= periodo.start %></td>
+                        <td><%= periodo.end %></td>
+                        <td>
+                            <% if (periodo.status === 1) { %>
+                                <span class="tag is-size-6" style="background-color: #ddf5e5;">
+                                    <span class="icon is-small" style="color: #21c85b">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </span>
+                                    <span style="color: #21c85b !important;">
+                                        Activo
+                                    </span>
+                                 </span>
+                            <% } else { %>
+                                <span class="tag is-size-6" style="background-color: #f6d5d8">
+                                    <span class="icon is-small" style="color: #f83362">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </span>
+                                    <span style="color: #f83362 !important;">
+                                        Inactivo
+                                    </span>
+                                </span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</section>
+<script type="text/javascript" src="/js/actualizarPeriodos.js"></script>
+
+<%- include('../includes/foot.ejs') %>

@@ -1,0 +1,122 @@
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol }) 
+    %>
+
+<style>
+    input:focus {
+        border: 2px solid #910106 !important
+    }
+
+    input:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
+    .table-container {
+        position: relative;
+    }
+
+    .pagination-container {
+        margin-top: 20px;
+    }
+
+    .pagination-btn {
+        margin: 0 5px;
+    }
+</style>
+
+<section class="section">
+
+    <div id="aceptar_materias" class="notification is-hidden"
+                    style="background-color: #5a6581; color:#ffffff;">
+                    ¡Materias registradas! Recargando página...
+    </div>
+
+    <div class="columns">
+        <div class="column is-1">
+            <a id="Boton_regresar" class="is-responsive"
+                href="/configuracion/actualizarBase">
+                <span class="icon">
+                    <i class="fas fa-arrow-left fa-2x"></i>
+                </span>
+            </a>
+        </div>
+        <div class="column is-6">
+            <label class="label is-large has-text-danger has-text-weight-semibold">
+                PLANES DE ESTUDIO
+            </label>
+        </div>
+        <% if (contienePermiso(permisos, 'Actualizar Base de Datos') == true) { %>
+            <div class="column is-offset-2">
+                <button type="submit"
+                    class="confirmar-button button is-medium is-responsive form-button"
+                    onclick="registrar_materias()">
+                    <span>
+                        Registrar Materias
+                    </span>
+                    <span class="icon is-large">
+                        <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                    </span>
+                </button>
+            </div>
+        <% } %>
+    </div>
+
+        <div id="planes_estudio">
+            <% if (planes.length === 0) { %>
+            <div class="columns">
+                <div class="column is-2"></div>
+                <div class="column is-8">
+                    <div class="notification" style="background-color: #5a6581; color:#ffffff;">
+                        No hay planes de estudio disponibles por el momento.
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+            <div id="tablaPlanes" class="table-container">
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Plan de Estudios</th>
+                            <th style="text-align: left;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let plan of planes) { %>
+                        <tr id="pagination-content">
+                            <td>
+                                <%= plan.name %>
+                            </td>
+                            <td>
+                                <form action="/configuracion/visualizarMaterias" method="POST">
+                                    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" value="<%= plan.name %>" name="plan" id="plan">
+                                    <button class="button is-small is-responsive" type="submit" style="font-size:17px; padding-right: 0.7em;">
+                                        <span>Ver Materias</span>
+                                        <span class="icon is-large">
+                                            <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" id="prev-button">Anterior</a>
+                    <a class="pagination-next" id="next-button">Siguiente</a>
+                    <ul class="pagination-list" id="pagination-list">
+                        <div id="pagination-numbers">
+                        </div>
+                    </ul>
+                </nav> 
+            </div>
+            <% } %>
+        </div>
+</section>
+<%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/pagination.js"></script>
+<script type="text/javascript" src="/js/actualizarMaterias.js"></script>
+

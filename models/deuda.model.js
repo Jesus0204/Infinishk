@@ -19,7 +19,7 @@ module.exports = class Deuda {
     }
 
     static fetchDeuda(matricula) {
-        return db.execute(`SELECT (D.montoAPagar + D.Descuento - D.montoPagado) AS "montoAPagar" 
+        return db.execute(`SELECT (D.montoAPagar + D.Descuento + D.montoRecargos - D.montoPagado) AS "montoAPagar" 
         FROM Colegiatura AS C, Deuda AS D, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo 
         AND P.periodoActivo = '1' AND D.Matricula = ? AND D.Pagado = 0`,
@@ -29,8 +29,8 @@ module.exports = class Deuda {
     static fetchDeudaConsultarAlumno(matricula) {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar) AS 'montoAPagar',
-        ((D.montoAPagar + D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento
+        ((D.montoAPagar + D.Descuento + D.montoRecargos) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -39,9 +39,9 @@ module.exports = class Deuda {
 
     static fetchDeudaEstado(matricula) {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
-        (D.montoAPagar + D.Descuento) AS 'montoAPagar',
-        ((D.montoAPagar + D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento
+        (D.montoAPagar) AS 'montoAPagar',
+        ((D.montoAPagar + D.Descuento + D.montoRecargos) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -66,7 +66,7 @@ module.exports = class Deuda {
     };
 
     static fetchDeudaPagada(matricula) {
-        return db.execute('SELECT (montoAPagar+Descuento-montoPagado) AS "montoAPagar" FROM Deuda WHERE Matricula = ? AND Pagado = 1',
+        return db.execute('SELECT (montoAPagar+Descuento + montoRecargos -montoPagado) AS "montoAPagar" FROM Deuda WHERE Matricula = ? AND Pagado = 1',
             [matricula]);
     };
 
@@ -82,9 +82,9 @@ module.exports = class Deuda {
 
     static fetchDeudaDatos(matricula) {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
-        (D.montoAPagar + D.Descuento) AS 'montoAPagar',
-        ((D.montoAPagar + D.Descuento) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento
+        (D.montoAPagar + D.Descuento + D.montoRecargos) AS 'montoAPagar',
+        ((D.montoAPagar + D.Descuento + D.montoRecargos) - D.montoPagado) AS 'saldoPendiente', 
+        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -119,7 +119,7 @@ module.exports = class Deuda {
     }
 
     static fetchNoPagadas(IDColegiatura) {
-        return db.execute(`SELECT IDDeuda, (montoAPagar + Descuento) AS 'montoAPagar', 
+        return db.execute(`SELECT IDDeuda, (montoAPagar + Descuento + montoRecargos) AS 'montoAPagar', 
         fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
         AND IDColegiatura = ? `, [IDColegiatura]);
     };
@@ -154,7 +154,7 @@ module.exports = class Deuda {
     }
 
     static setRecargosDeuda(IDDeuda, montoRecargo) {
-        return db.execute(`UPDATE Deuda SET Descuento = ?, Recargos = 1, notaModificacion = 'Se aplicó un recargo'
+        return db.execute(`UPDATE Deuda SET montoRecargos = ?, Recargos = 1, notaModificacion = 'Se aplicó un recargo'
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     };
 

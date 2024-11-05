@@ -11,7 +11,7 @@ module.exports = class Fichas {
     }
 
     static fetch(valor_busqueda){
-        return db.execute(`SELECT IDDeuda, Pagado, montoAPagar, montoPagado, Descuento, notaModificacion, modificado_At,
+        return db.execute(`SELECT IDDeuda, Pagado, montoAPagar, montoPagado, Descuento, montoRecargos, notaModificacion, modificado_At,
         fechaLimitePago FROM Deuda
         JOIN Colegiatura on Deuda.IDColegiatura = Colegiatura.IDColegiatura
         JOIN Periodo ON Colegiatura.IDPeriodo = Periodo.IDPeriodo
@@ -49,6 +49,10 @@ module.exports = class Fichas {
               AND Pagado = 0
         `, [uMatricula, uFechaInicio, uFechaFin]);
         return rows[0].total;
+    }
+
+    static actualizarMaterias(uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito){
+        db.execute(`CALL actualizarMaterias(?,?, ?, ?,?)`, [uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
     
 } 
