@@ -87,7 +87,7 @@
                         <th>IDSep</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody_<%= semestre.semestre %>">
                     <% semestre.materias.forEach((materia) => { %>
                         <tr>
                             <td><%= materia.IDMateria %></td>

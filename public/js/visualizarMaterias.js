@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   <td>${materia.IDMateria}</td>
                   <td>${materia.Nombre}</td>
                   <td>${materia.Creditos}</td>
-                  <td>${materia.IDSep}</td>
+                  <td>${materia.IDMateriaExterna}</td>
                 </tr>`;
               tableBody.innerHTML += row;
             });
