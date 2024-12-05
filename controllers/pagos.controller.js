@@ -740,10 +740,21 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 if (monto_a_usar <= 0) {
                     break;
                 } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                    if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                    }
+
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
                     await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                     await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                    // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                    if ((deuda.montoSinRecargos - deuda.montoPagado) == monto_a_usar) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                        }
+                    }
+
                     // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                     await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                     await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
