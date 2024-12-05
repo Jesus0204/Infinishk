@@ -1018,9 +1018,20 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                         if (monto_a_usar <= 0) {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
+                            
                             await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                            // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                            if ((deuda.montoSinRecargos - deuda.montoPagado) == monto_a_usar) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                }
+                            }
+
                             await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
                         }
