@@ -749,7 +749,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                     await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                     // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
-                    if ((deuda.montoSinRecargos - deuda.montoPagado) == monto_a_usar) {
+                    if ((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2) == monto_a_usar) {
                         if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                             Deuda.removeRecargosDeuda(deuda.IDDeuda);
                         }
