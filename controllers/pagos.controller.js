@@ -751,10 +751,24 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                     await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                     // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
-                    if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) <= Number(monto_a_usar)) {
+                    if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
                         if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                             if (deuda.Recargos == 1) {
                                 Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
+                        }
+                    } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), request.body.IDColegiatura);
+
+                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                continue;
                             }
                         }
                     }
@@ -1030,12 +1044,27 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                             
                             await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
+                            
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
-                            if ((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2) == monto_a_usar) {
+                            if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
                                 if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
+                                }
+                            } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), idColegiatura);
+
+                                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                        continue;
                                     }
                                 }
                             }
