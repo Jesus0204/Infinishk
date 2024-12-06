@@ -895,14 +895,14 @@ exports.post_subir_archivo = (request, response, next) => {
                         Number(deudaPagada[0][0].montoAPagar.toFixed(2));
                 }
 
-                if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && pagoCompleto[0][0].fechaPago !== undefined) {
+                if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && pagoCompleto[0][0].fechaPago !== undefined && pagoCompleto[0][0].matricula !== undefined) {
                     const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
                     const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD');
 
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato && pagoCompleto[0][0].matricula === fila.matricula) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
