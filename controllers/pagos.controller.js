@@ -740,10 +740,39 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 if (monto_a_usar <= 0) {
                     break;
                 } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                    if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                        if (deuda.Recargos == 1) {
+                            Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                        }
+                    }
+
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
                     await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                     await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                    // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                    if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
+                        }
+                    } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), request.body.IDColegiatura);
+
+                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                continue;
+                            }
+                        }
+                    }
+
                     // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                     await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                     await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
@@ -1007,9 +1036,39 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                         if (monto_a_usar <= 0) {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (deuda.Recargos == 1) {
+                                    Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                }
+                            }
+                            
                             await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
+                            
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                            // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                            if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
+                                }
+                            } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), idColegiatura);
+
+                                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                        continue;
+                                    }
+                                }
+                            }
+
                             await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
                         }
