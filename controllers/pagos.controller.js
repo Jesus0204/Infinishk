@@ -741,7 +741,9 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                     break;
                 } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
                     if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
-                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                        if (deuda.Recargos == 1) {
+                            Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                        }
                     }
 
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
@@ -751,7 +753,9 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                     // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                     if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) <= Number(monto_a_usar)) {
                         if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
-                            Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
                         }
                     }
 
@@ -1019,7 +1023,9 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
                             if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
-                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                if (deuda.Recargos == 1) {
+                                    Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                }
                             }
                             
                             await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
@@ -1028,7 +1034,9 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                             if ((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2) == monto_a_usar) {
                                 if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
-                                    Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
                                 }
                             }
 
