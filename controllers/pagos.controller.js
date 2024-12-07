@@ -902,7 +902,7 @@ exports.post_subir_archivo = (request, response, next) => {
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato && pagoCompleto[0][0].matricula === fila.matricula) {
+                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato && pagoCompleto[0][0].matricula === fila.Matricula) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
