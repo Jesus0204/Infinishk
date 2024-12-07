@@ -120,7 +120,7 @@ module.exports = class Deuda {
 
     static fetchNoPagadas(IDColegiatura) {
         return db.execute(`SELECT IDDeuda, (montoAPagar + Descuento + montoRecargos) AS 'montoAPagar', 
-        fechaLimitePago, montoPagado FROM Deuda WHERE Pagado = 0
+        (montoAPagar + Descuento) AS 'montoSinRecargos', fechaLimitePago, montoPagado, Recargos FROM Deuda WHERE Pagado = 0
         AND IDColegiatura = ? `, [IDColegiatura]);
     };
 
@@ -157,6 +157,11 @@ module.exports = class Deuda {
         return db.execute(`UPDATE Deuda SET montoRecargos = ?, Recargos = 1, notaModificacion = 'Se aplicó un recargo'
         WHERE IDDeuda = ?`, [montoRecargo, IDDeuda]);
     };
+
+    static removeRecargosDeuda(IDDeuda) {
+        return db.execute(`UPDATE Deuda SET montoRecargos = 0, Recargos = 0, notaModificacion = 'Se eliminó el recargo'
+        WHERE IDDeuda = ?`, [IDDeuda]);
+    }
 
     static fetchAlumnos_Atrasados(fecha_actual) {
         return db.execute(`SELECT COUNT(DISTINCT(Matricula)) AS 'alumnosAtrasados' FROM Deuda AS D, Colegiatura AS C, Periodo As P
