@@ -81,11 +81,21 @@
             <table class="table is-hoverable is-fullwidth">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">Nombre</th>
+                        <th>IDMateria</th>
+                        <th>Nombre</th>
+                        <th>Creditos</th>
+                        <th>IDSep</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody_<%= semestre.semestre %>">
-                    <!-- Aquí se insertarán las materias paginadas -->
+                    <% semestre.materias.forEach((materia) => { %>
+                        <tr>
+                            <td><%= materia.IDMateria %></td>
+                            <td><%= materia.Nombre %></td>
+                            <td><%= materia.Creditos %></td>
+                            <td><%= materia.IDMateriaExterna %></td>
+                        </tr>
+                    <% }) %>
                 </tbody>
             </table>
 
@@ -104,6 +114,7 @@
 <div id="semestresData" style="display:none;">
     <%= JSON.stringify(semestres) %>
 </div>
+
 
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/visualizarMaterias.js"></script>

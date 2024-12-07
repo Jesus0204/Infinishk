@@ -1213,9 +1213,25 @@ exports.fetchMaterias = async (request, response, next) => {
         // Fetch materias from the database
         const [materias] = await Materia.fetchMaterias(nombrePlan);
 
+        // Crear variables individuales para cada materia
+        const materiasIndividuales = materias.map((materia, index) => {
+            const { IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna } = materia;
+            
+            // Aquí puedes asignar a variables específicas si necesitas un nombre concreto
+            return {
+                [`materia_${index + 1}`]: {
+                    IDMateria,
+                    IDMateriaExterna,
+                    Nombre,
+                    semestreImpartido,
+                    Creditos,
+                }
+            };
+        });
+
         // Agrupar materias por semestre
         const materiasPorSemestre = materias.reduce((acc, materia) => {
-            const semestre = materia.semestreImpartido || "Sin semestre"; // Manejo de semestres
+            const semestre = materia.semestreImpartido || "Sin semestre";
             if (!acc[semestre]) {
                 acc[semestre] = [];
             }
@@ -1232,6 +1248,7 @@ exports.fetchMaterias = async (request, response, next) => {
         response.render('configuracion/visualizarMaterias', {
             nombrePlan,
             semestres,
+            materiasIndividuales,  // Pasar el array de materias individuales si lo necesitas en la vista
             username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || "",
