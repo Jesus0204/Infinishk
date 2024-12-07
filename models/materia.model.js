@@ -33,6 +33,6 @@ module.exports = class Materia {
     }
 
     static fetchMaterias(planEstudios){
-        return db.execute(`SELECT IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna FROM Materia WHERE planEstudios = ? GROUP BY semestreImpartido, nombre;`,[planEstudios])
+        return db.execute(`SELECT IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna FROM Materia WHERE planEstudios = ? GROUP BY semestreImpartido, Nombre;`,[planEstudios])
     }
 }
