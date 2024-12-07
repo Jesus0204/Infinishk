@@ -12,9 +12,14 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    static fetch_fecha_pago(fecha){
-        return db.execute('SELECT fechaPago,montoPagado FROM Pago WHERE fechaPago = ?',
-        [fecha]);
+    static fetch_fecha_pago(fecha) {
+        return db.execute(
+            `SELECT Pago.fechaPago, Pago.montoPagado, Deuda.matricula 
+             FROM Pago 
+             JOIN Deuda ON Pago.IDDeuda = Deuda.IDDeuda
+             WHERE Pago.fechaPago = ?`,
+            [fecha]
+        );
     }
 
     static save_transferencia(id,monto,nota,fecha) {

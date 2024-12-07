@@ -29,20 +29,25 @@ document.addEventListener('DOMContentLoaded', function() {
         function showPage(semestreId, page) {
             const tableBody = document.getElementById(`tableBody_${semestreId}`);
             tableBody.innerHTML = ''; // Limpiar la tabla
-
+          
             const start = (page - 1) * pageSize;
             const end = start + pageSize;
             const paginatedMaterias = semestre.materias.slice(start, end);
-
+          
             paginatedMaterias.forEach(materia => {
-                const row = `<tr><td>${materia.nombre}</td></tr>`;
-                tableBody.innerHTML += row;
+              const row = `
+                <tr>
+                  <td>${materia.IDMateria}</td>
+                  <td>${materia.Nombre}</td>
+                  <td>${materia.Creditos}</td>
+                  <td>${materia.IDMateriaExterna}</td>
+                </tr>`;
+              tableBody.innerHTML += row;
             });
-
-            // Actualizar los números de paginación
-            updatePaginationNumbers(semestreId, page);
+          
+            updatePaginationNumbers(semestreId, page); // Actualizar los números de paginación
         }
-
+          
         // Función para actualizar los números de paginación
         function updatePaginationNumbers(semestreId, page) {
             const paginationNumbers = document.getElementById(`pagination-numbers_${semestreId}`);

@@ -32,7 +32,12 @@ module.exports = class Materia {
         return db.execute(`SELECT DISTINCT planEstudios FROM Materia`)
     }
 
-    static fetchMaterias(planEstudios){
-        return db.execute(`SELECT nombre, semestreImpartido FROM Materia WHERE planEstudios = ? GROUP BY semestreImpartido, nombre;`,[planEstudios])
-    }
+    static fetchMaterias(planEstudios) {
+        return db.execute(`
+            SELECT IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna 
+            FROM Materia 
+            WHERE planEstudios = ?
+            GROUP BY IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna;
+        `, [planEstudios]);
+    }    
 }
