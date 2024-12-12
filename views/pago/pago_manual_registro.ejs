@@ -563,13 +563,13 @@
                                 <div class="icon is-medium is-left">
                                     <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                 </div>
-                                
-                                <!-- Escribir motivo personalizado -->
-                                <input name="motivo-custom" id="motivo-custom" class="input is-medium"
-                                    placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 15px;">
-                                </input>
-                           
                             </div>
+                                
+                            <!-- Escribir motivo personalizado -->
+                            <input name="motivo-custom" id="motivo-custom" class="input is-medium"
+                                placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 15px;">
+                            </input>
+                           
                         </div>
                     </div>
 
@@ -593,12 +593,18 @@
                             </div>
 
                         <!-- Escribir monto personalizado -->
-                        <input name="monto-custom" id="monto-custom" class="input is-medium"
-                            placeholder="Escribe tu monto aquí." style="display: none;">
-                        </input>
-
+                        <div class="field">
+                            <p class="control has-icons-left" id="monto-custom-total" style="display: none;">
+                                <input name="monto-custom" id="monto-custom" class="input is-medium"
+                                    placeholder="Escribe tu monto aquí.">
+                                <span class="icon is-small is-left">
+                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                </span>
+                            </p>
+                        </div>
                         </div>
                     </div>
+
                     <div class="columns">
                         <div class="column is-3">
                             <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
