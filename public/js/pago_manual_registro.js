@@ -149,17 +149,35 @@ const boton_pago_col = document.querySelector('#boton_pago_col');
 // Crear constantes para acceder a HTML
 const motivo = document.querySelector('#motivo_col');
 const monto = document.querySelector('#monto_col');
+
+const motivo_op = document.getElementById('motivo-custom');
+const monto_op = document.getElementById('monto-custom');
+const pago = document.getElementById('pago');
+
 const ayuda_motivo = document.querySelector('#ayuda_motivo');
 const ayuda_monto_vacio = document.querySelector('#ayuda_monto_vacio');
 const ayuda_monto_negativo = document.querySelector('#ayuda_monto_negativo');
 const ayuda_monto_exponente = document.querySelector('#ayuda_monto_exponente');
+
+const ayuda_motivo_op = document.querySelector('#ayuda_motivo_op');
+const ayuda_monto_vacio_op = document.querySelector('#ayuda_monto_vacio_op');
+const ayuda_monto_negativo_op = document.querySelector('#ayuda_monto_negativo_op');
+const ayuda_monto_exponente_op = document.querySelector('#ayuda_monto_exponente_op');
+
 const ayuda_fecha = document.getElementById('ayuda_fecha_vacia_col');
 
-// Checar si hay contenido dentro del input, pata desactivar el boton
+// Checar si hay contenido dentro del input, para desactivar el boton
 function checar_contenido() {
-    boton_pago_col.disabled = motivo.value.length === 0 || monto.value.length === 0 ||
-        parseFloat(monto.value) <= 0 || monto.value.includes('e') || monto.value.includes('E') || 
+    boton_pago_col.disabled = motivo.value.length === 0 || monto.value.length === 0 || 
+        parseFloat(monto.value) <= 0 || monto.value.includes('e') || monto.value.includes('E') ||
         fecha_col.value.length === 0;
+}
+
+// Checar si hay contenido dentro del input de pagos extra, para desactivar el boton
+function checar_contenido_extra() {
+    boton_pago_extra.disabled = motivo_op.value.length === 0 || monto_op.value.length === 0 || 
+        parseFloat(monto_op.value) <= 0 || monto_op.value.includes('e') || monto_op.value.includes('E') ||
+        fecha.value.length === 0;
 }
 
 window.addEventListener('load', cambiar_fecha_modal);
@@ -262,6 +280,47 @@ function mensaje_monto() {
     }
 }
 
+console.log("pago ", pago.value);
+
+// Activar mensaje si el motivo personalizado no tiene input
+function mensaje_motivo_extra() {
+    if (motivo_op.value.length === 0) {
+        ayuda_motivo_op.classList.remove('is-hidden');
+    } else {
+        ayuda_motivo_op.classList.add('is-hidden');
+    }
+}
+
+// Activar mensaje si el monto personalizado no tiene input
+function mensaje_monto_extra() {
+    if (monto_op.value.length === 0) {
+        ayuda_monto_vacio_op.classList.remove('is-hidden');
+    } else {
+        ayuda_monto_vacio_op.classList.add('is-hidden');
+    }
+
+    if (parseFloat(monto_op.value) <= 0) {
+        ayuda_monto_negativo_op.classList.remove('is-hidden');
+    } else {
+        ayuda_monto_negativo_op.classList.add('is-hidden');
+    }
+
+    if (monto_op.value.includes('e') || monto_op.value.includes('E')) {
+        ayuda_monto_exponente_op.classList.remove('is-hidden');
+    } else {
+        ayuda_monto_exponente_op.classList.add('is-hidden');
+    }
+}
+
+// Detectar si se selecciona la opción personalizada
+if (pago) {
+    pago.addEventListener('change', () => {
+        if (pago.value === 'custom') {
+            checar_contenido_extra(); 
+        }
+    });
+}
+
 // Detectar si el usuario maneja input y llamar las funciones anteriores
 // Agregar event listener solo si existe el elemento
 if (monto) {
@@ -274,6 +333,20 @@ if (motivo) {
     motivo.addEventListener('input', cambiar_motivo_monto_modal);
     motivo.addEventListener('input', checar_contenido);
     motivo.addEventListener('input', mensaje_motivo);
+}
+
+// Detectar si el usuario maneja input y llamar las funciones anteriores
+// Agregar event listener solo si existe el elemento
+if (monto_op) {
+    //monto_op.addEventListener('input', cambiar_motivo_monto_modal);
+    monto_op.addEventListener('input', mensaje_monto_extra);
+    monto_op.addEventListener('input', checar_contenido_extra);
+}
+
+if (motivo_op) {
+    //motivo_op.addEventListener('input', cambiar_motivo_monto_modal);
+    motivo_op.addEventListener('input', checar_contenido_extra);
+    motivo_op.addEventListener('input', mensaje_motivo_extra);
 }
 
 const notificacion_no_colegiatura = document.querySelector('#btn_no_colegiatura');

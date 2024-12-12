@@ -564,12 +564,17 @@
                                     <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                 </div>
                             </div>
-                                
+                            
+                            
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo_op"
+                                style="padding: 0.5em; margin-top: 7px;">Por favor
+                                escribe un motivo del pago del alumno</p>
                             <!-- Escribir motivo personalizado -->
                             <input name="motivo-custom" id="motivo-custom" class="input is-medium"
-                                placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 15px;">
+                                placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 7px;">
                             </input>
                            
+                       
                         </div>
                     </div>
 
@@ -592,16 +597,27 @@
                                 </p>
                             </div>
 
-                        <!-- Escribir monto personalizado -->
-                        <div class="field">
-                            <p class="control has-icons-left" id="monto-custom-total" style="display: none;">
-                                <input name="monto-custom" id="monto-custom" class="input is-medium"
-                                    placeholder="Escribe tu monto aquí.">
-                                <span class="icon is-small is-left">
-                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
-                                </span>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio_op"
+                                style="padding: 0.5em; margin-top: -1em;">
+                                Por favor
+                                escribe un monto válido para el pago</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo_op"
+                                style="padding: 0.5em; margin-top: -1em;">Por
+                                favor escribe un número mayor a 0</p>
+                            <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente_op"
+                                style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
+                                exponente
                             </p>
-                        </div>
+                            <!-- Escribir monto personalizado -->
+                            <div class="field">
+                                <p class="control has-icons-left" id="monto-custom-total" style="display: none;">
+                                    <input name="monto-custom" id="monto-custom" class="input is-medium"
+                                        placeholder="Escribe tu monto aquí." type="number">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                    </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
