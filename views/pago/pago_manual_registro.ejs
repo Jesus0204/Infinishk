@@ -229,6 +229,8 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- PAGOS NORMALES (COLEGIATURA / DIPLOMADO)-->
             <div id="pago_normal">
                 <% if (diplomado.length != 0 || (colegiatura.length != 0 && deuda.length != 0)) { %>
                 <% if (colegiatura.length != 0) { %>
@@ -349,6 +351,8 @@
                                     placeholder="Escribe tu nota aquí."></textarea>
                             </div>
                         </div>
+
+                        <!-- MODAL -->
                         <div class="columns">
                             <div class="column is-6"></div>
                             <div class="column is-6">
@@ -530,6 +534,8 @@
                     </article>
                     <% } %>
             </div>
+
+            <!-- PAGOS EXTRA -->
             <% if (pagos_extra) { %>
             <div id="pago_extra" class="is-hidden">
                 <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
@@ -551,21 +557,29 @@
                                              })  %>">
                                             <%= pago.motivoPago %></option>
                                         <% } %>
+                                        <option value="custom">Otro</option>
                                     </select>
                                 </div>
                                 <div class="icon is-medium is-left">
                                     <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
                                 </div>
+                                
+                                <!-- Escribir motivo personalizado -->
+                                <input name="motivo-custom" id="motivo-custom" class="input is-medium"
+                                    placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 15px;">
+                                </input>
+                           
                             </div>
                         </div>
                     </div>
+
                     <div class="columns">
                         <div class="column is-3">
                             <label class="label is-medium" for="monto">Monto:</label>
                         </div>
                         <div class="column">
                             <div class="field">
-                                <p class="control has-icons-left">
+                                <p class="control has-icons-left" id="monto-total" style="display: block;">
                                     <input name="monto" class="input is-medium" id="monto"
                                         placeholder="Monto" readonly
                                         value="<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
@@ -577,6 +591,12 @@
                                     </span>
                                 </p>
                             </div>
+
+                        <!-- Escribir monto personalizado -->
+                        <input name="monto-custom" id="monto-custom" class="input is-medium"
+                            placeholder="Escribe tu monto aquí." style="display: none;">
+                        </input>
+
                         </div>
                     </div>
                     <div class="columns">

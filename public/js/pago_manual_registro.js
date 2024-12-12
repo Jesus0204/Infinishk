@@ -58,14 +58,32 @@ const calendars = bulmaCalendar.attach('[type="date"]', {
 });
 
 $('#pago').change(function () {
+    // Saca la opción seleccionada
+    let opcion = $(this).find(':selected');
     // Sacas el monto de la opcion con data-monto
     let num_monto = $(this).find(':selected').data('monto');
     let motivo = $(this).find(':selected').text();
     // Cambias el DOM para mostrar el precio correcto
     const monto = document.querySelector('#monto');
-    monto.value = num_monto.toLocaleString('mx', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+
+    // Sacar los inputs personalizados
+    const motivoCustom = document.getElementById("motivo-custom");
+    const montoCustom = document.getElementById("monto-custom-total");
+    const montoAuto = document.getElementById("monto-total");
+
+    if (opcion.val() === 'custom') {
+        motivoCustom.style.display = 'block';
+        montoCustom.style.display = 'block';
+        montoAuto.style.display = 'none';
+        monto.value = '';
+    } else {
+        motivoCustom.style.display = 'none';
+        montoCustom.style.display = 'none';
+        montoAuto.style.display = 'block';
+
+        monto.value = num_monto.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
     });
     // Cambias el DOM dentro del modal
     document.querySelector('#monto_modal').innerHTML = '<strong>Monto Pagado: </strong> $' + num_monto
@@ -74,6 +92,7 @@ $('#pago').change(function () {
             maximumFractionDigits: 2
         });
     document.querySelector('#motivo_modal').innerHTML = '<strong>Motivo: </strong>' + motivo;
+    }
 });
 
 $('#metodo').change(function () {
