@@ -251,6 +251,15 @@ function cambiar_motivo_monto_modal() {
 
 window.addEventListener('load', cambiar_motivo_monto_modal);
 
+function cambiar_motivo_monto_modal_extra() {
+    document.querySelector('#motivo_modal').innerHTML = '<strong>Motivo: </strong>' + motivo_op.value;
+    document.querySelector('#monto_modal').innerHTML = '<strong>Monto Pagado: </strong> $' +
+        monto_op.value.toLocaleString('mx', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+};
+
 // Activar mensaje si el motivo no tiene input
 function mensaje_motivo() {
     if (motivo.value.length === 0) {
@@ -338,13 +347,13 @@ if (motivo) {
 // Detectar si el usuario maneja input y llamar las funciones anteriores
 // Agregar event listener solo si existe el elemento
 if (monto_op) {
-    //monto_op.addEventListener('input', cambiar_motivo_monto_modal);
+    monto_op.addEventListener('input', cambiar_motivo_monto_modal_extra);
     monto_op.addEventListener('input', mensaje_monto_extra);
     monto_op.addEventListener('input', checar_contenido_extra);
 }
 
 if (motivo_op) {
-    //motivo_op.addEventListener('input', cambiar_motivo_monto_modal);
+    motivo_op.addEventListener('input', cambiar_motivo_monto_modal_extra);
     motivo_op.addEventListener('input', checar_contenido_extra);
     motivo_op.addEventListener('input', mensaje_motivo_extra);
 }
