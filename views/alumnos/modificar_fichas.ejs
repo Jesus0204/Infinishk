@@ -110,15 +110,15 @@
                                         <p id="ayuda_deuda_exponente<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda total no puede tener exponentes</p>
+                                            Por favor escribe una deuda total sin exponente.</p>
                                         <p id="ayuda_deuda_vacia<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-vacia"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda total no puede estar vacía</p>
+                                            Por favor escribe una deuda total válida.</p>
                                         <p id="ayuda_deuda_negativa<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-negativa"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda no puede ser negativa</p>
+                                            Por favor escribe una deuda total mayor a 0.</p>
                                         <br>
                                         <% } else { %>
                                             $<%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', 
@@ -143,7 +143,7 @@
                                         <% if (ficha1.Pagado != 1) { %>
                                         <p id="ayuda_fecha_vacia<%=display1%>"
                                             class="help is-hidden has-text-danger-dark" style="padding: 0.5em;">
-                                            Por favor escoge una fecha límite</p>
+                                            Por favor escoge una fecha límite.</p>
                                         <input id="fecha_lim<%=display1%>" name="fecha_lim"
                                             class="fecha-limite input is-medium" type="date"
                                             placeholder="<%= moment(ficha1.fechaLimitePago).format('DD/MM/YYYY') %>">
@@ -165,15 +165,15 @@
                                         <p id="ayuda_descuento_exponente<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede tener exponentes</p>
+                                            Por favor escribe un ajuste sin exponente.</p>
                                         <p id="ayuda_descuento_vacio<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede estar vacío</p>
+                                            Por favor escribe un ajuste válido.</p>
                                         <p id="ayuda_descuento_cero_negativo<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede ser un cero negativo</p>
+                                            Por favor escribe un ajuste mayor a 0.</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha1.Descuento.toLocaleString('mx', {
@@ -251,15 +251,15 @@
                                         <p id="ayuda_deuda_exponente<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda total no puede tener exponentes</p>
+                                            Por favor escribe una deuda total sin exponente.</p>
                                         <p id="ayuda_deuda_vacia<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-vacia"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda total no puede estar vacía</p>
+                                            Por favor escribe una deuda total válida.</p>
                                         <p id="ayuda_deuda_negativa<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-negativa"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda no puede ser negativa</p>
+                                            Por favor escribe una deuda total mayor a 0.</p>
                                         <br>
                                         <% } else { %>
                                             $<%= (ficha2.montoAPagar - ficha2.montoPagado).toLocaleString('mx', 
@@ -285,7 +285,7 @@
                                         <p id="ayuda_fecha_vacia<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-fecha"
                                             style="padding: 0.5em;">
-                                            Por favor escoge una fecha límite</p>
+                                            Por favor escoge una fecha límite.</p>
                                         <input name="fecha_lim" id="fecha_lim<%=display2%>"
                                             class="fecha-limite input is-medium" type="date"
                                             placeholder="<%= moment(ficha2.fechaLimitePago).format('DD/MM/YYYY') %>">
@@ -306,15 +306,15 @@
                                         <p id="ayuda_descuento_exponente<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-exponente"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede tener exponentes</p>
+                                            Por favor escribe un ajuste sin exponente.</p>
                                         <p id="ayuda_descuento_vacio<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-vacio"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede estar vacío</p>
+                                            Por favor escribe un ajuste válido.</p>
                                         <p id="ayuda_descuento_cero_negativo<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-descuento-cero-negativo"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            El ajuste no puede ser un cero negativo</p>
+                                            Por favor escribe un ajuste mayor a 0.</p>
                                         <br>
                                         <% } else { %>
                                         $<%= ficha2.Descuento.toLocaleString('mx', {
@@ -329,7 +329,7 @@
                                         <p id="ayuda_nota<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-nota"
                                             style="padding-bottom: 0.6em;">
-                                            Por favor escribe una nota</p>
+                                            Por favor escribe una nota.</p>
                                         <textarea id="nota<%=display2%>" name="nota" class="input is-medium"
                                             value="<%= ficha2.notaModificacion %>"
                                             placeholder="Escribe tu nota"></textarea>
