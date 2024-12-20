@@ -910,27 +910,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="columns">
-                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
-                                    <div class="column is-4 is-offset-8">
-                                        <form method="POST" action="/alumnos/fichas">
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
-                                            <p class="control">
-                                                <button class="confirmar-button is-responsive fichas"
-                                                    style="font-size: large;  padding-right: 1.5em;" type="submit">
-                                                    <span class="icon is-large">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </span>
-                                                    <span>
-                                                        MODIFICAR FICHAS
-                                                    </span>
-                                                </button>
-                                            </p>
-                                        </form>
-                                    </div>
-                                    <% } %>
-                                </div>
                             <% } else { %>
                                 </label>
                                 <div class="box">
@@ -940,6 +919,48 @@
                                     </p>
                                 </div>
                             <% } %>
+                            <!-- SALDO -->
+                            <div class="columns">
+                                <div class="column is-8"></div>
+                                <div class="column">
+                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
+                                    <form method="POST" action="/alumnos/fichas">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                        <p class="control is-clearfix" style="margin-bottom: 10px;">
+                                            <button class="confirmar-button is-responsive" 
+                                                style="font-size: large; background-color: #000000; padding: 8px 12px; height: auto; width: 100%; text-align: center; line-height: 1.2;">
+                                                <span class="icon is-small">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #ffffff; padding-right: 8px;"></i>
+                                                </span>
+                                                <span style="color: #ffffff;">MODIFICAR FICHAS</span>
+                                            </button>
+                                        </p>
+                                    </form>
+                                    <% } %>  
+                                    <% if (credito != 0) { %>                                                                                                
+                                    <div class="box">
+                                        <div class="columns is-mobile">
+                                            <div class="column is-6">
+                                                <p class="has-text-danger has-text-weight-medium">
+                                                    CRÉDITO
+                                                </p>
+                                            </div>
+                                            <div class="column is-6">
+                                                <p class="has-text-danger">
+                                                    <span class="has-text-weight-semibold">
+                                                        $<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div> 
+                                        <% } %> 
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 <% } %>
