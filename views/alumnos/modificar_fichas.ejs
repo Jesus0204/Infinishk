@@ -115,10 +115,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-vacia"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             La deuda total no puede estar vacía</p>
-                                        <p id="ayuda_deuda_cero_negativo<%=display1%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-deuda-cero-negativo"
+                                        <p id="ayuda_deuda_negativa<%=display1%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-deuda-negativa"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda no puede ser un cero negativo</p>
+                                            La deuda no puede ser negativa</p>
                                         <br>
                                         <% } else { %>
                                             $<%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', 
@@ -256,10 +256,10 @@
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-vacia"
                                             style="padding: 0.5em; margin-bottom: -2em;">
                                             La deuda total no puede estar vacía</p>
-                                        <p id="ayuda_deuda_cero_negativo<%=display2%>"
-                                            class="help is-hidden has-text-danger-dark ayuda-deuda-cero-negativo"
+                                        <p id="ayuda_deuda_negativa<%=display2%>"
+                                            class="help is-hidden has-text-danger-dark ayuda-deuda-negativa"
                                             style="padding: 0.5em; margin-bottom: -2em;">
-                                            La deuda no puede ser un cero negativo</p>
+                                            La deuda no puede ser negativa</p>
                                         <br>
                                         <% } else { %>
                                             $<%= (ficha2.montoAPagar - ficha2.montoPagado).toLocaleString('mx', 

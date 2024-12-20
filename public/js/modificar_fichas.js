@@ -15,7 +15,7 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
 
     const ayuda_deuda_vacia = document.querySelector('#ayuda_deuda_vacia' + count);
     const ayuda_deuda_exponente = document.querySelector('#ayuda_deuda_exponente' + count);
-    const ayuda_deuda_cero_negativo = document.querySelector('#ayuda_deuda_cero_negativo' + count);
+    const ayuda_deuda_negativa = document.querySelector('#ayuda_deuda_negativa' + count);
 
     const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
@@ -65,26 +65,29 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
         count_clear++;
     }
 
-    function mensaje_deuda() {
+    /*function mensaje_deuda() {
+        if (deuda.value.length === 0 || deuda.value.trim() === '') {
+            console.log("EMPTY deuda: ", deuda.value.trim());
+            bt_Modificar.disabled = true;
+            ayuda_deuda_vacia.classList.remove('is-hidden');
+        } else {
+            ayuda_deuda_vacia.classList.add('is-hidden');
+        }
+        
         if (deuda.value.trim().toLowerCase().includes('e')) {
+            console.log("EXPONENT deuda: ", deuda.value.trim());
             bt_Modificar.disabled = true;
             ayuda_deuda_exponente.classList.remove('is-hidden');
         } else {
             ayuda_deuda_exponente.classList.add('is-hidden');
         }
 
-        if (deuda.value.length === 0) {
+        if (parseFloat(deuda.value.trim()) <= 0) {
+            console.log("NEGATIVE deuda: ", deuda.value.trim());
             bt_Modificar.disabled = true;
-            ayuda_deuda_vacia.classList.remove('is-hidden');
+            ayuda_deuda_negativa.classList.remove('is-hidden');
         } else {
-            ayuda_deuda_vacia.classList.add('is-hidden');
-        }
-
-        if (deuda.value.includes("-0")){
-            bt_Modificar.disabled = true;
-            ayuda_deuda_cero_negativo.classList.remove('is-hidden');
-        } else {
-            ayuda_deuda_cero_negativo.classList.add('is-hidden');
+            ayuda_deuda_negativa.classList.add('is-hidden');
         }
     }
 
@@ -110,20 +113,6 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
             ayuda_descuento_cero_negativo.classList.add('is-hidden');
         }
     }
-
-    /*function mensaje_nota() {
-        if (nota.value.length === 0) {
-            ayuda_nota.classList.remove('is-hidden');
-        } else {
-            ayuda_nota.classList.add('is-hidden');
-        }
-    }
-
-    if (nota){
-        // Detectar si el usuario maneja input y llamar las funciones anteriores
-        nota.addEventListener('input', checar_contenido);
-        nota.addEventListener('input', mensaje_nota);
-    } */
     
     if (descuento){
         descuento.addEventListener('input', mensaje_descuento);
@@ -133,8 +122,69 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
     if (deuda){
         deuda.addEventListener('input', mensaje_deuda);
         deuda.addEventListener('input', checar_contenido);
+    }*/
+
+    function validarDatos() {
+        let error = false;
+    
+        // Validar deuda total
+        if (deuda.value.length === 0 || deuda.value.trim() === '') {
+            ayuda_deuda_vacia.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_vacia.classList.add('is-hidden');
+        }
+    
+        if (deuda.value.trim().toLowerCase().includes('e')) {
+            ayuda_deuda_exponente.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_exponente.classList.add('is-hidden');
+        }
+    
+        if (parseFloat(deuda.value.trim()) <= 0) {
+            ayuda_deuda_negativa.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_negativa.classList.add('is-hidden');
+        }
+    
+        // Validar ajuste
+        if (descuento.value.trim().toLowerCase().includes('e')) {
+            ayuda_descuento_exponente.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_exponente.classList.add('is-hidden');
+        }
+    
+        if (descuento.value.length === 0) {
+            ayuda_descuento_vacio.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_vacio.classList.add('is-hidden');
+        }
+    
+        if (descuento.value.includes("-0")) {
+            ayuda_descuento_cero_negativo.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_cero_negativo.classList.add('is-hidden');
+        }
+    
+        // Deshabilitar botón si hay error
+        bt_Modificar.disabled = error;
     }
 
+
+    // Event Listeners para ambos campos
+    if (deuda) {
+        deuda.addEventListener('input', validarDatos);
+    }
+
+    if (descuento) {
+        descuento.addEventListener('input', validarDatos);
+    }
+     
 }
 
 function modificar(deuda, descuento, fecha_lim, nota, id, count) {
