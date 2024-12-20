@@ -18,8 +18,8 @@ module.exports = class Fichas {
         WHERE Deuda.Matricula = ? AND Periodo.periodoActivo = 1;`, [valor_busqueda]);
     }
 
-    static async update(descuento, fechaLimitePago, notaModificacion, modificador, id) {
-        const [rows, fields] = await db.execute(`CALL updateFicha(?,?,?,?,?)`, [descuento, fechaLimitePago, notaModificacion, modificador, id]);
+    static async update(deuda, descuento, fechaLimitePago, notaModificacion, modificador, id) {
+        const [rows, fields] = await db.execute(`CALL updateFicha(?, ?,?,?,?,?)`, [deuda, descuento, fechaLimitePago, notaModificacion, modificador, id]);
         return rows;
     }
     
