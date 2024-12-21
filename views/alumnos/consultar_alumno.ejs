@@ -394,7 +394,7 @@
                                         <button type="button" id="Boton_eliminar"
                                             class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
                                             style="background-color: #f6d5d8;" 
-                                            data-target="modal-confirmar-eliminar-pagos-extra<%= pagadosExtra.IDPagosExtras %>">
+                                            data-target="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDPagosExtras %>">
                                             <span class="icon is-small" style="color: #f83362">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </span>
@@ -403,7 +403,7 @@
                                 </td>
                             </tr>
 
-                            <div id="modal-confirmar-eliminar-pagos-extra<%= pagadosExtra.IDPagosExtras %>" class="modal">
+                            <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDPagosExtras %>" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
@@ -446,6 +446,34 @@
                                                 <%= pagadosExtra.Nota %>
                                             </p>
                                         </div>
+                                        </section>
+
+                                        <footer class="modal-card-foot" style="justify-content: center;">
+                                            <div class="field is-grouped">
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive" aria-label="close"
+                                                        style="font-size: large; margin: 8px 2px; 
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>REGRESAR</span>
+                                                    </button>
+                                                </p>
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive"
+                                                        onclick="eliminarPagoExtra('<%= pagos.IDPagosExtras %>')"
+                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>ELIMINAR</span>
+                                                    </button>
+                                                </p>
+                                        </footer>
+                                    </div>
+                                </div>
                             <% }); %>
                         </tbody>
                     </table>
@@ -502,7 +530,7 @@
                                                 <button type="button" id="Boton_eliminar"
                                                     class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
                                                     style="background-color: #f6d5d8;" 
-                                                    data-target="modal-confirmar-eliminar-dip<%= pagos.IDPagaDiplomado %>">
+                                                    data-target="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>">
                                                     <span class="icon is-small" style="color: #f83362">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </span>
@@ -511,7 +539,7 @@
                                         </td>
                                     </tr>
 
-                                    <div id="modal-confirmar-eliminar-dip<%= pagos.IDPagaDiplomado %>" class="modal">
+                                    <div id="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>" class="modal">
                                         <div class="modal-background"></div>
                                         <div class="modal-card">
                                             <header class="modal-card-head">
@@ -557,6 +585,34 @@
                                                         <%= pagos.nota %>
                                                     </p>
                                                 </div>
+                                            </section>
+
+                                            <footer class="modal-card-foot" style="justify-content: center;">
+                                                <div class="field is-grouped">
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive" aria-label="close"
+                                                            style="font-size: large; margin: 8px 2px; 
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>REGRESAR</span>
+                                                        </button>
+                                                    </p>
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive"
+                                                            onclick="eliminarPagoDip('<%= pagos.IDPagaDiplomado %>')"
+                                                            style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>ELIMINAR</span>
+                                                        </button>
+                                                    </p>
+                                            </footer>
+                                        </div>
+                                    </div>
                                     <% }) %>
                                 </tbody>
                             </table>
@@ -661,6 +717,34 @@
                                                                 <%= pagos.nota %>
                                                             </p>
                                                         </div>
+                                                    </section>
+
+                                                    <footer class="modal-card-foot" style="justify-content: center;">
+                                                        <div class="field is-grouped">
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive" aria-label="close"
+                                                                    style="font-size: large; margin: 8px 2px; 
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>REGRESAR</span>
+                                                                </button>
+                                                            </p>
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive"
+                                                                    onclick="eliminarPagoCol('<%= pagos.IDPago %>')"
+                                                                    style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>ELIMINAR</span>
+                                                                </button>
+                                                            </p>
+                                                    </footer>
+                                                </div>
+                                            </div>
                                     <% }) %>
                                 </tbody>
                             </table>
