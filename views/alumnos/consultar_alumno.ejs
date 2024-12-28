@@ -357,6 +357,10 @@
 
                 <div id="extras" class="is-hidden">
                     <% if (pagadosExtra.length != 0) { %>
+                        <div id="eliminacionPE" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
@@ -372,7 +376,7 @@
                         </thead>
                         <tbody>
                             <% pagadosExtra.forEach(pagadosExtra => { %>
-                            <tr>
+                            <tr data-id="<%= pagadosExtra.IDLiquida %>">
                                 <td>
                                     $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
@@ -397,7 +401,7 @@
                                         <button type="button" id="Boton_eliminar"
                                             class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
                                             style="background-color: #f6d5d8;" 
-                                            data-target="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDPagosExtras %>">
+                                            data-target="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>">
                                             <span class="icon is-small" style="color: #f83362">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </span>
@@ -407,7 +411,7 @@
                                 <% } %>
                             </tr>
 
-                            <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDPagosExtras %>" class="modal">
+                            <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
@@ -466,7 +470,7 @@
                                                 </p>
                                                 <p class="control">
                                                     <button class="button is-medium is-responsive"
-                                                        onclick="eliminarPagoExtra('<%= pagos.IDPagosExtras %>')"
+                                                        onclick="eliminarPagoExtra('<%= pagadosExtra.IDLiquida %>')"
                                                         style="font-size: large; margin: 8px 2px; background-color: #000000;
                                                                 padding-right: 5px; padding-left: 10px;">
                                                         <span class="icon is-large">
@@ -1218,5 +1222,6 @@
     </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/consultar_alumno.js"></script>
+<script type="text/javascript" src="/js/eliminar_pago.js"></script>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script type="text/javascript" src="/js/boton_regresar.js"></script>
