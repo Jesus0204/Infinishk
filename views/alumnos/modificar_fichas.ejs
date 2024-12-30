@@ -127,13 +127,6 @@
                                         <strong>Pagado:</strong>
                                         $<%- ficha1.montoPagado.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
-                                        <strong>Pendiente:</strong>
-                                        <% if ((ficha1.montoAPagar - ficha1.montoPagado) < 0) { %>
-                                            $0.00
-                                        <% } else { %>
-                                            $<%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                        <% } %>
-                                        <br>
                                         <strong>Recargos:</strong>
                                         $<%- ficha1.montoRecargos.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
@@ -271,13 +264,6 @@
                                         <% } %>
                                         <strong>Pagado:</strong>
                                         $<%- ficha2.montoPagado.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                        <br>
-                                        <strong>Pendiente:</strong>
-                                        <% if ((ficha1.montoAPagar - ficha1.montoPagado) < 0) { %>
-                                            $0.00
-                                        <% } else { %>
-                                            $<%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                        <% } %>
                                         <br>
                                         <strong>Recargos:</strong>
                                         $<%- ficha2.montoRecargos.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
