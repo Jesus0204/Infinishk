@@ -886,7 +886,7 @@ exports.get_materias = async (request, response, next) => {
             } = course;
 
             const semestre = course.plans_courses?.[0]?.semester;
-            const carrera = course.plans?.[0]?.degree?.name;
+            const carrera = course.plans?.[0]?.degree?.name + " " + course.plans?.[0]?.version;
             return {
                 id: id,
                 name: name,

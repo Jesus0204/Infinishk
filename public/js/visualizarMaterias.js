@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const semestresData = JSON.parse(document.getElementById('semestresData').innerText);
-    const pageSize = 5; // Número de materias por página
+    const pageSize = 10; // Número de materias por página
 
     semestresData.forEach(semestre => {
         let currentPage = 1;
