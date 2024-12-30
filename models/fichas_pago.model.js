@@ -19,7 +19,7 @@ module.exports = class Fichas {
     }
 
     static async update(deuda, descuento, fechaLimitePago, notaModificacion, modificador, id) {
-        const [rows, fields] = await db.execute(`CALL updateFicha(?, ?,?,?,?,?)`, [deuda, descuento, fechaLimitePago, notaModificacion, modificador, id]);
+        const [rows, fields] = await db.execute(`CALL updateFicha(?,?,?,?,?,?)`, [deuda, descuento, fechaLimitePago, notaModificacion, modificador, id]);
         return rows;
     }
     

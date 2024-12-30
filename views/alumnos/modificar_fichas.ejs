@@ -100,12 +100,11 @@
                                         <input type="hidden" name="alumno" id="alumno"
                                             value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
-            
                                         <!-- DEUDA TOTAL -->
                                         <strong>Total: </strong>
                                         <% if (ficha1.Pagado != 1) { %>
                                             <input id="deuda<%=display1%>" name="deuda" class="input is-medium"
-                                            type="number" step="any" value="<%= (ficha1.montoAPagar - ficha1.montoPagado).toFixed(2) %>"
+                                            type="number" step="any" value="<%= (ficha1.montoAPagar).toFixed(2) %>"
                                             placeholder="Valor de la deuda">
                                         <p id="ayuda_deuda_exponente<%=display1%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-exponente"
@@ -121,13 +120,10 @@
                                             Por favor escribe una deuda total mayor a 0.</p>
                                         <br>
                                         <% } else { %>
-                                            $<%= (ficha1.montoAPagar - ficha1.montoPagado).toLocaleString('mx', 
+                                            $<%= (ficha1.montoAPagar).toLocaleString('mx', 
                                                 { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
-                                        <br>
                                         <% } %>
-                                        <br>
-                                        
                                         <strong>Pagado:</strong>
                                         $<%- ficha1.montoPagado.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
@@ -246,7 +242,7 @@
                                         <strong>Total: </strong>
                                         <% if (ficha2.Pagado != 1) { %>
                                             <input id="deuda<%=display2%>" name="deuda" class="input is-medium"
-                                            type="number" step="any" value="<%= (ficha2.montoAPagar - ficha2.montoPagado).toFixed(2) %>"
+                                            type="number" step="any" value="<%= (ficha2.montoAPagar).toFixed(2) %>"
                                             placeholder="Valor de la deuda">
                                         <p id="ayuda_deuda_exponente<%=display2%>"
                                             class="help is-hidden has-text-danger-dark ayuda-deuda-exponente"
@@ -262,13 +258,10 @@
                                             Por favor escribe una deuda total mayor a 0.</p>
                                         <br>
                                         <% } else { %>
-                                            $<%= (ficha2.montoAPagar - ficha2.montoPagado).toLocaleString('mx', 
+                                            $<%= (ficha2.montoAPagar).toLocaleString('mx', 
                                                 { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
-                                        <br>
                                         <% } %>
-                                        <br>
-
                                         <strong>Pagado:</strong>
                                         $<%- ficha2.montoPagado.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                         <br>
