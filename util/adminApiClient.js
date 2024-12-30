@@ -6,7 +6,7 @@ dotenv.config()
 const cache = new NodeCache()
 
 const axiosAdminClient = axios.create({
-  baseURL: process.env.ADMIN_API_URL,
+  baseURL: process.env.ADMIN_API_URL.replace(/\/$/, ''), // Elimina la barra final si existe
 });
 
 async function getToken() {
