@@ -133,7 +133,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT IDDeuda, montoAPagar, fechaLimitePago
         FROM Deuda AS D, Colegiatura AS C, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
-        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0 AND D.fechaLimitePago < ?`,
+        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.montoRecargos = 0 AND D.fechaLimitePago < ?`,
             [fecha_actual]);
     };
 
