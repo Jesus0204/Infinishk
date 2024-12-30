@@ -20,6 +20,7 @@ const stream = require('stream');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
+const PagoExtra = require('../models/pago_extra.model');
 moment.locale('es-mx');
 
 exports.get_registrar_pago_manual = (request, response, next) => {
@@ -603,9 +604,55 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const pago = request.body.pago;
+    const monto_custom = parseFloat(request.body['monto-custom']);
 
     Liquida.fetchID_Pendientes(matricula)
         .then(async ([pendientes, fieldData]) => {
+            // Si se escoge 'Otro'
+            if (pago == 'custom'){
+                try {
+                    // Crear categoría de Pago Extra con datos manuales
+                    const pago_extra = new Pago_Extra(request.body['motivo-custom'], monto_custom);
+                    await pago_extra.save();
+                
+                    // Obtener el ID de la nueva categoría de Pago Extra
+                    const [rows] = await Pago_Extra.fetchID(monto_custom);
+                    const pagoID = rows[0]?.IDPagosExtras;
+                
+                    if (!pagoID) {
+                        throw new Error('No se pudo obtener el ID del Pago Extra.');
+                    }
+                
+                    console.log('Pago ID:', pagoID);
+                
+                    // Crear solicitud pagada de la nueva categoría de Pago Extra
+                    await Liquida.save_pago_manual(matricula, pagoID, fecha, metodo, nota)
+                        .then(async ([rows, fieldData]) => {
+                            // Definir la matrícula que use la función post_fetch_datos
+                            request.body.buscar = matricula;
+                
+                            // Llamar la función para hacer el render
+                            await post_fetch_datos(request, response, next);
+                        })
+                        .catch((error) => {
+                            console.error('Error while saving manual payment:', error);
+                            response.status(500).render('500', {
+                                username: request.session.username || '',
+                                permisos: request.session.permisos || [],
+                                rol: request.session.rol || "",
+                                error_alumno: false,
+                            });
+                        });
+                } catch (error) {
+                    console.error('Error in processing pago extra:', error);
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        error_alumno: false,
+                    });
+                }
+            }
             // Si no hay una solicitud de pago se guarda dicho pago
             if (pendientes.length == 0) {
                 Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
