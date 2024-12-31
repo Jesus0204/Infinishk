@@ -101,7 +101,8 @@
                         <p class="has-text-grey has-text-weight-medium">CRÉDITO ACTUAL</p>
                         <p class="has-text-black has-text-weight-bold is-size-5">
                             <span class="has-text-weight-bold">
-                                $<%= creditoAlumno %>
+                                $<%= creditoAlumno.toLocaleString('mx', { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 }) %>
                             </span>
                             <span class="has-text-weight-light is-size-7">
                                 MXN
