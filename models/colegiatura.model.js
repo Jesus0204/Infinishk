@@ -43,4 +43,8 @@ module.exports = class Colegiatura {
         WHERE P.fechaPago BETWEEN ? AND ? ORDER BY D.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
+    static fetchCreditoColegiatura(IDColegiatura) {
+        return db.execute(`SELECT creditoColegiatura FROM Colegiatura WHERE IDColegiatura = ?`, [IDColegiatura]);
+    }
+
 };

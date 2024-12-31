@@ -711,33 +711,33 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
             const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula, fechaActual);
 
-        // Formatear fechas
-        for (let count = 0; count < pagosDiplomado.length; count++) {
-            pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
-        }
+            // Formatear fechas
+            for (let count = 0; count < pagosDiplomado.length; count++) {
+                pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
+            }
 
-        response.render('estadocuenta/estado_cuenta', {
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            csrfToken: request.csrfToken(),
-            pagosExtra: cargosExtra,
-            periodo: periodo[0][0],
-            pagadosExtra: pagosExtra,
-            fechaActual: now,
-            matricula: matricula,
-            diplomados: diplomadoCursando,
-            rol: request.session.rol || "",
-            pagosDiplomado: pagosDiplomado,
-            
-        });
+            response.render('estadocuenta/estado_cuenta', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                csrfToken: request.csrfToken(),
+                pagosExtra: cargosExtra,
+                periodo: periodo[0][0],
+                pagadosExtra: pagosExtra,
+                fechaActual: now,
+                matricula: matricula,
+                diplomados: diplomadoCursando,
+                rol: request.session.rol || "",
+                pagosDiplomado: pagosDiplomado,
+                
+            });
 
         }
 

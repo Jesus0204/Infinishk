@@ -101,7 +101,7 @@
                                             value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha1.IDDeuda %>">
                                         <!-- DEUDA TOTAL -->
-                                        <strong>Total: </strong>
+                                        <strong>Colegiatura: </strong>
                                         <% if (ficha1.Pagado != 1) { %>
                                             <input id="deuda<%=display1%>" name="deuda" class="input is-medium"
                                             type="number" step="any" value="<%= (ficha1.montoAPagar).toFixed(2) %>"
@@ -239,7 +239,7 @@
                                             value="<%= alumno[0].Matricula %>">
                                         <input type="hidden" name="id" value="<%= ficha2.IDDeuda %>">
                                         <!-- DEUDA TOTAL -->
-                                        <strong>Total: </strong>
+                                        <strong>Colegiatura: </strong>
                                         <% if (ficha2.Pagado != 1) { %>
                                             <input id="deuda<%=display2%>" name="deuda" class="input is-medium"
                                             type="number" step="any" value="<%= (ficha2.montoAPagar).toFixed(2) %>"
