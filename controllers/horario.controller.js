@@ -163,10 +163,11 @@ exports.get_propuesta_horario = async (request, response, next) => {
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(request.session.username)
             const precio = await Grupo.fetchPrecioTotal(request.session.username)
-            let precioTotal = precio[0][0].Preciototal
+            let precioTotal = precio[0][0].Preciototal;
 
-            const credito = await Alumno.fetchCredito(request.session.username);
-            const valorCredito = credito[0][0]['CAST(credito AS CHAR(20))'];
+            const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
+
+            const credito = colegiaturaActual[0].creditoColegiatura
 
             const beca = await EstudianteProfesional.fetchBeca(request.session.username);
             const porcenBeca = beca[0][0].porcBeca;
@@ -185,7 +186,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 porcBeca: porcenBeca,
-                credito: Number(valorCredito),
+                credito: Number(credito),
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",

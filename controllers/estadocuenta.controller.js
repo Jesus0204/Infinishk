@@ -1,4 +1,5 @@
 const Periodo = require('../models/periodo.model');
+const Grupo = require('../models/grupo.model');
 const Colegiatura = require('../models/colegiatura.model');
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
@@ -679,6 +680,15 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagos] = await Pago.fetchOne(matricula);
             const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username);
             const [deuda] = await Deuda.fetchDeudaEstado(matricula);
+
+            const beca = await EstudianteProfesional.fetchBeca(matricula);
+            const porcenBeca = beca[0][0].porcBeca;
+
+            const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
+            const credito = colegiaturaActual[0].creditoColegiatura;
+
+            const precio = await Grupo.fetchPrecioTotal(matricula);
+            const precioTotal = (precio[0][0].Preciototal);
             
             // Formatear fechas
             for (let count = 0; count < deuda.length; count++){
@@ -697,6 +707,9 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 pagos: pagos,
                 periodo: periodo[0][0],
                 deuda: deuda,
+                porcBeca: porcenBeca,
+                credito: Number(credito),
+                precioTotal: precioTotal,
                 fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
