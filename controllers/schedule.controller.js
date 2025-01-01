@@ -279,7 +279,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                 
                 for (let curso of cursos) {
                     // Verificar en la base de datos si el curso ya existe
-                    const existeCurso = await Grupo.checkGrupoExistente(curso.idGrupo, periodoActivo);
+                    const existeCurso = await Grupo.checkGrupoExistente(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
                 
                     if (existeCurso) {
                         console.log(`El curso con ID ${curso.idGrupo} ya existe en la base de datos.`);

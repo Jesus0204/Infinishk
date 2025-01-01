@@ -29,10 +29,10 @@ module.exports = class Alumno {
         return schedule;
     }
 
-    static async checkGrupoExistente(idGrupo, periodo) {
+    static async checkGrupoExistente(matricula,idGrupo, periodo) {
         const [result] = await db.execute(
-            `SELECT COUNT(*) AS count FROM Grupo WHERE IDGrupoExterno = ? AND Periodo = ?`,
-            [idGrupo, periodo]
+            `SELECT COUNT(*) AS count FROM Grupo WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
+            [matricula,idGrupo, periodo]
         );
         return result[0].count > 0;
     }
