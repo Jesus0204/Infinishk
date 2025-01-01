@@ -278,7 +278,15 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                 });
                 
                 for (let curso of cursos) {
-                    // Agarrar el horario y formatearlo para la base
+                    // Verificar en la base de datos si el curso ya existe
+                    const existeCurso = await Grupo.checkGrupoExistente(curso.idGrupo, periodoActivo);
+                
+                    if (existeCurso) {
+                        console.log(`El curso con ID ${curso.idGrupo} ya existe en la base de datos.`);
+                        continue; // Saltar este curso
+                    }
+                
+                    // Formatear el horario para la base
                     const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
                     let claseFormato = '';
                     for (let countClase = 0; countClase < grupoHorarioValidado.length; countClase++) {
@@ -288,6 +296,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                             claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino + ', ';
                         }
                     }
+                
                     // Guardar el grupo en la base de datos
                     await Grupo.saveGrupo(
                         alumnosNoConfirmados[count].Matricula,
@@ -302,14 +311,13 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         periodoActivo
                     );
                 }
-    
+                    
                 // Acciones adicionales después de manejar cada grupo
                 await Colegiatura.createColegiaturasFichas(plan6PagosID, alumnosNoConfirmados[count].Matricula, precioActual);
                 await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula);
             }
 
         } catch(error) {
-            console.log(error);
             alumnos_fallo.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
         }
     }

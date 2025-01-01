@@ -28,7 +28,14 @@ module.exports = class Alumno {
 
         return schedule;
     }
-    
+
+    static async checkGrupoExistente(idGrupo, periodo) {
+        const [result] = await db.execute(
+            `SELECT COUNT(*) AS count FROM Grupo WHERE IDGrupoExterno = ? AND Periodo = ?`,
+            [idGrupo, periodo]
+        );
+        return result[0].count > 0;
+    }
 
     static async fetchPrecioTotal(matricula){
         const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
