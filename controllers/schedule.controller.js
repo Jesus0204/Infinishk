@@ -298,7 +298,8 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         claseFormato,
                         curso.startDateFormat,
                         curso.endDateFormat,
-                        curso.idGrupo
+                        curso.idGrupo,
+                        periodoActivo
                     );
                 }
     

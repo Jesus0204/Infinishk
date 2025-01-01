@@ -359,7 +359,8 @@ exports.post_fetch_datos = async (request, response, next) => {
             });
         }
         else if (confirmacion === 1) {
-            const schedule = await Grupo.fetchSchedule(matricula)
+            const schedule = await Grupo.fetchSchedule(matricula,periodo[0][0].IDPeriodo)
+            console.log(schedule)
             const precio = await Grupo.fetchPrecioTotal(matricula)
             const creditoAlumno = await Alumno.fetchCreditoINT(matricula)
             const precioTotal = (precio[0][0].Preciototal);
