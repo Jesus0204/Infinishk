@@ -161,7 +161,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
         }
 
         else if (confirmacion === 1) {
-            const schedule = await Grupo.fetchSchedule(request.session.username)
+            const schedule = await Grupo.fetchSchedule(request.session.username, periodo[0][0].IDPeriodo)
             const precio = await Grupo.fetchPrecioTotal(request.session.username)
             let precioTotal = precio[0][0].Preciototal;
 
@@ -217,6 +217,8 @@ const ensureArray = (value) => {
 };
 
 exports.post_confirmar_horario = async (request, response, next) => {
+    const [periodo, fieldData] = await Periodo.fetchActivo();
+    const periodoActivo = periodo[0].IDPeriodo;
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
 
@@ -261,6 +263,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 fechaInicioCurso,
                 fechaFinCurso,
                 IDGrupo,
+                periodoActivo
             );
         }
 

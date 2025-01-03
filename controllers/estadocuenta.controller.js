@@ -685,7 +685,13 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const porcenBeca = beca[0][0].porcBeca;
 
             const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
-            const credito = colegiaturaActual[0].creditoColegiatura;
+            
+            let credito;
+            if (colegiaturaActual.length != 0) {
+                credito = colegiaturaActual[0].creditoColegiatura;
+            } else {
+                credito = 0;
+            }
 
             const precio = await Grupo.fetchPrecioTotal(matricula);
             const precioTotal = (precio[0][0].Preciototal);
