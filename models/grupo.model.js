@@ -14,7 +14,7 @@ module.exports = class Alumno {
         this.fechaTermino = mi_fechaTermino;
     }
 
-    static async fetchSchedule(matricula,periodo) {
+    static async fetchSchedule(matricula, periodo) {
         const schedule = await db.execute(`SELECT M.Nombre, G.Periodo, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
                 G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
                 (P.precioPesos * M.Creditos) AS Precio_materia
@@ -24,7 +24,7 @@ module.exports = class Alumno {
                 JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
                 WHERE G.IDPrecioCredito = P.IDPrecioCredito
                 AND G.Matricula = ?
-                AND G.Periodo = ?`, [matricula,periodo]);
+                AND G.Periodo = ?`, [matricula, periodo]);
 
         return schedule;
     }
@@ -32,18 +32,19 @@ module.exports = class Alumno {
     static async checkGrupoExistente(matricula,idGrupo, periodo) {
         const [result] = await db.execute(
             `SELECT COUNT(*) AS count FROM Grupo WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
-            [matricula,idGrupo, periodo]
+            [matricula, idGrupo, periodo]
         );
         return result[0].count > 0;
     }
 
-    static async fetchPrecioTotal(matricula){
+    static async fetchPrecioTotal(matricula, periodo){
         const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
         JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE G.IDPrecioCredito = P.IDPrecioCredito
-        AND G.Matricula = ?`, [matricula]);
+        AND G.Matricula = ?
+        AND G.Periodo = ?`, [matricula, periodo]);
         return PrecioTotal;
     }
 

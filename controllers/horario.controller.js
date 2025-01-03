@@ -162,7 +162,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
 
         else if (confirmacion === 1) {
             const schedule = await Grupo.fetchSchedule(request.session.username, periodo[0][0].IDPeriodo)
-            const precio = await Grupo.fetchPrecioTotal(request.session.username)
+            const precio = await Grupo.fetchPrecioTotal(request.session.username, periodo[0][0].IDPeriodo)
             let precioTotal = precio[0][0].Preciototal;
 
             const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);

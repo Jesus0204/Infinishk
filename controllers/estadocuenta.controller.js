@@ -693,7 +693,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 credito = 0;
             }
 
-            const precio = await Grupo.fetchPrecioTotal(matricula);
+            const precio = await Grupo.fetchPrecioTotal(matricula, periodo[0][0].IDPeriodo);
             const precioTotal = (precio[0][0].Preciototal);
             
             // Formatear fechas
