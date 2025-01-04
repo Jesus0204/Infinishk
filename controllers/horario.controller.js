@@ -221,7 +221,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
     const periodoActivo = periodo[0].IDPeriodo;
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
-
+    const matricula = request.session.username
     const idMateria = ensureArray(request.body['idMateria[]']);
     const nombreProfesorCompleto = ensureArray(request.body['nombreProfesorCompleto[]']);
     const salon = ensureArray(request.body['salon[]']);
@@ -235,6 +235,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
     try {
         // Iterar sobre los cursos confirmados
         for (let i = 0; i < idMateria.length; i++) {
+
             const profesor = nombreProfesorCompleto[i];
             const salonCurso = salon[i];
             let horarioCurso = grupoHorarioValidado[i];
@@ -250,6 +251,12 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 } else {
                     horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino + ', ';
                 }
+            }
+
+            const existeCurso = await Grupo.checkGrupoExistente(matricula,IDGrupo, periodoActivo);
+                
+            if (existeCurso) {
+                continue; // Saltar este curso
             }
 
             // Guardar el grupo en la base de datos
