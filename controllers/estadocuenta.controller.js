@@ -229,15 +229,15 @@ exports.post_respuesta_pago = async (request, response, next) => {
         console.log(test, monto, correo)
     
         if (test === 0) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
         }
     
         if (test === 1) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
         }
     
         if (test === 2) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago`);
         }
     } catch(error) {
         console.log(error);

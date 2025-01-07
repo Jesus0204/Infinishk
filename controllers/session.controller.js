@@ -174,7 +174,7 @@ exports.post_reset_password = async (request, response, next) => {
         const token = jwt.sign({ matricula: user }, secretKey, { expiresIn: '1h' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://ivd-pagos-qa-8342d177dcc9.herokuapp.com/auth/set_password?token=${token}`;
+        const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
