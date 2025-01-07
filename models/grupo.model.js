@@ -16,15 +16,16 @@ module.exports = class Alumno {
 
     static async fetchSchedule(matricula, periodo) {
         const schedule = await db.execute(`SELECT M.Nombre, G.Periodo, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
-                G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
+                G.fechaInicio, G.fechaTermino, C.horarioConfirmado, M.Creditos,
                 (P.precioPesos * M.Creditos) AS Precio_materia
                 FROM Grupo AS G
                 JOIN Materia AS M ON G.IDMateria = M.IDMateria
                 JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
-                JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
+                JOIN Confirma AS C ON G.Matricula = C.Matricula
                 WHERE G.IDPrecioCredito = P.IDPrecioCredito
                 AND G.Matricula = ?
-                AND G.Periodo = ?`, [matricula, periodo]);
+                AND G.Periodo = ?
+                AND C.IDPeriodo = ?`, [matricula, periodo, periodo]);
 
         return schedule;
     }
