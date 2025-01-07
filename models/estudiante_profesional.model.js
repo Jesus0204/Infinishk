@@ -14,7 +14,7 @@ module.exports = class estudianteProfesional {
     }
 
     static save_alumno_profesional(matricula, semestre, plan, beca){
-        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`, `horarioConfirmado`) VALUES (?,?,?,?, 0)',[matricula,semestre,beca,plan])
+        return db.execute('INSERT INTO `estudianteProfesional`(`Matricula`, `semestreActual`, `porcBeca`, `planEstudio`) VALUES (?,?,?,?)',[matricula,semestre,beca,plan])
     }
 
     static fetchBeca(matricula){
@@ -43,16 +43,20 @@ module.exports = class estudianteProfesional {
         }
     }
 
-    static fetchHorarioConfirmado(matricula) {
-        return db.execute(`SELECT horarioConfirmado FROM estudianteProfesional WHERE Matricula = ?`, [matricula]);
+    static fetchHorarioConfirmado(matricula, IDPeriodo) {
+        return db.execute(`SELECT horarioConfirmado FROM Confirma WHERE Matricula = ? AND IDPeriodo = ?`, [matricula, IDPeriodo]);
     }
 
     static fetchAlumnosNoConfirmados() {
-        return db.execute(`SELECT E.Matricula, A.Nombre, A.Apellidos FROM estudianteProfesional AS E, Alumno AS A WHERE E.Matricula = A.Matricula AND horarioConfirmado = 0`);
+        return db.execute(`SELECT C.Matricula, A.Nombre, A.Apellidos FROM Confirma AS C, Alumno AS A WHERE C.Matricula = A.Matricula AND C.horarioConfirmado = 0`);
     }
 
-     static updateHorarioAccepted(matricula) {
-         return db.execute(`UPDATE estudianteProfesional SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
+     static updateHorarioAccepted(matricula, IDPeriodo) {
+        return db.execute(`UPDATE Confirma SET horarioConfirmado = 1 WHERE Matricula = ? AND IDPeriodo = ?`, [matricula, IDPeriodo]);
      }
+
+    static async crearNuevasConfirmaciones(IDPeriodo){
+        db.execute(`CALL confirmacion_nuevo_ciclo(?)`, [IDPeriodo])
+    }
     
 }
