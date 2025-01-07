@@ -640,6 +640,10 @@
                 <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                     <div id="historial" class="is-hidden">
                          <% if (pagos.length != 0) { %>
+                            <div id="eliminacionCol" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -655,7 +659,7 @@
                                 </thead>
                                 <tbody>
                                     <% pagos.forEach(pagos => { %>
-                                            <tr>
+                                            <tr data-id="<%= pagos.IDPago %>">
                                                 <td>
                                                     $<%= pagos.montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,

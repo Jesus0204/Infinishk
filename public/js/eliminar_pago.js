@@ -26,7 +26,7 @@ function eliminarPagoExtra(IDLiquida)
             if (data.success) {
                 // Encontrar fila 
                 const rowId = `${IDLiquida}`; // Encontrar fila de pago eliminado
-                const tableRow = document.getElementById(rowId);
+                const tableRow = document.querySelector(`[data-id='${IDLiquida}']`);
 
                 if (tableRow) {
                     tableRow.remove();
@@ -54,6 +54,60 @@ function eliminarPagoExtra(IDLiquida)
 }
 
 // Eliminar Colegiatura
+function eliminarPagoCol(IDPago) {   
+    // Obtener token de protección CSRF
+    const csrf = document.getElementById('_csrf').value;
+
+    // Enviar los datos al servidor
+    fetch('/alumnos/datos_alumno/eliminar_pago_col', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'csrf-token': csrf
+        },
+        body: JSON.stringify({
+            IDPago: IDPago,
+        })
+    })
+    .then((response) => {
+        if (!response.ok) {
+            console.error('Error en la respuesta del servidor');
+            throw new Error('Error en la respuesta del servidor');
+        }
+
+        return response.json();
+    })
+    .then((data) => {
+        console.log('Server response:', data);
+        if (data.success) {
+            // Verificar si la fila está en el DOM antes de intentar removerla
+            const rowId = `${IDPago}`;
+            const tableRow = document.querySelector(`[data-id='${IDPago}']`);
+
+            if (tableRow) {
+                console.log(`Removing row with ID: ${rowId}`);
+                tableRow.remove();
+            } else {
+                console.error(`No se encontró la fila con el id ${rowId}. Verifique si el ID es correcto.`);
+            }
+
+            // Mostrar la notificación de eliminación
+            const notification = document.getElementById('eliminacionCol');
+            if (notification) {
+                notification.classList.remove('is-hidden');
+            }
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // Recargar página
+        } else {
+            console.error('Error en el servidor:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la petición fetch:', error);
+    });
+}
 
 
 // Eliminar Diplomado
