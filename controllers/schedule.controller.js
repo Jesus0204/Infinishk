@@ -304,7 +304,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
     
                 // Acciones adicionales después de manejar cada grupo
                 await Colegiatura.createColegiaturasFichas(plan6PagosID, alumnosNoConfirmados[count].Matricula, precioActual);
-                await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula);
+                await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula, periodoActivo);
             }
 
         } catch(error) {

@@ -16,12 +16,13 @@ moment.locale('es-mx');
 
 exports.get_propuesta_horario = async (request, response, next) => {
     try {
-        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username);
+        const periodo = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodo[0][0].IDPeriodo;
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username, IDPeriodoActivo);
         const planes = await PlanPago.fetchAllActivePlans();
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
         var periodoExistente = 1;
-        const periodo = await Periodo.fetchActivo();
 
         if (confirmacion === 0) {
             const matricula = request.session.username;
@@ -268,10 +269,12 @@ exports.post_confirmar_horario = async (request, response, next) => {
             await destroyGroup(request.session.username, IDGrupoEliminado)
         }
 
+        const [periodoActivo, fieldData] = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodoActivo[0].IDPeriodo;
 
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-        await EstudianteProfesional.updateHorarioAccepted(request.session.username);
+        await EstudianteProfesional.updateHorarioAccepted(request.session.username, IDPeriodoActivo);
 
         response.redirect('/horario/consultaHorario');
     } catch (error) {

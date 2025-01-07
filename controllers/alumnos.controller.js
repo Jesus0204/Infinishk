@@ -315,7 +315,7 @@ exports.post_fetch_datos = async (request, response, next) => {
         let alumnoDiplomadoActualConsulta = "";
         if (matricula.startsWith('1')) {
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
-            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
+            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo)
             confirmacion = conf[0][0].horarioConfirmado;
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
