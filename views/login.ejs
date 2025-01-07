@@ -108,6 +108,21 @@
                   <strong> <%= error %></strong>
               </div>
               <% } %>
+
+              <% if (correo === true) { %>
+                <div id="correo_notificacion" class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    <button type="button" class="delete"></button>
+                    ¡Correo enviado! 
+                </div>
+               <% } %>
+            
+              <% if (contrasenia === true) { %>
+                <div id="contrasenia_notificacion" class="notification" style="background-color: #5a6581; color:#ffffff;">
+                    <button type="button" class="delete"></button>
+                    ¡Contraseña cambiada! 
+                </div>
+              <% } %>
+            
             
               <!-- Campo Matrícula -->
               <div class="field">

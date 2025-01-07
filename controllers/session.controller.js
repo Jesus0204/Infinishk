@@ -20,6 +20,8 @@ exports.get_login = (request, response, next) => {
         username: request.session.username || '',
         registrar: false,
         error: error,
+        correo: false,
+        contrasenia: false,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
@@ -154,7 +156,7 @@ exports.post_reset_password = async (request, response, next) => {
         const token = jwt.sign({ matricula: user }, secretKey, { expiresIn: '1h' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `https://ivd-pagos-qa-8342d177dcc9.herokuapp.com/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -169,7 +171,16 @@ exports.post_reset_password = async (request, response, next) => {
         try {
             await sgMail.send(msg);
             console.log('Correo electrónico enviado correctamente');
-            response.redirect('/auth/login');
+            response.render('login', {
+                username: request.session.username || '',
+                registrar: false,
+                error: error,
+                correo: true,
+                contrasenia: false,
+                csrfToken: request.csrfToken(),
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error.toString());
             response.redirect('/auth/login');
