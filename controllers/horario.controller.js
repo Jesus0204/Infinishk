@@ -254,7 +254,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 }
             }
 
-            const existeCurso = await Grupo.checkGrupoExistente(matricula,IDGrupo, periodoActivo);
+            const existeCurso = await Grupo.checkGrupoExistente(matricula, IDGrupo, periodoActivo);
                 
             if (existeCurso) {
                 continue; // Saltar este curso
@@ -280,12 +280,9 @@ exports.post_confirmar_horario = async (request, response, next) => {
             await destroyGroup(request.session.username, IDGrupoEliminado)
         }
 
-        const [periodoActivo, fieldData] = await Periodo.fetchActivo();
-        const IDPeriodoActivo = periodoActivo[0].IDPeriodo;
-
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-        await EstudianteProfesional.updateHorarioAccepted(request.session.username, IDPeriodoActivo);
+        await EstudianteProfesional.updateHorarioAccepted(request.session.username, periodoActivo);
 
         response.redirect('/horario/consultaHorario');
     } catch (error) {
