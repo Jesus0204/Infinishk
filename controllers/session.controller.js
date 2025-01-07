@@ -126,10 +126,28 @@ exports.post_set_password = async (request, response, next) => {
                 const matricula = decoded.matricula; // Obtener la matrícula del token decodificado
                 const new_user = new Usuario(matricula, newPassword);
                 await new_user.updateContra();
-                response.redirect('/auth/login'); // Redirigir al inicio de sesión después de actualizar la contraseña
+                response.render('login', {
+                    username: request.session.username || '',
+                    registrar: false,
+                    error: null,
+                    correo: false,
+                    contrasenia: true,
+                    csrfToken: request.csrfToken(),
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                });
             } catch (error) {
                 console.error('Error al actualizar la contraseña:', error);
-                response.redirect('/auth/login'); // Redirigir a la página de configuración de contraseña en caso de error
+                response.render('login', {
+                    username: request.session.username || '',
+                    registrar: false,
+                    error: error,
+                    correo: false,
+                    contrasenia: false,
+                    csrfToken: request.csrfToken(),
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                });
             }
         }
     });
@@ -147,9 +165,9 @@ exports.get_reset_password = (request,response,next) => {
 exports.post_reset_password = async (request, response, next) => {
     const matricula = request.body.username;
     const correoElectronico = await Usuario.fetchCorreo(matricula);
-    const correo = correoElectronico[0][0].correoElectronico;
-
+    
     if (correoElectronico && correoElectronico[0] && correoElectronico[0][0] && typeof correoElectronico[0][0].correoElectronico !== 'undefined') {
+        const correo = correoElectronico[0][0].correoElectronico;
         const user = request.body.username;
 
         // Generar token JWT con la matrícula del usuario
@@ -174,7 +192,7 @@ exports.post_reset_password = async (request, response, next) => {
             response.render('login', {
                 username: request.session.username || '',
                 registrar: false,
-                error: error,
+                error: null,
                 correo: true,
                 contrasenia: false,
                 csrfToken: request.csrfToken(),
@@ -183,9 +201,27 @@ exports.post_reset_password = async (request, response, next) => {
             });
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error.toString());
-            response.redirect('/auth/login');
+            response.render('login', {
+                username: request.session.username || '',
+                registrar: false,
+                error: error,
+                correo: false,
+                contrasenia: false,
+                csrfToken: request.csrfToken(),
+                permisos: request.session.permisos || [],
+                rol: request.session.rol || "",
+            });
         }
     } else {
-        response.redirect('/auth/login');
+        response.render('login', {
+            username: request.session.username || '',
+            registrar: false,
+            error: "Datos no validos",
+            correo: false,
+            contrasenia: false,
+            csrfToken: request.csrfToken(),
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+        });
     }
 }
