@@ -47,9 +47,5 @@ module.exports = class Pago {
             `CALL insertar_Pago(?, ?, ?, ?, 'Tarjeta', ?);`, 
                 [id,motivo, monto, nota,fecha]);
     }
-
-    static delete_col(id, usuario){
-        return db.execute(`CALL eliminar_pago_col(?, ?);`, [id, usuario]);
-    }
     
 }

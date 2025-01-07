@@ -54,19 +54,21 @@ function eliminarPagoExtra(IDLiquida)
 }
 
 // Eliminar Colegiatura
-function eliminarPagoCol(IDPago) {   
+
+// Eliminar Diplomado
+function eliminarPagoDip(IDPagaDiplomado) {   
     // Obtener token de protección CSRF
     const csrf = document.getElementById('_csrf').value;
 
     // Enviar los datos al servidor
-    fetch('/alumnos/datos_alumno/eliminar_pago_col', {
+    fetch('/alumnos/datos_alumno/eliminar_pago_dip', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'csrf-token': csrf
         },
         body: JSON.stringify({
-            IDPago: IDPago,
+            IDPagaDiplomado: IDPagaDiplomado,
         })
     })
     .then((response) => {
@@ -81,8 +83,8 @@ function eliminarPagoCol(IDPago) {
         console.log('Server response:', data);
         if (data.success) {
             // Verificar si la fila está en el DOM antes de intentar removerla
-            const rowId = `${IDPago}`;
-            const tableRow = document.querySelector(`[data-id='${IDPago}']`);
+            const rowId = `${IDPagaDiplomado}`;
+            const tableRow = document.querySelector(`[data-id='${IDPagaDiplomado}']`);
 
             if (tableRow) {
                 console.log(`Removing row with ID: ${rowId}`);
@@ -108,6 +110,3 @@ function eliminarPagoCol(IDPago) {
         console.error('Error en la petición fetch:', error);
     });
 }
-
-
-// Eliminar Diplomado

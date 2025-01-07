@@ -30,7 +30,7 @@ router.post('/fichas/modify', isAuth, can_ModificarDeuda, alumnosController.post
 
 // Eliminar Pagos
 router.post('/datos_alumno/eliminar_pago_extra', isAuth, alumnosController.post_eliminar_pago_extra);
-router.post('/datos_alumno/eliminar_pago_col', isAuth, alumnosController.post_eliminar_pago_col);
-/*router.post('/datos_alumno/eliminar_pago_dip', isAuth, alumnosController.post_eliminar_pago_dip);*/
+/*router.post('/datos_alumno/eliminar_pago_col', isAuth, alumnosController.post_eliminar_pago_col);*/
+router.post('/datos_alumno/eliminar_pago_dip', isAuth, alumnosController.post_eliminar_pago_dip);
 
 module.exports = router;

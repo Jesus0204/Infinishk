@@ -497,6 +497,10 @@
                 <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
                     <div id="pagosdipl">
                         <% if (pagosDiplomado.length != 0) { %>
+                            <div id="eliminacionPE" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>

@@ -277,23 +277,19 @@ exports.post_eliminar_pago_extra = async (request, response, next) => {
 }
 
 // Colegiatura
-exports.post_eliminar_pago_col = async (request, response, next) => {
-    const id = request.body.IDPago;
-    const usuario = request.session.username;
+
+// Diplomado
+exports.post_eliminar_pago_dip = async (request, response, next) => {
+    const id = request.body.IDPagaDiplomado;
     
     try {
-        await Pago.delete_col(id, usuario);
+        await PagaDiplomado.delete(id);
 
         response.status(200).json({ success: true });
     } catch (error) {
-        response.status(500).json({ success: false, message: 'Error borrando pago de colegiatura' });
+        response.status(500).json({ success: false, message: 'Error borrando pago de diplomado' });
     }
 }
-
-// Diplomado
-/*exports.post_eliminar_pago_dip = async (request, response, next) => {
-    try {}
-}*/
 
 exports.post_fetch_datos = async (request, response, next) => {
     try {
