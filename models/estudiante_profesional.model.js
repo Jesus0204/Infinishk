@@ -52,7 +52,11 @@ module.exports = class estudianteProfesional {
     }
 
      static updateHorarioAccepted(matricula) {
-         return db.execute(`UPDATE estudianteProfesional SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
+        return db.execute(`UPDATE estudianteProfesional SET horarioConfirmado = 1 WHERE Matricula = ?`, [matricula]);
      }
+
+    static async crearNuevasConfirmaciones(IDPeriodo){
+        db.execute(`CALL confirmacion_nuevo_ciclo(?)`, [IDPeriodo])
+    }
     
 }
