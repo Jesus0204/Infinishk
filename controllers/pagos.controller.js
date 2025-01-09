@@ -787,15 +787,27 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 if (monto_a_usar <= 0) {
                     break;
                 } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                    // Se guarda el monto de deuda actual 
+                    let montoDeudaActual = deuda.montoAPagar - deuda.montoPagado; 
+                    let recargos = false;
+                    // Si se pagó más del monto total y tiene recargos, se quitan los recargos
                     if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                         if (deuda.Recargos == 1) {
                             Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            // Aquí es donde se cambia el monto
+                            montoDeudaActual = deuda.montoSinRecargos - deuda.montoPagado; 
+                            recargos = true;
                         }
                     }
 
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                    await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                    await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
+                    await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                    await Colegiatura.update_Colegiatura(montoDeudaActual, request.body.IDColegiatura);
+
+                    if (recargos == true) {
+                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+                        continue;
+                    }
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                     // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                     if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
@@ -1083,14 +1095,27 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                         if (monto_a_usar <= 0) {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                            // Se guarda el monto de deuda actual 
+                            let montoDeudaActual = deuda.montoAPagar - deuda.montoPagado; 
+                            let recargos = false;
+                            // Si se pagó más del monto total y tiene recargos, se quitan los recargos
                             if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                 if (deuda.Recargos == 1) {
                                     Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    // Aquí es donde se cambia el monto
+                                    montoDeudaActual = deuda.montoSinRecargos - deuda.montoPagado; 
+                                    recargos = true;
                                 }
                             }
-                            
-                            await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                            await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
+
+                            // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                            await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(montoDeudaActual, idColegiatura);
+
+                            if (recargos == true) {
+                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+                                continue;
+                            }
                             
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
