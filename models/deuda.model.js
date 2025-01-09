@@ -30,7 +30,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar) AS 'montoAPagar',
         ((D.montoAPagar + D.Descuento + D.montoRecargos) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos
+        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos, D.IDColegiatura
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -133,7 +133,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT IDDeuda, montoAPagar, fechaLimitePago
         FROM Deuda AS D, Colegiatura AS C, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura AND C.IDPeriodo = P.IDPeriodo
-        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.Recargos = 0 AND D.fechaLimitePago < ?`,
+        AND P.periodoActivo = '1' AND D.Pagado = 0 AND D.montoRecargos = 0 AND D.fechaLimitePago < ?`,
             [fecha_actual]);
     };
 

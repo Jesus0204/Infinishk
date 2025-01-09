@@ -147,12 +147,18 @@
                         <div class="columns is-mobile" style="margin-top: -2em;">
                             <div class="column is-6">
                                 <p class="has-text-weight-medium has-text-black">
-                                    Porcentaje de Beca
+                                    Beca (<%= porcBeca %>%)
                                 </p>
                             </div>
                             <div class="column is-6">
-                                <p class="has-text-black has-text-weight-medium">
-                                    <%= porcBeca %>%
+                                <p class="has-text-black">
+                                    <span class="has-text-weight-semibold">
+                                        -$<%= ((porcBeca)/100 * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                    </span>
+                                    <span class="has-text-weight-light is-size-7">
+                                        MXN
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -492,12 +498,18 @@
                                 <div class="columns is-mobile" style="margin-top: -2em;">
                                     <div class="column is-6">
                                         <p class="has-text-weight-medium has-text-black">
-                                            Porcentaje de Beca
+                                            Beca (<%= porcBeca %>%)
                                         </p>
                                     </div>
                                     <div class="column is-6">
-                                        <p class="has-text-black has-text-weight-medium">
-                                            <%= porcBeca %>%
+                                        <p class="has-text-black">
+                                            <span class="has-text-weight-semibold">
+                                                -$<%= ((porcBeca)/100 * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                            </span>
+                                            <span class="has-text-weight-light is-size-7">
+                                                MXN
+                                            </span>
                                         </p>
                                     </div>
                                 </div>

@@ -1,4 +1,5 @@
 const Periodo = require('../models/periodo.model');
+const Grupo = require('../models/grupo.model');
 const Colegiatura = require('../models/colegiatura.model');
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
@@ -229,15 +230,15 @@ exports.post_respuesta_pago = async (request, response, next) => {
         console.log(test, monto, correo)
     
         if (test === 0) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago?&success=true&nuAut=0SNBX1&operacion=100000551635&fecha=01%2F05%2F24%209%3A7%3A4&banco=BANCO+MIT&marca=MasterCard&tpTdc=C&nb_merchant=1234567&nbResponse=Aprobado&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
         }
     
         if (test === 1) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago?&success=true&nbResponse=Rechazado&cdResponse=Transaccion+declinada&nb_error=La+transaccion+ya+fue+aprobada+el+30%2F04%2F24%2020%3A42%3A53&sucursal=01SNBXBRNCH&empresa=SANDBOX+WEBPAY&importe=${monto}&referencia=MIFACTURA001&referenciaPayment=MIFACTURA001&nbMoneda=MXN&cdEmpresa=SNBX&urlTokenId=SNDBX001&idLiga=SNDBX001&email=${correo}`);
         }
     
         if (test === 2) {
-            response.redirect(`https://pagos.ivd.edu.mx/pagos/recibir_pago`);
+            response.redirect(`${process.env.ENVIRONMENT_URL}/pagos/recibir_pago`);
         }
     } catch(error) {
         console.log(error);
@@ -679,6 +680,21 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagos] = await Pago.fetchOne(matricula);
             const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username);
             const [deuda] = await Deuda.fetchDeudaEstado(matricula);
+
+            const beca = await EstudianteProfesional.fetchBeca(matricula);
+            const porcenBeca = beca[0][0].porcBeca;
+
+            const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
+            
+            let credito;
+            if (colegiaturaActual.length != 0) {
+                credito = colegiaturaActual[0].creditoColegiatura;
+            } else {
+                credito = 0;
+            }
+
+            const precio = await Grupo.fetchPrecioTotal(matricula, periodo[0][0].IDPeriodo);
+            const precioTotal = (precio[0][0].Preciototal);
             
             // Formatear fechas
             for (let count = 0; count < deuda.length; count++){
@@ -697,6 +713,9 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 pagos: pagos,
                 periodo: periodo[0][0],
                 deuda: deuda,
+                porcBeca: porcenBeca,
+                credito: Number(credito),
+                precioTotal: precioTotal,
                 fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
@@ -711,33 +730,33 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
             const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula, fechaActual);
 
-        // Formatear fechas
-        for (let count = 0; count < pagosDiplomado.length; count++) {
-            pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
-        }
+            // Formatear fechas
+            for (let count = 0; count < pagosDiplomado.length; count++) {
+                pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
+            }
 
-        response.render('estadocuenta/estado_cuenta', {
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            csrfToken: request.csrfToken(),
-            pagosExtra: cargosExtra,
-            periodo: periodo[0][0],
-            pagadosExtra: pagosExtra,
-            fechaActual: now,
-            matricula: matricula,
-            diplomados: diplomadoCursando,
-            rol: request.session.rol || "",
-            pagosDiplomado: pagosDiplomado,
-            
-        });
+            response.render('estadocuenta/estado_cuenta', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                csrfToken: request.csrfToken(),
+                pagosExtra: cargosExtra,
+                periodo: periodo[0][0],
+                pagadosExtra: pagosExtra,
+                fechaActual: now,
+                matricula: matricula,
+                diplomados: diplomadoCursando,
+                rol: request.session.rol || "",
+                pagosDiplomado: pagosDiplomado,
+                
+            });
 
         }
 

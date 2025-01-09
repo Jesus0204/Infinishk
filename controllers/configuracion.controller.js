@@ -165,7 +165,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
     });
 
     // Enlace con el token incluido
-    const setPasswordLinkNoAlumno = `https://pagos.ivd.edu.mx/auth/set_password?token=${token_noAlumno}`;
+    const setPasswordLinkNoAlumno = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token_noAlumno}`;
 
     const msg_noAlumno = {
         to: correo,
@@ -237,8 +237,6 @@ exports.post_registrar_usuario = async (request, response, next) => {
        const fechaInscripcion = request.body.fechaInscripcion.split("/").reverse().join("-");
        const fechaModificacion = fechaInscripcion + ' 08:00:00';
 
-       console.log(correo_alumno);
-
        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
        if (usuarioExistente.length > 0) {
            return response.render('configuracion/registrar_usuario', {
@@ -267,10 +265,10 @@ exports.post_registrar_usuario = async (request, response, next) => {
        });
 
        // Enlace con el token incluido
-       const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+       const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
        const msgAlumno = {
-           to: correo,
+           to: correo_alumno,
            from: {
                name: 'VIA PAGO',
                email: 'soporte@pagos.ivd.edu.mx',
@@ -394,7 +392,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -425,7 +423,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -886,7 +884,7 @@ exports.get_materias = async (request, response, next) => {
             } = course;
 
             const semestre = course.plans_courses?.[0]?.semester;
-            const carrera = course.plans?.[0]?.degree?.name;
+            const carrera = course.plans?.[0]?.degree?.name + " " + course.plans?.[0]?.version;
             return {
                 id: id,
                 name: name,
@@ -1022,7 +1020,12 @@ exports.get_periodos = async (request, response, next) => {
                     console.error('Error registrando period ${period.name}:', error);
                     period.updated = false;
                 }
-            }
+        }
+
+        const [periodoActivo, fieldData] = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodoActivo[0].IDPeriodo;
+
+        EstudianteProfesional.crearNuevasConfirmaciones(IDPeriodoActivo);
 
         response.json({
             success: true,
@@ -1059,8 +1062,8 @@ exports.post_alumnos = async (request,response,next) => {
     
         //const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '11d' });
             
-            // Enlace con el token incluido
-        //const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        // Enlace con el token incluido
+        //const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
     
         await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
         await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);

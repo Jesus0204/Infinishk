@@ -16,12 +16,13 @@ moment.locale('es-mx');
 
 exports.get_propuesta_horario = async (request, response, next) => {
     try {
-        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username);
+        const periodo = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodo[0][0].IDPeriodo;
+        const conf = await EstudianteProfesional.fetchHorarioConfirmado(request.session.username, IDPeriodoActivo);
         const planes = await PlanPago.fetchAllActivePlans();
         const confirmacion = conf[0][0].horarioConfirmado;
         const planesPago = planes[0];
         var periodoExistente = 1;
-        const periodo = await Periodo.fetchActivo();
 
         if (confirmacion === 0) {
             const matricula = request.session.username;
@@ -161,12 +162,13 @@ exports.get_propuesta_horario = async (request, response, next) => {
         }
 
         else if (confirmacion === 1) {
-            const schedule = await Grupo.fetchSchedule(request.session.username)
-            const precio = await Grupo.fetchPrecioTotal(request.session.username)
-            let precioTotal = precio[0][0].Preciototal
+            const schedule = await Grupo.fetchSchedule(request.session.username, periodo[0][0].IDPeriodo)
+            const precio = await Grupo.fetchPrecioTotal(request.session.username, periodo[0][0].IDPeriodo)
+            let precioTotal = precio[0][0].Preciototal;
 
-            const credito = await Alumno.fetchCredito(request.session.username);
-            const valorCredito = credito[0][0]['CAST(credito AS CHAR(20))'];
+            const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
+
+            const credito = colegiaturaActual[0].creditoColegiatura
 
             const beca = await EstudianteProfesional.fetchBeca(request.session.username);
             const porcenBeca = beca[0][0].porcBeca;
@@ -185,7 +187,7 @@ exports.get_propuesta_horario = async (request, response, next) => {
                 confirmacion: confirmacion,
                 planesPago: planesPago,
                 porcBeca: porcenBeca,
-                credito: Number(valorCredito),
+                credito: Number(credito),
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",
@@ -216,9 +218,11 @@ const ensureArray = (value) => {
 };
 
 exports.post_confirmar_horario = async (request, response, next) => {
+    const [periodo, fieldData] = await Periodo.fetchActivo();
+    const periodoActivo = periodo[0].IDPeriodo;
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
-
+    const matricula = request.session.username
     const idMateria = ensureArray(request.body['idMateria[]']);
     const nombreProfesorCompleto = ensureArray(request.body['nombreProfesorCompleto[]']);
     const salon = ensureArray(request.body['salon[]']);
@@ -232,6 +236,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
     try {
         // Iterar sobre los cursos confirmados
         for (let i = 0; i < idMateria.length; i++) {
+
             const profesor = nombreProfesorCompleto[i];
             const salonCurso = salon[i];
             let horarioCurso = grupoHorarioValidado[i];
@@ -249,6 +254,12 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 }
             }
 
+            const existeCurso = await Grupo.checkGrupoExistente(matricula, IDGrupo, periodoActivo);
+                
+            if (existeCurso) {
+                continue; // Saltar este curso
+            }
+
             // Guardar el grupo en la base de datos
             await Grupo.saveGrupo(
                 request.session.username,
@@ -260,6 +271,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 fechaInicioCurso,
                 fechaFinCurso,
                 IDGrupo,
+                periodoActivo
             );
         }
 
@@ -268,10 +280,9 @@ exports.post_confirmar_horario = async (request, response, next) => {
             await destroyGroup(request.session.username, IDGrupoEliminado)
         }
 
-
         // Acciones adicionales después de manejar cada grupo
         await Colegiatura.createColegiaturasFichas(request.body.IDPlanPago, request.session.username, precioActual);
-        await EstudianteProfesional.updateHorarioAccepted(request.session.username);
+        await EstudianteProfesional.updateHorarioAccepted(request.session.username, periodoActivo);
 
         response.redirect('/horario/consultaHorario');
     } catch (error) {
