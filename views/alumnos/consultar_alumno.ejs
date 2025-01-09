@@ -98,6 +98,16 @@
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
                         <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
+                        <p class="has-text-grey has-text-weight-medium">CRÉDITO ACTUAL</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <span class="has-text-weight-bold">
+                                $<%= creditoAlumno.toLocaleString('mx', { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 }) %>
+                            </span>
+                            <span class="has-text-weight-light is-size-7">
+                                MXN
+                            </span>
+                        </p>
                     </div>
                 </div>
                 <div class="column">
@@ -1021,7 +1031,7 @@
                                         </button>
                                     </p>                                                                                                   
                                     <div class="box">
-                                        <% if (alumnoConsulta[0].porcBeca || credito != 0) { %>
+                                        <% if (alumnoConsulta[0].porcBeca || creditoColegiatura != 0) { %>
                                             <div class="columns is-mobile">
                                                 <div class="column is-6">
                                                     <p class="has-text-black has-text-weight-medium">
@@ -1044,17 +1054,23 @@
                                                 <div class="columns is-mobile" style="margin-top: -2em;">
                                                     <div class="column is-6">
                                                         <p class="has-text-weight-medium has-text-black">
-                                                            Porcentaje de Beca
+                                                            Beca (<%= alumnoConsulta[0].porcBeca %>%)
                                                         </p>
                                                     </div>
                                                     <div class="column is-6">
-                                                        <p class="has-text-black has-text-weight-medium">
-                                                            <%= alumnoConsulta[0].porcBeca %>%
+                                                        <p class="has-text-black">
+                                                            <span class="has-text-weight-semibold">
+                                                                -$<%= ((alumnoConsulta[0].porcBeca/100) * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2 })  %>
+                                                            </span>
+                                                            <span class="has-text-weight-light is-size-7">
+                                                                MXN
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <% } %>
-                                            <% if (credito != 0) { %>
+                                            <% if (creditoColegiatura != 0) { %>
                                                 <div class="columns is-mobile" style="margin-top: -2em;">
                                                     <div class="column is-6">
                                                         <p class="has-text-weight-medium has-text-black">
@@ -1064,7 +1080,7 @@
                                                     <div class="column is-6">
                                                         <p class="has-text-black">
                                                             <span class="has-text-weight-semibold">
-                                                                -$<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                -$<%= creditoColegiatura.toLocaleString('mx', { minimumFractionDigits: 2,
                                                                                 maximumFractionDigits: 2 }) %>
                                                             </span>
                                                             <span class="has-text-weight-light is-size-7">
@@ -1085,7 +1101,7 @@
                                 </div>
                                 
                                 <div class="column is-6">
-                                    <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - credito %>
+                                    <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - creditoColegiatura %>
                                     <p class="has-text-danger">
                                         <span class=" has-text-weight-bold">
                                             $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
@@ -1113,7 +1129,7 @@
                                             <tr>
                                                 <th style="text-align: left;">#</th>
                                                 <th style="text-align: left;">Pendiente</th>
-                                                <th style="text-align: left;">Total</th>
+                                                <th style="text-align: left;">Colegiatura</th>
                                                 <th style="text-align: left;">Pagado</th>
                                                 <th style="text-align: left;">Recargos</th>
                                                 <th style="text-align: left;">Ajuste</th>
@@ -1192,27 +1208,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="columns">
-                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
-                                    <div class="column is-4 is-offset-8">
-                                        <form method="POST" action="/alumnos/fichas">
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
-                                            <p class="control">
-                                                <button class="confirmar-button is-responsive fichas"
-                                                    style="font-size: large;  padding-right: 1.5em;" type="submit">
-                                                    <span class="icon is-large">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </span>
-                                                    <span>
-                                                        MODIFICAR FICHAS
-                                                    </span>
-                                                </button>
-                                            </p>
-                                        </form>
-                                    </div>
-                                    <% } %>
-                                </div>
                             <% } else { %>
                                 </label>
                                 <div class="box">
@@ -1222,6 +1217,112 @@
                                     </p>
                                 </div>
                             <% } %>
+                            <!-- SALDO -->
+                            <div class="columns">
+                                <div class="column is-8"></div>
+                                <div class="column">
+                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
+                                    <form method="POST" action="/alumnos/fichas">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                        <p class="control is-clearfix" style="margin-bottom: 10px;">
+                                            <button class="confirmar-button is-responsive" 
+                                                style="font-size: large; background-color: #000000; padding: 8px 12px; height: auto; width: 100%; text-align: center; line-height: 1.2;">
+                                                <span class="icon is-small">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #ffffff; padding-right: 8px;"></i>
+                                                </span>
+                                                <span style="color: #ffffff;">MODIFICAR FICHAS</span>
+                                            </button>
+                                        </p>
+                                    </form>
+                                    <% } %>  
+                                    <% if (precioTotal != 0) { %>
+                                    <div class="box">
+                                    <% if (creditoColegiatura != 0 || alumnoConsulta[0].porcBeca) { %>                                                                                                
+                                        <div class="columns is-mobile">
+                                            <div class="column is-6">
+                                                <p class="has-text-black has-text-weight-medium">
+                                                    Subtotal
+                                                </p>
+                                            </div>
+                                            <div class="column is-6">
+                                                <p class="has-text-black">
+                                                    <span class="has-text-weight-bold">
+                                                        $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                            maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% if (alumnoConsulta[0].porcBeca) { %>
+                                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                                    <div class="column is-6">
+                                                        <p class="has-text-weight-medium has-text-black">
+                                                            Beca (<%= alumnoConsulta[0].porcBeca %>%)
+                                                        </p>
+                                                    </div>
+                                                    <div class="column is-6">
+                                                        <p class="has-text-black">
+                                                            <span class="has-text-weight-semibold">
+                                                                -$<%= ((alumnoConsulta[0].porcBeca/100) * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2 })  %>
+                                                            </span>
+                                                            <span class="has-text-weight-light is-size-7">
+                                                                MXN
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        <% if (creditoColegiatura != 0) { %> 
+                                        <div class="columns is-mobile" style="margin-top: -2em;">
+                                            <div class="column is-6">
+                                                <p class="has-text-weight-medium has-text-black">
+                                                    Crédito
+                                                </p>
+                                            </div>
+                                            <div class="column is-6">
+                                                <p class="has-text-black">
+                                                    <span class="has-text-weight-semibold">
+                                                        -$<%= creditoColegiatura.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% } %> 
+                                        <div class="columns is-mobile">
+                                            <div class="column is-6">
+                                                <strong>
+                                                    <p class="has-text-danger has-text-weight-semibold">
+                                                        COSTO TOTAL
+                                                    </p>
+                                                </strong>
+                                            </div>
+                                            
+                                            <div class="column is-6">
+                                                <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - creditoColegiatura %>
+                                                <p class="has-text-danger">
+                                                    <span class=" has-text-weight-bold">
+                                                        $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %> 
                         </div>
                     </div>
                 <% } %>
