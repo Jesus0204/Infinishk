@@ -289,7 +289,7 @@ exports.post_fetch_datos = async (request, response, next) => {
         const [deuda] = await Deuda.fetchDeudaConsultarAlumno(matricula);
         const [pagosDiplomado] = await PagaDiplomado.fetchPagosDiplomado(matricula);
         const [estadoCuenta] = await Deuda.fetchEstadoDeCuenta(matricula);
-        const credito = await Alumno.fetchCreditoINT(matricula)
+        const creditoAlumno = await Alumno.fetchCreditoINT(matricula);
 
         // Conviertes la fecha si existe
         for (let count = 0; count < deuda.length; count++) {
@@ -313,9 +313,18 @@ exports.post_fetch_datos = async (request, response, next) => {
 
         let confirmacion;
         let alumnoDiplomadoActualConsulta = "";
+
+        let creditoColegiatura = 0;
         if (matricula.startsWith('1')) {
+            if (deuda.length != 0) {
+                const IDColegiatura = deuda[0].IDColegiatura;
+    
+                const [creditoIDColegiatura, fieldData] = await Colegiatura.fetchCreditoColegiatura(IDColegiatura);
+    
+                creditoColegiatura = creditoIDColegiatura[0].creditoColegiatura;
+            }
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
-            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula)
+            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo)
             confirmacion = conf[0][0].horarioConfirmado;
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
@@ -329,9 +338,11 @@ exports.post_fetch_datos = async (request, response, next) => {
             response.render('alumnos/consultar_alumno', {
                 error: true,
                 periodo: periodo[0][0],
+                precioTotal: 0,
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
-                credito: credito[0][0].credito,
+                creditoAlumno: creditoAlumno[0][0].credito,
+                creditoColegiatura: creditoColegiatura,
                 alumnoDiplomadoActual: alumnoDiplomadoActualConsulta,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
@@ -349,11 +360,10 @@ exports.post_fetch_datos = async (request, response, next) => {
             });
         }
         else if (confirmacion === 1) {
-            const schedule = await Grupo.fetchSchedule(matricula)
-            const precio = await Grupo.fetchPrecioTotal(matricula)
-            const credito = await Alumno.fetchCreditoINT(matricula)
-            const cred = (credito[0][0].Credito) ?? 0;
-            const precioTotal = (precio[0][0].Preciototal - cred)
+            const schedule = await Grupo.fetchSchedule(matricula, periodo[0][0].IDPeriodo);
+            const precio = await Grupo.fetchPrecioTotal(matricula, periodo[0][0].IDPeriodo);
+            const creditoAlumno = await Alumno.fetchCreditoINT(matricula);
+            const precioTotal = (precio[0][0].Preciototal);
             const periodoExistente = 1;
             response.render('alumnos/consultar_alumno', {
                 error: false,
@@ -363,7 +373,8 @@ exports.post_fetch_datos = async (request, response, next) => {
                 precioTotal: precioTotal,
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
-                credito: credito[0][0].credito,
+                creditoAlumno: creditoAlumno[0][0].credito,
+                creditoColegiatura: creditoColegiatura,
                 username: request.session.username || '',
                 permisos: request.session.permisos || [],
                 rol: request.session.rol || "",

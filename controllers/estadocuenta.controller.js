@@ -1,4 +1,5 @@
 const Periodo = require('../models/periodo.model');
+const Grupo = require('../models/grupo.model');
 const Colegiatura = require('../models/colegiatura.model');
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
@@ -679,6 +680,21 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagos] = await Pago.fetchOne(matricula);
             const estudianteProfesional = await EstudianteProfesional.fetchOne(request.session.username);
             const [deuda] = await Deuda.fetchDeudaEstado(matricula);
+
+            const beca = await EstudianteProfesional.fetchBeca(matricula);
+            const porcenBeca = beca[0][0].porcBeca;
+
+            const [colegiaturaActual, fieldData] = await Colegiatura.fetchColegiaturaActiva(request.session.username);
+            
+            let credito;
+            if (colegiaturaActual.length != 0) {
+                credito = colegiaturaActual[0].creditoColegiatura;
+            } else {
+                credito = 0;
+            }
+
+            const precio = await Grupo.fetchPrecioTotal(matricula, periodo[0][0].IDPeriodo);
+            const precioTotal = (precio[0][0].Preciototal);
             
             // Formatear fechas
             for (let count = 0; count < deuda.length; count++){
@@ -697,6 +713,9 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 pagos: pagos,
                 periodo: periodo[0][0],
                 deuda: deuda,
+                porcBeca: porcenBeca,
+                credito: Number(credito),
+                precioTotal: precioTotal,
                 fechaActual: now,
                 pagosExtra: cargosExtra,
                 pagadosExtra: pagosExtra,
@@ -711,33 +730,33 @@ exports.get_estado_cuenta = async (request, response, next) => {
             const [pagosDiplomado] = await PagoDiplomado.fetchPagosDiplomado(matricula);
             const [diplomadoCursando] = await Cursa.fetchDiplomadosCursando(matricula, fechaActual);
 
-        // Formatear fechas
-        for (let count = 0; count < pagosDiplomado.length; count++) {
-            pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
-        }
+            // Formatear fechas
+            for (let count = 0; count < pagosDiplomado.length; count++) {
+                pagosDiplomado[count].fechaPago = moment(pagosDiplomado[count].fechaPago).tz('America/Mexico_City').format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaInicio = moment(diplomadoCursando[count].fechaInicio).format('LL');
+            }
 
-        for (let count = 0; count < diplomadoCursando.length; count++) {
-            diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
-        }
+            for (let count = 0; count < diplomadoCursando.length; count++) {
+                diplomadoCursando[count].fechaFin = moment(diplomadoCursando[count].fechaFin).format('LL');
+            }
 
-        response.render('estadocuenta/estado_cuenta', {
-            username: request.session.username || '',
-            permisos: request.session.permisos || [],
-            csrfToken: request.csrfToken(),
-            pagosExtra: cargosExtra,
-            periodo: periodo[0][0],
-            pagadosExtra: pagosExtra,
-            fechaActual: now,
-            matricula: matricula,
-            diplomados: diplomadoCursando,
-            rol: request.session.rol || "",
-            pagosDiplomado: pagosDiplomado,
-            
-        });
+            response.render('estadocuenta/estado_cuenta', {
+                username: request.session.username || '',
+                permisos: request.session.permisos || [],
+                csrfToken: request.csrfToken(),
+                pagosExtra: cargosExtra,
+                periodo: periodo[0][0],
+                pagadosExtra: pagosExtra,
+                fechaActual: now,
+                matricula: matricula,
+                diplomados: diplomadoCursando,
+                rol: request.session.rol || "",
+                pagosDiplomado: pagosDiplomado,
+                
+            });
 
         }
 

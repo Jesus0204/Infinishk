@@ -1020,7 +1020,12 @@ exports.get_periodos = async (request, response, next) => {
                     console.error('Error registrando period ${period.name}:', error);
                     period.updated = false;
                 }
-            }
+        }
+
+        const [periodoActivo, fieldData] = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodoActivo[0].IDPeriodo;
+
+        EstudianteProfesional.crearNuevasConfirmaciones(IDPeriodoActivo);
 
         response.json({
             success: true,

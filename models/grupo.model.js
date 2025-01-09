@@ -14,33 +14,43 @@ module.exports = class Alumno {
         this.fechaTermino = mi_fechaTermino;
     }
 
-    static async fetchSchedule(matricula) {
-        const schedule = await db.execute(`SELECT M.Nombre, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
-                G.fechaInicio, G.fechaTermino, E.horarioConfirmado, M.Creditos,
+    static async fetchSchedule(matricula, periodo) {
+        const schedule = await db.execute(`SELECT M.Nombre, G.Periodo, G.IDGrupo, G.Profesor, G.Horario, G.Salon,
+                G.fechaInicio, G.fechaTermino, C.horarioConfirmado, M.Creditos,
                 (P.precioPesos * M.Creditos) AS Precio_materia
                 FROM Grupo AS G
                 JOIN Materia AS M ON G.IDMateria = M.IDMateria
                 JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
-                JOIN estudianteProfesional AS E ON G.Matricula = E.Matricula
+                JOIN Confirma AS C ON G.Matricula = C.Matricula
                 WHERE G.IDPrecioCredito = P.IDPrecioCredito
-                AND G.Matricula = ?`, [matricula]);
+                AND G.Matricula = ?
+                AND G.Periodo = ?
+                AND C.IDPeriodo = ?`, [matricula, periodo, periodo]);
 
         return schedule;
     }
-    
 
-    static async fetchPrecioTotal(matricula){
+    static async checkGrupoExistente(matricula,idGrupo, periodo) {
+        const [result] = await db.execute(
+            `SELECT COUNT(*) AS count FROM Grupo WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
+            [matricula, idGrupo, periodo]
+        );
+        return result[0].count > 0;
+    }
+
+    static async fetchPrecioTotal(matricula, periodo){
         const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
         JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE G.IDPrecioCredito = P.IDPrecioCredito
-        AND G.Matricula = ?`, [matricula]);
+        AND G.Matricula = ?
+        AND G.Periodo = ?`, [matricula, periodo]);
         return PrecioTotal;
     }
 
-    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo){
-        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`) VALUES (?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo]);
+    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo){
+        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`,`Periodo`) VALUES (?,?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo]);
     }
 
     static fetchIDExterno(IDGrupo,matricula){
