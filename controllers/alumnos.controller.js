@@ -338,6 +338,7 @@ exports.post_fetch_datos = async (request, response, next) => {
             response.render('alumnos/consultar_alumno', {
                 error: true,
                 periodo: periodo[0][0],
+                precioTotal: 0,
                 confirmacion: confirmacion,
                 alumnoConsulta: alumnoConsulta[0],
                 creditoAlumno: creditoAlumno[0][0].credito,
