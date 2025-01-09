@@ -54,6 +54,6 @@ module.exports = class PagoExtra {
     }
 
     static fetchPagados(matricula){
-        return db.execute('SELECT P.motivoPago, P.montoPagar, L.* FROM pagosExtras AS P, Liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 1 AND Matricula = ?', [matricula]);
+        return db.execute('SELECT * FROM pagosExtras AS P, Liquida AS L WHERE P.IDPagosExtras = L.IDPagosExtras AND L.Pagado = 1 AND Matricula = ?', [matricula]);
     }
 }
