@@ -50,4 +50,8 @@ module.exports = class pagoDiplomado {
         ORDER BY P.fechaPago ASC
         LIMIT 0, 1000`, [matricula]);
     }
+
+    static delete(id) {
+        return db.execute(`DELETE FROM PagaDiplomado WHERE IDPagaDiplomado = ?`, [id]);
+    }
 };

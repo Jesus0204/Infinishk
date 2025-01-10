@@ -367,6 +367,10 @@
 
                 <div id="extras" class="is-hidden">
                     <% if (pagadosExtra.length != 0) { %>
+                        <div id="eliminacionPE" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
@@ -375,11 +379,14 @@
                                 <th style="text-align: left;">Motivo</th>
                                 <th style="text-align: left;">Método</th>
                                 <th style="text-align: left;">Nota</th>
+                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                <th style="text-align: left;">Eliminar</th>
+                                <% } %>
                             </tr>
                         </thead>
                         <tbody>
                             <% pagadosExtra.forEach(pagadosExtra => { %>
-                            <tr>
+                            <tr data-id="<%= pagadosExtra.IDLiquida %>">
                                 <td>
                                     $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
@@ -398,7 +405,93 @@
                                 <td>
                                     <%= pagadosExtra.Nota %>
                                 </td>
+                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                <td>
+                                    <div class="column" style="text-align: center;">
+                                        <button type="button" id="Boton_eliminar"
+                                            class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                            style="background-color: #f6d5d8;" 
+                                            data-target="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>">
+                                            <span class="icon is-small" style="color: #f83362">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </span>
+                                        </button>    
+                                    </div>
+                                </td>
+                                <% } %>
                             </tr>
+
+                            <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title" style="text-align: center;">
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                ELIMINAR PAGO DE OTROS PAGOS
+                                            </label>
+                                        </p>
+                                        <button class="delete" aria-label="delete"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        <p class="is-size-5" style="text-align: center;">
+                                            <strong>¡Esta acción no se puede deshacer!</strong>
+                                        </p>
+                                        <br>
+                                        <p class="is-size-5" style="text-align: center;">
+                                            Los datos del pago a eliminar son los siguientes:
+                                        </p>
+                                        <br>
+                                        <br>
+                                        <div style="text-align: center;">
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Monto: </strong>
+                                                $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Fecha: </strong><%= pagadosExtra.fechaPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Motivo: </strong><%= pagadosExtra.motivoPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Método: </strong><%= pagadosExtra.metodoPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Nota: </strong>
+                                                <%= pagadosExtra.Nota %>
+                                            </p>
+                                        </div>
+                                        </section>
+
+                                        <footer class="modal-card-foot" style="justify-content: center;">
+                                            <div class="field is-grouped">
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive" aria-label="close"
+                                                        style="font-size: large; margin: 8px 2px; 
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>REGRESAR</span>
+                                                    </button>
+                                                </p>
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive"
+                                                        onclick="eliminarPagoExtra('<%= pagadosExtra.IDLiquida %>')"
+                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>ELIMINAR</span>
+                                                    </button>
+                                                </p>
+                                        </footer>
+                                    </div>
+                                </div>
                             <% }); %>
                         </tbody>
                     </table>
@@ -414,6 +507,10 @@
                 <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
                     <div id="pagosdipl">
                         <% if (pagosDiplomado.length != 0) { %>
+                            <div id="eliminacionDip" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -423,6 +520,9 @@
                                         <th style="text-align: left;">Motivo</th>
                                         <th style="text-align: left;">Método</th>
                                         <th style="text-align: left;">Nota</th>
+                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <th style="text-align: left;">Eliminar</th>
+                                        <% } %>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -449,7 +549,96 @@
                                         <td>
                                             <%= pagos.Nota %>
                                         </td>
+                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <td>
+                                            <div class="column" style="text-align: center;">
+                                                <button type="button" id="Boton_eliminar"
+                                                    class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                    style="background-color: #f6d5d8;" 
+                                                    data-target="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>">
+                                                    <span class="icon is-small" style="color: #f83362">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </span>
+                                                </button>    
+                                            </div>
+                                        </td>
+                                        <% } %>
                                     </tr>
+
+                                    <div id="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>" class="modal">
+                                        <div class="modal-background"></div>
+                                        <div class="modal-card">
+                                            <header class="modal-card-head">
+                                                <p class="modal-card-title" style="text-align: center;">
+                                                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                        ELIMINAR PAGO DE DIPLOMADO
+                                                    </label>
+                                                </p>
+                                                <button class="delete" aria-label="delete"></button>
+                                            </header>
+                                            <section class="modal-card-body">
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    <strong>¡Esta acción no se puede deshacer!</strong>
+                                                </p>
+                                                <br>
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    Los datos del pago a eliminar son los siguientes:
+                                                </p>
+                                                <br>
+                                                <br>
+                                                <div style="text-align: center;">
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Monto: </strong>
+                                                        $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Diplomado: </strong><%= pagos.nombreDiplomado %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Fecha: </strong><%= pagos.fechaPago %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Motivo: </strong><%= pagos.Motivo %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Método: </strong><%= pagos.metodoPago %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Nota: </strong>
+                                                        <%= pagos.nota %>
+                                                    </p>
+                                                </div>
+                                            </section>
+
+                                            <footer class="modal-card-foot" style="justify-content: center;">
+                                                <div class="field is-grouped">
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive" aria-label="close"
+                                                            style="font-size: large; margin: 8px 2px; 
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>REGRESAR</span>
+                                                        </button>
+                                                    </p>
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive"
+                                                            onclick="eliminarPagoDip('<%= pagos.IDPagaDiplomado %>')"
+                                                            style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>ELIMINAR</span>
+                                                        </button>
+                                                    </p>
+                                            </footer>
+                                        </div>
+                                    </div>
                                     <% }) %>
                                 </tbody>
                             </table>
@@ -465,6 +654,10 @@
                 <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                     <div id="historial" class="is-hidden">
                          <% if (pagos.length != 0) { %>
+                            <div id="eliminacionCol" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -473,11 +666,14 @@
                                         <th style="text-align: left;">Motivo</th>
                                         <th style="text-align: left;">Método</th>
                                         <th style="text-align: left;">Nota</th>
+                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <th style="text-align: left;">Eliminar</th>
+                                        <% } %>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <% pagos.forEach(pagos => { %>
-                                            <tr>
+                                            <tr data-id="<%= pagos.IDPago %>">
                                                 <td>
                                                     $<%= pagos.montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
@@ -496,8 +692,94 @@
                                                 <td>
                                                     <%= pagos.nota %>
                                                 </td>
+                                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                                <td>
+                                                    <div class="column" style="text-align: center;">
+                                                        <button type="button" id="Boton_eliminar"
+                                                            class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                            style="background-color: #f6d5d8;" 
+                                                            data-target="modal-confirmar-eliminar_col<%= pagos.IDPago %>">
+                                                            <span class="icon is-small" style="color: #f83362">
+                                                                <i class="fa-solid fa-trash-can"></i>
+                                                            </span>
+                                                        </button>    
+                                                    </div>
+                                                </td>
+                                                <% } %>
                                             </tr>
-                                    <% } )%>
+
+                                            <div id="modal-confirmar-eliminar_col<%= pagos.IDPago %>" class="modal">
+                                                <div class="modal-background"></div>
+                                                <div class="modal-card">
+                                                    <header class="modal-card-head">
+                                                        <p class="modal-card-title" style="text-align: center;">
+                                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                                ELIMINAR PAGO DE COLEGIATURA
+                                                            </label>
+                                                        </p>
+                                                        <button class="delete" aria-label="delete"></button>
+                                                    </header>
+                                                    <section class="modal-card-body">
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>¡Esta acción no se puede deshacer!</strong>
+                                                        </p>
+                                                        <br>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            Los datos del pago a eliminar son los siguientes:
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <div style="text-align: center;">
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Monto: </strong>
+                                                                $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2
+                                                                }) %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Fecha: </strong><%= pagos.fechaPago %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Motivo: </strong><%= pagos.motivo %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Método: </strong><%= pagos.metodoPago %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Nota: </strong>
+                                                                <%= pagos.nota %>
+                                                            </p>
+                                                        </div>
+                                                    </section>
+
+                                                    <footer class="modal-card-foot" style="justify-content: center;">
+                                                        <div class="field is-grouped">
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive" aria-label="close"
+                                                                    style="font-size: large; margin: 8px 2px; 
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>REGRESAR</span>
+                                                                </button>
+                                                            </p>
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive"
+                                                                    onclick="eliminarPagoCol('<%= pagos.IDPago %>')"
+                                                                    style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>ELIMINAR</span>
+                                                                </button>
+                                                            </p>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                    <% }) %>
                                 </tbody>
                             </table>
                         <% } else { %>
@@ -508,7 +790,7 @@
                             </div>
                         <% } %>
                     </div>
-                    
+            
                     <div id="horario" class="is-hidden">
                         <div id="diplomados_activos" class="container">
                             <% if (error) { %>
@@ -1049,5 +1331,6 @@
     </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/consultar_alumno.js"></script>
+<script type="text/javascript" src="/js/eliminar_pago.js"></script>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script type="text/javascript" src="/js/boton_regresar.js"></script>

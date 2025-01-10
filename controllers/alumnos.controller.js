@@ -13,6 +13,7 @@ const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
+const Liquida = require('../models/liquida.model');
 const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups,destroyGroup } = require('../util/adminApiClient');
 const { request, response } = require('express');
 
@@ -260,6 +261,35 @@ exports.post_datos_modify = async (request, response, next) => {
         return;
     }
 };
+
+// Eliminar Pago
+// Pagos Extra
+exports.post_eliminar_pago_extra = async (request, response, next) => {
+    const id = request.body.IDLiquida;
+
+    try {
+        await Liquida.updateDeleted(id);
+
+        response.status(200).json({ success: true });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error borrando pago de solicitud extra' });
+    }
+}
+
+// Colegiatura
+
+// Diplomado
+exports.post_eliminar_pago_dip = async (request, response, next) => {
+    const id = request.body.IDPagaDiplomado;
+    
+    try {
+        await PagaDiplomado.delete(id);
+
+        response.status(200).json({ success: true });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error borrando pago de diplomado' });
+    }
+}
 
 exports.post_fetch_datos = async (request, response, next) => {
     try {
