@@ -30,7 +30,7 @@ module.exports = class Deuda {
         return db.execute(`SELECT A.Nombre, A.Apellidos, A.matricula, 
         (D.montoAPagar) AS 'montoAPagar',
         ((D.montoAPagar + D.Descuento + D.montoRecargos) - D.montoPagado) AS 'saldoPendiente', 
-        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos
+        D.montoPagado, D.fechaLimitePago, D.Pagado, D.Descuento, D.montoRecargos, D.IDColegiatura
         FROM Deuda AS D, Alumno AS A, Colegiatura AS C, Periodo AS P
         WHERE D.Matricula = A.Matricula AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = P.IDPeriodo AND periodoActivo = 1 AND D.matricula = ?`,
@@ -120,7 +120,7 @@ module.exports = class Deuda {
 
     static fetchNoPagadas(IDColegiatura) {
         return db.execute(`SELECT IDDeuda, (montoAPagar + Descuento + montoRecargos) AS 'montoAPagar', 
-        (montoAPagar + Descuento) AS 'montoSinRecargos', fechaLimitePago, montoPagado, montoRecargos FROM Deuda WHERE Pagado = 0
+        (montoAPagar + Descuento) AS 'montoSinRecargos', fechaLimitePago, montoPagado, Recargos, montoRecargos FROM Deuda WHERE Pagado = 0
         AND IDColegiatura = ? `, [IDColegiatura]);
     };
 

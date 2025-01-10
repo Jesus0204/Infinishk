@@ -85,6 +85,10 @@ module.exports = class Liquida {
         return db.execute('DELETE FROM Liquida WHERE IDLiquida = ?', [id]);
     }
 
+    static updateDeleted(id) {
+        return db.execute(`UPDATE Liquida SET Pagado = 0, Nota = 'PAGO BORRADO' WHERE IDLiquida = ?`, [id]);
+    }
+
     static fetchDatosLiquida(fechaInicio,fechaFin){
         return db.execute(`SELECT L.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria,L.metodoPago, L.fechaPago, L.Nota, L.Pagado, PE.motivoPago
         FROM Liquida AS L JOIN Alumno AS A ON L.Matricula = A.Matricula 
