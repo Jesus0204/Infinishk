@@ -101,7 +101,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            // await destroyGroup(matricula, IDExterno);
+            await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -178,7 +178,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas100(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            // await destroyGroup(matricula, IDExterno);
+            await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
