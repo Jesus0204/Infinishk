@@ -94,7 +94,7 @@ function eliminarPagoDip(IDPagaDiplomado) {
             }
 
             // Mostrar la notificación de eliminación
-            const notification = document.getElementById('eliminacionCol');
+            const notification = document.getElementById('eliminacionDip');
             if (notification) {
                 notification.classList.remove('is-hidden');
             }
