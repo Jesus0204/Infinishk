@@ -57,6 +57,13 @@ router.get('/actualizarMaterias',isAuth,can_ActualizarBase,configuracionControll
 
 router.get('/actualizarPeriodos',isAuth,can_ActualizarBase,configuracionController.get_periodos);
 
+
 router.get('/aceptar_horarios_resagados', isAuth, can_ActualizarBase, configuracionController.aceptar_horario_resagados);
+
+router.get('/visualizarPeriodos', isAuth, can_ActualizarBase, configuracionController.fetchPeriodos);
+
+router.get('/visualizarPlanes', isAuth, can_ActualizarBase, configuracionController.fetchPlanes);
+
+router.post('/visualizarMaterias', isAuth, can_ActualizarBase, configuracionController.fetchMaterias);
 
 module.exports = router;

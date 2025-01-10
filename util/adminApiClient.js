@@ -6,8 +6,8 @@ dotenv.config()
 const cache = new NodeCache()
 
 const axiosAdminClient = axios.create({
-  baseURL: process.env.ADMIN_API_URL,
-})
+  baseURL: process.env.ADMIN_API_URL.replace(/\/$/, ''), // Elimina la barra final si existe
+});
 
 async function getToken() {
   let token = cache.get('token')
@@ -109,7 +109,7 @@ async function getAllAdmins() {
   return response.data;
 }
 
-async function destroyGroup(student_ivd_id,group_id){
+async function destroyGroup(student_ivd_id,group_id) {
   const token = await getToken();
   const headers = getHeaders(token);
   const response = await axiosAdminClient.delete(

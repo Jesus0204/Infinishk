@@ -98,6 +98,16 @@
                     <div class="box" style="text-align: center;">
                         <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
                         <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
+                        <p class="has-text-grey has-text-weight-medium">CRÉDITO ACTUAL</p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <span class="has-text-weight-bold">
+                                $<%= creditoAlumno.toLocaleString('mx', { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 }) %>
+                            </span>
+                            <span class="has-text-weight-light is-size-7">
+                                MXN
+                            </span>
+                        </p>
                     </div>
                 </div>
                 <div class="column">
@@ -357,6 +367,10 @@
 
                 <div id="extras" class="is-hidden">
                     <% if (pagadosExtra.length != 0) { %>
+                        <div id="eliminacionPE" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
@@ -365,11 +379,14 @@
                                 <th style="text-align: left;">Motivo</th>
                                 <th style="text-align: left;">Método</th>
                                 <th style="text-align: left;">Nota</th>
+                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                <th style="text-align: left;">Eliminar</th>
+                                <% } %>
                             </tr>
                         </thead>
                         <tbody>
                             <% pagadosExtra.forEach(pagadosExtra => { %>
-                            <tr>
+                            <tr data-id="<%= pagadosExtra.IDLiquida %>">
                                 <td>
                                     $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
@@ -388,7 +405,93 @@
                                 <td>
                                     <%= pagadosExtra.Nota %>
                                 </td>
+                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                <td>
+                                    <div class="column" style="text-align: center;">
+                                        <button type="button" id="Boton_eliminar"
+                                            class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                            style="background-color: #f6d5d8;" 
+                                            data-target="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>">
+                                            <span class="icon is-small" style="color: #f83362">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </span>
+                                        </button>    
+                                    </div>
+                                </td>
+                                <% } %>
                             </tr>
+
+                            <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title" style="text-align: center;">
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                ELIMINAR PAGO DE OTROS PAGOS
+                                            </label>
+                                        </p>
+                                        <button class="delete" aria-label="delete"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        <p class="is-size-5" style="text-align: center;">
+                                            <strong>¡Esta acción no se puede deshacer!</strong>
+                                        </p>
+                                        <br>
+                                        <p class="is-size-5" style="text-align: center;">
+                                            Los datos del pago a eliminar son los siguientes:
+                                        </p>
+                                        <br>
+                                        <br>
+                                        <div style="text-align: center;">
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Monto: </strong>
+                                                $<%= pagadosExtra.montoPagar.toLocaleString('mx', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Fecha: </strong><%= pagadosExtra.fechaPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Motivo: </strong><%= pagadosExtra.motivoPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Método: </strong><%= pagadosExtra.metodoPago %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Nota: </strong>
+                                                <%= pagadosExtra.Nota %>
+                                            </p>
+                                        </div>
+                                        </section>
+
+                                        <footer class="modal-card-foot" style="justify-content: center;">
+                                            <div class="field is-grouped">
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive" aria-label="close"
+                                                        style="font-size: large; margin: 8px 2px; 
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>REGRESAR</span>
+                                                    </button>
+                                                </p>
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive"
+                                                        onclick="eliminarPagoExtra('<%= pagadosExtra.IDLiquida %>')"
+                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>ELIMINAR</span>
+                                                    </button>
+                                                </p>
+                                        </footer>
+                                    </div>
+                                </div>
                             <% }); %>
                         </tbody>
                     </table>
@@ -404,6 +507,10 @@
                 <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
                     <div id="pagosdipl">
                         <% if (pagosDiplomado.length != 0) { %>
+                            <div id="eliminacionDip" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -413,6 +520,9 @@
                                         <th style="text-align: left;">Motivo</th>
                                         <th style="text-align: left;">Método</th>
                                         <th style="text-align: left;">Nota</th>
+                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <th style="text-align: left;">Eliminar</th>
+                                        <% } %>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -439,7 +549,96 @@
                                         <td>
                                             <%= pagos.Nota %>
                                         </td>
+                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <td>
+                                            <div class="column" style="text-align: center;">
+                                                <button type="button" id="Boton_eliminar"
+                                                    class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                    style="background-color: #f6d5d8;" 
+                                                    data-target="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>">
+                                                    <span class="icon is-small" style="color: #f83362">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </span>
+                                                </button>    
+                                            </div>
+                                        </td>
+                                        <% } %>
                                     </tr>
+
+                                    <div id="modal-confirmar-eliminar_dip<%= pagos.IDPagaDiplomado %>" class="modal">
+                                        <div class="modal-background"></div>
+                                        <div class="modal-card">
+                                            <header class="modal-card-head">
+                                                <p class="modal-card-title" style="text-align: center;">
+                                                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                        ELIMINAR PAGO DE DIPLOMADO
+                                                    </label>
+                                                </p>
+                                                <button class="delete" aria-label="delete"></button>
+                                            </header>
+                                            <section class="modal-card-body">
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    <strong>¡Esta acción no se puede deshacer!</strong>
+                                                </p>
+                                                <br>
+                                                <p class="is-size-5" style="text-align: center;">
+                                                    Los datos del pago a eliminar son los siguientes:
+                                                </p>
+                                                <br>
+                                                <br>
+                                                <div style="text-align: center;">
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Monto: </strong>
+                                                        $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Diplomado: </strong><%= pagos.nombreDiplomado %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Fecha: </strong><%= pagos.fechaPago %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Motivo: </strong><%= pagos.Motivo %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Método: </strong><%= pagos.metodoPago %>
+                                                    </p>
+                                                    <p class="is-size-5" style="text-align: center;">
+                                                        <strong>Nota: </strong>
+                                                        <%= pagos.nota %>
+                                                    </p>
+                                                </div>
+                                            </section>
+
+                                            <footer class="modal-card-foot" style="justify-content: center;">
+                                                <div class="field is-grouped">
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive" aria-label="close"
+                                                            style="font-size: large; margin: 8px 2px; 
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>REGRESAR</span>
+                                                        </button>
+                                                    </p>
+                                                    <p class="control">
+                                                        <button class="button is-medium is-responsive"
+                                                            onclick="eliminarPagoDip('<%= pagos.IDPagaDiplomado %>')"
+                                                            style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                    padding-right: 5px; padding-left: 10px;">
+                                                            <span class="icon is-large">
+                                                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                            </span>
+                                                            <span>ELIMINAR</span>
+                                                        </button>
+                                                    </p>
+                                            </footer>
+                                        </div>
+                                    </div>
                                     <% }) %>
                                 </tbody>
                             </table>
@@ -455,6 +654,10 @@
                 <% } else if (alumnoConsulta[0].Matricula.startsWith('1')) { %>
                     <div id="historial" class="is-hidden">
                          <% if (pagos.length != 0) { %>
+                            <div id="eliminacionCol" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -463,11 +666,14 @@
                                         <th style="text-align: left;">Motivo</th>
                                         <th style="text-align: left;">Método</th>
                                         <th style="text-align: left;">Nota</th>
+                                        <!-- <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <th style="text-align: left;">Eliminar</th>
+                                        <% } %> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <% pagos.forEach(pagos => { %>
-                                            <tr>
+                                            <tr data-id="<%= pagos.IDPago %>">
                                                 <td>
                                                     $<%= pagos.montoPagado.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
@@ -486,8 +692,94 @@
                                                 <td>
                                                     <%= pagos.nota %>
                                                 </td>
+                                                <!-- <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                                <td>
+                                                    <div class="column" style="text-align: center;">
+                                                        <button type="button" id="Boton_eliminar"
+                                                            class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                                            style="background-color: #f6d5d8;" 
+                                                            data-target="modal-confirmar-eliminar_col<%= pagos.IDPago %>">
+                                                            <span class="icon is-small" style="color: #f83362">
+                                                                <i class="fa-solid fa-trash-can"></i>
+                                                            </span>
+                                                        </button>    
+                                                    </div>
+                                                </td>
+                                                <% } %> -->
                                             </tr>
-                                    <% } )%>
+
+                                            <div id="modal-confirmar-eliminar_col<%= pagos.IDPago %>" class="modal">
+                                                <div class="modal-background"></div>
+                                                <div class="modal-card">
+                                                    <header class="modal-card-head">
+                                                        <p class="modal-card-title" style="text-align: center;">
+                                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                                ELIMINAR PAGO DE COLEGIATURA
+                                                            </label>
+                                                        </p>
+                                                        <button class="delete" aria-label="delete"></button>
+                                                    </header>
+                                                    <section class="modal-card-body">
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            <strong>¡Esta acción no se puede deshacer!</strong>
+                                                        </p>
+                                                        <br>
+                                                        <p class="is-size-5" style="text-align: center;">
+                                                            Los datos del pago a eliminar son los siguientes:
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <div style="text-align: center;">
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Monto: </strong>
+                                                                $<%= pagos.montoPagado.toLocaleString('mx', {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2
+                                                                }) %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Fecha: </strong><%= pagos.fechaPago %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Motivo: </strong><%= pagos.motivo %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Método: </strong><%= pagos.metodoPago %>
+                                                            </p>
+                                                            <p class="is-size-5" style="text-align: center;">
+                                                                <strong>Nota: </strong>
+                                                                <%= pagos.nota %>
+                                                            </p>
+                                                        </div>
+                                                    </section>
+
+                                                    <footer class="modal-card-foot" style="justify-content: center;">
+                                                        <div class="field is-grouped">
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive" aria-label="close"
+                                                                    style="font-size: large; margin: 8px 2px; 
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>REGRESAR</span>
+                                                                </button>
+                                                            </p>
+                                                            <p class="control">
+                                                                <button class="button is-medium is-responsive"
+                                                                    onclick="eliminarPagoCol('<%= pagos.IDPago %>')"
+                                                                    style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                            padding-right: 5px; padding-left: 10px;">
+                                                                    <span class="icon is-large">
+                                                                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                                    </span>
+                                                                    <span>ELIMINAR</span>
+                                                                </button>
+                                                            </p>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                    <% }) %>
                                 </tbody>
                             </table>
                         <% } else { %>
@@ -498,7 +790,7 @@
                             </div>
                         <% } %>
                     </div>
-                    
+            
                     <div id="horario" class="is-hidden">
                         <div id="diplomados_activos" class="container">
                             <% if (error) { %>
@@ -524,9 +816,18 @@
                                     ¡Materia eliminada! Recargando página...
                                 </div>
 
+                                <div id="actualizacion" class="notification is-hidden"
+                                    style="background-color: #5a6581; color:#ffffff;">
+                                    ¡Materias actualizadas! Recargando página...
+                                </div>
+
+                                <div id="actualizacionfallida" class="notification is-hidden"
+                                    style="background-color: #5a6581; color:#ffffff;">
+                                    ¡No se encontraron nuevas materias! Recargando página...
+                                </div>
+
                                 <div class="table-container">    
-                                    <table class="table is-hoverable is-fullwidth">
-                                    <!-- encabezado de la tabla -->
+                                    <table class="table is-hoverable is-fullwidth">    
                                     <thead>
                                         <tr>
                                             <th style="text-align: left;">
@@ -709,9 +1010,9 @@
                                                     </div>
                                                 </footer>
                                             </div>
-                                        </div>
-                                                     
+                                        </div>           
                             <% } %>
+                                </tr>
                         </tbody>
                         </table>
                         </div>
@@ -719,8 +1020,18 @@
                             <div class="columns">
                                 <div class="column is-8"></div>
                                 <div class="column">
+                                    <p class="control" style="margin-bottom: 50px;">
+                                        <button class="confirmar-button is-responsive" 
+                                            onclick="actualizarMaterias('<%= alumnoConsulta[0].Matricula %>')"
+                                            style="font-size: large; background-color: #000000; padding: 8px 12px; height: auto; width: 100%; text-align: center; line-height: 1.2;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-rotate-right" style="color: #ffffff; padding-right: 8px;"></i>
+                                            </span>
+                                            <span style="color: #ffffff;">ACTUALIZAR</span>
+                                        </button>
+                                    </p>                                                                                                   
                                     <div class="box">
-                                        <% if (alumnoConsulta[0].porcBeca || credito != 0) { %>
+                                        <% if (alumnoConsulta[0].porcBeca || creditoColegiatura != 0) { %>
                                             <div class="columns is-mobile">
                                                 <div class="column is-6">
                                                     <p class="has-text-black has-text-weight-medium">
@@ -743,17 +1054,23 @@
                                                 <div class="columns is-mobile" style="margin-top: -2em;">
                                                     <div class="column is-6">
                                                         <p class="has-text-weight-medium has-text-black">
-                                                            Porcentaje de Beca
+                                                            Beca (<%= alumnoConsulta[0].porcBeca %>%)
                                                         </p>
                                                     </div>
                                                     <div class="column is-6">
-                                                        <p class="has-text-black has-text-weight-medium">
-                                                            <%= alumnoConsulta[0].porcBeca %>%
+                                                        <p class="has-text-black">
+                                                            <span class="has-text-weight-semibold">
+                                                                -$<%= ((alumnoConsulta[0].porcBeca/100) * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2 })  %>
+                                                            </span>
+                                                            <span class="has-text-weight-light is-size-7">
+                                                                MXN
+                                                            </span>
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <% } %>
-                                            <% if (credito != 0) { %>
+                                            <% if (creditoColegiatura != 0) { %>
                                                 <div class="columns is-mobile" style="margin-top: -2em;">
                                                     <div class="column is-6">
                                                         <p class="has-text-weight-medium has-text-black">
@@ -763,7 +1080,7 @@
                                                     <div class="column is-6">
                                                         <p class="has-text-black">
                                                             <span class="has-text-weight-semibold">
-                                                                -$<%= credito.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                -$<%= creditoColegiatura.toLocaleString('mx', { minimumFractionDigits: 2,
                                                                                 maximumFractionDigits: 2 }) %>
                                                             </span>
                                                             <span class="has-text-weight-light is-size-7">
@@ -773,7 +1090,7 @@
                                                     </div>
                                                 </div>
                                                 <% } %>
-                                                <% } %>
+                                                <% } %>                                             
                             <div class="columns is-mobile">
                                 <div class="column is-6">
                                     <strong>
@@ -782,8 +1099,9 @@
                                         </p>
                                     </strong>
                                 </div>
+                                
                                 <div class="column is-6">
-                                    <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - credito %>
+                                    <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - creditoColegiatura %>
                                     <p class="has-text-danger">
                                         <span class=" has-text-weight-bold">
                                             $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
@@ -811,8 +1129,9 @@
                                             <tr>
                                                 <th style="text-align: left;">#</th>
                                                 <th style="text-align: left;">Pendiente</th>
-                                                <th style="text-align: left;">Total</th>
+                                                <th style="text-align: left;">Colegiatura</th>
                                                 <th style="text-align: left;">Pagado</th>
+                                                <th style="text-align: left;">Recargos</th>
                                                 <th style="text-align: left;">Ajuste</th>
                                                 <th style="text-align: left;">Fecha Límite de Pago</th>
                                                 <th style="text-align: left;">Estatus</th>
@@ -836,6 +1155,10 @@
                                                             maximumFractionDigits: 2
                                                         }) %></td>
                                                 <td>$<%= deuda[count].montoPagado.toLocaleString('mx', {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %></td>
+                                                <td>$<%= deuda[count].montoRecargos.toLocaleString('mx', {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
                                                         }) %></td>
@@ -885,27 +1208,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="columns">
-                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
-                                    <div class="column is-4 is-offset-8">
-                                        <form method="POST" action="/alumnos/fichas">
-                                            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                                            <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
-                                            <p class="control">
-                                                <button class="confirmar-button is-responsive fichas"
-                                                    style="font-size: large;  padding-right: 1.5em;" type="submit">
-                                                    <span class="icon is-large">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </span>
-                                                    <span>
-                                                        MODIFICAR FICHAS
-                                                    </span>
-                                                </button>
-                                            </p>
-                                        </form>
-                                    </div>
-                                    <% } %>
-                                </div>
                             <% } else { %>
                                 </label>
                                 <div class="box">
@@ -915,6 +1217,112 @@
                                     </p>
                                 </div>
                             <% } %>
+                            <!-- SALDO -->
+                            <div class="columns">
+                                <div class="column is-8"></div>
+                                <div class="column">
+                                    <% if (contienePermiso(permisos, 'Modificar Ficha de Pago/Deuda') == true && matricula[0] == '1') { %>
+                                    <form method="POST" action="/alumnos/fichas">
+                                        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                        <p class="control is-clearfix" style="margin-bottom: 10px;">
+                                            <button class="confirmar-button is-responsive" 
+                                                style="font-size: large; background-color: #000000; padding: 8px 12px; height: auto; width: 100%; text-align: center; line-height: 1.2;">
+                                                <span class="icon is-small">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #ffffff; padding-right: 8px;"></i>
+                                                </span>
+                                                <span style="color: #ffffff;">MODIFICAR FICHAS</span>
+                                            </button>
+                                        </p>
+                                    </form>
+                                    <% } %>  
+                                    <% if (precioTotal != 0) { %>
+                                    <div class="box">
+                                    <% if (creditoColegiatura != 0 || alumnoConsulta[0].porcBeca) { %>                                                                                                
+                                        <div class="columns is-mobile">
+                                            <div class="column is-6">
+                                                <p class="has-text-black has-text-weight-medium">
+                                                    Subtotal
+                                                </p>
+                                            </div>
+                                            <div class="column is-6">
+                                                <p class="has-text-black">
+                                                    <span class="has-text-weight-bold">
+                                                        $<%= precioTotal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                            maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% if (alumnoConsulta[0].porcBeca) { %>
+                                                <div class="columns is-mobile" style="margin-top: -2em;">
+                                                    <div class="column is-6">
+                                                        <p class="has-text-weight-medium has-text-black">
+                                                            Beca (<%= alumnoConsulta[0].porcBeca %>%)
+                                                        </p>
+                                                    </div>
+                                                    <div class="column is-6">
+                                                        <p class="has-text-black">
+                                                            <span class="has-text-weight-semibold">
+                                                                -$<%= ((alumnoConsulta[0].porcBeca/100) * precioTotal).toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2 })  %>
+                                                            </span>
+                                                            <span class="has-text-weight-light is-size-7">
+                                                                MXN
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        <% if (creditoColegiatura != 0) { %> 
+                                        <div class="columns is-mobile" style="margin-top: -2em;">
+                                            <div class="column is-6">
+                                                <p class="has-text-weight-medium has-text-black">
+                                                    Crédito
+                                                </p>
+                                            </div>
+                                            <div class="column is-6">
+                                                <p class="has-text-black">
+                                                    <span class="has-text-weight-semibold">
+                                                        -$<%= creditoColegiatura.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% } %> 
+                                        <div class="columns is-mobile">
+                                            <div class="column is-6">
+                                                <strong>
+                                                    <p class="has-text-danger has-text-weight-semibold">
+                                                        COSTO TOTAL
+                                                    </p>
+                                                </strong>
+                                            </div>
+                                            
+                                            <div class="column is-6">
+                                                <% let precioFinal = precioTotal - (precioTotal * (alumnoConsulta[0].porcBeca / 100)) - creditoColegiatura %>
+                                                <p class="has-text-danger">
+                                                    <span class=" has-text-weight-bold">
+                                                        $<%= precioFinal.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2 }) %>
+                                                    </span>
+                                                    <span class="has-text-weight-light is-size-7">
+                                                        MXN
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %> 
                         </div>
                     </div>
                 <% } %>
@@ -923,5 +1331,6 @@
     </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/consultar_alumno.js"></script>
+<script type="text/javascript" src="/js/eliminar_pago.js"></script>
 <script type="text/javascript" src="/js/modal_popup.js"></script>
 <script type="text/javascript" src="/js/boton_regresar.js"></script>

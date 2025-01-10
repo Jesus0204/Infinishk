@@ -8,17 +8,25 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
 
     // Crear constantes para acceder a HTML
     const bt_Modificar = document.querySelector('#Boton_modificar' + count);
+
+    const deuda = document.querySelector('#deuda' + count);
     const descuento = document.querySelector('#descuento' + count);
-    const nota = document.querySelector('#nota' + count);
+    //const nota = document.querySelector('#nota' + count);
+
+    const ayuda_deuda_vacia = document.querySelector('#ayuda_deuda_vacia' + count);
+    const ayuda_deuda_exponente = document.querySelector('#ayuda_deuda_exponente' + count);
+    const ayuda_deuda_negativa = document.querySelector('#ayuda_deuda_negativa' + count);
+
     const ayuda_descuento_vacio = document.querySelector('#ayuda_descuento_vacio' + count);
     const ayuda_descuento_exponente = document.querySelector('#ayuda_descuento_exponente' + count);
     const ayuda_descuento_cero_negativo = document.querySelector('#ayuda_descuento_cero_negativo' + count);
-    const ayuda_nota = document.querySelector('#ayuda_nota' + count);
+
+    //const ayuda_nota = document.querySelector('#ayuda_nota' + count);
     const fecha_lim = document.querySelector('#fecha_lim' + count);
 
     // Checar si hay contenido dentro del input, para desactivar el boton
     function checar_contenido() {
-        bt_Modificar.disabled = nota.value.length === 0 || fecha_lim.value.length === 0 || descuento.value.length === 0
+        bt_Modificar.disabled = fecha_lim.value.length === 0 || descuento.value.length === 0 || deuda.value.length === 0
     }
 
     const ayuda_fecha = document.querySelector('#ayuda_fecha_vacia' + count);
@@ -57,6 +65,32 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
         count_clear++;
     }
 
+    /*function mensaje_deuda() {
+        if (deuda.value.length === 0 || deuda.value.trim() === '') {
+            console.log("EMPTY deuda: ", deuda.value.trim());
+            bt_Modificar.disabled = true;
+            ayuda_deuda_vacia.classList.remove('is-hidden');
+        } else {
+            ayuda_deuda_vacia.classList.add('is-hidden');
+        }
+        
+        if (deuda.value.trim().toLowerCase().includes('e')) {
+            console.log("EXPONENT deuda: ", deuda.value.trim());
+            bt_Modificar.disabled = true;
+            ayuda_deuda_exponente.classList.remove('is-hidden');
+        } else {
+            ayuda_deuda_exponente.classList.add('is-hidden');
+        }
+
+        if (parseFloat(deuda.value.trim()) <= 0) {
+            console.log("NEGATIVE deuda: ", deuda.value.trim());
+            bt_Modificar.disabled = true;
+            ayuda_deuda_negativa.classList.remove('is-hidden');
+        } else {
+            ayuda_deuda_negativa.classList.add('is-hidden');
+        }
+    }
+
     function mensaje_descuento() {
         if (descuento.value.trim().toLowerCase().includes('e')) {
             bt_Modificar.disabled = true;
@@ -79,33 +113,86 @@ for (count = 1; count <= fichas_length.innerHTML; count++) {
             ayuda_descuento_cero_negativo.classList.add('is-hidden');
         }
     }
-
-    function mensaje_nota() {
-        if (nota.value.length === 0) {
-            ayuda_nota.classList.remove('is-hidden');
-        } else {
-            ayuda_nota.classList.add('is-hidden');
-        }
-    }
-
-    if (nota){
-        // Detectar si el usuario maneja input y llamar las funciones anteriores
-        nota.addEventListener('input', checar_contenido);
-        nota.addEventListener('input', mensaje_nota);
-    }
     
     if (descuento){
         descuento.addEventListener('input', mensaje_descuento);
         descuento.addEventListener('input', checar_contenido);
     }
 
+    if (deuda){
+        deuda.addEventListener('input', mensaje_deuda);
+        deuda.addEventListener('input', checar_contenido);
+    }*/
+
+    function validarDatos() {
+        let error = false;
+    
+        // Validar deuda total
+        if (deuda.value.length === 0 || deuda.value.trim() === '') {
+            ayuda_deuda_vacia.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_vacia.classList.add('is-hidden');
+        }
+    
+        if (deuda.value.trim().toLowerCase().includes('e')) {
+            ayuda_deuda_exponente.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_exponente.classList.add('is-hidden');
+        }
+    
+        if (parseFloat(deuda.value.trim()) <= 0) {
+            ayuda_deuda_negativa.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_deuda_negativa.classList.add('is-hidden');
+        }
+    
+        // Validar ajuste
+        if (descuento.value.trim().toLowerCase().includes('e')) {
+            ayuda_descuento_exponente.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_exponente.classList.add('is-hidden');
+        }
+    
+        if (descuento.value.length === 0) {
+            ayuda_descuento_vacio.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_vacio.classList.add('is-hidden');
+        }
+    
+        if (descuento.value.includes("-0")) {
+            ayuda_descuento_cero_negativo.classList.remove('is-hidden');
+            error = true;
+        } else {
+            ayuda_descuento_cero_negativo.classList.add('is-hidden');
+        }
+    
+        // Deshabilitar botón si hay error
+        bt_Modificar.disabled = error;
+    }
+
+
+    // Event Listeners para ambos campos
+    if (deuda) {
+        deuda.addEventListener('input', validarDatos);
+    }
+
+    if (descuento) {
+        descuento.addEventListener('input', validarDatos);
+    }
+     
 }
 
-function modificar(descuento, fecha_lim, nota, id, count) {
+function modificar(deuda, descuento, fecha_lim, nota, id, count) {
     const csrf = document.getElementById('_csrf').value;
     const alumno = document.getElementById('alumno').value;
     
     // Obtener dato de la ficha específica
+    const deudaNum = document.getElementById('deuda' + count).value;
     const descuentoNum = document.getElementById('descuento' + count).value;
     const fechaNum = document.getElementById('fecha_lim' + count).value; 
     const notaNum = document.getElementById('nota' + count).value;
@@ -131,6 +218,7 @@ function modificar(descuento, fecha_lim, nota, id, count) {
             'csrf-token': csrf
         },
         body: JSON.stringify({
+            deudaNum : deudaNum,
             descuentoNum : descuentoNum,
             fechaFormat : fechaFormat,
             notaNum : notaNum,

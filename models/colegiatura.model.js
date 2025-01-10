@@ -22,7 +22,7 @@ module.exports = class Colegiatura {
     }
 
     static fetchColegiaturaActiva(matricula) {
-        return db.execute(`SELECT DISTINCT(C.IDColegiatura), P.Nombre, montoPagadoTotal
+        return db.execute(`SELECT DISTINCT(C.IDColegiatura), P.Nombre, montoPagadoTotal, creditoColegiatura
         FROM Colegiatura AS C, Deuda AS D, Periodo AS P
         WHERE C.IDColegiatura = D.IDColegiatura
         AND C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = '1'
@@ -41,6 +41,10 @@ module.exports = class Colegiatura {
         JOIN Colegiatura AS C ON D.IDColegiatura = C.IDColegiatura 
         JOIN Periodo AS Per ON C.IDPeriodo = Per.IDPeriodo 
         WHERE P.fechaPago BETWEEN ? AND ? ORDER BY D.Matricula ASC`, [fechaInicio, fechaFin]);
+    }
+
+    static fetchCreditoColegiatura(IDColegiatura) {
+        return db.execute(`SELECT creditoColegiatura FROM Colegiatura WHERE IDColegiatura = ?`, [IDColegiatura]);
     }
 
 };

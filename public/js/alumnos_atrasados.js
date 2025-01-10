@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const atrasados = document.getElementById('atrasados').innerHTML;
     const totales = document.getElementById('totales').innerHTML;
 
-    let porcAtrasados = ((atrasados / totales) * 100).toFixed(2);
-    let porcNormal = (((totales - atrasados) / totales) * 100).toFixed(2);
+    let numAtrasados = atrasados;
+    let numNormal = (totales - atrasados);
 
     // Configuración y renderizado del gráfico
     new Chartist.Pie('#bar-chart', {
-        labels: ["Atrasados: " + porcAtrasados + "%", "A Tiempo " + porcNormal + "%"],
+        labels: ["Atrasados: " + numAtrasados, "A Tiempo: " + numNormal],
         series: [{
                 value: atrasados
             },

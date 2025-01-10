@@ -11,15 +11,15 @@ module.exports = class Fichas {
     }
 
     static fetch(valor_busqueda){
-        return db.execute(`SELECT IDDeuda, Pagado, montoAPagar, montoPagado, Descuento, notaModificacion, modificado_At,
+        return db.execute(`SELECT IDDeuda, Pagado, montoAPagar, montoPagado, Descuento, montoRecargos, notaModificacion, modificado_At,
         fechaLimitePago FROM Deuda
         JOIN Colegiatura on Deuda.IDColegiatura = Colegiatura.IDColegiatura
         JOIN Periodo ON Colegiatura.IDPeriodo = Periodo.IDPeriodo
         WHERE Deuda.Matricula = ? AND Periodo.periodoActivo = 1;`, [valor_busqueda]);
     }
 
-    static async update(descuento, fechaLimitePago, notaModificacion, modificador, id) {
-        const [rows, fields] = await db.execute(`CALL updateFicha(?,?,?,?,?)`, [descuento, fechaLimitePago, notaModificacion, modificador, id]);
+    static async update(deuda, descuento, fechaLimitePago, notaModificacion, modificador, id) {
+        const [rows, fields] = await db.execute(`CALL updateFicha(?,?,?,?,?,?)`, [deuda, descuento, fechaLimitePago, notaModificacion, modificador, id]);
         return rows;
     }
     
@@ -49,6 +49,10 @@ module.exports = class Fichas {
               AND Pagado = 0
         `, [uMatricula, uFechaInicio, uFechaFin]);
         return rows[0].total;
+    }
+
+    static actualizarMaterias(uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito){
+        db.execute(`CALL actualizarMaterias(?,?, ?, ?,?)`, [uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
     
 } 

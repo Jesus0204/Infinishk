@@ -67,7 +67,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         para no generar recargos en tu estado de cuenta. 
                     </p>
                     <p>
-                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "https://pagos.ivd.edu.mx/auth/login" > ViaPago < /a>
+                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>
                     </p>
                     <p>
                         ¡Gracias y bonito día!
@@ -123,7 +123,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     </p>
                     <p>
                         Para pagar o consultar tu estado de cuenta, 
-                        puedes entrar a < a href = "https://pagos.ivd.edu.mx/auth/login" > ViaPago < /a>
+                        puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>
                     </p>
                     <p>
                         ¡Gracias y bonito día!
@@ -278,7 +278,14 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                 });
                 
                 for (let curso of cursos) {
-                    // Agarrar el horario y formatearlo para la base
+                    // Verificar en la base de datos si el curso ya existe
+                    const existeCurso = await Grupo.checkGrupoExistente(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
+                
+                    if (existeCurso) {
+                        continue; // Saltar este curso
+                    }
+                
+                    // Formatear el horario para la base
                     const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
                     let claseFormato = '';
                     for (let countClase = 0; countClase < grupoHorarioValidado.length; countClase++) {
@@ -288,6 +295,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                             claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino + ', ';
                         }
                     }
+                
                     // Guardar el grupo en la base de datos
                     await Grupo.saveGrupo(
                         alumnosNoConfirmados[count].Matricula,
@@ -298,17 +306,17 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         claseFormato,
                         curso.startDateFormat,
                         curso.endDateFormat,
-                        curso.idGrupo
+                        curso.idGrupo,
+                        periodoActivo
                     );
                 }
-    
+                    
                 // Acciones adicionales después de manejar cada grupo
                 await Colegiatura.createColegiaturasFichas(plan6PagosID, alumnosNoConfirmados[count].Matricula, precioActual);
-                await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula);
+                await EstudianteProfesional.updateHorarioAccepted(alumnosNoConfirmados[count].Matricula, periodoActivo);
             }
 
         } catch(error) {
-            console.log(error);
             alumnos_fallo.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
         }
     }

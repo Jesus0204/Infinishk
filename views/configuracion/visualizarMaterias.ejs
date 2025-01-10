@@ -1,0 +1,120 @@
+<%- include('../includes/head.ejs', { 
+    username: username, 
+    permisos: permisos, 
+    rol: rol 
+}) %>
+
+<style>
+    input:focus {
+        border: 2px solid #910106 !important;
+    }
+
+    input:hover {
+        border: 2px solid #5a6581 !important;
+    }
+
+    .table-container {
+        position: relative;
+    }
+
+    .pagination-container {
+        margin-top: 20px;
+    }
+
+    .pagination-btn {
+        margin: 0 5px;
+    }
+
+    .is-hidden {
+        display: none; /* Para ocultar el contenido */
+    }
+
+    .is-active {
+        font-weight: bold; /* Estilo para la pestaña activa */
+    }
+
+    /* Estilo para el botón de regresar */
+    .back-button {
+        margin-bottom: 20px; /* Espacio debajo del botón */
+        background: none; /* Sin fondo */
+        border: none; /* Sin borde */
+        padding-left: 10px; /* Sin padding */
+        cursor: pointer; /* Cursor de mano */
+        font-size: 1.5em; /* Tamaño de fuente */
+        color: #910106; /* Color de la flecha */
+    }
+
+    /* Estilo para bajar el nombre del plan */
+    .plan-name {
+        margin-top: 20px; /* Espaciado superior */
+    }
+</style>
+
+<div class="column is-8">
+    <form action="/configuracion/visualizarPlanes" method="GET">
+        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+        <button class="back-button" type="submit">
+            <i class="fa-solid fa-arrow-left"></i> <!-- Icono de flecha de Font Awesome -->
+        </button>
+    </form>
+    <label class="label is-large has-text-danger has-text-weight-semibold" style="padding-left: 20px;"> <!-- Clase para el nombre -->
+        <%= nombrePlan %>
+    </label>
+</div>
+
+<section class="section">
+    <div class="tabs is-boxed">
+        <ul>
+            <% semestres.forEach((semestre, index) => { %>
+                <li class="<%= index === 0 ? 'is-active' : '' %>" id="nav_<%= semestre.semestre %>">
+                    <a onclick="showSemestre('<%= semestre.semestre %>')">
+                        <span class="icon is-small"><i class="fa-solid fa-book"></i></span>
+                        <span><%= semestre.semestre %></span>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <% semestres.forEach((semestre) => { %>
+        <div id="<%= semestre.semestre %>" class="is-hidden">
+            <table class="table is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Creditos</th>
+                        <th>IDSep</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody_<%= semestre.semestre %>">
+                    <% semestre.materias.forEach((materia) => { %>
+                        <tr>
+                            <td><%= materia.IDMateria %></td>
+                            <td><%= materia.Nombre %></td>
+                            <td><%= materia.Creditos %></td>
+                            <td><%= materia.IDMateriaExterna %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+            <!-- Contenedor de la paginación -->
+            <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" id="prev-button_<%= semestre.semestre %>">Anterior</a>
+                <a class="pagination-next" id="next-button_<%= semestre.semestre %>">Siguiente</a>
+                <ul class="pagination-list pagination-numbers-container" id="pagination-numbers_<%= semestre.semestre %>">
+                    <!-- Números de paginación aquí -->
+                </ul>
+            </nav>
+        </div>
+    <% }) %>
+</section>
+
+<div id="semestresData" style="display:none;">
+    <%= JSON.stringify(semestres) %>
+</div>
+
+
+<%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/visualizarMaterias.js"></script>

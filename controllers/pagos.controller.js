@@ -20,6 +20,7 @@ const stream = require('stream');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
+const PagoExtra = require('../models/pago_extra.model');
 moment.locale('es-mx');
 
 exports.get_registrar_pago_manual = (request, response, next) => {
@@ -603,9 +604,55 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
     const nota = request.body.nota;
     const metodo = request.body.metodo;
     const pago = request.body.pago;
+    const monto_custom = parseFloat(request.body['monto-custom']);
 
     Liquida.fetchID_Pendientes(matricula)
         .then(async ([pendientes, fieldData]) => {
+            // Si se escoge 'Otro'
+            if (pago == 'custom'){
+                try {
+                    // Crear categoría de Pago Extra con datos manuales
+                    const pago_extra = new Pago_Extra(request.body['motivo-custom'], monto_custom);
+                    await pago_extra.save();
+                
+                    // Obtener el ID de la nueva categoría de Pago Extra
+                    const [rows] = await Pago_Extra.fetchID(monto_custom);
+                    const pagoID = rows[0]?.IDPagosExtras;
+                
+                    if (!pagoID) {
+                        throw new Error('No se pudo obtener el ID del Pago Extra.');
+                    }
+                
+                    console.log('Pago ID:', pagoID);
+                
+                    // Crear solicitud pagada de la nueva categoría de Pago Extra
+                    await Liquida.save_pago_manual(matricula, pagoID, fecha, metodo, nota)
+                        .then(async ([rows, fieldData]) => {
+                            // Definir la matrícula que use la función post_fetch_datos
+                            request.body.buscar = matricula;
+                
+                            // Llamar la función para hacer el render
+                            await post_fetch_datos(request, response, next);
+                        })
+                        .catch((error) => {
+                            console.error('Error while saving manual payment:', error);
+                            response.status(500).render('500', {
+                                username: request.session.username || '',
+                                permisos: request.session.permisos || [],
+                                rol: request.session.rol || "",
+                                error_alumno: false,
+                            });
+                        });
+                } catch (error) {
+                    console.error('Error in processing pago extra:', error);
+                    response.status(500).render('500', {
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        error_alumno: false,
+                    });
+                }
+            }
             // Si no hay una solicitud de pago se guarda dicho pago
             if (pendientes.length == 0) {
                 Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
@@ -740,10 +787,51 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 if (monto_a_usar <= 0) {
                     break;
                 } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                    // Se guarda el monto de deuda actual 
+                    let montoDeudaActual = deuda.montoAPagar - deuda.montoPagado; 
+                    let recargos = false;
+                    // Si se pagó más del monto total y tiene recargos, se quitan los recargos
+                    if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                        if (deuda.Recargos == 1) {
+                            Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            // Aquí es donde se cambia el monto
+                            montoDeudaActual = deuda.montoSinRecargos - deuda.montoPagado; 
+                            recargos = true;
+                        }
+                    }
+
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                    await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                    await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
+                    await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                    await Colegiatura.update_Colegiatura(montoDeudaActual, request.body.IDColegiatura);
+
+                    if (recargos == true) {
+                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+                        continue;
+                    }
                 } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                    // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                    if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
+                        }
+                    } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), request.body.IDColegiatura);
+
+                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                continue;
+                            }
+                        }
+                    }
+
                     // Como el monto a usar es menor, se usa monto a usar (lo que resto)
                     await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                     await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
@@ -809,13 +897,19 @@ exports.post_subir_archivo = (request, response, next) => {
             Importe,
             Concepto
         } = data;
+
+        const rawFecha = Fecha.replace(/['"]+/g, '');
+
         const Referencia = Concepto.substring(0, 7);
         const Matricula = Concepto.substring(0, 6);
         const inicioRef = Concepto.substring(0, 1);
-        const dia = Fecha.substring(1, 3);
-        const mes = Fecha.substring(3, 5);
-        const anio = Fecha.substring(5, 9);
-        const fechaFormato = `${anio}-${mes}-${dia} ${Hora}`;
+        const dia = rawFecha.substring(0, 2);  // Extrae el día
+        const mes = rawFecha.substring(2, 4);  // Extrae el mes
+        const anio = rawFecha.substring(4, 8);  // Extrae el año
+
+        // Formatear correctamente la fecha como yyyy-mm-dd
+        const fechaFormato = `${anio}-${mes}-${dia}`;
+
         filas.push({
             fechaFormato,
             Hora,
@@ -860,14 +954,14 @@ exports.post_subir_archivo = (request, response, next) => {
                         Number(deudaPagada[0][0].montoAPagar.toFixed(2));
                 }
 
-                if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && pagoCompleto[0][0].fechaPago !== undefined) {
+                if (pagoCompleto && pagoCompleto[0] && pagoCompleto[0][0] && pagoCompleto[0][0].fechaPago !== undefined && pagoCompleto[0][0].matricula !== undefined) {
                     const fechaParseada = new Date(pagoCompleto[0][0].fechaPago)
-                    const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD HH:mm');
+                    const fechaFormateada = moment(fechaParseada).format('YYYY-MM-DD');
 
                     const montoRedondeado = Math.round(pagoCompleto[0][0].montoPagado * 100) / 100;
                     const importeRedondeado = Math.round(fila.Importe * 100) / 100;
 
-                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato) {
+                    if (montoRedondeado === importeRedondeado && fechaFormateada === fila.fechaFormato && pagoCompleto[0][0].matricula === fila.Matricula) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
@@ -958,6 +1052,7 @@ exports.post_subir_archivo = (request, response, next) => {
 
 exports.post_registrar_transferencia = async (request, response, next) => {
     let success = true;
+    let mensajeError = ''; // Variable para almacenar mensajes de error
     const pagosRegistrar = [];
     const nombre = request.body.nombre;
     const matricula = request.body.matricula;
@@ -968,54 +1063,117 @@ exports.post_registrar_transferencia = async (request, response, next) => {
     const fecha = request.body.fecha;
     const nota = request.body.nota;
 
-
     try {
         if (tipoPago === 'Pago de Colegiatura') {
             const deuda = await Deuda.fetchDeuda(matricula);
             const idDeuda = await Deuda.fetchIDDeuda(matricula);
+
+            // Verificar si idDeuda está definido
+            if (!idDeuda || !idDeuda[0] || !idDeuda[0][0] || !idDeuda[0][0].IDDeuda) {
+                return response.json({
+                    success: false,
+                    message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
+                });
+            }
+
             const colegiatura = await Deuda.fetchColegiatura(idDeuda[0][0].IDDeuda);
             const idColegiatura = colegiatura[0][0].IDColegiatura;
 
             if (typeof deuda[0]?.[0]?.montoAPagar === 'undefined') {
-                response.json({
+                return response.json({
                     success: false,
                     message: 'Este alumno ya no tiene una deuda, por lo que no se puede registrar un pago de Colegiatura.'
                 });
-                return;
-            }            
+            }
 
-            Deuda.fetchNoPagadas(idColegiatura)
+            await Deuda.fetchNoPagadas(idColegiatura)
                 .then(async ([deudas_noPagadas, fieldData]) => {
-                    // Guardas el pago completo del alumno
-                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha)
+                    await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha);
 
-                    // El monto inicial a usar es lo que el usuario decidió
                     let monto_a_usar = request.body.importe;
                     for (let deuda of deudas_noPagadas) {
                         if (monto_a_usar <= 0) {
                             break;
                         } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                            // Se guarda el monto de deuda actual 
+                            let montoDeudaActual = deuda.montoAPagar - deuda.montoPagado; 
+                            let recargos = false;
+                            // Si se pagó más del monto total y tiene recargos, se quitan los recargos
+                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (deuda.Recargos == 1) {
+                                    Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    // Aquí es donde se cambia el monto
+                                    montoDeudaActual = deuda.montoSinRecargos - deuda.montoPagado; 
+                                    recargos = true;
+                                }
+                            }
+
                             // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                            await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                            await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
+                            await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(montoDeudaActual, idColegiatura);
+
+                            if (recargos == true) {
+                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+                                continue;
+                            }
+                            
                         } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
-                            // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                            // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                            if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
+                                }
+                            } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), idColegiatura);
+
+                                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
+
+                                        continue;
+                                    }
+                                }
+                            }
+
                             await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
                             await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
                         }
 
-                        // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
                         monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
                     }
 
-                    // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
                     if (monto_a_usar > 0) {
                         await Alumno.update_credito(matricula, monto_a_usar);
                     }
                 })
+                .catch(error => {
+                    success = false;
+                    mensajeError = 'Error al procesar el pago de colegiatura';
+                    console.error(error);
+                });
         } else if (tipoPago === 'Pago de Diplomado') {
             const idDiplomado = await Cursa.fetchDiplomadosCursando(matricula);
-            PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota);
+            
+            if (!idDiplomado || !idDiplomado[0] || !idDiplomado[0][0] || !idDiplomado[0][0].IDDiplomado) {
+                return response.json({
+                    success: false,
+                    message: 'No se pudo encontrar el Diplomado asociado al alumno.'
+                });
+            }
+
+            await PagoDiplomado.save_transferencia(matricula, idDiplomado[0][0].IDDiplomado, fecha, importe, nota)
+                .catch(error => {
+                    success = false;
+                    mensajeError = 'Error al registrar el pago del diplomado';
+                    console.error(error);
+                });
+
         } else if (tipoPago === 'Pago a Registrar') {
             pagosRegistrar.push({
                 nombre,
@@ -1026,33 +1184,44 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 tipoPago,
                 fecha
             });
+            // Aquí podrías procesar los pagos a registrar más adelante
         } else if (tipoPago === 'Pago Extra') {
             const idLiquida = await Liquida.fetchID(matricula);
 
             if (idLiquida[0] && idLiquida[0][0] && typeof idLiquida[0][0].IDLiquida !== 'undefined') {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida)
+                    await Liquida.update_transferencia(nota, fecha, idLiquida[0][0].IDLiquida);
                 } else {
                     success = false;
+                    mensajeError = 'No se pudo encontrar el pago extra.';
                 }
             } else {
                 const idPagoExtra = await Pago_Extra.fetchID(importe);
                 if (idPagoExtra[0] && idPagoExtra[0][0] && typeof idPagoExtra[0][0].IDPagosExtras !== 'undefined') {
-                    Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
+                    await Liquida.save_transferencia(matricula, idPagoExtra[0][0].IDPagosExtras, fecha, nota);
                 } else {
                     success = false;
+                    mensajeError = 'No se pudo encontrar el pago extra.';
                 }
             }
         }
-        response.json({
-            success: success
-        });
+
+        if (success) {
+            response.json({
+                success: true
+            });
+        } else {
+            response.json({
+                success: false,
+                message: mensajeError || 'Hubo un problema al registrar la transferencia.'
+            });
+        }
     } catch (error) {
-        success = false;
-        console.log(error);
+        console.error(error);
         response.json({
-            success: success
+            success: false,
+            message: 'Error inesperado en el servidor, por favor contacta a ayuda.'
         });
     }
-}
+};

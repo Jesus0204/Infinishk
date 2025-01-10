@@ -165,7 +165,7 @@ exports.post_registrar_usuario = async (request, response, next) => {
     });
 
     // Enlace con el token incluido
-    const setPasswordLinkNoAlumno = `https://pagos.ivd.edu.mx/auth/set_password?token=${token_noAlumno}`;
+    const setPasswordLinkNoAlumno = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token_noAlumno}`;
 
     const msg_noAlumno = {
         to: correo,
@@ -237,8 +237,6 @@ exports.post_registrar_usuario = async (request, response, next) => {
        const fechaInscripcion = request.body.fechaInscripcion.split("/").reverse().join("-");
        const fechaModificacion = fechaInscripcion + ' 08:00:00';
 
-       console.log(correo_alumno);
-
        const [usuarioExistente, fieldData] = await Usuario.fetchOne(matricula_alumno);
        if (usuarioExistente.length > 0) {
            return response.render('configuracion/registrar_usuario', {
@@ -267,10 +265,10 @@ exports.post_registrar_usuario = async (request, response, next) => {
        });
 
        // Enlace con el token incluido
-       const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+       const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
        const msgAlumno = {
-           to: correo,
+           to: correo_alumno,
            from: {
                name: 'VIA PAGO',
                email: 'soporte@pagos.ivd.edu.mx',
@@ -394,7 +392,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -425,7 +423,7 @@ exports.post_activar_usuario = async (request, response, next) => {
         const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '3d' });
         
         // Enlace con el token incluido
-        const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
 
         const msg = {
             to: correo,
@@ -778,7 +776,7 @@ exports.post_exportar_datos = async (request, response, next) => {
 }
 
 exports.get_actualizar_base = (request, response, next) => {
-    response.render('configuracion/actualizarBase', {
+    response.render('configuracion/gestionarDatos', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
@@ -886,7 +884,7 @@ exports.get_materias = async (request, response, next) => {
             } = course;
 
             const semestre = course.plans_courses?.[0]?.semester;
-            const carrera = course.plans?.[0]?.degree?.name;
+            const carrera = course.plans?.[0]?.degree?.name + " " + course.plans?.[0]?.version;
             return {
                 id: id,
                 name: name,
@@ -940,6 +938,15 @@ exports.get_materias = async (request, response, next) => {
         }
 };
 
+function limpiarGuionFecha(fecha) {
+    // Verificamos si la fecha empieza con un guion '-'
+    if (fecha.startsWith('-')) {
+        // Eliminamos solo el primer guion
+        return fecha.replace('-', '');
+    }
+    // Si no tiene guion, devolvemos la fecha original
+    return fecha;
+}
 
 exports.get_periodos = async (request, response, next) => {
 
@@ -961,19 +968,14 @@ exports.get_periodos = async (request, response, next) => {
             const endDate = new Date(end_date);
             const status = active ? 1 : 0;
 
-            const yearStart = startDate.getFullYear();
-            const monthStart = startDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
-            const dayStart = startDate.getDate();
-
-            const yearEnd = endDate.getFullYear();
-            const monthEnd = endDate.getMonth() + 1; // El mes comienza desde 0 (enero es 0)
-            const dayEnd = endDate.getDate();
+            const start = limpiarGuionFecha(moment(startDate).format('YYYY-MM-DD'));
+            const end = limpiarGuionFecha(moment(endDate).format('YYYY-MM-DD'));
 
             return {
                 id: id,
                 name: code,
-                start: `${yearStart}-${monthStart}-${dayStart}`,
-                end: `${yearEnd}-${monthEnd}-${dayEnd}`,
+                start: start,
+                end: end,
                 status: status,
             };
         });
@@ -990,7 +992,6 @@ exports.get_periodos = async (request, response, next) => {
             }
         }
 
-        // Filtra los usuarios que no fueron actualizados
         const periodosSinActualizar = updatedPeriods.filter(period => !period.updated);
 
         for (let count = 0; count < periodosSinActualizar.length; count++){
@@ -1019,7 +1020,12 @@ exports.get_periodos = async (request, response, next) => {
                     console.error('Error registrando period ${period.name}:', error);
                     period.updated = false;
                 }
-            }
+        }
+
+        const [periodoActivo, fieldData] = await Periodo.fetchActivo();
+        const IDPeriodoActivo = periodoActivo[0].IDPeriodo;
+
+        EstudianteProfesional.crearNuevasConfirmaciones(IDPeriodoActivo);
 
         response.json({
             success: true,
@@ -1056,8 +1062,8 @@ exports.post_alumnos = async (request,response,next) => {
     
         //const token = jwt.sign({ matricula: matricula }, secretKey, { expiresIn: '11d' });
             
-            // Enlace con el token incluido
-        //const setPasswordLink = `https://pagos.ivd.edu.mx/auth/set_password?token=${token}`;
+        // Enlace con el token incluido
+        //const setPasswordLink = `${process.env.ENVIRONMENT_URL}/auth/set_password?token=${token}`;
     
         await Alumno.save_alumno(matricula,nombre,apellidos,referencia);
         await EstudianteProfesional.save_alumno_profesional(matricula,semestre,planEstudio,beca);
@@ -1115,4 +1121,151 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
         });
     }
 
-}
+};
+
+exports.fetchPeriodos = async (request, response, next) => {
+    try {
+        const periods = await Periodo.fetchAll();
+
+        const parsedPeriods = periods[0].map(period => {
+            const {
+                IDPeriodo,
+                fechaInicio,
+                fechaFin,
+                Nombre,
+                periodoActivo
+            } = period;
+
+            const formattedStartDate = moment(fechaInicio).tz('America/Mexico_City').format('LL');
+            const formattedEndDate = moment(fechaFin).tz('America/Mexico_City').format('LL');
+            const status = periodoActivo ? 1 : 0;
+
+            return {
+                id: IDPeriodo,
+                name: Nombre,
+                start: formattedStartDate,
+                end: formattedEndDate,
+                startDateRaw: fechaInicio,
+                status: status,
+            };
+        });
+
+        const sortedPeriods = parsedPeriods.sort((a, b) => {
+
+            if (b.status !== a.status) {
+                return b.status - a.status;
+            }
+
+            return new Date(b.startDateRaw) - new Date(a.startDateRaw);
+        });
+
+        response.render('configuracion/visualizarPeriodos', {
+            periodos: sortedPeriods,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los periodos:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
+exports.fetchPlanes = async (request, response, next) => {
+    try {
+        const planes = await Materia.fetchPlanes();
+
+        // Mapeo de los planes obtenidos
+        const parsedPlanes = planes[0].map(plan => {
+            return {
+                name: plan.planEstudios
+            };
+        });
+
+        // Renderizando la vista EJS con los planes de estudio
+        response.render('configuracion/visualizarPlanes', {
+            planes: parsedPlanes,
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los planes de estudio:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
+exports.fetchMaterias = async (request, response, next) => {
+    try {
+        const nombrePlan = request.body.plan;
+
+        // Fetch materias from the database
+        const [materias] = await Materia.fetchMaterias(nombrePlan);
+
+        // Crear variables individuales para cada materia
+        const materiasIndividuales = materias.map((materia, index) => {
+            const { IDMateria, Nombre, semestreImpartido, Creditos, IDMateriaExterna } = materia;
+            
+            // Aquí puedes asignar a variables específicas si necesitas un nombre concreto
+            return {
+                [`materia_${index + 1}`]: {
+                    IDMateria,
+                    IDMateriaExterna,
+                    Nombre,
+                    semestreImpartido,
+                    Creditos,
+                }
+            };
+        });
+
+        // Agrupar materias por semestre
+        const materiasPorSemestre = materias.reduce((acc, materia) => {
+            const semestre = materia.semestreImpartido || "Sin semestre";
+            if (!acc[semestre]) {
+                acc[semestre] = [];
+            }
+            acc[semestre].push(materia);
+            return acc;
+        }, {});
+
+        // Convertir el objeto a un array para pasar a la vista
+        const semestres = Object.keys(materiasPorSemestre).map(semestre => ({
+            semestre,
+            materias: materiasPorSemestre[semestre],
+        }));
+
+        response.render('configuracion/visualizarMaterias', {
+            nombrePlan,
+            semestres,
+            materiasIndividuales,  // Pasar el array de materias individuales si lo necesitas en la vista
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            csrfToken: request.csrfToken()
+        });
+
+    } catch (error) {
+        console.error('Error al obtener las materias:', error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
