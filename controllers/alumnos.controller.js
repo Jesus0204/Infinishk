@@ -354,8 +354,13 @@ exports.post_fetch_datos = async (request, response, next) => {
                 creditoColegiatura = creditoIDColegiatura[0].creditoColegiatura;
             }
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
-            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo)
-            confirmacion = conf[0][0].horarioConfirmado;
+            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo);
+            if (conf[0].length > 0) {
+                confirmacion = conf[0][0].horarioConfirmado;
+            }
+            else {
+                confirmacion = 0;
+            }
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
