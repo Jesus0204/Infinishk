@@ -16,6 +16,7 @@ router.get('/alumnos_atrasados', isAuth, can_AlumnosAtrasados, alumnosController
 
 //Consultar Alumno
 router.get('/fetch_datos', isAuth, can_ConsultarAlumno, alumnosController.get_datos);
+router.get('/datos_alumno/:matricula', isAuth, can_ConsultarAlumno, alumnosController.get_fetch_datos);
 router.post('/datos_alumno', isAuth, can_ConsultarAlumno, alumnosController.post_fetch_datos);
 router.post('/datos_alumno/modify', isAuth, can_ConsultarAlumno, alumnosController.post_datos_modify);
 router.post('/datos_alumno/dar_baja_grupo', isAuth, can_ConsultarAlumno, alumnosController.post_dar_baja_grupo);
