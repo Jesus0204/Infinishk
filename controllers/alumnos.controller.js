@@ -639,7 +639,8 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                             claseFormato,
                             curso.startDateFormat,
                             curso.endDateFormat,
-                            curso.idGrupo
+                            curso.idGrupo,
+                            periodoActivo
                         );
 
                         await Fichas.actualizarMaterias(matricula, creditoactual, curso.idMateria, Beca, Credito);
