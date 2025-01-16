@@ -293,7 +293,7 @@ exports.post_eliminar_pago_dip = async (request, response, next) => {
 
 exports.get_fetch_datos = async (request, response, next) => {
     try {
-        let matches = request.params.matricula.match(/(\d+)/);
+        let matches = request.params.matricula.match(/\d+$/);
         const matricula = matches[0];
         const periodo = await Periodo.fetchActivo();
         const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
@@ -437,7 +437,7 @@ exports.get_fetch_datos = async (request, response, next) => {
 
 exports.post_fetch_datos = async (request, response, next) => {
     try {
-        let matches = request.body.buscar.match(/(\d+)/);
+        let matches = request.body.buscar.match(/\d+$/);
         const matricula = matches[0];
 
         response.redirect(`/alumnos/datos_alumno/${matricula}`);
