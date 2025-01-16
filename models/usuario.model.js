@@ -74,11 +74,11 @@ module.exports = class Usuario {
     }
 
     static fetchActivos() {
-        return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 1');
+        return db.execute('SELECT * FROM Usuario AS U, Posee AS P, Rol AS R WHERE UsuarioActivo = 1 AND U.IDUsuario = P.IDUsuario AND P.IDRol = R.IDRol');
     }
 
     static fetchNoActivos() {
-        return db.execute('SELECT * FROM Usuario WHERE UsuarioActivo = 0');
+        return db.execute('SELECT * FROM Usuario AS U, Posee AS P, Rol AS R WHERE UsuarioActivo = 0 AND U.IDUsuario = P.IDUsuario AND P.IDRol = R.IDRol');
     }
 
     static update(IDUsuario, estado) {

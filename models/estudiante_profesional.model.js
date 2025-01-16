@@ -58,5 +58,9 @@ module.exports = class estudianteProfesional {
     static async crearNuevasConfirmaciones(IDPeriodo){
         db.execute(`CALL confirmacion_nuevo_ciclo(?)`, [IDPeriodo])
     }
+
+    static crearNuevaConfirmacion(matricula, IDPeriodo){
+        return db.execute(`INSERT INTO Confirma (Matricula, IDPeriodo) VALUES (?,?)`, [matricula, IDPeriodo]);
+    }
     
 }
