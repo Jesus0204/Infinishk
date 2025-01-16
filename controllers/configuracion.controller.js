@@ -1070,6 +1070,11 @@ exports.post_alumnos = async (request,response,next) => {
         await Usuario.saveUsuario(matricula,email);
         await Posee.savePosee(matricula,3);
         await Usuario.update(matricula, 1);
+
+        const [periodo, fieldData] = await Periodo.fetchActivo();
+        const periodoActivo = periodo[0].IDPeriodo;
+
+        await EstudianteProfesional.crearNuevaConfirmacion(matricula, periodoActivo);
     
         /*const msg = {
             to: email,
