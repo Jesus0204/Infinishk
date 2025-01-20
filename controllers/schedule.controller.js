@@ -249,8 +249,9 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         } = schedule;
 
                         // Crear objetos Date a partir de las horas de inicio y final
-                        const startDate = new Date(start_hour);
-                        const endDate = new Date(end_hour);
+                        // Convierte las horas usando moment-timezone
+                        const startDate = moment.tz(start_hour, 'America/Mexico_City');
+                        const endDate = moment.tz(end_hour, 'America/Mexico_City');
 
                         const fechaInicio = moment(startDate).format('HH:mm');
                         const fechaTermino = moment(endDate).format('HH:mm');

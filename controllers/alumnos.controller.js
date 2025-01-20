@@ -601,8 +601,9 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                             end_hour = '',
                         } = schedule;
 
-                        const startDate = new Date(start_hour);
-                        const endDate = new Date(end_hour);
+                        // Convierte las horas usando moment-timezone
+                        const startDate = moment.tz(start_hour, 'America/Mexico_City');
+                        const endDate = moment.tz(end_hour, 'America/Mexico_City');
 
                         const fechaInicio = moment(startDate).format('HH:mm');
                         const fechaTermino = moment(endDate).format('HH:mm');
