@@ -635,6 +635,14 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                 for (let curso of cursos) {
                     // Verificamos si el grupo ya está registrado
                     const grupoExistente = await Grupo.fetchGrupo(matricula, curso.idMateria, curso.idGrupo);
+
+                    if(grupoExistente){
+                        if(grupoExistente[0][0].Activo === 1){
+                            continue; // Saltar este curso
+                        }
+                            await Grupo.activateGrupo(matricula,curso.idGrupo, periodoActivo);
+                            continue; // Saltar este curso
+                    }
                     
                     if (!grupoExistente.length) {
                         // Si el grupo no existe, lo guardamos
@@ -658,7 +666,8 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                             curso.startDateFormat,
                             curso.endDateFormat,
                             curso.idGrupo,
-                            periodoActivo
+                            periodoActivo,
+                            1
                         );
 
                         await Fichas.actualizarMaterias(matricula, creditoactual, curso.idMateria, Beca, Credito);

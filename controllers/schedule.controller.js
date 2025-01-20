@@ -283,7 +283,11 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const existeCurso = await Grupo.checkGrupoExistente(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
                 
                     if (existeCurso) {
-                        continue; // Saltar este curso
+                        if(existeCurso[0][0].Activo === 1){
+                            continue; // Saltar este curso
+                        }
+                            await Grupo.activateGrupo(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
+                            continue; // Saltar este curso
                     }
                 
                     // Formatear el horario para la base
@@ -308,7 +312,8 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         curso.startDateFormat,
                         curso.endDateFormat,
                         curso.idGrupo,
-                        periodoActivo
+                        periodoActivo,
+                        1
                     );
                 }
                     

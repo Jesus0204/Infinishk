@@ -224,15 +224,25 @@ exports.post_confirmar_horario = async (request, response, next) => {
     const precioCredito = await PrecioCredito.fetchIDActual();
     const precioActual = precioCredito[0][0].IDPrecioCredito;
     const matricula = request.session.username
+
     const idMateria = ensureArray(request.body['idMateria[]']);
     const nombreProfesorCompleto = ensureArray(request.body['nombreProfesorCompleto[]']);
     const salon = ensureArray(request.body['salon[]']);
     const fechaInicio = ensureArray(request.body['fechaInicio[]']);
     const fechaFin = ensureArray(request.body['fechaFin[]']);
     const idGrupo = ensureArray(request.body['idGrupo[]']);
-    const idGrupoEliminado = ensureArray(request.body['idGrupoEliminado[]']);
     const grupoHorario = ensureArray(request.body['grupoHorario[]']);
     const grupoHorarioValidado = grupoHorario.map(item => JSON.parse(item));
+
+
+    const idGrupoEliminado = ensureArray(request.body['idGrupoEliminado[]']);
+    const nombreProfesorCompletoEliminado = ensureArray(request.body['nombreProfesorCompletoEliminado[]']);
+    const salonEliminado = ensureArray(request.body['salonEliminado[]']);
+    const grupoHorarioEliminado = ensureArray(request.body['grupoHorarioEliminado[]']);
+    const grupoHorarioValidadoEliminado = grupoHorarioEliminado.map(item => JSON.parse(item));
+    const fechaInicioEliminado = ensureArray(request.body['fechaInicioEliminado[]']);
+    const fechaFinEliminado = ensureArray(request.body['fechaFinEliminado[]']);
+    const idMateriaEliminado = ensureArray(request.body['idMateriaEliminado[]']);
 
     try {
         // Iterar sobre los cursos confirmados
@@ -258,7 +268,11 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const existeCurso = await Grupo.checkGrupoExistente(matricula, IDGrupo, periodoActivo);
                 
             if (existeCurso) {
-                continue; // Saltar este curso
+                if(existeCurso[0][0].Activo === 1){
+                    continue; // Saltar este curso
+                }
+                    await Grupo.activateGrupo(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
+                    continue; // Saltar este curso
             }
 
             // Guardar el grupo en la base de datos
@@ -272,12 +286,42 @@ exports.post_confirmar_horario = async (request, response, next) => {
                 fechaInicioCurso,
                 fechaFinCurso,
                 IDGrupo,
-                periodoActivo
+                periodoActivo,
+                1
             );
         }
 
         for (let i = 0; i < idGrupoEliminado.length; i++) {
             const IDGrupoEliminado = idGrupoEliminado[i];
+            const profesor = nombreProfesorCompletoEliminado[i];
+            const salonCurso = salonEliminado[i];
+            let horarioCurso = grupoHorarioValidadoEliminado[i];
+            const fechaInicioCurso = moment(fechaInicioEliminado[i], 'LL').format('YYYY-MM-DD');
+            const fechaFinCurso = moment(fechaFinEliminado[i], 'LL').format('YYYY-MM-DD');
+            const IDMateria = idMateriaEliminado[i];
+
+            let horarioBaseDatos = '';
+            for (let count = 0; count < horarioCurso.length; count++) {
+                if ((count + 1) === horarioCurso.length) {
+                    horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino;
+                } else {
+                    horarioBaseDatos += horarioCurso[count].diaSemana + ' ' + horarioCurso[count].fechaInicio + ' - ' + horarioCurso[count].fechaTermino + ', ';
+                }
+            }
+
+            await Grupo.saveGrupo(
+                request.session.username,
+                IDMateria,
+                precioActual,
+                profesor,
+                salonCurso,
+                horarioBaseDatos,
+                fechaInicioCurso,
+                fechaFinCurso,
+                IDGrupoEliminado,
+                periodoActivo,
+                0
+            );
             await destroyGroup(request.session.username, IDGrupoEliminado)
         }
 
