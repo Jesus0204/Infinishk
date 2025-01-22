@@ -1,0 +1,36 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<style>
+    .button:hover {
+        background-color: #5a6581 !important;
+        border-color: #910106 !important;
+    }
+
+    .cerrar-sesion-button:hover {
+    border: solid #ffffff !important;
+    background-color: #000000 !important;
+    }
+</style>
+
+<section class="section">
+    <div class="columns">
+        <div class="column is-narrow">
+            <a id="Boton_regresar" type="submit" class="is-responsive"
+                onclick="regresar()">
+                <span class="icon">
+                    <i class="fas fa-arrow-left fa-2x" style="margin-top: 0.5em;"></i></i>
+                </span>
+            </a>
+        </div>
+        <div class="column">
+            <label class="label is-large has-text-danger has-text-weight-semibold">ACTUALIZAR PAGO</label>
+        </div>
+    </div>
+
+</section>
+<%- include('../includes/foot.ejs') %>
+<script type="text/javascript" src="/js/boton_regresar.js"></script>

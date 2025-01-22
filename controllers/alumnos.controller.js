@@ -291,6 +291,16 @@ exports.post_eliminar_pago_dip = async (request, response, next) => {
     }
 }
 
+// Actualizar Pago
+exports.post_fetch_actualizar = (request, response, next) => {
+    response.render('alumnos/actualizar_pago', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
+    }
+)};
+
 exports.get_fetch_datos = async (request, response, next) => {
     try {
         let matches = request.params.matricula.match(/\d+$/);

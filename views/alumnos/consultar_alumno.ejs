@@ -371,10 +371,6 @@
                             style="background-color: #5a6581; color:#ffffff;">
                             ¡Pago eliminado! Recargando página...
                         </div>
-                        <div id="modificacionPE" class="notification is-hidden"
-                            style="background-color: #5a6581; color:#ffffff;">
-                            ¡Pago actualizado! Recargando página...
-                        </div>
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
@@ -429,14 +425,17 @@
                                 <% if (contienePermiso(permisos, 'Actualizar Pago') == true) { %>
                                     <td>
                                         <div class="column" style="text-align: center;">
-                                            <button type="button" id="Boton_modificar"
-                                                class="tag is-size-6 btn-actualizar-pago"
-                                                style="background-color: #fdf2cc;" 
-                                                data-target="modal-confirmar-actualizar_pagos_extra<%= pagadosExtra.IDLiquida %>">
-                                                <span class="icon is-small" style="color: #fec416">
-                                                    <i class="fa-solid fa-pencil"></i>
-                                                </span>
-                                            </button>    
+                                            <form method="POST" action="/alumnos/fetch_actualizar">
+                                                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                                                <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                                    <button type="submit" id="Boton_modificar"
+                                                        class="tag is-size-6 btn-actualizar-pago"
+                                                        style="background-color: #fdf2cc;">
+                                                        <span class="icon is-small" style="color: #fec416">
+                                                            <i class="fa-solid fa-pencil"></i>
+                                                        </span>
+                                                    </button>
+                                            </form>    
                                         </div>
                                     </td>
                                     <% } %>
