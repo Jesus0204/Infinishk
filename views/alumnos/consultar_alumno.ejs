@@ -371,6 +371,10 @@
                             style="background-color: #5a6581; color:#ffffff;">
                             ¡Pago eliminado! Recargando página...
                         </div>
+                        <div id="modificacionPE" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago actualizado! Recargando página...
+                        </div>
                     <table class="table is-fullwidth is-hoverable">
                         <thead>
                             <tr>
@@ -381,6 +385,9 @@
                                 <th style="text-align: left;">Nota</th>
                                 <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
                                 <th style="text-align: left;">Eliminar</th>
+                                <% } %>
+                                <% if (contienePermiso(permisos, 'Actualizar Pago') == true) { %>
+                                    <th style="text-align: left;">Actualizar</th>
                                 <% } %>
                             </tr>
                         </thead>
@@ -419,6 +426,20 @@
                                     </div>
                                 </td>
                                 <% } %>
+                                <% if (contienePermiso(permisos, 'Actualizar Pago') == true) { %>
+                                    <td>
+                                        <div class="column" style="text-align: center;">
+                                            <button type="button" id="Boton_modificar"
+                                                class="tag is-size-6 btn-actualizar-pago"
+                                                style="background-color: #fdf2cc;" 
+                                                data-target="modal-confirmar-actualizar_pagos_extra<%= pagadosExtra.IDLiquida %>">
+                                                <span class="icon is-small" style="color: #fec416">
+                                                    <i class="fa-solid fa-pencil"></i>
+                                                </span>
+                                            </button>    
+                                        </div>
+                                    </td>
+                                    <% } %>
                             </tr>
 
                             <div id="modal-confirmar-eliminar_pagos_extra<%= pagadosExtra.IDLiquida %>" class="modal">
@@ -508,9 +529,9 @@
                     <div id="pagosdipl">
                         <% if (pagosDiplomado.length != 0) { %>
                             <div id="eliminacionDip" class="notification is-hidden"
-                            style="background-color: #5a6581; color:#ffffff;">
-                            ¡Pago eliminado! Recargando página...
-                        </div>
+                                style="background-color: #5a6581; color:#ffffff;">
+                                ¡Pago eliminado! Recargando página...
+                            </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -657,7 +678,7 @@
                             <div id="eliminacionCol" class="notification is-hidden"
                             style="background-color: #5a6581; color:#ffffff;">
                             ¡Pago eliminado! Recargando página...
-                        </div>
+                            </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>

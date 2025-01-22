@@ -138,6 +138,15 @@
   border: solid 2px #95404c;
 }
 
+.btn-actualizar-pago {
+  border: solid 2px #fdf2cc;
+}
+
+.btn-actualizar-pago:hover {
+  border: solid 2px #b5840e;
+}
+
+
 .btn-agregar-materia {
   border: solid 2px #eef2fb;
 }
