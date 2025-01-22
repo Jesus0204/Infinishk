@@ -183,7 +183,7 @@ exports.post_reset_password = async (request, response, next) => {
                 email: 'soporte@pagos.ivd.edu.mx',
             },
             subject: 'Reestablecer contraseña de VIA Pago',
-            html: `<p>Hola!</p><p>Por favor usa este link para restablecer tu contraseña. Toma en cuenta que la liga solo tiene validez de una hora: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
+            html: `<p>Hola!</p><p>Por favor usa este link para restablecer tu contraseña. Toma en cuenta que el link solo tiene validez de una hora: <a href="${setPasswordLink}">Reestablecer Contraseña</a></p>`
         };
 
         try {
