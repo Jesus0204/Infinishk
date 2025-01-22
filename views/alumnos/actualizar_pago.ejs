@@ -31,6 +31,213 @@
         </div>
     </div>
 
+    <!-- INFO ALUMNO -->
+    <div class="columns is-centered">
+        <div class="column is-one-fifth">
+            <div class="columns">
+                <div class="column">
+                    <div class="box" style="text-align: center;">
+                        <p class="has-text-grey has-text-weight-medium">
+                            NOMBRE
+                        </p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= alumno[0].Nombre %> <%= alumno[0].Apellidos %>
+                        </p>
+                        <br>
+                        <p class="has-text-grey has-text-weight-medium">
+                            MATRÍCULA
+                        </p>
+                        <p class="has-text-black has-text-weight-bold is-size-5">
+                            <%= alumno[0].Matricula %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        <!-- SOLICITUDES PENDIENTES PAGOS EXTRA -->
+        <div id="info_pago_extra">
+            <% if (solicitudes.length != 0)  { %>
+                <label class="label is-medium has-text-danger has-text-weight-semibold">PENDIENTES</label>
+                <table class="table ficha-table is-fullwidth">
+                    <thead>
+                        <th style="text-align: left;">
+                            Motivo
+                        </th>
+                        <th style="text-align: left;">
+                            Monto
+                        </th>
+                    </thead>
+                    <tbody>
+                        <% for (let solicitud of solicitudes) { %>
+                            <tr>
+                                <td>
+                                    <%= solicitud.motivoPago %>
+                                </td>
+                                <td>
+                                    $<%= solicitud.montoPagar.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2 }) %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- DATOS DEL PAGO -->
+    <div class="column is-offset-1">
+        <div id="pago_extra">
+            <form action="/pagos/registrar_pago_manual/pago_extra" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="matricula" value="<%= alumno[0].Matricula %>">
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="pago">Otros Pagos:</label>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <div class="select is-medium" style="width: 110%;">
+                                <select name="pago" id="pago" style="width: 110%;">
+                                    <% for (let pago of pagos_extra) { %>
+                                    <option value="<%= pago.IDPagosExtras %>"
+                                        data-monto="<%= pago.montoPagar.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                         }) %>"
+                                         <%= pago_mod.IDPagosExtras === pago.IDPagosExtras ? 'selected' : '' %>>
+                                        <%= pago.motivoPago %></option>
+                                    <% } %>
+                                    <option value="custom"> Otro</option>
+                                </select>
+                            </div>
+                            <div class="icon is-medium is-left">
+                                <i class="fa-solid fa-circle-info" style="color: #95404c;"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_motivo_op"
+                            style="padding: 0.5em; margin-top: 7px;">Por favor
+                            escribe un motivo del pago del alumno</p>
+                        <!-- Escribir motivo personalizado -->
+                        <input name="motivo-custom" id="motivo-custom" class="input is-medium"
+                            placeholder="Escribe tu motivo aquí." style="display: none; margin-top: 7px;">
+                        </input>
+                       
+                   
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="monto">Monto:</label>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <p class="control has-icons-left" id="monto-total" style="display: block;">
+                                <input name="monto" class="input is-medium" id="monto"
+                                    placeholder="Monto" readonly
+                                    value="<%= pagos_extra[0].montoPagar.toLocaleString('mx', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                         }) %>">
+                                <span class="icon is-small is-left">
+                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                </span>
+                            </p>
+                        </div>
+
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_vacio_op"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor
+                            escribe un monto válido para el pago</p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_negativo_op"
+                            style="padding: 0.5em; margin-top: -1em;">Por
+                            favor escribe un número mayor a 0</p>
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_monto_exponente_op"
+                            style="padding: 0.5em; margin-top: -1em;">Por favor escribe un monto sin
+                            exponente
+                        </p>
+                        <!-- Escribir monto personalizado -->
+                        <div class="field">
+                            <p class="control has-icons-left" id="monto-custom-total" style="display: none;">
+                                <input name="monto-custom" id="monto-custom" class="input is-medium"
+                                    placeholder="Escribe tu monto aquí." type="number" step="any">
+                                <span class="icon is-small is-left">
+                                    <i class="fa-solid fa-dollar-sign" style="color: #95404c;"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="fechapago">Fecha de Pago:</label>
+                    </div>
+                    <div class="column">
+                        <p class="help is-hidden has-text-danger-dark" id="ayuda_fecha_vacia_extra"
+                            style="padding: 0.5em; margin-top: -1em;">
+                            Por favor selecciona una fecha </p>
+                        <input name="fecha" id="fechapago" class="input is-medium" type="date"
+                            placeholder="<%= moment(pago_mod.fechaPago).format('DD/MM/YYYY') %>">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="metodo">Método de Pago: </label>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <div class="select is-medium" style="width: 110%;">
+                                <select name="metodo" id="metodo" style="width: 110%;">
+                                    <option value="Tarjeta Terminal" %= pago_mod.metodoPago === 'Tarjeta Terminal' ? 'selected' : '' %>>
+                                        Tarjeta Terminal
+                                    </option>
+                                    <option value="Efectivo" <%= pago_mod.metodoPago === 'Efectivo' ? 'selected' : '' %>>
+                                        Efectivo
+                                    </option>
+                                    <option value="Transferencia" <%= pago_mod.metodoPago === 'Transferencia' ? 'selected' : '' %>>
+                                        Transferencia
+                                    </option>
+                                    <option value="Déposito Bancario" <%= pago_mod.metodoPago === 'Déposito Bancario' ? 'selected' : '' %>>
+                                        Déposito Bancario
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="icon is-medium is-left">
+                                <i class="fa-solid fa-wallet" style="color: #95404c;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-3">
+                        <label class="label is-medium" for="nota">Nota (opcional): </label>
+                    </div>
+                    <div class="column">
+                        <textarea name="nota" id="nota" class="textarea is-medium" rows="2"
+                            placeholder="<%= pago_mod.Nota %>"></textarea>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-6"></div>
+                    <div class="column is-6">
+                        <button class="js-modal-trigger confirmar-button is-responsive" type="button"
+                            style="font-size: large; padding-left: 1.5em;" id="Boton_registrar_pago_extra"
+                            data-target="modal-confirmar-registro_extra" type="button">
+                            <span>ACTUALIZAR PAGO</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+
 </section>
 <%- include('../includes/foot.ejs') %>
 <script type="text/javascript" src="/js/boton_regresar.js"></script>
+<script type="text/javascript" src="/js/actualizar_pago.js"></script>

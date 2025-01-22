@@ -619,8 +619,6 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                         throw new Error('No se pudo obtener el ID del Pago Extra.');
                     }
                 
-                    console.log('Pago ID:', pagoID);
-                
                     // Crear solicitud pagada de la nueva categoría de Pago Extra
                     await Liquida.save_pago_manual(matricula, pagoID, fecha, metodo, nota)
                         .then(async ([rows, fieldData]) => {

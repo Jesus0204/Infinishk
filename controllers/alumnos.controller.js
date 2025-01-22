@@ -292,14 +292,39 @@ exports.post_eliminar_pago_dip = async (request, response, next) => {
 }
 
 // Actualizar Pago
+// Pago Extra
 exports.post_fetch_actualizar = (request, response, next) => {
-    response.render('alumnos/actualizar_pago', {
-        username: request.session.username || '',
-        permisos: request.session.permisos || [],
-        rol: request.session.rol || "",
-        csrfToken: request.csrfToken()
-    }
-)};
+    let matches = request.body.buscar.match(/(\d+)/); // Obtener matrícula
+
+    Alumno.fetchOne(matches[0]) // Obtener datos del alumno con matrícula
+        .then(([alumno, fieldData]) => {
+            PagoExtra.fetchActivos() // Obtener datos de tipos de pago extra activos
+                .then(async ([pagos_extra, fieldData]) => {
+                    const [solicitudes, fieldData_2] = await Liquida.fetch_Pendientes(matches[0]);
+                    const [pago_mod, fieldData3] = await Liquida.fetchOne(request.body.liquida) // Obtener datos del pago a modificar
+
+                    response.render('alumnos/actualizar_pago', {
+                        alumno: alumno,
+                        pago_mod: pago_mod[0],
+                        solicitudes: solicitudes,
+                        pagos_extra: pagos_extra,
+                        username: request.session.username || '',
+                        permisos: request.session.permisos || [],
+                        rol: request.session.rol || "",
+                        csrfToken: request.csrfToken()
+                    })
+                })
+            .catch((error) => {
+                response.status(500).render('500', {
+                    username: request.session.username || '',
+                    permisos: request.session.permisos || [],
+                    rol: request.session.rol || "",
+                    error_alumno: false
+                });
+                console.log(error)
+            })
+        })
+    };
 
 exports.get_fetch_datos = async (request, response, next) => {
     try {

@@ -428,6 +428,7 @@
                                             <form method="POST" action="/alumnos/fetch_actualizar">
                                                 <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" value="<%= alumnoConsulta[0].Matricula %>" name="buscar">
+                                                <input type="hidden" value="<%= pagadosExtra.IDLiquida %>" name="liquida">
                                                     <button type="submit" id="Boton_modificar"
                                                         class="tag is-size-6 btn-actualizar-pago"
                                                         style="background-color: #fdf2cc;">

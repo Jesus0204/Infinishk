@@ -13,6 +13,12 @@ module.exports = class Liquida {
         VALUES (?, ?, Null, 0)`, [this.matricula, this.IDPagoExtra]);
     }
 
+    static fetchOne(id){
+        return db.execute(`SELECT P.motivoPago, P.montoPagar, L.IDLiquida, L.IDPagosExtras, L.fechaPago, L.metodoPago, L.Pagado, L.Nota
+            FROM Liquida as L, pagosExtras as P 
+            WHERE L.IDPagosExtras = P.IDPagosExtras AND IDLiquida = ?`, [id]);
+    }
+
     static fetchID(matricula){
         return db.execute('Select IDLiquida from Liquida WHERE Matricula = ?',[matricula]);
     }
