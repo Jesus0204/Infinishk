@@ -51,8 +51,8 @@ module.exports = class Fichas {
         return rows[0].total;
     }
 
-    static actualizarMaterias(uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito){
-        db.execute(`CALL actualizarMaterias(?,?, ?, ?,?)`, [uMatricula, uPrecioActual, uIDMateria, uBeca, uCredito])
+    static actualizarMaterias(uMatricula, uIDMateria, uPrecioActual, uBeca, uCredito){
+        db.execute(`CALL actualizarMaterias(?,?, ?, ?,?)`, [uMatricula, uIDMateria, uPrecioActual, uBeca, uCredito])
     }
     
 } 

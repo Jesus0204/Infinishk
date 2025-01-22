@@ -59,6 +59,23 @@ module.exports = class Alumno {
         return db.execute(`SELECT credito FROM Alumno WHERE Matricula = ?`,[matricula]);
     }
 
+    static fetchCreditoColegiatura(matricula){
+        return db.execute(`SELECT 
+        Colegiatura.creditoColegiatura
+            FROM 
+                Deuda
+            INNER JOIN 
+                Colegiatura ON Deuda.IDColegiatura = Colegiatura.IDColegiatura
+            INNER JOIN 
+                PlanPago ON Colegiatura.IDPlanPago = PlanPago.IDPlanPago
+            INNER JOIN 
+                Periodo ON Colegiatura.IDPeriodo = Periodo.IDPeriodo
+            WHERE 
+                Deuda.Matricula = ?
+                AND Periodo.periodoActivo = 1
+            LIMIT 1;`,[matricula])
+    }
+
     static fetchBeca(matricula) {
         return db.execute(`SELECT 
         CASE 
