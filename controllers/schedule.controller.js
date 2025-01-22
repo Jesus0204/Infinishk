@@ -283,7 +283,7 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const existeCurso = await Grupo.checkGrupoExistente(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
                 
                     if (existeCurso) {
-                        if(existeCurso[0][0].Activo === 1){
+                        if(existeCurso.Activo === 1){
                             continue; // Saltar este curso
                         }
                             await Grupo.activateGrupo(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
@@ -324,6 +324,10 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
         } catch(error) {
             alumnos_fallo.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
+
+            if (alumnosNoConfirmados[count].Matricula == '100126') {
+                console.log(error);
+            }
         }
     }
 

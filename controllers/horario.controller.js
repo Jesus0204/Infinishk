@@ -268,7 +268,7 @@ exports.post_confirmar_horario = async (request, response, next) => {
             const existeCurso = await Grupo.checkGrupoExistente(matricula, IDGrupo, periodoActivo);
                 
             if (existeCurso) {
-                if(existeCurso[0][0].Activo === 1){
+                if(existeCurso.Activo === 1){
                     continue; // Saltar este curso
                 }
                     await Grupo.activateGrupo(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
