@@ -249,8 +249,9 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         } = schedule;
 
                         // Crear objetos Date a partir de las horas de inicio y final
-                        const startDate = new Date(start_hour);
-                        const endDate = new Date(end_hour);
+                        // Convierte las horas usando moment-timezone
+                        const startDate = moment.tz(start_hour, 'America/Mexico_City');
+                        const endDate = moment.tz(end_hour, 'America/Mexico_City');
 
                         const fechaInicio = moment(startDate).format('HH:mm');
                         const fechaTermino = moment(endDate).format('HH:mm');
@@ -282,7 +283,11 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                     const existeCurso = await Grupo.checkGrupoExistente(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
                 
                     if (existeCurso) {
-                        continue; // Saltar este curso
+                        if(existeCurso.Activo === 1){
+                            continue; // Saltar este curso
+                        }
+                            await Grupo.activateGrupo(alumnosNoConfirmados[count].Matricula,curso.idGrupo, periodoActivo);
+                            continue; // Saltar este curso
                     }
                 
                     // Formatear el horario para la base
@@ -307,7 +312,8 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
                         curso.startDateFormat,
                         curso.endDateFormat,
                         curso.idGrupo,
-                        periodoActivo
+                        periodoActivo,
+                        1
                     );
                 }
                     

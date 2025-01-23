@@ -25,19 +25,20 @@ module.exports = class Alumno {
                 WHERE G.IDPrecioCredito = P.IDPrecioCredito
                 AND G.Matricula = ?
                 AND G.Periodo = ?
-                AND C.IDPeriodo = ?`, [matricula, periodo, periodo]);
+                AND C.IDPeriodo = ?
+                AND G.Activo = 1`, [matricula, periodo, periodo]);
 
         return schedule;
     }
 
-    static async checkGrupoExistente(matricula,idGrupo, periodo) {
+    static async checkGrupoExistente(matricula, idGrupo, periodo) {
         const [result] = await db.execute(
-            `SELECT COUNT(*) AS count FROM Grupo WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
+            `SELECT Activo FROM Grupo WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
             [matricula, idGrupo, periodo]
         );
-        return result[0].count > 0;
+        return result.length > 0 ? result[0] : null; // Retorna el primer resultado o null si no existe
     }
-
+    
     static async fetchPrecioTotal(matricula, periodo){
         const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
         FROM Grupo AS G
@@ -45,12 +46,13 @@ module.exports = class Alumno {
         JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE G.IDPrecioCredito = P.IDPrecioCredito
         AND G.Matricula = ?
-        AND G.Periodo = ?`, [matricula, periodo]);
+        AND G.Periodo = ?
+        AND G.Activo = 1`, [matricula, periodo]);
         return PrecioTotal;
     }
 
-    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo){
-        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`,`Periodo`) VALUES (?,?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo]);
+    static saveGrupo(matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo,activo){
+        return db.execute('INSERT INTO `Grupo`(`Matricula`, `IDMateria`, `IDPrecioCredito`, `Profesor`, `Salon`, `Horario`, `fechaInicio`, `fechaTermino`,`IDGrupoExterno`,`Periodo`,`Activo`) VALUES (?,?,?,?,?,?,?,?,?,?,?)',[matricula,idmateria,idpreciocredito,profesor,salon,horario,fechaInicio,fechaTermino,idgrupo,periodo,activo]);
     }
 
     static fetchIDExterno(IDGrupo,matricula){
@@ -73,4 +75,14 @@ module.exports = class Alumno {
         }
     }
 
+    static async activateGrupo(matricula, idGrupo, periodo) {
+        const [result] = await db.execute(
+            `UPDATE Grupo 
+             SET Activo = 1 
+             WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
+            [matricula, idGrupo, periodo]
+        );
+        return result.affectedRows > 0; // Verifica si alguna fila fue actualizada
+    }
+    
 }
