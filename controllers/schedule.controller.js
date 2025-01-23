@@ -324,10 +324,6 @@ exports.aceptar_horario_resagados = async (request, response, next) => {
 
         } catch(error) {
             alumnos_fallo.push(alumnosNoConfirmados[count].Nombre, alumnosNoConfirmados[count].Apellidos, alumnosNoConfirmados[count].Matricula);
-
-            if (alumnosNoConfirmados[count].Matricula == '100126') {
-                console.log(error);
-            }
         }
     }
 
