@@ -67,7 +67,7 @@ module.exports = class Alumno {
             INNER JOIN 
                 Colegiatura ON Deuda.IDColegiatura = Colegiatura.IDColegiatura
             INNER JOIN 
-                PlanPago ON Colegiatura.IDPlanPago = PlanPago.IDPlanPago
+                planPago ON Colegiatura.IDPlanPago = planPago.IDPlanPago
             INNER JOIN 
                 Periodo ON Colegiatura.IDPeriodo = Periodo.IDPeriodo
             WHERE 
