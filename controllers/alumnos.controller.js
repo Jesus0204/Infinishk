@@ -659,10 +659,8 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                     await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual,Beca, Credito);
                     gruposNuevosGuardados = true;
                 } else if (grupoExistente[0].Activo === 1) {
-                    console.log('Grupo ya creado y activo.');
                     continue;
                 } else if (grupoExistente[0].Activo === 0) {
-                    console.log('Activando grupo inactivo.');
                     await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual, Beca, Credito);
                     gruposNuevosGuardados = true;
                 }
