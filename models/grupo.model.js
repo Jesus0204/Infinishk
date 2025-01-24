@@ -40,14 +40,13 @@ module.exports = class Alumno {
     }
     
     static async fetchPrecioTotal(matricula, periodo){
-        const PrecioTotal = await db.execute(`SELECT SUM(P.precioPesos * M.Creditos) AS Preciototal
+        const PrecioTotal = await db.execute(`SELECT SUM((P.precioPesos * M.Creditos) * G.FactorRecargo) AS Preciototal
         FROM Grupo AS G
         JOIN Materia AS M ON G.IDMateria = M.IDMateria
         JOIN precioCredito AS P ON G.IDPrecioCredito = P.IDPrecioCredito
         WHERE G.IDPrecioCredito = P.IDPrecioCredito
         AND G.Matricula = ?
-        AND G.Periodo = ?
-        AND G.Activo = 1`, [matricula, periodo]);
+        AND G.Periodo = ?`, [matricula, periodo]);
         return PrecioTotal;
     }
 
@@ -78,7 +77,7 @@ module.exports = class Alumno {
     static async activateGrupo(matricula, idGrupo, periodo) {
         const [result] = await db.execute(
             `UPDATE Grupo 
-             SET Activo = 1 
+             SET Activo = 1, FactorRecargo = 1
              WHERE Matricula = ? AND IDGrupoExterno = ? AND Periodo = ?`,
             [matricula, idGrupo, periodo]
         );
