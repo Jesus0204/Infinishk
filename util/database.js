@@ -1,11 +1,5 @@
 const mysql = require('mysql2');
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'via_pago',
-    password: 'Queretaro2017#'
-});
-
+const pool = mysql.createPool(process.env.JAWSDB_MARIA_URL);
 
 module.exports = pool.promise();
