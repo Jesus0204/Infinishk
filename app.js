@@ -56,7 +56,7 @@ app.use(helmet({
         directives: {
             "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
             "script-src-attr": ["'unsafe-inline'"], 
-            "connect-src": ["'self'", 'sandboxpo.mit.com.mx'],
+            "connect-src": ["'self'", 'sandboxpol.mit.com.mx'],
             "frame-src": ['*']
         },
     },
