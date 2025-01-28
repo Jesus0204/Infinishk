@@ -1076,7 +1076,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                             let montoDeudaActual = (deuda.montoAPagar - deuda.montoPagado).toFixed(2); 
                             let recargos = false;
                             // Si se pagó más del monto total y tiene recargos, se quitan los recargos
-                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                 if (deuda.Recargos == 1) {
                                     Deuda.removeRecargosDeuda(deuda.IDDeuda);
                                     // Aquí es donde se cambia el monto
@@ -1097,13 +1097,13 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                         } else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) >= monto_a_usar) {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                             if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
-                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
                                     }
                                 }
                             } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
-                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
