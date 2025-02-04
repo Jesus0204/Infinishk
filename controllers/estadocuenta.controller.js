@@ -250,6 +250,8 @@ exports.post_notificacion_pago = async (request, response, next) => {
             
             const payments = result.CENTEROFPAYMENTS;
 
+            console.log(payments);
+
             const reference = payments.reference[0];
             const responseStatus = payments.response[0];
             const monto = payments.amount[0];
