@@ -145,6 +145,7 @@ function pagar() {
         body: JSON.stringify({
             monto: monto,
             matricula: matricula,
+            tipo_pago: tipo.value, 
             motivo: motivo,
             nota: nota,
             id_liquida: liquida_seleccionado,

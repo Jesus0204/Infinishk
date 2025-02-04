@@ -38,17 +38,18 @@ module.exports = class pagoDiplomado {
     static fetchDatosDiplomado(fechaInicio, fechaFin) {
         return db.execute(`SELECT DISTINCT PD.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria, PD.IDDiplomado,
         D.nombreDiplomado, PD.Motivo, PD.montoPagado, PD.metodoPago, PD.fechaPago, 
-        PD.Nota FROM pagaDiplomado AS PD JOIN Alumno AS A ON PD.Matricula = A.Matricula 
+        PD.Nota, PD.referenciaPago FROM pagaDiplomado AS PD JOIN Alumno AS A ON PD.Matricula = A.Matricula 
         JOIN Diplomado AS D ON PD.IDDiplomado = D.IDDiplomado JOIN Cursa AS C ON D.IDDiplomado = C.IDDiplomado 
-        WHERE PD.fechaPago BETWEEN ? AND ? ORDER BY PD.Matricula ASC`, [fechaInicio, fechaFin]);
+        WHERE PD.fechaPago BETWEEN ? AND ? AND PD.estadoPago = 1 ORDER BY PD.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
     static fetchPagosDiplomado(matricula) {
-        return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, P.Motivo, P.metodoPago, P.Nota, D.nombreDiplomado
-        FROM pagaDiplomado AS P, Diplomado AS D 
-        WHERE P.IDDiplomado = D.IDDiplomado AND Matricula = ?
-        ORDER BY P.fechaPago ASC
-        LIMIT 0, 1000`, [matricula]);
+        return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, 
+            P.Motivo, P.metodoPago, P.Nota, P.referenciaPago, D.nombreDiplomado
+            FROM pagaDiplomado AS P, Diplomado AS D 
+            WHERE P.IDDiplomado = D.IDDiplomado AND P.estadoPago = 1 AND Matricula = ?
+            ORDER BY P.fechaPago ASC
+            LIMIT 0, 1000`, [matricula]);
     }
 
     static delete(id) {

@@ -384,6 +384,16 @@
                 <% } %>
             </div>
         </div>
+        <form action="/estado_cuenta/notificacion_pago" method="POST">
+            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+            <button class="confirmar-button is-responsive"
+                style="font-size: large; padding-left: 1.5em;" type="submit">
+                <span>Simular Post</span>
+                <span class="icon is-large">
+                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                </span>
+            </button>
+        </form>
         <div id="modal-pago-tarjeta" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
