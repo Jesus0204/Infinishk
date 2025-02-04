@@ -15,7 +15,7 @@ router.post('/mandar_pago', isAuth, can_RealizarPago, estadocuentaController.pos
 router.get('/confirmacion_pago', estadocuentaController.get_recibir_pago);
 router.post('/confirmacion_pago', estadocuentaController.post_recibir_pago);
 
-router.post('/notificacion_pago', estadocuentaController.post_respuesta_pago);
+router.post('/notificacion_pago', estadocuentaController.post_notificacion_pago);
 
 // Estado cuenta
 router.get('/estado_cuenta', isAuth, can_ConsultarEstadoCuenta, estadocuentaController.get_estado_cuenta);

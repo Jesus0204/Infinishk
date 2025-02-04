@@ -102,6 +102,14 @@ $('.motivo_extra').change(function () {
     const monto = document.querySelector('#monto');
     monto.value = num_monto;
 
+    const id_liquida = document.querySelector('#liquida');
+
+    let id_liquida_seleccionado = $(this).find(':selected').data('idliquida');
+
+    if (id_liquida) {
+        id_liquida.value = id_liquida_seleccionado;
+    }
+
     // Cambias el titulo del modal
     let motivo = $(this).find(':selected').val();
     modal_title.innerHTML = '<strong>Pago de ' + motivo + '</strong>';
@@ -110,7 +118,6 @@ $('.motivo_extra').change(function () {
 });
 
 function pagar() {
-    const tipo = document.getElementById('tipo').value;
     const monto = document.getElementById('monto').value;
     const motivo = document.getElementById('motivo').value;
     const csrf = document.getElementById('_csrf').value;
@@ -122,13 +129,18 @@ function pagar() {
         deuda_mandar = deuda.value;
     }
 
-    let liquida_mandar= '';
+    let liquida_seleccionado = '';
     const liquida = document.getElementById('liquida')
-    if (liquida){
-        liquida_mandar = liquida.value;
+    if (liquida && tipo.value == 'Otro') {
+        liquida_seleccionado = liquida.value;
     }
     const nota = document.getElementById('nota').value;
-    const test = 0;
+
+    const id_diplomado = document.getElementById('diplomado');
+    let id_diplomado_cursando = '';
+    if (matricula[0] == '8' && id_diplomado) {
+        id_diplomado_cursando = id_diplomado.value;
+    }
 
     fetch('/estado_cuenta/mandar_pago', {
         method: 'POST',
@@ -138,7 +150,12 @@ function pagar() {
         },
         body: JSON.stringify({
             monto: monto,
-            matricula: matricula
+            matricula: matricula,
+            tipo_pago: tipo.value, 
+            motivo: motivo,
+            nota: nota,
+            id_liquida: liquida_seleccionado,
+            id_diplomado: id_diplomado_cursando,
         })
     }).then((result) => {
         return result.json();
