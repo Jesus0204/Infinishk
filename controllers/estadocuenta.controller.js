@@ -121,66 +121,40 @@ exports.post_mandar_pago = (request, response, next) => {
     monto = monto.toFixed(2);
     let matricula = request.body.matricula;
 
-    // Usar el paquete para facilidad y poner true para que este indentado
-    var XMLWriter = require('xml-writer');
-    xml = new XMLWriter(true);
-    // Empiezas el documento y el objeto padre
-    xml.startDocument();
-    xml.startElement('P');
-    xml.startElement('business');
-    xml.startElement('id_company');
-    xml.text('SNBX');
-    xml.endElement('id_company');
-    xml.startElement('id_branch');
-    xml.text('01SNBXBRNCH');
-    xml.endElement('id_branch');
-    xml.startElement('user');
-    xml.text('SNBXUSR0123');
-    xml.endElement('user');
-    xml.startElement('pwd');
-    xml.text('SECRETO');
-    xml.endElement('pwd');
-    xml.endElement('business');
-    xml.startElement('nb_fpago');
-    xml.text('COD');
-    xml.endElement('nb_fpago');
-    xml.startElement('url');
-    xml.startElement('reference');
-    xml.text(uuidv4());
-    xml.endElement('reference');
-    xml.startElement('amount');
-    xml.text(monto);
-    xml.endElement('amount');
-    xml.startElement('moneda');
-    xml.text('MXN');
-    xml.endElement('moneda');
-    xml.startElement('canal');
-    xml.text('W');
-    xml.endElement('canal');
-    xml.startElement('omitir_notif_default');
-    xml.text('1');
-    xml.endElement('omitir_notif_default');
-    xml.startElement('version');
-    xml.text('IntegraWPP');
-    xml.endElement('version');
-    xml.endElement('url');
-    xml.endElement('P');
-    xml.endDocument();
+    const xml = `
+        <P>
+            <business>
+                <id_company>${process.env.ID_COMPANY}</id_company>
+                <id_branch>${process.env.ID_BRANCH}</id_branch>
+                <user>${process.env.API_USER}</user>
+                <pwd>${process.env.API_PASSWORD}</pwd>
+            </business>
+            <nb_fpago>COD</nb_fpago>
+            <url>
+                <reference>${uuidv4()}</reference>
+                <amount>${monto}</amount>
+                <moneda>MXN</moneda>
+                <canal>W</canal>
+                <omitir_notif_default>1</omitir_notif_default>
+                <version>IntegraWPP</version>
+            </url>
+        </P>
+    `; 
 
     // Pones todo el xml en un string
     let originalString = xml.toString();
 
-    let key = '5DCC67393750523CD165F17E1EFADD21';
+    let key = process.env.CIPHER_KEY;
 
     // Lo cifras con las funciones del github de documentación
     let cipherText = cipher.cifrarAES(originalString, key);
 
     // Creas otro xml para hacer el post con el texto cifrado
-    let originalString_post = "xml=<pgs><data0>SNDBX123</data0><data>" + cipherText + "</data></pgs>";
+    let originalString_post = `xml=<pgs><data0>${process.env.DATA0}</data0><data>` + cipherText + "</data></pgs>";
     let data_xml = encodeURIComponent(originalString_post);
 
     // Haces el post del xml generado
-    axios.post('https://sandboxpo.mit.com.mx/gen', data_xml, {
+    axios.post(`${process.env.PAGO_URL}`, data_xml, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -197,6 +171,10 @@ exports.post_mandar_pago = (request, response, next) => {
         });
     }).catch((error) => {
         console.log(error);
+        return response.status(500).json({
+            success: false,
+            error: 'Error al generar la liga de pago'
+        });
     })
 };
 
@@ -274,7 +252,7 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (test === 0) {
             const strResponse = decodeURIComponent("yO3hhCLQmgOr2R6j1WHzb5S5IL5raWDL4zSTFIc6VcZOEGQXi4SFK5EDATyDAHQZalBxRhZDJZ46FAFpltJ95CCo59pYVDqpFjmIcqePs4FiUx3BEcRkrjVeqwUyJUILxtlLBOgm9YbYqT%2F%2Fbe8nYCW8sj%2FOH%2BIvXKcxojy%2BljqlZn4Mqi1dsStM%2FSCQa%2BSFLOJ%2FJXcSuAjhu7i7Sj%2BNxrqB5mAicNlZ3SoZv2z3MULe9MIuyzgYNg6bUC%2BCHMRiujhoUXOs55gts7kAVdEasRiNl0LFWw8neGCB%2FYKWk6n3Xw2moBrIylqGI6yM1p49c2fQBs6FHsGKWtc%2BkP9nbWBy25HtrnWdQmgXbanJV4MoXqivlhrOSkDFi0qYzVzI%2BlhYLGYq6zF23u%2BIhsM4szG1qiMocOymkTrqWU7Ns7WWqCzYYX1N3WUVIzpFiJKKJ4gymbIwbvBel5HKy6ZUDxgvpPLGLl1KfzuhNzYg%2F%2FklGpEDxPmZf9km0exPcSKJQGphpj%2BW8LH3Jo0BqIE6qRW434E6LLbmyGyd8AOHlQX%2BZ2a17VBkTR%2BqDz6Ca%2FEwf0aMaDQIQam5zIrqHzL5xPwQgXl0RH66IUM%2FeSpE4h2PeTPY11qEL7Pvyf5bXbuCGFss4GPT0Mj7OiSq6x%2FgHNWjFiHLzPXqOita%2B1PXQu5VNO2VAjZMCSK6XU1LQELDdo4MUtBB6%2BCU16gz5vc6F%2FSwtllu3tbMB4jNGjk6Y9kvvg%2BoHCWSmI2mX0JHDySajJC23tOHW2vO1D%2B9xsM2k%2BwQ8f9xjKjeIXkA2qoPHlgUfDavufWKTyuGWutGKZCCPvvFRTHJoUxpbMYTZQo%2BArsczE4IYkSIHk2FUVDTfRddpuOuoLdBXJQPSHxIruv4OcvsXQnEuknd06zdGYEgM0eyMWfMaSaWIuKJFzuf9p3mQznV8OXA%2F1aNyCOsh90AvHt%2FOPKOi1xwrQU7d9iiNiufr%2FzE4lp%2FmWY6s6TQbZAAyphkqxfwmeNg6Ogsg9hq48RP%2FwjyFdnZwplF8GBgFARBWhy22d8r8vGWVijbYbRYcBnWNtF1GTmWsET7lEzXJfGODOLSZoEQUn%2Fw2%2BfIl4kPx%2F0ycK7yeXC39zpj04hf3bTFuYchz%2BKjzuvHYeDE");
     
-            let key = '5DCC67393750523CD165F17E1EFADD21';
+            let key = process.env.CIPHER_KEY;
             const responseText = cipher.decifrarAES(strResponse, key);
     
             xml2js.parseString(responseText, (err, result) => {
@@ -399,7 +377,7 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (test === 1) {
             const strResponse = decodeURIComponent("1M%2BEqIz5aMtiQWqSbVQShPjLz56DP6NUmEPBX%2BfGwMj3yG8M7UCFN4LloN1Kd3vCdsluXmukuB4%2F3wJz%2FZUj55Bry8vuhx4oi5WHzNL78G0kZeV2EpexWoDOQ%2FKeeb0nlTnKbZk70AJo9BACRUE7b3aYGs006rJmCbpkny2WaTGW1hKK5RMSz%2BdDi%2ByEiAuUp7Wx8zkBXwbur9Siz7%2FG8i8X3uQVeA0wuvrK2KjD43NT6JTZxmUKLnnmmJcIUoRPuK6XdSGyweSXEXswtQwImEv4wnxaCXUTRaHZ7pGYFIuhJadoWIIwN52CaM5H7Hpvx0klsbKAyOarX%2BwYwKd9ihzK4c7GHc0tp936k41A2y8dL6nJTvMu%2Bh03oJjetkbSjt1ijxZK6%2Bz7CTjmgxSfPYS5X9r6sWwSf4eHkzSI99DkrAM%2BZkC%2F7GkaHtlE6sJkq7JsbG0Am%2Fdj%2FL7VVhSyqvTAbZ2OLKGNhaf7yQ11KJ0exh%2FVWWDBFAL5m0Zv88qFRlwJDkXH7xu1DM9WnAbB0owGJ%2FoquH5Mr0G8P7HZM7wdGyw878N%2FFvaclsPgjcc9fjoXlfxYEMP4hz92nJrDrA%3D%3D");
     
-            let key = '5DCC67393750523CD165F17E1EFADD21';
+            let key = process.env.CIPHER_KEY;
             const responseText = cipher.decifrarAES(strResponse, key);
     
             xml2js.parseString(responseText, (err, result) => {
@@ -526,7 +504,7 @@ exports.post_recibir_pago = async (request, response, next) => {
         if (test === 2) {
             const strResponse = decodeURIComponent("eZqdj8MWWqMlWJ3bKlTi3C1GJGRNHSf%2BtGAUZ8S92ts2ETnaLAKnrIBhQKNQxNyYrwIQHEUJl6BolhMLRizPqDlUQ6HZnMj3VTrdwsIw2ox0Jlp6X0mI1uWFNheCysZAqWE9oRlaebL2oU6GmMv%2BXzVQhHUoN0Lt2ON3ujJ1KB5lmMri5%2FPasmVncQPbkG8Op%2F8hbggsT50CQA8Q0MU%2FM3eAgicyqIGP6JCmfREmXGGTRxlK7x%2BZGj5tX5fqEYgjo1mq4BwzMF%2FeWyBi5otNz%2FwINU2lf7cuZkJo1%2FUohYMcfCSyty3eUZFJ9zQdCuJqjVY1vhJ5qICy0G2FE5uiAP4ihJN%2Foq2iGxzPEdBi401zjWUbIXa69V18GPdShPn1%2BPbDPr47N%2BDUtivsvyeaoZ5QOX6d81E7KvLcIh5DOLemQ82crJ%2FH4kRtMI8AdX3MwL82DK%2FSP6hPb%2FPFjwxyD1YOB4CWYnzIAUgBxHRT7dYSb0e5V%2FYrXdaCEjqAfRNz");
     
-            let key = '5DCC67393750523CD165F17E1EFADD21';
+            let key = process.env.CIPHER_KEY;
             const responseText = cipher.decifrarAES(strResponse, key);
     
             xml2js.parseString(responseText, (err, result) => {
@@ -654,10 +632,7 @@ exports.post_recibir_pago = async (request, response, next) => {
             responseText
         });
     }
-
-
 };
-
 
 exports.get_estado_cuenta = async (request, response, next) => {
     try {
