@@ -129,13 +129,13 @@ exports.post_mandar_pago = (request, response, next) => {
                 <user>${process.env.API_USER}</user>
                 <pwd>${process.env.API_PASSWORD}</pwd>
             </business>
-            <nb_fpago>COD</nb_fpago>
+            <nb_fpago>TCD</nb_fpago>
             <url>
                 <reference>${uuidv4()}</reference>
                 <amount>${monto}</amount>
                 <moneda>MXN</moneda>
                 <canal>W</canal>
-                <omitir_notif_default>1</omitir_notif_default>
+                <omitir_notif_default>0</omitir_notif_default>
                 <version>IntegraWPP</version>
             </url>
         </P>
@@ -150,11 +150,13 @@ exports.post_mandar_pago = (request, response, next) => {
     let cipherText = cipher.cifrarAES(originalString, key);
 
     // Creas otro xml para hacer el post con el texto cifrado
-    let originalString_post = `xml=<pgs><data0>${process.env.DATA0}</data0><data>` + cipherText + "</data></pgs>";
-    let data_xml = encodeURIComponent(originalString_post);
+    let xmlContent = `<pgs><data0>${process.env.DATA0}</data0><data>` + cipherText + "</data></pgs>";
+
+    const params = new URLSearchParams();
+    params.append('xml', xmlContent);
 
     // Haces el post del xml generado
-    axios.post(`${process.env.PAGO_URL}`, data_xml, {
+    axios.post(`${process.env.PAGO_URL}`, params, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
