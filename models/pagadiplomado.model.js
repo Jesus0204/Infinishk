@@ -30,6 +30,20 @@ module.exports = class pagoDiplomado {
             [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago]);
     };
 
+    static save_pago_tarjeta_web(matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago, referenciaPago) {
+        return db.execute(`INSERT INTO pagaDiplomado(Matricula, IDDiplomado, fechaPago, montoPagado, Motivo, Nota, metodoPago, estadoPago, referenciaPago)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?);`,
+            [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago, referenciaPago]);
+    };
+
+    static update_estado_pago(fechaPago, montoPagado, referenciaPago) {
+        return db.execute(`UPDATE pagaDiplomado SET estadoPago = 1, fechaPago = ?, montoPagado = ? WHERE referenciaPago = ?`, [fechaPago, montoPagado, referenciaPago]);
+    }
+
+    static update_pago_rechazado(referenciaPago) {
+        return db.execute(`UPDATE pagaDiplomado SET Nota = 'No pudimos procesar tu pago. Revisa tu método de pago o contacta a tu banco.' WHERE referenciaPago = ?`, [referenciaPago]);
+    }
+
     static fetch_fecha_pago(fecha) {
         return db.execute('SELECT fechaPago,montoPagado FROM pagaDiplomado WHERE fechaPago = ?',
             [fecha]);
@@ -38,17 +52,18 @@ module.exports = class pagoDiplomado {
     static fetchDatosDiplomado(fechaInicio, fechaFin) {
         return db.execute(`SELECT DISTINCT PD.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria, PD.IDDiplomado,
         D.nombreDiplomado, PD.Motivo, PD.montoPagado, PD.metodoPago, PD.fechaPago, 
-        PD.Nota FROM pagaDiplomado AS PD JOIN Alumno AS A ON PD.Matricula = A.Matricula 
+        PD.Nota, PD.referenciaPago FROM pagaDiplomado AS PD JOIN Alumno AS A ON PD.Matricula = A.Matricula 
         JOIN Diplomado AS D ON PD.IDDiplomado = D.IDDiplomado JOIN Cursa AS C ON D.IDDiplomado = C.IDDiplomado 
-        WHERE PD.fechaPago BETWEEN ? AND ? ORDER BY PD.Matricula ASC`, [fechaInicio, fechaFin]);
+        WHERE PD.fechaPago BETWEEN ? AND ? AND PD.estadoPago = 1 ORDER BY PD.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
     static fetchPagosDiplomado(matricula) {
-        return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, P.Motivo, P.metodoPago, P.Nota, D.nombreDiplomado
-        FROM pagaDiplomado AS P, Diplomado AS D 
-        WHERE P.IDDiplomado = D.IDDiplomado AND Matricula = ?
-        ORDER BY P.fechaPago ASC
-        LIMIT 0, 1000`, [matricula]);
+        return db.execute(`SELECT P.IDPagaDiplomado, P.Matricula, P.IDDiplomado, P.fechaPago, P.montoPagado, 
+            P.Motivo, P.metodoPago, P.Nota, P.referenciaPago, D.nombreDiplomado
+            FROM pagaDiplomado AS P, Diplomado AS D 
+            WHERE P.IDDiplomado = D.IDDiplomado AND P.estadoPago = 1 AND Matricula = ?
+            ORDER BY P.fechaPago ASC
+            LIMIT 0, 1000`, [matricula]);
     }
 
     static delete(id) {
