@@ -120,6 +120,15 @@ exports.post_mandar_pago = (request, response, next) => {
     let monto = Number(request.body.monto);
     monto = monto.toFixed(2);
     let matricula = request.body.matricula;
+    let id_liquida = request.body.id_liquida;
+    let motivo = request.body.motivo;
+
+    const idLiquidaXML = id_liquida !== '' ? `
+        <data id="3" display="false">
+            <label>ID Liquida</label>
+            <value>${id_liquida}</value>
+        </data>
+    ` : '';
 
     const xml = `
         <P>
@@ -129,13 +138,24 @@ exports.post_mandar_pago = (request, response, next) => {
                 <user>${process.env.API_USER}</user>
                 <pwd>${process.env.API_PASSWORD}</pwd>
             </business>
-            <nb_fpago>TCD</nb_fpago>
             <url>
                 <reference>${uuidv4()}</reference>
                 <amount>${monto}</amount>
                 <moneda>MXN</moneda>
                 <canal>W</canal>
                 <omitir_notif_default>0</omitir_notif_default>
+                <nb_fpago>TCD</nb_fpago>
+                <datos_adicionales>
+                    <data id="1" display="false">
+                        <label>PRINCIPAL</label>
+                        <value>${matricula}</value>
+                    </data>
+                    <data id="2" display="true">
+                        <label>Motivo</label>
+                        <value>${motivo}</value>
+                    </data>
+                    ${idLiquidaXML}
+                </datos_adicionales>
                 <version>IntegraWPP</version>
             </url>
         </P>

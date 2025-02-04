@@ -237,7 +237,8 @@
                                     <select class="motivo_extra" name="motivo" id="motivo_no_usar" style="width: 110%;">
                                         <% for (let solicitud of solicitudes) { %>
                                         <option value="<%= solicitud.motivoPago %>"
-                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>">
+                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>"
+                                            data-idliquida="<%= solicitud.IDLiquida %>">
                                             <%= solicitud.motivoPago %>
                                         </option>
                                         <% } %>
