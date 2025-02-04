@@ -153,6 +153,8 @@
                 <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
                 <% if (alumno[0].Matricula[0] == '1') { %>
                 <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
+                <% } else if (alumno[0].Matricula[0] == '8') { %>
+                <input type="hidden" id="diplomado" name="diplomado" value="<%= diplomado[0].IDDiplomado %>">
                 <% } %>
                 <% if (solicitudes.length != 0){ %>
                 <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
@@ -321,7 +323,7 @@
                             <button class="js-modal-trigger confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
                                 id="Boton_pagar_1"
                                 data-target="modal-pago-tarjeta" 
-                                <% if (alumno[0].Matricula !== '100123') { %> disabled <% } %>>
+                                <% if (alumno[0].Matricula !== '8001') { %> disabled <% } %>>
                                 <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
@@ -384,16 +386,6 @@
                 <% } %>
             </div>
         </div>
-        <form action="/estado_cuenta/notificacion_pago" method="POST">
-            <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-            <button class="confirmar-button is-responsive"
-                style="font-size: large; padding-left: 1.5em;" type="submit">
-                <span>Simular Post</span>
-                <span class="icon is-large">
-                    <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
-                </span>
-            </button>
-        </form>
         <div id="modal-pago-tarjeta" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">

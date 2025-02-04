@@ -30,6 +30,16 @@ module.exports = class pagoDiplomado {
             [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago]);
     };
 
+    static save_pago_tarjeta_web(matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago, referenciaPago) {
+        return db.execute(`INSERT INTO pagaDiplomado(Matricula, IDDiplomado, fechaPago, montoPagado, Motivo, Nota, metodoPago, estadoPago, referenciaPago)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?);`,
+            [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago, referenciaPago]);
+    };
+
+    static update_estado_pago(fechaPago, referenciaPago) {
+        return db.execute(`UPDATE pagaDiplomado SET estadoPago = 1, fechaPago = ? WHERE referenciaPago = ?`, [fechaPago, referenciaPago]);
+    }
+
     static fetch_fecha_pago(fecha) {
         return db.execute('SELECT fechaPago,montoPagado FROM pagaDiplomado WHERE fechaPago = ?',
             [fecha]);

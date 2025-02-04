@@ -136,6 +136,12 @@ function pagar() {
     }
     const nota = document.getElementById('nota').value;
 
+    const id_diplomado = document.getElementById('diplomado');
+    let id_diplomado_cursando = '';
+    if (matricula[0] == '8' && id_diplomado) {
+        id_diplomado_cursando = id_diplomado.value;
+    }
+
     fetch('/estado_cuenta/mandar_pago', {
         method: 'POST',
         headers: {
@@ -149,6 +155,7 @@ function pagar() {
             motivo: motivo,
             nota: nota,
             id_liquida: liquida_seleccionado,
+            id_diplomado: id_diplomado_cursando,
         })
     }).then((result) => {
         return result.json();

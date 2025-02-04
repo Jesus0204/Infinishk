@@ -116,13 +116,15 @@ const {
     v4: uuidv4
 } = require('uuid');
 
-exports.post_mandar_pago = (request, response, next) => {
+exports.post_mandar_pago = async (request, response, next) => {
     let monto = Number(request.body.monto);
     monto = monto.toFixed(2);
     let matricula = request.body.matricula;
     let id_liquida = request.body.id_liquida;
+    let id_diplomado = request.body.id_diplomado;
     let tipo = request.body.tipo_pago;
     let motivo = request.body.motivo;
+    let nota = request.body.nota;
 
     const idLiquidaXML = id_liquida !== '' ? `
         <data id="4" display="false">
@@ -142,6 +144,7 @@ exports.post_mandar_pago = (request, response, next) => {
         tipo_pago = 'Otros';
     }
 
+    let idReferencia = uuidv4();
     const xml = `
         <P>
             <business>
@@ -151,7 +154,7 @@ exports.post_mandar_pago = (request, response, next) => {
                 <pwd>${process.env.API_PASSWORD}</pwd>
             </business>
             <url>
-                <reference>${uuidv4()}</reference>
+                <reference>${idReferencia}</reference>
                 <amount>${monto}</amount>
                 <moneda>MXN</moneda>
                 <canal>W</canal>
@@ -180,11 +183,10 @@ exports.post_mandar_pago = (request, response, next) => {
     if (tipo_pago === 'Colegiatura') {
 
     } else if (tipo_pago === 'Diplomado') {
-
+        await PagoDiplomado.save_pago_tarjeta_web(matricula, id_diplomado, moment().tz('America/Mexico_City').format('YYYY-MM-DD'), monto, motivo, nota, 'Tarjeta Web', idReferencia);
     } else if (tipo_pago === 'Otros') {
-        
-    }
 
+    }
 
     // Pones todo el xml en un string
     let originalString = xml.toString();
@@ -227,7 +229,7 @@ exports.post_mandar_pago = (request, response, next) => {
 
 exports.post_notificacion_pago = async (request, response, next) => {
     try {
-        const tipo = "Colegiatura";
+        const tipo = "Diplomado";
         const strResponse = decodeURIComponent("yO3hhCLQmgOr2R6j1WHzb5S5IL5raWDL4zSTFIc6VcZOEGQXi4SFK5EDATyDAHQZalBxRhZDJZ46FAFpltJ95CCo59pYVDqpFjmIcqePs4FiUx3BEcRkrjVeqwUyJUILxtlLBOgm9YbYqT%2F%2Fbe8nYCW8sj%2FOH%2BIvXKcxojy%2BljqlZn4Mqi1dsStM%2FSCQa%2BSFLOJ%2FJXcSuAjhu7i7Sj%2BNxrqB5mAicNlZ3SoZv2z3MULe9MIuyzgYNg6bUC%2BCHMRiujhoUXOs55gts7kAVdEasRiNl0LFWw8neGCB%2FYKWk6n3Xw2moBrIylqGI6yM1p49c2fQBs6FHsGKWtc%2BkP9nbWBy25HtrnWdQmgXbanJV4MoXqivlhrOSkDFi0qYzVzI%2BlhYLGYq6zF23u%2BIhsM4szG1qiMocOymkTrqWU7Ns7WWqCzYYX1N3WUVIzpFiJKKJ4gymbIwbvBel5HKy6ZUDxgvpPLGLl1KfzuhNzYg%2F%2FklGpEDxPmZf9km0exPcSKJQGphpj%2BW8LH3Jo0BqIE6qRW434E6LLbmyGyd8AOHlQX%2BZ2a17VBkTR%2BqDz6Ca%2FEwf0aMaDQIQam5zIrqHzL5xPwQgXl0RH66IUM%2FeSpE4h2PeTPY11qEL7Pvyf5bXbuCGFss4GPT0Mj7OiSq6x%2FgHNWjFiHLzPXqOita%2B1PXQu5VNO2VAjZMCSK6XU1LQELDdo4MUtBB6%2BCU16gz5vc6F%2FSwtllu3tbMB4jNGjk6Y9kvvg%2BoHCWSmI2mX0JHDySajJC23tOHW2vO1D%2B9xsM2k%2BwQ8f9xjKjeIXkA2qoPHlgUfDavufWKTyuGWutGKZCCPvvFRTHJoUxpbMYTZQo%2BArsczE4IYkSIHk2FUVDTfRddpuOuoLdBXJQPSHxIruv4OcvsXQnEuknd06zdGYEgM0eyMWfMaSaWIuKJFzuf9p3mQznV8OXA%2F1aNyCOsh90AvHt%2FOPKOi1xwrQU7d9iiNiufr%2FzE4lp%2FmWY6s6TQbZAAyphkqxfwmeNg6Ogsg9hq48RP%2FwjyFdnZwplF8GBgFARBWhy22d8r8vGWVijbYbRYcBnWNtF1GTmWsET7lEzXJfGODOLSZoEQUn%2Fw2%2BfIl4kPx%2F0ycK7yeXC39zpj04hf3bTFuYchz%2BKjzuvHYeDE");
         
         let key = "5DCC67393750523CD165F17E1EFADD21";
@@ -260,8 +262,6 @@ exports.get_recibir_pago = async (request, response, next) => {
         respuestaXML: 'Recibido'
     });
 }
-
-const xml2js = require('xml2js');
 
 exports.post_recibir_pago = async (request, response, next) => {
     return response.status(200).json({
