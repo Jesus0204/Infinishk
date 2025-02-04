@@ -227,21 +227,56 @@ exports.post_mandar_pago = async (request, response, next) => {
     })
 };
 
+const xml2js = require('xml2js');
+
 exports.post_notificacion_pago = async (request, response, next) => {
     try {
-        const tipo = "Diplomado";
-        const strResponse = decodeURIComponent("yO3hhCLQmgOr2R6j1WHzb5S5IL5raWDL4zSTFIc6VcZOEGQXi4SFK5EDATyDAHQZalBxRhZDJZ46FAFpltJ95CCo59pYVDqpFjmIcqePs4FiUx3BEcRkrjVeqwUyJUILxtlLBOgm9YbYqT%2F%2Fbe8nYCW8sj%2FOH%2BIvXKcxojy%2BljqlZn4Mqi1dsStM%2FSCQa%2BSFLOJ%2FJXcSuAjhu7i7Sj%2BNxrqB5mAicNlZ3SoZv2z3MULe9MIuyzgYNg6bUC%2BCHMRiujhoUXOs55gts7kAVdEasRiNl0LFWw8neGCB%2FYKWk6n3Xw2moBrIylqGI6yM1p49c2fQBs6FHsGKWtc%2BkP9nbWBy25HtrnWdQmgXbanJV4MoXqivlhrOSkDFi0qYzVzI%2BlhYLGYq6zF23u%2BIhsM4szG1qiMocOymkTrqWU7Ns7WWqCzYYX1N3WUVIzpFiJKKJ4gymbIwbvBel5HKy6ZUDxgvpPLGLl1KfzuhNzYg%2F%2FklGpEDxPmZf9km0exPcSKJQGphpj%2BW8LH3Jo0BqIE6qRW434E6LLbmyGyd8AOHlQX%2BZ2a17VBkTR%2BqDz6Ca%2FEwf0aMaDQIQam5zIrqHzL5xPwQgXl0RH66IUM%2FeSpE4h2PeTPY11qEL7Pvyf5bXbuCGFss4GPT0Mj7OiSq6x%2FgHNWjFiHLzPXqOita%2B1PXQu5VNO2VAjZMCSK6XU1LQELDdo4MUtBB6%2BCU16gz5vc6F%2FSwtllu3tbMB4jNGjk6Y9kvvg%2BoHCWSmI2mX0JHDySajJC23tOHW2vO1D%2B9xsM2k%2BwQ8f9xjKjeIXkA2qoPHlgUfDavufWKTyuGWutGKZCCPvvFRTHJoUxpbMYTZQo%2BArsczE4IYkSIHk2FUVDTfRddpuOuoLdBXJQPSHxIruv4OcvsXQnEuknd06zdGYEgM0eyMWfMaSaWIuKJFzuf9p3mQznV8OXA%2F1aNyCOsh90AvHt%2FOPKOi1xwrQU7d9iiNiufr%2FzE4lp%2FmWY6s6TQbZAAyphkqxfwmeNg6Ogsg9hq48RP%2FwjyFdnZwplF8GBgFARBWhy22d8r8vGWVijbYbRYcBnWNtF1GTmWsET7lEzXJfGODOLSZoEQUn%2Fw2%2BfIl4kPx%2F0ycK7yeXC39zpj04hf3bTFuYchz%2BKjzuvHYeDE");
+        const strResponse = request.body.strResponse;
+
+        console.log(request.body);
         
-        let key = "5DCC67393750523CD165F17E1EFADD21";
+        let key = process.env.CIPHER_KEY;
         const responseText = cipher.decifrarAES(strResponse, key);
-    
-        if (tipo === 'Colegiatura') {
 
-        } else if (tipo === 'Diplomado') {
+        const parser = new xml2js.Parser();
 
-        } else if (tipo === 'Otros') {
+        parser.parseString(responseText, async (err, result) => {
+            if (err) {
+                console.error('Error parseando el XML:', err);
+                return;
+            }
+            
+            const payments = result.CENTEROFPAYMENTS;
 
-        }
+            const reference = payments.reference[0];
+            const responseStatus = payments.response[0];
+            const monto = payments.amount[0];
+            const time = payments.time[0];
+            const date = payments.date[0];
+
+            const combinedDateTime = `${date} ${time}`;
+            const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+            
+            if (tipo === 'Colegiatura') {
+                if (responseStatus == 'approved') {
+                    console.log('Pago aprobado');
+                } else if (responseStatus == 'denied') {
+                    console.log('Pago denegado');
+                }
+            } else if (tipo === 'Diplomado') {
+                if (responseStatus == 'approved') {
+                    await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
+                } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                    await PagoDiplomado.update_pago_rechazado(reference);
+                }
+            } else if (tipo === 'Otros') {
+                if (responseStatus == 'approved') {
+                    console.log('Pago aprobado');
+                } else if (responseStatus == 'denied') {
+                    console.log('Pago denegado');
+                }
+            }
+        });
     
         return response.status(200).json({
             success: true,

@@ -36,8 +36,12 @@ module.exports = class pagoDiplomado {
             [matricula, IDDiplomado, fechaPago, montoPagado, motivo, nota, metodoPago, referenciaPago]);
     };
 
-    static update_estado_pago(fechaPago, referenciaPago) {
-        return db.execute(`UPDATE pagaDiplomado SET estadoPago = 1, fechaPago = ? WHERE referenciaPago = ?`, [fechaPago, referenciaPago]);
+    static update_estado_pago(fechaPago, montoPagado, referenciaPago) {
+        return db.execute(`UPDATE pagaDiplomado SET estadoPago = 1, fechaPago = ?, montoPagado = ? WHERE referenciaPago = ?`, [fechaPago, montoPagado, referenciaPago]);
+    }
+
+    static update_pago_rechazado(referenciaPago) {
+        return db.execute(`UPDATE pagaDiplomado SET Nota = 'No pudimos procesar tu pago. Revisa tu método de pago o contacta a tu banco.' WHERE referenciaPago = ?`, [referenciaPago]);
     }
 
     static fetch_fecha_pago(fecha) {
