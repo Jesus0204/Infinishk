@@ -232,13 +232,9 @@ const xml2js = require('xml2js');
 exports.post_notificacion_pago = async (request, response, next) => {
     try {
         const strResponse = request.body.strResponse;
-
-        console.log(request.body);
         
         let key = process.env.CIPHER_KEY;
         const responseText = cipher.decifrarAES(strResponse, key);
-
-        console.log(responseText);
 
         const parser = new xml2js.Parser();
 
@@ -255,25 +251,44 @@ exports.post_notificacion_pago = async (request, response, next) => {
             const reference = payments.reference[0];
             const responseStatus = payments.response[0];
             const monto = payments.amount[0];
-            const time = payments.time[0];
-            const date = payments.date[0];
 
-            const combinedDateTime = `${date} ${time}`;
-            const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+            const datosAdicionales = payments.datos_adicionales[0].data;
+
+            let principal;
+            let tipoPago;
+
+            console.log(tipoPago);
+
+            datosAdicionales.forEach(item => {
+                const label = item.label[0];
+                const value = item.value[0];
+
+                if (label === 'PRINCIPAL') {
+                    principal = value;
+                } else if (label === 'Tipo de Pago') {
+                    tipoPago = value;
+                }
+            });
             
-            if (tipo === 'Colegiatura') {
+            if (tipoPago === 'Colegiatura') {
                 if (responseStatus == 'approved') {
                     console.log('Pago aprobado');
                 } else if (responseStatus == 'denied') {
                     console.log('Pago denegado');
                 }
-            } else if (tipo === 'Diplomado') {
+            } else if (tipoPago === 'Diplomado') {
                 if (responseStatus == 'approved') {
+                    const time = payments.time[0];
+                    const date = payments.date[0];
+
+                    const combinedDateTime = `${date} ${time}`;
+                    const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
                     await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
                 } else if (responseStatus == 'denied' || responseStatus == 'error') {
                     await PagoDiplomado.update_pago_rechazado(reference);
                 }
-            } else if (tipo === 'Otros') {
+            } else if (tipoPago === 'Otros') {
                 if (responseStatus == 'approved') {
                     console.log('Pago aprobado');
                 } else if (responseStatus == 'denied') {
