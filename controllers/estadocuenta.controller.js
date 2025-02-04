@@ -257,8 +257,6 @@ exports.post_notificacion_pago = async (request, response, next) => {
             let principal;
             let tipoPago;
 
-            console.log(tipoPago);
-
             datosAdicionales.forEach(item => {
                 const label = item.label[0];
                 const value = item.value[0];
@@ -299,7 +297,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
     
         return response.status(200).json({
             success: true,
-            respuestaXML: responseText
+            message: 'Pago recibido'
         });
     } catch (error) {
         console.log(error);

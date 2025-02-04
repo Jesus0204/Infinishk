@@ -41,7 +41,7 @@ module.exports = class pagoDiplomado {
     }
 
     static update_pago_rechazado(referenciaPago) {
-        return db.execute(`UPDATE pagaDiplomado SET Nota = 'No pudimos procesar tu pago. Revisa tu método de pago o contacta a tu banco.' WHERE referenciaPago = ?`, [referenciaPago]);
+        return db.execute(`UPDATE pagaDiplomado SET Nota = 'PAGO RECHAZADO' WHERE referenciaPago = ?`, [referenciaPago]);
     }
 
     static fetch_fecha_pago(fecha) {
