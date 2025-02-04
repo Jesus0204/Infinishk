@@ -238,6 +238,8 @@ exports.post_notificacion_pago = async (request, response, next) => {
         let key = process.env.CIPHER_KEY;
         const responseText = cipher.decifrarAES(strResponse, key);
 
+        console.log(responseText);
+
         const parser = new xml2js.Parser();
 
         parser.parseString(responseText, async (err, result) => {
