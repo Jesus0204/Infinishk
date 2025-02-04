@@ -153,50 +153,6 @@ function pagar() {
     }).catch(err => {
         console.log(err);
     });
-
-    fetch('/estado_cuenta/recibir_pago', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'csrf-token': csrf
-        },
-        body: JSON.stringify({
-            matricula: matricula,
-            monto: monto,
-            motivo: motivo,
-            tipo: tipo,
-            test: test,
-            deuda: deuda_mandar,
-            nota: nota,
-            liquida: liquida_mandar,
-        })
-    }).then((result) => {
-        return result.json();
-    }).then((data) => {
-        // Aquí puedes hacer algo con la respuesta si es necesario
-    }).catch(err => {
-        console.log(err);
-    });
-
-
-    fetch('/estado_cuenta/respuesta_pago', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'csrf-token': csrf
-        },
-        body: JSON.stringify({
-            monto: monto,
-            test: test,
-            matricula: matricula,
-        })
-    }).then((result) => {
-        return result.json();
-    }).then((data) => {
-        window.location.href = data.redirectUrl; 
-    }).catch(err => {
-        console.log(err);
-    }); 
 }
 
 if (boton_pagar) {

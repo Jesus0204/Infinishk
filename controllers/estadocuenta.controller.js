@@ -124,8 +124,8 @@ exports.post_mandar_pago = (request, response, next) => {
     const xml = `
         <P>
             <business>
-                <id_company>SNBX</id_company>
-                <id_branch>01SNBXBRNCH</id_branch>
+                <id_company>${process.env.ID_COMPANY}</id_company>
+                <id_branch>${process.env.ID_BRANCH}</id_branch>
                 <user>${process.env.API_USER}</user>
                 <pwd>${process.env.API_PASSWORD}</pwd>
             </business>
@@ -150,11 +150,11 @@ exports.post_mandar_pago = (request, response, next) => {
     let cipherText = cipher.cifrarAES(originalString, key);
 
     // Creas otro xml para hacer el post con el texto cifrado
-    let originalString_post = "xml=<pgs><data0>SNDBX123</data0><data>" + cipherText + "</data></pgs>";
+    let originalString_post = `xml=<pgs><data0>${process.env.DATA0}</data0><data>` + cipherText + "</data></pgs>";
     let data_xml = encodeURIComponent(originalString_post);
 
     // Haces el post del xml generado
-    axios.post('https://sandboxpo.mit.com.mx/gen', data_xml, {
+    axios.post(`${process.env.PAGO_URL}`, data_xml, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
