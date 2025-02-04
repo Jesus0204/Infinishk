@@ -243,63 +243,69 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 console.error('Error parseando el XML:', err);
                 return;
             }
-            
-            const payments = result.CENTEROFPAYMENTS;
 
-            console.log(payments);
+            try {
+                const payments = result.CENTEROFPAYMENTS;
 
-            const reference = payments.reference[0];
-            const responseStatus = payments.response[0];
-            const monto = payments.amount[0];
+                console.log(payments);
 
-            const datosAdicionales = payments.datos_adicionales[0].data;
+                const reference = payments.reference[0];
+                const responseStatus = payments.response[0];
+                const monto = payments.amount[0];
 
-            let principal;
-            let tipoPago;
+                const datosAdicionales = payments.datos_adicionales[0].data;
 
-            console.log(tipoPago);
+                let principal;
+                let tipoPago;
 
-            datosAdicionales.forEach(item => {
-                const label = item.label[0];
-                const value = item.value[0];
+                datosAdicionales.forEach(item => {
+                    const label = item.label[0];
+                    const value = item.value[0];
 
-                if (label === 'PRINCIPAL') {
-                    principal = value;
-                } else if (label === 'Tipo de Pago') {
-                    tipoPago = value;
+                    if (label === 'PRINCIPAL') {
+                        principal = value;
+                    } else if (label === 'Tipo de Pago') {
+                        tipoPago = value;
+                    }
+                });
+                
+                if (tipoPago === 'Colegiatura') {
+                    if (responseStatus == 'approved') {
+                        console.log('Pago aprobado');
+                    } else if (responseStatus == 'denied') {
+                        console.log('Pago denegado');
+                    }
+                } else if (tipoPago === 'Diplomado') {
+                    if (responseStatus == 'approved') {
+                        const time = payments.time[0];
+                        const date = payments.date[0];
+
+                        const combinedDateTime = `${date} ${time}`;
+                        const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
+                        await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
+                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                        await PagoDiplomado.update_pago_rechazado(reference);
+                    }
+                } else if (tipoPago === 'Otros') {
+                    if (responseStatus == 'approved') {
+                        console.log('Pago aprobado');
+                    } else if (responseStatus == 'denied') {
+                        console.log('Pago denegado');
+                    }
+                }
+                } catch (error) {
+                    console.log(error);
+                    return response.status(500).json({
+                        success: false,
+                        error: 'Error al recibir el pago'
+                    });
                 }
             });
-            
-            if (tipoPago === 'Colegiatura') {
-                if (responseStatus == 'approved') {
-                    console.log('Pago aprobado');
-                } else if (responseStatus == 'denied') {
-                    console.log('Pago denegado');
-                }
-            } else if (tipoPago === 'Diplomado') {
-                if (responseStatus == 'approved') {
-                    const time = payments.time[0];
-                    const date = payments.date[0];
-
-                    const combinedDateTime = `${date} ${time}`;
-                    const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-
-                    await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
-                } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                    await PagoDiplomado.update_pago_rechazado(reference);
-                }
-            } else if (tipoPago === 'Otros') {
-                if (responseStatus == 'approved') {
-                    console.log('Pago aprobado');
-                } else if (responseStatus == 'denied') {
-                    console.log('Pago denegado');
-                }
-            }
-        });
     
         return response.status(200).json({
             success: true,
-            respuestaXML: responseText
+            message: 'Pago recibido'
         });
     } catch (error) {
         console.log(error);
