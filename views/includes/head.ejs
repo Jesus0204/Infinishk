@@ -72,7 +72,7 @@
                 </div>
                 <div id="navbarViaDiseño" class="navbar-menu">
                     <div class="navbar-start">
-                        <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true) { %>
+                        <% if (contienePermiso(permisos, 'Consultar Propuesta de Horario') == true && username[0] == '1') { %>
                         <a class="navbar-item desktop_menu navbar-redondo" href="/horario/consultahorario">
                             <span class="icon is-large">
                                 <i class="fa-solid fa-calendar-week"></i>
