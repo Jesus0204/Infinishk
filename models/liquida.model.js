@@ -65,7 +65,7 @@ module.exports = class Liquida {
     static update_pago_tarjeta_web_fallo(metodo, nota,referenciaPago, matricula, idliquida) {
         return db.execute(`UPDATE Liquida SET metodoPago = ?, Nota = ?, Pagado = 0, referenciaPago = ?
         WHERE Matricula = ? AND IDLiquida = ?`, 
-        [fecha, metodo, nota, referenciaPago, matricula, idliquida]);
+        [metodo, nota, referenciaPago, matricula, idliquida]);
     }
 
     static fetch_Pendientes(matricula) {
