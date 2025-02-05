@@ -131,6 +131,10 @@ exports.post_mandar_pago = async (request, response, next) => {
             <label>ID Liquida</label>
             <value>${id_liquida}</value>
         </data>
+        <data id="5" display="false">
+            <label>Nota</label>
+            <value>${nota}</value>
+        </data>
     ` : '';
 
     let tipo_pago = '';
@@ -251,6 +255,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
         let matricula;
         let tipoPago;
         let idLiquida;
+        let nota;
 
         datosAdicionales.forEach(item => {
             const label = item.label[0];
@@ -262,7 +267,9 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 tipoPago = value;
             } else if (label === 'ID Liquida') {
                 idLiquida = value;
-            } 
+            } else if (label === 'Nota'){
+                nota = value;
+            }
         });
                 
         if (tipoPago === 'Colegiatura') {
@@ -376,9 +383,15 @@ exports.post_notificacion_pago = async (request, response, next) => {
             }
         } else if (tipoPago === 'Otros') {
             if (responseStatus == 'approved') {
-                console.log('Pago aprobado');
+                const time = payments.time[0];
+                const date = payments.date[0];
+
+                const combinedDateTime = `${date} ${time}`;
+                const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
+                await Liquida.update_pago_tarjeta_web_exito(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida)
             } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                console.log('Pago denegado');
+                await Liquida.update_pago_tarjeta_web_fallo("Tarjeta Web", nota, reference, matricula, idLiquida)
             }
         }
 
@@ -395,20 +408,47 @@ exports.post_notificacion_pago = async (request, response, next) => {
     }
 };
 
-exports.get_recibir_pago = async (request, response, next) => {
-    console.log(response.params);
+exports.get_confirmacion_pago = async (request, response, next) => {
+    const {
+        nbResponse: responseStatus,
+        importe: monto,
+        email,
+        empresa,
+        nbMoneda: tipoMoneda,
+        banco,
+        marca,
+        tpTdc: tipoTarjeta,
+        referencia,
+        fecha,
+        operacion,
+        nuAut: numAutorizacion,
+        cdResponse,
+        nb_adquirente: adquirente
+    } = request.query;
+    
+    const datosPago = {
+        responseStatus,
+        monto,
+        email,
+        empresa,
+        tipoMoneda,
+        banco,
+        marca,
+        tipoTarjeta,
+        referencia,
+        fecha,
+        operacion,
+        numAutorizacion,
+        cdResponse,
+        adquirente
+    };
+    
     response.render('estadocuenta/recibir_pago', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
-        csrfToken: request.csrfToken()
-    });
-}
-
-exports.post_recibir_pago = async (request, response, next) => {
-    return response.status(200).json({
-        success: true,
-        respuestaXML: 'Recibido'
+        csrfToken: request.csrfToken(),
+        datosPago
     });
 };
 

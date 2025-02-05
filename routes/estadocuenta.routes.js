@@ -12,13 +12,11 @@ const can_RealizarPago = require('../util/privileges/alumno/can_realizar_pago');
 router.get('/pagar', isAuth, can_RealizarPago, estadocuentaController.get_pago_alumno);
 router.post('/mandar_pago', isAuth, can_RealizarPago, estadocuentaController.post_mandar_pago);
 
-router.get('/confirmacion_pago', estadocuentaController.get_recibir_pago);
-router.post('/confirmacion_pago', estadocuentaController.post_recibir_pago);
+router.get('/confirmacion_pago', estadocuentaController.get_confirmacion_pago);
 
 router.post('/notificacion_pago', estadocuentaController.post_notificacion_pago);
 
 // Estado cuenta
 router.get('/estado_cuenta', isAuth, can_ConsultarEstadoCuenta, estadocuentaController.get_estado_cuenta);
-
 
 module.exports = router;
