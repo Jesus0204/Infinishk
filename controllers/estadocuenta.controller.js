@@ -394,14 +394,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 await Liquida.update_pago_tarjeta_web_exito(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida)
             } else if (responseStatus == 'denied' || responseStatus == 'error') {
                 console.log('Pago extra denegado');
-
-                const time = payments.time[0];
-                const date = payments.date[0];
-
-                const combinedDateTime = `${date} ${time}`;
-                const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-
-                await Liquida.update_pago_tarjeta_web_fallo(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida)
+                await Liquida.update_pago_tarjeta_web_fallo("Tarjeta Web", nota, reference, matricula, idLiquida)
             }
         }
 
