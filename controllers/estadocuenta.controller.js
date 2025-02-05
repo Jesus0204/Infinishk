@@ -4,7 +4,6 @@ const Colegiatura = require('../models/colegiatura.model');
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const Cursa = require('../models/cursa.model');
-const Usuario = require('../models/usuario.model');
 const Alumno = require('../models/alumno.model');
 const Liquida = require('../models/liquida.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
@@ -122,6 +121,7 @@ exports.post_mandar_pago = async (request, response, next) => {
     let matricula = request.body.matricula;
     let id_liquida = request.body.id_liquida;
     let id_diplomado = request.body.id_diplomado;
+    let id_deuda = request.body.id_deuda;
     let tipo = request.body.tipo_pago;
     let motivo = request.body.motivo;
     let nota = request.body.nota;
@@ -181,9 +181,9 @@ exports.post_mandar_pago = async (request, response, next) => {
     `; 
 
     if (tipo_pago === 'Colegiatura') {
-
+        await Pago.save_pago_tarjeta_web(id_deuda, motivo, monto, nota, 'Tarjeta Web', moment().tz('America/Mexico_City').format('YYYY-MM-DD HH:mm'), idReferencia);
     } else if (tipo_pago === 'Diplomado') {
-        await PagoDiplomado.save_pago_tarjeta_web(matricula, id_diplomado, moment().tz('America/Mexico_City').format('YYYY-MM-DD'), monto, motivo, nota, 'Tarjeta Web', idReferencia);
+        await PagoDiplomado.save_pago_tarjeta_web(matricula, id_diplomado, moment().tz('America/Mexico_City').format('YYYY-MM-DD HH:mm'), monto, motivo, nota, 'Tarjeta Web', idReferencia);
     } else if (tipo_pago === 'Otros') {
 
     }
@@ -257,6 +257,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
 
                 let principal;
                 let tipoPago;
+                let idLiquida;
 
                 datosAdicionales.forEach(item => {
                     const label = item.label[0];
@@ -266,14 +267,22 @@ exports.post_notificacion_pago = async (request, response, next) => {
                         principal = value;
                     } else if (label === 'Tipo de Pago') {
                         tipoPago = value;
-                    }
+                    } else if (label === 'ID Liquida') {
+                        idLiquida = value;
+                    } 
                 });
                 
                 if (tipoPago === 'Colegiatura') {
                     if (responseStatus == 'approved') {
-                        console.log('Pago aprobado');
-                    } else if (responseStatus == 'denied') {
-                        console.log('Pago denegado');
+                        const time = payments.time[0];
+                        const date = payments.date[0];
+
+                        const combinedDateTime = `${date} ${time}`;
+                        const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
+                        await Pago.update_estado_pago(formattedFechaPago, monto, reference);
+                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                        await Pago.update_pago_rechazado(reference);
                     }
                 } else if (tipoPago === 'Diplomado') {
                     if (responseStatus == 'approved') {
@@ -290,7 +299,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 } else if (tipoPago === 'Otros') {
                     if (responseStatus == 'approved') {
                         console.log('Pago aprobado');
-                    } else if (responseStatus == 'denied') {
+                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
                         console.log('Pago denegado');
                     }
                 }

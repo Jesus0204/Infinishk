@@ -22,6 +22,6 @@ module.exports = class Cursa{
     static fetchPagosHechos(matricula, IDDiplomado) {
         return db.execute(`SELECT fechaPago, montoPagado
         FROM pagaDiplomado WHERE Matricula = ? AND 
-        IDDiplomado = ?`, [matricula, IDDiplomado]);
+        IDDiplomado = ? AND estadoPago = 1`, [matricula, IDDiplomado]);
     };
 }
