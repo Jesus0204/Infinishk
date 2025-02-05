@@ -6,14 +6,10 @@
 
 <body>
 <div style="text-align: center; font-size: 2em;">
-<% if (params.nbResponse === "Aprobado" && params.nuAut !== "") { %>
-<h1>¡Gracias por tu compra por <%= params.importe %>!</h1>
-<p>En breve recibirás un correo a <%= params.email %></p>
-<% } else if (params.nbResponse === "Rechazado") { %>
-<h1>Lo sentimos, tu pago por <%= params.importe %> ha sido rechazado por tu banco.</h1>
-<% } else { %>
-<h1>Lo sentimos, no podemos procesar la respuesta</h1>
-<% } %>
+    <h1>Recibir Pago</h1>
+    <p>
+        Esta es una pagina de prueba para recibir pagos
+    </p>
 </div>
 </body>
 <%- include('../includes/foot.ejs') %>

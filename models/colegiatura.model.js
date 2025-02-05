@@ -40,7 +40,7 @@ module.exports = class Colegiatura {
         JOIN Alumno AS A ON D.Matricula = A.Matricula 
         JOIN Colegiatura AS C ON D.IDColegiatura = C.IDColegiatura 
         JOIN Periodo AS Per ON C.IDPeriodo = Per.IDPeriodo 
-        WHERE P.fechaPago BETWEEN ? AND ? ORDER BY D.Matricula ASC`, [fechaInicio, fechaFin]);
+        WHERE P.fechaPago BETWEEN ? AND ? AND P.estadoPago = 1 ORDER BY D.Matricula ASC`, [fechaInicio, fechaFin]);
     }
 
     static fetchCreditoColegiatura(IDColegiatura) {
