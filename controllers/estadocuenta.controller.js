@@ -383,8 +383,6 @@ exports.post_notificacion_pago = async (request, response, next) => {
             }
         } else if (tipoPago === 'Otros') {
             if (responseStatus == 'approved') {
-                console.log('Pago extra aprobado');
-
                 const time = payments.time[0];
                 const date = payments.date[0];
 
@@ -393,7 +391,6 @@ exports.post_notificacion_pago = async (request, response, next) => {
 
                 await Liquida.update_pago_tarjeta_web_exito(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida)
             } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                console.log('Pago extra denegado');
                 await Liquida.update_pago_tarjeta_web_fallo("Tarjeta Web", nota, reference, matricula, idLiquida)
             }
         }
