@@ -56,6 +56,18 @@ module.exports = class Liquida {
         [fecha, metodo, nota, matricula, pago, idliquida]);
     }
 
+    static update_pago_tarjeta_web_exito(fecha, metodo, nota,referenciaPago, matricula, idliquida) {
+        return db.execute(`UPDATE Liquida SET fechaPago = ?, metodoPago = ?, Nota = ?, Pagado = 1, referenciaPago = ?
+        WHERE Matricula = ? AND IDLiquida = ?`, 
+        [fecha, metodo, nota, referenciaPago, matricula,idliquida]);
+    }
+
+    static update_pago_tarjeta_web_fallo(fecha, metodo, nota,referenciaPago, matricula, idliquida) {
+        return db.execute(`UPDATE Liquida SET fechaPago = ?, metodoPago = ?, Nota = ?, Pagado = 0, referenciaPago = ?
+        WHERE Matricula = ? AND IDLiquida = ?`, 
+        [fecha, metodo, nota, referenciaPago, matricula, idliquida]);
+    }
+
     static fetch_Pendientes(matricula) {
         return db.execute(`SELECT IDLiquida, motivoPago, montoPagar From Liquida AS L, pagosExtras AS P
         WHERE L.IDPagosExtras = P.IDPagosExtras AND L.Matricula = ? AND L.Pagado = 0`,
