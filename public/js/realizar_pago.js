@@ -165,8 +165,7 @@ function pagar() {
 
         let liga_pago = (xmlDoc.getElementsByTagName("nb_url")[0].childNodes[0].nodeValue);
 
-        document.getElementById('frame_pago').src = liga_pago;
-
+        window.location.href = liga_pago;
     }).catch(err => {
         console.log(err);
     });
