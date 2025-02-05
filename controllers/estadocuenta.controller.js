@@ -395,20 +395,47 @@ exports.post_notificacion_pago = async (request, response, next) => {
     }
 };
 
-exports.get_recibir_pago = async (request, response, next) => {
-    console.log(response.params);
+exports.get_confirmacion_pago = async (request, response, next) => {
+    const {
+        nbResponse: responseStatus,
+        importe: monto,
+        email,
+        empresa,
+        nbMoneda: tipoMoneda,
+        banco,
+        marca,
+        tpTdc: tipoTarjeta,
+        referencia,
+        fecha,
+        operacion,
+        nuAut: numAutorizacion,
+        cdResponse,
+        nb_adquirente: adquirente
+    } = request.query;
+    
+    const datosPago = {
+        responseStatus,
+        monto,
+        email,
+        empresa,
+        tipoMoneda,
+        banco,
+        marca,
+        tipoTarjeta,
+        referencia,
+        fecha,
+        operacion,
+        numAutorizacion,
+        cdResponse,
+        adquirente
+    };
+    
     response.render('estadocuenta/recibir_pago', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || "",
-        csrfToken: request.csrfToken()
-    });
-}
-
-exports.post_recibir_pago = async (request, response, next) => {
-    return response.status(200).json({
-        success: true,
-        respuestaXML: 'Recibido'
+        csrfToken: request.csrfToken(),
+        datosPago
     });
 };
 
