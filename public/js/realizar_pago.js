@@ -125,7 +125,7 @@ function pagar() {
     const deuda = document.getElementById('deuda');  
 
     let deuda_mandar = '';
-    if (deuda){
+    if (deuda && tipo.value == 'Normal'){
         deuda_mandar = deuda.value;
     }
 
@@ -154,6 +154,7 @@ function pagar() {
             tipo_pago: tipo.value, 
             motivo: motivo,
             nota: nota,
+            id_deuda: deuda_mandar,
             id_liquida: liquida_seleccionado,
             id_diplomado: id_diplomado_cursando,
         })
@@ -165,8 +166,7 @@ function pagar() {
 
         let liga_pago = (xmlDoc.getElementsByTagName("nb_url")[0].childNodes[0].nodeValue);
 
-        document.getElementById('frame_pago').src = liga_pago;
-
+        window.location.href = liga_pago;
     }).catch(err => {
         console.log(err);
     });
