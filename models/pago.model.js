@@ -46,6 +46,10 @@ module.exports = class Pago {
         return db.execute(`UPDATE Pago SET Nota = 'PAGO RECHAZADO' WHERE referenciaPago = ?`, [referenciaPago]);
     }
 
+    static fetchPago_referencia(referencia) {
+        return db.execute(`SELECT * FROM Pago WHERE referenciaPago = ?`, [referencia]);
+    }
+
     static fetchOne(matricula){
         return db.execute(`SELECT P.IDPago, P.motivo, P.montoPagado, P.nota, P.metodoPago, P.fechaPago
         FROM Deuda AS D, Pago AS P, Colegiatura AS C, Periodo AS Pe

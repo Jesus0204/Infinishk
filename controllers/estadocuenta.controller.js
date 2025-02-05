@@ -184,8 +184,6 @@ exports.post_mandar_pago = async (request, response, next) => {
         await Pago.save_pago_tarjeta_web(id_deuda, motivo, monto, nota, 'Tarjeta Web', moment().tz('America/Mexico_City').format('YYYY-MM-DD HH:mm'), idReferencia);
     } else if (tipo_pago === 'Diplomado') {
         await PagoDiplomado.save_pago_tarjeta_web(matricula, id_diplomado, moment().tz('America/Mexico_City').format('YYYY-MM-DD HH:mm'), monto, motivo, nota, 'Tarjeta Web', idReferencia);
-    } else if (tipo_pago === 'Otros') {
-
     }
 
     // Pones todo el xml en un string
@@ -238,80 +236,152 @@ exports.post_notificacion_pago = async (request, response, next) => {
 
         const parser = new xml2js.Parser();
 
-        parser.parseString(responseText, async (err, result) => {
-            if (err) {
-                console.error('Error parseando el XML:', err);
-                return;
-            }
+        const result = await parser.parseStringPromise(responseText);
 
-            try {
-                const payments = result.CENTEROFPAYMENTS;
+        const payments = result.CENTEROFPAYMENTS;
 
-                console.log(payments);
+        console.log(payments);
 
-                const reference = payments.reference[0];
-                const responseStatus = payments.response[0];
-                const monto = payments.amount[0];
+        const reference = payments.reference[0];
+        const responseStatus = payments.response[0];
+        const monto = payments.amount[0];
 
-                const datosAdicionales = payments.datos_adicionales[0].data;
+        const datosAdicionales = payments.datos_adicionales[0].data;
 
-                let principal;
-                let tipoPago;
-                let idLiquida;
+        let matricula;
+        let tipoPago;
+        let idLiquida;
 
-                datosAdicionales.forEach(item => {
-                    const label = item.label[0];
-                    const value = item.value[0];
+        datosAdicionales.forEach(item => {
+            const label = item.label[0];
+            const value = item.value[0];
 
-                    if (label === 'PRINCIPAL') {
-                        principal = value;
-                    } else if (label === 'Tipo de Pago') {
-                        tipoPago = value;
-                    } else if (label === 'ID Liquida') {
-                        idLiquida = value;
-                    } 
-                });
+            if (label === 'PRINCIPAL') {
+                matricula = value;
+            } else if (label === 'Tipo de Pago') {
+                tipoPago = value;
+            } else if (label === 'ID Liquida') {
+                idLiquida = value;
+            } 
+        });
                 
-                if (tipoPago === 'Colegiatura') {
-                    if (responseStatus == 'approved') {
-                        const time = payments.time[0];
-                        const date = payments.date[0];
+        if (tipoPago === 'Colegiatura') {
+            if (responseStatus == 'approved') {
+                const time = payments.time[0];
+                const date = payments.date[0];
 
-                        const combinedDateTime = `${date} ${time}`;
-                        const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+                const combinedDateTime = `${date} ${time}`;
+                const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
 
-                        await Pago.update_estado_pago(formattedFechaPago, monto, reference);
-                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                        await Pago.update_pago_rechazado(reference);
+                await Pago.update_estado_pago(formattedFechaPago, monto, reference);
+
+                const [pago_reference] = await Pago.fetchPago_referencia(reference);
+                const [IDColegiatura] = await Deuda.fetchColegiatura(pago_reference[0].IDDeuda);
+
+                let monto_float = parseFloat(monto);
+
+                const fecha_body = moment(formattedFechaPago, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
+
+                try {
+                    const [deudas_noPagadas, fieldData] = await Deuda.fetchNoPagadas(IDColegiatura[0].IDColegiatura);
+
+                    // El monto inicial a usar es lo que el usuario decidió
+                    let monto_a_usar = monto_float;
+
+                    for (let deuda of deudas_noPagadas) {
+                        if (monto_a_usar <= 0) {
+                                break;
+                        } 
+                        // Convertimos (deuda.montoAPagar - deuda.montoPagado).toFixed(2) a número:
+                        else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) < monto_a_usar) {
+                            // Se guarda el monto de deuda actual 
+                            let montoDeudaActual = (deuda.montoAPagar - deuda.montoPagado).toFixed(2); 
+                            let recargos = false;
+                            // Si se pagó más del monto total y tiene recargos, se quitan los recargos
+                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (deuda.Recargos == 1) {
+                                    await Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    // Aquí es donde se cambia el monto
+                                    montoDeudaActual = (deuda.montoSinRecargos - deuda.montoPagado).toFixed(2); 
+                                    recargos = true;
+                                }
+                            }
+
+                            // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                            await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(montoDeudaActual, IDColegiatura[0].IDColegiatura);
+
+                            if (recargos == true) {
+                                monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
+                                continue;
+                            }
+                        } 
+                        // Convertimos (deuda.montoAPagar - deuda.montoPagado).toFixed(2) a número:
+                        else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) >= monto_a_usar) {
+                            // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
+                            if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    if (deuda.Recargos == 1) {
+                                        await Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
+                                }
+                            } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
+                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
+                                    if (deuda.Recargos == 1) {
+                                        await Deuda.removeRecargosDeuda(deuda.IDDeuda);
+
+                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), IDColegiatura[0].IDColegiatura);
+
+                                        monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            // Como el monto a usar es menor, se usa monto a usar (lo que resto)
+                            await Deuda.update_Deuda(monto_a_usar, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(monto_a_usar, IDColegiatura[0].IDColegiatura);
+                        }
+
+                        monto_a_usar = monto_a_usar - parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2));
                     }
-                } else if (tipoPago === 'Diplomado') {
-                    if (responseStatus == 'approved') {
-                        const time = payments.time[0];
-                        const date = payments.date[0];
 
-                        const combinedDateTime = `${date} ${time}`;
-                        const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-
-                        await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
-                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                        await PagoDiplomado.update_pago_rechazado(reference);
+                    // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
+                    if (monto_a_usar > 0) {
+                        await Alumno.update_credito(matricula, monto_a_usar);
                     }
-                } else if (tipoPago === 'Otros') {
-                    if (responseStatus == 'approved') {
-                        console.log('Pago aprobado');
-                    } else if (responseStatus == 'denied' || responseStatus == 'error') {
-                        console.log('Pago denegado');
-                    }
-                }
-                } catch (error) {
+                } catch(error) {
                     console.log(error);
                     return response.status(500).json({
                         success: false,
                         error: 'Error al recibir el pago'
                     });
                 }
-            });
-    
+            } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                await Pago.update_pago_rechazado(reference);
+            }
+        } else if (tipoPago === 'Diplomado') {
+            if (responseStatus == 'approved') {
+                const time = payments.time[0];
+                const date = payments.date[0];
+
+                const combinedDateTime = `${date} ${time}`;
+                const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
+                await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
+            } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                await PagoDiplomado.update_pago_rechazado(reference);
+            }
+        } else if (tipoPago === 'Otros') {
+            if (responseStatus == 'approved') {
+                console.log('Pago aprobado');
+            } else if (responseStatus == 'denied' || responseStatus == 'error') {
+                console.log('Pago denegado');
+            }
+        }
+
         return response.status(200).json({
             success: true,
             message: 'Pago recibido'
@@ -326,9 +396,12 @@ exports.post_notificacion_pago = async (request, response, next) => {
 };
 
 exports.get_recibir_pago = async (request, response, next) => {
-    return response.status(200).json({
-        success: true,
-        respuestaXML: 'Recibido'
+    console.log(response.params);
+    response.render('estadocuenta/recibir_pago', {
+        username: request.session.username || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.rol || "",
+        csrfToken: request.csrfToken()
     });
 }
 
@@ -437,10 +510,7 @@ exports.get_estado_cuenta = async (request, response, next) => {
                 pagosDiplomado: pagosDiplomado,
                 
             });
-
         }
-
-        
     } catch (error) {
         console.log(error);
         response.status(500).render('500', {
