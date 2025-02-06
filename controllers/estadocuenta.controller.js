@@ -433,6 +433,7 @@ exports.get_confirmacion_pago = async (request, response, next) => {
     response.render('estadocuenta/recibir_pago', {
         username: request.session.username || '',
         permisos: request.session.permisos || [],
+        datosPago: datosPago,
         rol: request.session.rol || "",
         csrfToken: request.csrfToken(),
         datosPago

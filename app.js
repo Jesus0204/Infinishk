@@ -100,10 +100,10 @@ const rutasHorario = require('./routes/horario.routes');
 app.use('/horario', checkSession, rutasHorario);
 
 const rutasAlumno = require('./routes/alumnos.routes');
-app.use('/alumnos', checkSession, rutasAlumno);
+app.use('/alumnos', rutasAlumno);
 
 const rutasEstadoCuenta = require('./routes/estadocuenta.routes');
-app.use('/estado_cuenta', checkSession, rutasEstadoCuenta);
+app.use('/estado_cuenta', rutasEstadoCuenta);
 
 // Middleware para verificar si la sesión está activa
 function checkSession(req, res, next) {
