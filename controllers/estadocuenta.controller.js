@@ -436,7 +436,6 @@ exports.get_confirmacion_pago = async (request, response, next) => {
         datosPago: datosPago,
         rol: request.session.rol || "",
         csrfToken: request.csrfToken(),
-        datosPago
     });
 };
 
