@@ -6,14 +6,6 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-1">
-                <a id="Boton_regresar" class="is-responsive"
-                    href="/estado_cuenta/estado_cuenta">
-                    <span class="icon">
-                        <i class="fas fa-arrow-left fa-2x"></i>
-                    </span>
-                </a>
-            </div>
             <div class="column">
                 <% if (datosPago.responseStatus == 'Aprobado') { %>
                     <label class="label is-large has-text-danger has-text-weight-semibold">
@@ -25,6 +17,15 @@
                     </label>
                 <% } %>
             </div>
+
+            <div class="column is-1">
+                <a id="Boton_regresar" class="is-responsive"
+                href="/estado_cuenta/estado_cuenta">
+                    <span class="icon">
+                        <i class="fas fa-arrow-right fa-2x"></i>
+                    </span>
+                </a>
+            </div>
         </div>
 
         <div class="box">
@@ -34,10 +35,10 @@
                     <p class="has-text-black has-text-weight-bold is-size-5">
                         <%= datosPago.monto %> <%= datosPago.tipoMoneda %>
                     </p>
-        
+            
                     <p class="has-text-grey has-text-weight-medium">TARJETA</p>
                     <p class="has-text-black has-text-weight-bold is-size-5">
-                        <%= datosPago.marca %> - <%= datosPago.banco %>
+                        <%= datosPago.marca %> - <%= datosPago.banco %> - <% if (datosPago.tipoTarjeta == 'C') { %> Crédito <% } else if (datos.tipoTarjeta == 'D') { %> Débito <% } %>
                     </p>
                 </div>
         
@@ -67,6 +68,15 @@
                         </p>
                         <% } %>
 
+                        <% if (datosPago.responseStatus == 'Rechazado') { %>
+                            <p class="has-text-grey has-text-weight-medium">
+                                RAZÓN DE FALLO 
+                            </p>
+                            <p class="has-text-black has-text-weight-bold is-size-5">
+                                <%= datosPago.cdResponse %>
+                            </p>
+                            <% } %>
+
                         <p class="has-text-grey has-text-weight-medium">
                             REFERENCIA DE PAGO 
                         </p>
@@ -77,11 +87,19 @@
 
                 <div class="column is-half">
                     <p class="has-text-grey has-text-weight-medium">
+                        NÚMERO DE OPERACIÓN
+                    </p>
+                    <p class="has-text-black has-text-weight-bold is-size-5">
+                        <%= datosPago.operacion %>
+                    </p>
+
+                    <p class="has-text-grey has-text-weight-medium">
                         FECHA Y HORA DE OPERACIÓN
                     </p>
                     <p class="has-text-black has-text-weight-bold is-size-5">
                         <%= datosPago.fecha %>
                     </p>
+
                 </div>
             </div>
         </div>
