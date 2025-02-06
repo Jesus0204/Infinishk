@@ -4,6 +4,8 @@ const express = require('express');
 // Inicia la app usuando a express
 const app = express();
 
+app.set('trust proxy', true);
+
 // Configuramos a EJS como motor de templates con express
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -100,10 +102,10 @@ const rutasHorario = require('./routes/horario.routes');
 app.use('/horario', checkSession, rutasHorario);
 
 const rutasAlumno = require('./routes/alumnos.routes');
-app.use('/alumnos', rutasAlumno);
+app.use('/alumnos', checkSession, rutasAlumno);
 
 const rutasEstadoCuenta = require('./routes/estadocuenta.routes');
-app.use('/estado_cuenta', rutasEstadoCuenta);
+app.use('/estado_cuenta', checkSession, rutasEstadoCuenta);
 
 // Middleware para verificar si la sesión está activa
 function checkSession(req, res, next) {
