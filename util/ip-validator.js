@@ -6,9 +6,6 @@ module.exports = (request, response, next) => {
     const forwarded = request.headers['x-forwarded-for'];
     const clientIP = forwarded ? forwarded.split(',')[0].trim() : request.connection.remoteAddress;
 
-    console.log('Client IP:', clientIP);
-    console.log('Allowed IPs:', allowedIPs);
-
     if (allowedIPs.includes(clientIP)) {
         return next();
     }
