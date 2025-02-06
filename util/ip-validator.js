@@ -3,7 +3,8 @@ const allowedIPs = process.env.ALLOWED_IPS.split(',').map(ip => ip.trim());
 
 // Middleware para verificar la IP
 module.exports = (request, response, next) => {
-    const clientIP = request.ip || request.connection.remoteAddress;
+    const forwarded = req.headers['x-forwarded-for'];
+    const clientIP = forwarded ? forwarded.split(',')[0].trim() : req.connection.remoteAddress;
 
     console.log('Client IP:', clientIP);
     console.log('Allowed IPs:', allowedIPs);
