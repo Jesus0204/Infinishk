@@ -9,6 +9,7 @@ const Liquida = require('../models/liquida.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const Usuario = require('../models/usuario.model');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
@@ -148,6 +149,8 @@ exports.post_mandar_pago = async (request, response, next) => {
         tipo_pago = 'Otros';
     }
 
+    const [correoElectronico] = await Usuario.fetchCorreo(matricula);
+
     let idReferencia = uuidv4();
     const xml = `
         <P>
@@ -164,6 +167,7 @@ exports.post_mandar_pago = async (request, response, next) => {
                 <canal>W</canal>
                 <omitir_notif_default>0</omitir_notif_default>
                 <nb_fpago>TCD</nb_fpago>
+                <mail_cliente>${correoElectronico[0].correoElectronico}</mail_cliente>
                 <datos_adicionales>
                     <data id="1" display="false">
                         <label>PRINCIPAL</label>
