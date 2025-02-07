@@ -9,6 +9,7 @@ const Liquida = require('../models/liquida.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
 const EstudianteProfesional = require('../models/estudiante_profesional.model');
+const Usuario = require('../models/usuario.model');
 
 // Configuras a moment con el locale. 
 const moment = require('moment-timezone');
@@ -233,7 +234,6 @@ exports.post_mandar_pago = async (request, response, next) => {
 };
 
 const xml2js = require('xml2js');
-const Usuario = require('../models/usuario.model');
 
 exports.post_notificacion_pago = async (request, response, next) => {
     try {
