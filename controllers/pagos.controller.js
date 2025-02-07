@@ -921,7 +921,7 @@ exports.post_subir_archivo = (request, response, next) => {
                 const deuda = await Deuda.fetchDeuda(fila.Matricula);
                 const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
                 const idLiquida = await Liquida.fetchIDPagado(fila.Matricula, fila.fechaFormato);
-                const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
+                const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.Importe);
 
                 if (deuda && deuda[0] && deuda[0].length === 0) {
                     montoAPagar = 0;
