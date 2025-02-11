@@ -507,6 +507,10 @@
                 <% if (alumnoConsulta[0].Matricula.startsWith('8')) { %>
                     <div id="pagosdipl">
                         <% if (pagosDiplomado.length != 0) { %>
+                            <div id="eliminacionDip" class="notification is-hidden"
+                            style="background-color: #5a6581; color:#ffffff;">
+                            ¡Pago eliminado! Recargando página...
+                        </div>
                             <table class="table is-fullwidth is-hoverable">
                                 <thead>
                                     <tr>
@@ -662,9 +666,9 @@
                                         <th style="text-align: left;">Motivo</th>
                                         <th style="text-align: left;">Método</th>
                                         <th style="text-align: left;">Nota</th>
-                                        <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                        <!-- <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
                                         <th style="text-align: left;">Eliminar</th>
-                                        <% } %>
+                                        <% } %> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -688,7 +692,7 @@
                                                 <td>
                                                     <%= pagos.nota %>
                                                 </td>
-                                                <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
+                                                <!-- <% if (contienePermiso(permisos, 'Eliminar Pago') == true) { %>
                                                 <td>
                                                     <div class="column" style="text-align: center;">
                                                         <button type="button" id="Boton_eliminar"
@@ -701,7 +705,7 @@
                                                         </button>    
                                                     </div>
                                                 </td>
-                                                <% } %>
+                                                <% } %> -->
                                             </tr>
 
                                             <div id="modal-confirmar-eliminar_col<%= pagos.IDPago %>" class="modal">

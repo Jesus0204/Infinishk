@@ -82,7 +82,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
-        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoColegiatura(matricula);
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
@@ -90,7 +90,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
-        const Credito = resultfetchCredito[0][0].credito;
+        const Credito = resultfetchCredito[0][0].creditoColegiatura;
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno;
         const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
         const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
@@ -101,7 +101,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            // await destroyGroup(matricula, IDExterno);
+            await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -121,7 +121,7 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
-        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoColegiatura(matricula);
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
@@ -129,7 +129,7 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
-        const Credito = resultfetchCredito[0][0].credito;
+        const Credito = resultfetchCredito[0][0].creditoColegiatura;
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno;
         const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
         const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
@@ -159,7 +159,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
         const resultfetchIDPorGrupo = await Materia.fetchIDPorGrupo(IDGrupo);
         const resultfetchBeca = await Alumno.fetchBeca(matricula);
-        const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
+        const resultfetchCredito = await Alumno.fetchCreditoColegiatura(matricula);
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
@@ -167,7 +167,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
-        const Credito = resultfetchCredito[0][0].credito;
+        const Credito = resultfetchCredito[0][0].creditoColegiatura;
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno;
         const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
         const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
@@ -178,7 +178,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         // Si hay fichas sin pagar, realiza la baja y elimina el grupo
         if (numeroFichasSinPagar > 0) {
             await Fichas.delete_grupo_update_fichas100(matricula, IDGrupo, creditoactual, IDMateria, Beca, Credito);
-            // await destroyGroup(matricula, IDExterno);
+            await destroyGroup(matricula, IDExterno);
         } else {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
@@ -277,27 +277,23 @@ exports.post_eliminar_pago_extra = async (request, response, next) => {
 }
 
 // Colegiatura
-exports.post_eliminar_pago_col = async (request, response, next) => {
-    const id = request.body.IDPago;
-    const usuario = request.session.username;
+
+// Diplomado
+exports.post_eliminar_pago_dip = async (request, response, next) => {
+    const id = request.body.IDPagaDiplomado;
     
     try {
-        await Pago.delete_col(id, usuario);
+        await PagaDiplomado.delete(id);
 
         response.status(200).json({ success: true });
     } catch (error) {
-        response.status(500).json({ success: false, message: 'Error borrando pago de colegiatura' });
+        response.status(500).json({ success: false, message: 'Error borrando pago de diplomado' });
     }
 }
 
-// Diplomado
-/*exports.post_eliminar_pago_dip = async (request, response, next) => {
-    try {}
-}*/
-
-exports.post_fetch_datos = async (request, response, next) => {
+exports.get_fetch_datos = async (request, response, next) => {
     try {
-        let matches = request.body.buscar.match(/(\d+)/);
+        let matches = request.params.matricula.match(/\d+$/);
         const matricula = matches[0];
         const periodo = await Periodo.fetchActivo();
         const now = moment().tz('America/Mexico_City').startOf('day').subtract(1, 'days').format();
@@ -358,8 +354,13 @@ exports.post_fetch_datos = async (request, response, next) => {
                 creditoColegiatura = creditoIDColegiatura[0].creditoColegiatura;
             }
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
-            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo)
-            confirmacion = conf[0][0].horarioConfirmado;
+            const conf = await EstudianteProfesional.fetchHorarioConfirmado(matricula, periodo[0][0].IDPeriodo);
+            if (conf[0].length > 0) {
+                confirmacion = conf[0][0].horarioConfirmado;
+            }
+            else {
+                confirmacion = 0;
+            }
         } else {
             alumnoConsulta = await EstudianteDiplomado.fetchDatos(matricula);
             alumnoConsulta[0][0].fechaInscripcion = moment(new Date(alumnoConsulta[0][0].fechaInscripcion)).format('LL');
@@ -423,6 +424,23 @@ exports.post_fetch_datos = async (request, response, next) => {
                 csrfToken: request.csrfToken()
             });
         }
+    } catch (error) {
+        console.log(error);
+        response.status(500).render('500', {
+            username: request.session.username || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.rol || "",
+            error_alumno: false
+        });
+    }
+};
+
+exports.post_fetch_datos = async (request, response, next) => {
+    try {
+        let matches = request.body.buscar.match(/\d+$/);
+        const matricula = matches[0];
+
+        response.redirect(`/alumnos/datos_alumno/${matricula}`);
     } catch (error) {
         console.log(error);
         response.status(500).render('500', {
@@ -502,171 +520,174 @@ exports.post_fichas_modify = async (request, response, next) => {
 exports.post_actualizar_horarios = async (request, response, next) => {
     const { matricula } = request.body; // Obtenemos la matrícula desde el input
 
-    const [periodo, fieldData] = await Periodo.fetchActivo();
-    const periodoActivo = periodo[0].IDPeriodo;
+    try {
+        // Obtener datos base
+        const [periodo, fieldData] = await Periodo.fetchActivo();
+        const periodoActivo = periodo[0].IDPeriodo;
 
-    const precioCredito = await PrecioCredito.fetchIDActual();
-    const precioActual = precioCredito[0][0].IDPrecioCredito;
+        const precioCredito = await PrecioCredito.fetchIDActual();
+        const precioActual = precioCredito[0][0].IDPrecioCredito;
 
-    const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
-    const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
+        const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
+        const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
 
-    const resultfetchBeca = await Alumno.fetchBeca(matricula);
-    const Beca = resultfetchBeca[0][0].beca;
+        const resultfetchBeca = await Alumno.fetchBeca(matricula);
+        const Beca = resultfetchBeca[0][0].beca;
 
-    const resultfetchCredito = await Alumno.fetchCreditoINT(matricula);
-    const Credito = resultfetchCredito[0][0].credito;
+        const resultfetchCredito = await Alumno.fetchCreditoColegiatura(matricula);
+        const Credito = resultfetchCredito[0][0].creditoColegiatura;
 
-    const resultfetchInicio = await Periodo.fetchInicio();
-    const resultfetchFin = await Periodo.fetchFin();
-    
-    const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
-    const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
-    const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
+        const resultfetchInicio = await Periodo.fetchInicio();
+        const resultfetchFin = await Periodo.fetchFin();
 
-    if (numeroFichasSinPagar > 0) {
+        const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
+        const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
 
-        try {
+        const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
+
+        // Validar deudas
+        if (numeroFichasSinPagar > 0) {
             const schedule = await getUserGroups(periodoActivo, Number(matricula));
 
-            if (schedule.data.length == 0) {
+            if (schedule.data.length === 0) {
                 return response.status(404).json({
                     message: `El alumno con matrícula ${matricula} no tiene un horario asignado.`
                 });
-            } else {
-                const cursos = schedule.data.map(schedule => {
+            }
+
+            // Procesar horarios
+            const cursos = schedule.data.map(schedule => {
+                const {
+                    room = '',
+                    name: nameSalon = '',
+                    schedules = [],
+                    course = {},
+                    professor = {},
+                    school_cycle = {}
+                } = schedule;
+
+                const {
+                    id = periodoActivo,
+                    name = '',
+                    credits = ''
+                } = course;
+
+                const {
+                    name: nombreProfesor = '',
+                    first_surname = '',
+                    second_surname = ''
+                } = professor;
+
+                const {
+                    start_date = '',
+                    end_date = '',
+                } = school_cycle;
+
+                const startDateFormat = moment(new Date(start_date)).format('YYYY-MM-DD');
+                const endDateFormat = moment(new Date(end_date)).format('YYYY-MM-DD');
+
+                const nombreSalon = `${room} ${nameSalon}`;
+                const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
+
+                const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
+
+                const precioMateria = credits * precioActual;
+
+                const idGrupo = schedules[0]?.group_id || '';
+
+                const horarios = schedules.map(schedule => {
                     const {
-                        room = '',
-                        name: nameSalon = '',
-                        schedules = [],
-                        course = {},
-                        professor = {},
-                        school_cycle = {}
+                        weekday = '',
+                        start_hour = '',
+                        end_hour = '',
                     } = schedule;
 
-                    const {
-                        id = periodoActivo,
-                        name = '',
-                        credits = ''
-                    } = course;
-
-                    const {
-                        name: nombreProfesor = '',
-                        first_surname = '',
-                        second_surname = ''
-                    } = professor;
-
-                    const {
-                        start_date = '',
-                        end_date = '',
-                    } = school_cycle;
-
-                    const startDate = new Date(start_date);
-                    const endDate = new Date(end_date);
-
-                    const startDateFormat = moment(startDate).format('YYYY-MM-DD');
-                    const endDateFormat = moment(endDate).format('YYYY-MM-DD');
-
-                    const nombreSalon = `${room} ${nameSalon}`;
-                    const nombreProfesorCompleto = `${nombreProfesor} ${first_surname} ${second_surname}`;
-
-                    const semestre = course.plans_courses?.[0]?.semester || "Desconocido";
-
-                    const precioMateria = credits * precioActual;
-
-                    const idGrupo = schedules[0]?.group_id || '';
-
-                    const horarios = schedules.map(schedule => {
-                        const {
-                            weekday = '',
-                            start_hour = '',
-                            end_hour = '',
-                        } = schedule;
-
-                        const startDate = new Date(start_hour);
-                        const endDate = new Date(end_hour);
-
-                        const fechaInicio = moment(startDate).format('HH:mm');
-                        const fechaTermino = moment(endDate).format('HH:mm');
-
-                        return {
-                            diaSemana: weekday,
-                            fechaInicio,
-                            fechaTermino
-                        };
-                    });
+                    const fechaInicio = moment.tz(start_hour, 'America/Mexico_City').format('HH:mm');
+                    const fechaTermino = moment.tz(end_hour, 'America/Mexico_City').format('HH:mm');
 
                     return {
-                        idMateria: id,
-                        nombreMat: name,
-                        creditos: credits,
-                        nombreProfesorCompleto,
-                        nombreSalon,
-                        semestre,
-                        precioMateria,
-                        horarios,
-                        startDateFormat,
-                        endDateFormat,
-                        idGrupo
+                        diaSemana: weekday,
+                        fechaInicio,
+                        fechaTermino
                     };
                 });
 
-                let gruposNuevosGuardados = false; // Variable de control
+                return {
+                    idMateria: id,
+                    nombreMat: name,
+                    creditos: credits,
+                    nombreProfesorCompleto,
+                    nombreSalon,
+                    semestre,
+                    precioMateria,
+                    horarios,
+                    startDateFormat,
+                    endDateFormat,
+                    idGrupo
+                };
+            });
 
-                for (let curso of cursos) {
-                    // Verificamos si el grupo ya está registrado
-                    const grupoExistente = await Grupo.fetchGrupo(matricula, curso.idMateria, curso.idGrupo);
-                    
-                    if (!grupoExistente.length) {
-                        // Si el grupo no existe, lo guardamos
-                        const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
-                        let claseFormato = '';
-                        for (let countClase = 0; countClase < grupoHorarioValidado.length; countClase++) {
-                            if ((countClase + 1) == grupoHorarioValidado.length) {
-                                claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino;
-                            } else {
-                                claseFormato += grupoHorarioValidado[countClase].diaSemana + ' ' + grupoHorarioValidado[countClase].fechaInicio + ' - ' + grupoHorarioValidado[countClase].fechaTermino + ', ';
-                            }
-                        }
-                        // Guardamos el nuevo grupo
-                        await Grupo.saveGrupo(
-                            matricula,
-                            curso.idMateria,
-                            precioActual,
-                            curso.nombreProfesorCompleto,
-                            curso.nombreSalon,
-                            claseFormato,
-                            curso.startDateFormat,
-                            curso.endDateFormat,
-                            curso.idGrupo
-                        );
+            let gruposNuevosGuardados = false; // Variable de control
 
-                        await Fichas.actualizarMaterias(matricula, creditoactual, curso.idMateria, Beca, Credito);
+            for (let curso of cursos) {
+                // Verificamos si el grupo ya está registrado
+                const grupoExistente = await Grupo.fetchGrupo(matricula, curso.idMateria, curso.idGrupo);
 
-                        gruposNuevosGuardados = true; // Se ha guardado al menos un grupo nuevo
-                    }
+                if (!grupoExistente || grupoExistente.length === 0) {
+                    // Si el grupo no existe, lo guardamos
+                    const grupoHorarioValidado = curso.horarios.map(item => item === '' ? null : item);
+                    const claseFormato = grupoHorarioValidado
+                        .map((item, index) =>
+                            `${item.diaSemana} ${item.fechaInicio} - ${item.fechaTermino}${index < grupoHorarioValidado.length - 1 ? ', ' : ''}`
+                        )
+                        .join('');
+
+                    await Grupo.saveGrupo(
+                        matricula,
+                        curso.idMateria,
+                        precioActual,
+                        curso.nombreProfesorCompleto,
+                        curso.nombreSalon,
+                        claseFormato,
+                        curso.startDateFormat,
+                        curso.endDateFormat,
+                        curso.idGrupo,
+                        periodoActivo,
+                        1
+                    );
+
+                    await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual,Beca, Credito);
+                    gruposNuevosGuardados = true;
+                } else if (grupoExistente[0].Activo === 1) {
+                    continue;
+                } else if (grupoExistente[0].Activo === 0) {
+                    await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual, Beca, Credito);
+                    gruposNuevosGuardados = true;
                 }
+            }
 
-                // Si no se guardó ningún grupo nuevo
-                if (!gruposNuevosGuardados) {
-                    return response.status(200).json({
-                        success: false,
-                        message: `No se encontraron grupos nuevos para el alumno con matrícula ${matricula}.`
-                    });
-                }
+            if (!gruposNuevosGuardados) {
+                return response.status(200).json({
+                    success: false,
+                    message: `No se encontraron grupos nuevos para el alumno con matrícula ${matricula}.`
+                });
             }
 
             return response.status(200).json({
                 success: true,
                 message: `El horario del alumno con matrícula ${matricula} ha sido aceptado y los grupos nuevos han sido registrados.`
             });
-
-        } catch (error) {
-            console.log(error);
-            return response.status(500).json({
+        } else {
+            return response.status(400).json({
                 success: false,
-                message: 'Ocurrió un error al procesar el horario del alumno.'
+                message: `El alumno con matrícula ${matricula} tiene deudas pendientes.`
             });
         }
+    } catch (error) {
+        console.error('Error al procesar el horario del alumno:', error);
+        return response.status(500).json({
+            success: false,
+            message: 'Ocurrió un error al procesar el horario del alumno.'
+        });
     }
-}
+};

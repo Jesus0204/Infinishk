@@ -153,6 +153,8 @@
                 <input type="hidden" id="matricula" name="matricula" value="<%= alumno[0].Matricula %>">
                 <% if (alumno[0].Matricula[0] == '1') { %>
                 <input type="hidden" id="deuda" name="deuda" value="<%= deuda[0].IDDeuda %>">
+                <% } else if (alumno[0].Matricula[0] == '8') { %>
+                <input type="hidden" id="diplomado" name="diplomado" value="<%= diplomado[0].IDDiplomado %>">
                 <% } %>
                 <% if (solicitudes.length != 0){ %>
                 <input type="hidden" id="liquida" name="liquida" value="<%= solicitudes[0].IDLiquida %>">
@@ -237,7 +239,8 @@
                                     <select class="motivo_extra" name="motivo" id="motivo_no_usar" style="width: 110%;">
                                         <% for (let solicitud of solicitudes) { %>
                                         <option value="<%= solicitud.motivoPago %>"
-                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>">
+                                            data-monto="<%= solicitud.montoPagar.toFixed(2) %>"
+                                            data-idliquida="<%= solicitud.IDLiquida %>">
                                             <%= solicitud.motivoPago %>
                                         </option>
                                         <% } %>
@@ -317,9 +320,9 @@
                     <div class="column is-6"></div>
                     <div class="column is-6">
                         <div id="boton_tarjeta">
-                            <button class="js-modal-trigger confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
+                            <button class="confirmar-button is-responsive" style="font-size: large; padding-left: 1.5em;"
                                 id="Boton_pagar_1"
-                                data-target="modal-pago-tarjeta" disabled>
+                                <% if (alumno[0].Matricula !== '100726') { %> disabled <% } %>>
                                 <span>REALIZAR PAGO</span>
                                 <span class="icon is-large">
                                     <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>

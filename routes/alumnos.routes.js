@@ -16,6 +16,7 @@ router.get('/alumnos_atrasados', isAuth, can_AlumnosAtrasados, alumnosController
 
 //Consultar Alumno
 router.get('/fetch_datos', isAuth, can_ConsultarAlumno, alumnosController.get_datos);
+router.get('/datos_alumno/:matricula', isAuth, can_ConsultarAlumno, alumnosController.get_fetch_datos);
 router.post('/datos_alumno', isAuth, can_ConsultarAlumno, alumnosController.post_fetch_datos);
 router.post('/datos_alumno/modify', isAuth, can_ConsultarAlumno, alumnosController.post_datos_modify);
 router.post('/datos_alumno/dar_baja_grupo', isAuth, can_ConsultarAlumno, alumnosController.post_dar_baja_grupo);
@@ -30,7 +31,7 @@ router.post('/fichas/modify', isAuth, can_ModificarDeuda, alumnosController.post
 
 // Eliminar Pagos
 router.post('/datos_alumno/eliminar_pago_extra', isAuth, alumnosController.post_eliminar_pago_extra);
-router.post('/datos_alumno/eliminar_pago_col', isAuth, alumnosController.post_eliminar_pago_col);
-/*router.post('/datos_alumno/eliminar_pago_dip', isAuth, alumnosController.post_eliminar_pago_dip);*/
+/*router.post('/datos_alumno/eliminar_pago_col', isAuth, alumnosController.post_eliminar_pago_col);*/
+router.post('/datos_alumno/eliminar_pago_dip', isAuth, alumnosController.post_eliminar_pago_dip);
 
 module.exports = router;

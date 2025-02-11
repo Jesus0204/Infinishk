@@ -4,6 +4,8 @@ const express = require('express');
 // Inicia la app usuando a express
 const app = express();
 
+app.set('trust proxy', true);
+
 // Configuramos a EJS como motor de templates con express
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -42,12 +44,25 @@ const multer = require('multer');
 const upload = multer(); // Utiliza multer sin configuración de almacenamiento
 
 app.use(upload.single('archivo')); // Utiliza la configuración de multer sin almacenamiento
+
 // Para proteger del Cross-Site Request Forgery
 const csrf = require('csurf');
 const csrfProtection = csrf();
 
-//...Y después del código para inicializar la sesión... 
-app.use(csrfProtection);
+// List of trusted IP addresses (as strings)
+const trustedIPs = ['1.2.3.4', '5.6.7.8']; 
+
+// Conditional CSRF middleware
+function conditionalCsrf(request, response, next) {
+    // Check if the current request is to /notificacion_pago
+    if (request.originalUrl.endsWith('/notificacion_pago')) {
+        return next();
+    }
+    // Otherwise, apply CSRF protection.
+    return csrfProtection(request, response, next);
+}
+
+app.use(conditionalCsrf);
 
 const helmet = require('helmet');
 
@@ -56,7 +71,7 @@ app.use(helmet({
         directives: {
             "script-src": ["'self'", 'code.jquery.com', 'ajax.googleapis.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
             "script-src-attr": ["'unsafe-inline'"], 
-            "connect-src": ["'self'", 'sandboxpo.mit.com.mx'],
+            "connect-src": ["'self'", `${process.env.PAGO_URL}`],
             "frame-src": ['*']
         },
     },
@@ -94,6 +109,9 @@ app.use('/estado_cuenta', checkSession, rutasEstadoCuenta);
 
 // Middleware para verificar si la sesión está activa
 function checkSession(req, res, next) {
+    if (req.originalUrl.endsWith('/notificacion_pago')) {
+        return next();
+    }
     if (!req.session.username) {
         // Redirigir al login si no hay una sesión activa
         return res.redirect('/auth/login');

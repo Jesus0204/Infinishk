@@ -12,13 +12,14 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    static fetch_fecha_pago(fecha) {
+    static fetch_fecha_pago(fecha,importe) {
         return db.execute(
             `SELECT Pago.fechaPago, Pago.montoPagado, Deuda.matricula 
              FROM Pago 
              JOIN Deuda ON Pago.IDDeuda = Deuda.IDDeuda
-             WHERE Pago.fechaPago = ?`,
-            [fecha]
+             WHERE Pago.fechaPago = ? AND Pago.estadoPago = 1
+             AND Pago.montoPagado = ?`,
+            [fecha,importe]
         );
     }
 
@@ -26,9 +27,28 @@ module.exports = class Pago {
         return db.execute(`CALL insertar_Pago(?, '', ?, ?, 'Transferencia', ?);`, 
                 [id, monto, nota,fecha]);
     }
+
     static save_pago_manual(idDeuda, motivo, monto, nota, metodo, fecha) {
         return db.execute(`CALL insertar_Pago(?, ?, ?, ?, ?, ?);`,
             [idDeuda, motivo, monto, nota, metodo, fecha]);
+    }
+
+    static save_pago_tarjeta_web(idDeuda, motivo, montoPagado, nota, metodoPago, fechaPago, referenciaPago) {
+        return db.execute(`INSERT INTO Pago (IDDeuda, Motivo, montoPagado, Nota, metodoPago, fechaPago, estadoPago, referenciaPago)
+            VALUES(?, ?, ?, ?, ?, ?, 0, ?);`,
+            [idDeuda, motivo, montoPagado, nota, metodoPago, fechaPago, referenciaPago]);
+    };
+
+    static update_estado_pago(fechaPago, montoPagado, referenciaPago) {
+        return db.execute(`UPDATE Pago SET estadoPago = 1, fechaPago = ?, montoPagado = ? WHERE referenciaPago = ?`, [fechaPago, montoPagado, referenciaPago]);
+    }
+    
+    static update_pago_rechazado(referenciaPago) {
+        return db.execute(`UPDATE Pago SET Nota = 'PAGO RECHAZADO' WHERE referenciaPago = ?`, [referenciaPago]);
+    }
+
+    static fetchPago_referencia(referencia) {
+        return db.execute(`SELECT * FROM Pago WHERE referenciaPago = ?`, [referencia]);
     }
 
     static fetchOne(matricula){
@@ -36,7 +56,7 @@ module.exports = class Pago {
         FROM Deuda AS D, Pago AS P, Colegiatura AS C, Periodo AS Pe
         WHERE D.IDDeuda = P.IDDeuda AND D.IDColegiatura = C.IDColegiatura AND
         C.IDPeriodo = Pe.IDPeriodo AND periodoActivo = 1
-        AND D.matricula = ?
+        AND D.matricula = ? AND P.estadoPago = 1
         ORDER BY P.fechaPago ASC
         LIMIT 0, 1000`, 
         [matricula]);
@@ -46,10 +66,6 @@ module.exports = class Pago {
         return db.execute(
             `CALL insertar_Pago(?, ?, ?, ?, 'Tarjeta', ?);`, 
                 [id,motivo, monto, nota,fecha]);
-    }
-
-    static delete_col(id, usuario){
-        return db.execute(`CALL eliminar_pago_col(?, ?);`, [id, usuario]);
     }
     
 }

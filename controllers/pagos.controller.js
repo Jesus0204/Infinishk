@@ -10,10 +10,6 @@ const Colegiatura = require('../models/colegiatura.model');
 const Usuario = require('../models/usuario.model');
 const Reporte = require('../models/reporte.model');
 
-const {
-    post_fetch_datos
-} = require('./alumnos.controller');
-
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const stream = require('stream');
@@ -628,11 +624,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                     // Crear solicitud pagada de la nueva categoría de Pago Extra
                     await Liquida.save_pago_manual(matricula, pagoID, fecha, metodo, nota)
                         .then(async ([rows, fieldData]) => {
-                            // Definir la matrícula que use la función post_fetch_datos
-                            request.body.buscar = matricula;
-                
-                            // Llamar la función para hacer el render
-                            await post_fetch_datos(request, response, next);
+                            response.redirect(`/alumnos/datos_alumno/${matricula}`);
                         })
                         .catch((error) => {
                             console.error('Error while saving manual payment:', error);
@@ -657,11 +649,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
             if (pendientes.length == 0) {
                 Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
                     .then(async ([rows, fieldData]) => {
-                        // Definir la matrícula que use la función post_fetch_datos
-                        request.body.buscar = matricula;
-
-                        // Llamar la función para hacer el render
-                        await post_fetch_datos(request, response, next);
+                        response.redirect(`/alumnos/datos_alumno/${matricula}`);
                     })
                     .catch((error) => {
                         response.status(500).render('500', {
@@ -685,11 +673,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                             update = true;
                             Liquida.update_pago_manual(matricula, pago, fecha, metodo, nota, liquida)
                                 .then(async ([rows, fieldData]) => {
-                                    // Definir la matrícula que use la función post_fetch_datos
-                                    request.body.buscar = matricula;
-
-                                    // Llamar la función para hacer el render
-                                    await post_fetch_datos(request, response, next);
+                                    response.redirect(`/alumnos/datos_alumno/${matricula}`);
                                 })
                                 .catch((error) => {
                                     response.status(500).render('500', {
@@ -707,11 +691,7 @@ exports.post_registrar_pago_manual_pago_extra = (request, response, next) => {
                 if (update == false) {
                     Liquida.save_pago_manual(matricula, pago, fecha, metodo, nota)
                         .then(async ([rows, fieldData]) => {
-                            // Definir la matrícula que use la función post_fetch_datos
-                            request.body.buscar = matricula;
-
-                            // Llamar la función para hacer el render
-                            await post_fetch_datos(request, response, next);
+                            response.redirect(`/alumnos/datos_alumno/${matricula}`);
                         })
                         .catch((error) => {
                             response.status(500).render('500', {
@@ -749,11 +729,7 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
 
     PagoDiplomado.save_pago_manual(matricula, IDDiplomado, fecha, monto, motivo, nota, metodo)
         .then(async ([rows, fieldData]) => {
-            // Definir la matrícula que use la función post_fetch_datos
-            request.body.buscar = matricula;
-
-            // Llamar la función para hacer el render
-            await post_fetch_datos(request, response, next);
+            response.redirect(`/alumnos/datos_alumno/${matricula}`);
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -768,7 +744,6 @@ exports.post_registrar_pago_manual_diplomado = (request, response, next) => {
 
 exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
     // Declaracion de variables a usar del body
-    const monto = request.body.monto;
     const motivo = request.body.motivo;
     let fecha_body = request.body.fecha.split("/").reverse().join("-");
     const fecha = fecha_body + ' 08:00:00';
@@ -776,27 +751,47 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
     const metodo = request.body.metodo;
     const matricula = request.body.matricula;
 
+    // Asegurarte de parsear el monto como número
+    let monto = parseFloat(request.body.monto);
+
     Deuda.fetchNoPagadas(request.body.IDColegiatura)
         .then(async ([deudas_noPagadas, fieldData]) => {
             // Guardas el pago completo del alumno
             await Pago.save_pago_manual(deudas_noPagadas[0].IDDeuda, motivo, monto, nota, metodo, fecha)
 
             // El monto inicial a usar es lo que el usuario decidió
-            let monto_a_usar = request.body.monto;
+            let monto_a_usar = monto;
+
             for (let deuda of deudas_noPagadas) {
                 if (monto_a_usar <= 0) {
                     break;
-                } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
+                } 
+                // Convertimos (deuda.montoAPagar - deuda.montoPagado).toFixed(2) a número:
+                else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) < monto_a_usar) {
+                    // Se guarda el monto de deuda actual 
+                    let montoDeudaActual = (deuda.montoAPagar - deuda.montoPagado).toFixed(2); 
+                    let recargos = false;
+                    // Si se pagó más del monto total y tiene recargos, se quitan los recargos
                     if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                         if (deuda.Recargos == 1) {
                             Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            // Aquí es donde se cambia el monto
+                            montoDeudaActual = (deuda.montoSinRecargos - deuda.montoPagado).toFixed(2); 
+                            recargos = true;
                         }
                     }
 
                     // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
-                    await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                    await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), request.body.IDColegiatura);
-                } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                    await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                    await Colegiatura.update_Colegiatura(montoDeudaActual, request.body.IDColegiatura);
+
+                    if (recargos == true) {
+                        monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
+                        continue;
+                    }
+                } 
+                // Convertimos (deuda.montoAPagar - deuda.montoPagado).toFixed(2) a número:
+                else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) >= monto_a_usar) {
                     // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                     if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
                         if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
@@ -810,11 +805,10 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                             if (deuda.Recargos == 1) {
                                 Deuda.removeRecargosDeuda(deuda.IDDeuda);
 
-                                await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
-                                await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), request.body.IDColegiatura);
+                                await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), deuda.IDDeuda);
+                                await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), request.body.IDColegiatura);
 
-                                monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
-
+                                monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
                                 continue;
                             }
                         }
@@ -825,8 +819,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                     await Colegiatura.update_Colegiatura(monto_a_usar, request.body.IDColegiatura);
                 }
 
-                // Le restas al monto_a_usar lo que acabas de pagar para que la deuda se vaya restando
-                monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
+                monto_a_usar = monto_a_usar - parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2));
             }
 
             // Si el monto a usar es positivo despues de recorrer las deudas, agregar ese monto a credito
@@ -834,11 +827,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 await Alumno.update_credito(matricula, monto_a_usar);
             }
 
-            // Definir la matrícula que use la función post_fetch_datos
-            request.body.buscar = matricula;
-
-            // Llamar la función para hacer el render
-            await post_fetch_datos(request, response, next);
+            response.redirect(`/alumnos/datos_alumno/${matricula}`);
         })
         .catch((error) => {
             response.status(500).render('500', {
@@ -848,7 +837,7 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                 error_alumno: false
             });
             console.log(error);
-        })
+        });
 };
 
 exports.get_registro_transferencias = (request, response, next) => {
@@ -932,7 +921,7 @@ exports.post_subir_archivo = (request, response, next) => {
                 const deuda = await Deuda.fetchDeuda(fila.Matricula);
                 const deudaPagada = await Deuda.fetchDeudaPagada(fila.Matricula);
                 const idLiquida = await Liquida.fetchIDPagado(fila.Matricula, fila.fechaFormato);
-                const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato);
+                const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.Importe);
 
                 if (deuda && deuda[0] && deuda[0].length === 0) {
                     montoAPagar = 0;
@@ -1078,39 +1067,51 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                 .then(async ([deudas_noPagadas, fieldData]) => {
                     await Pago.save_transferencia(deudas_noPagadas[0].IDDeuda, importe, nota, fecha);
 
-                    let monto_a_usar = request.body.importe;
+                    let monto_a_usar = parseFloat(request.body.importe);
                     for (let deuda of deudas_noPagadas) {
                         if (monto_a_usar <= 0) {
                             break;
-                        } else if ((deuda.montoAPagar - deuda.montoPagado) < monto_a_usar) {
-                            if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                        } else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) < monto_a_usar) {
+                            // Se guarda el monto de deuda actual 
+                            let montoDeudaActual = (deuda.montoAPagar - deuda.montoPagado).toFixed(2); 
+                            let recargos = false;
+                            // Si se pagó más del monto total y tiene recargos, se quitan los recargos
+                            if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                 if (deuda.Recargos == 1) {
                                     Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    // Aquí es donde se cambia el monto
+                                    montoDeudaActual = (deuda.montoSinRecargos - deuda.montoPagado).toFixed(2); 
+                                    recargos = true;
                                 }
                             }
+
+                            // Como el monto a usar el mayor que la deuda, subes lo que deben a esa deuda
+                            await Deuda.update_Deuda(montoDeudaActual, deuda.IDDeuda);
+                            await Colegiatura.update_Colegiatura(montoDeudaActual, idColegiatura);
+
+                            if (recargos == true) {
+                                monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
+                                continue;
+                            }
                             
-                            await Deuda.update_Deuda((deuda.montoAPagar - deuda.montoPagado), deuda.IDDeuda);
-                            await Colegiatura.update_Colegiatura((deuda.montoAPagar - deuda.montoPagado), idColegiatura);
-                            
-                        } else if ((deuda.montoAPagar - deuda.montoPagado) >= monto_a_usar) {
+                        } else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) >= monto_a_usar) {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                             if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
-                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
                                     }
                                 }
                             } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
-                                if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
 
-                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado), deuda.IDDeuda);
-                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado), idColegiatura);
+                                        await Deuda.update_Deuda((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), deuda.IDDeuda);
+                                        await Colegiatura.update_Colegiatura((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2), idColegiatura);
 
-                                        monto_a_usar = monto_a_usar - (deuda.montoSinRecargos - deuda.montoPagado);
-
+                                        monto_a_usar = monto_a_usar - parseFloat((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2));
                                         continue;
                                     }
                                 }
@@ -1120,7 +1121,7 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                             await Colegiatura.update_Colegiatura(monto_a_usar, idColegiatura);
                         }
 
-                        monto_a_usar = monto_a_usar - (deuda.montoAPagar - deuda.montoPagado);
+                        monto_a_usar = monto_a_usar - parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2));
                     }
 
                     if (monto_a_usar > 0) {
