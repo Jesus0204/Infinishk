@@ -223,9 +223,11 @@ exports.post_datos_modify = async (request, response, next) => {
                 beca_uso = (1 - (beca_new / 100)) 
             }
             if (beca_uso != beca_original){
-                const resultfetchCredito = await Alumno.fetchCreditoINT(alumno);
-                const credito = resultfetchCredito[0][0].credito;
-                await Fichas.update_fichas_beca(alumno,beca_uso,credito);
+                const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
+                const resultfetchCredito = await Alumno.fetchCreditoColegiatura(alumno);
+                const credito = resultfetchCredito[0][0].creditoColegiatura;
+                const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
+                await Fichas.update_fichas_beca(alumno,beca_uso,credito,creditoactual);
             } 
             data = await EstudianteProfesional.update(alumno, ref, beca_new); 
 
