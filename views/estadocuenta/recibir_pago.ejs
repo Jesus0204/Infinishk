@@ -74,6 +74,11 @@
                             <p class="has-text-black has-text-weight-bold is-size-5">
                                 <%= datosPago.cdResponse %>
                             </p>
+                            <p class="has-text-black is-size-6">
+                                <% if (datosPago.error) { %>
+                                    <%= datosPago.error %>
+                                <% } %>
+                            </p>
                             <% } %>
 
                         <p class="has-text-grey has-text-weight-medium">
@@ -89,14 +94,22 @@
                         NÚMERO DE OPERACIÓN
                     </p>
                     <p class="has-text-black has-text-weight-bold is-size-5">
-                        <%= datosPago.operacion %>
+                        <% if (datosPago.operacion) { %>
+                            <%= datosPago.operacion %>
+                         <% } else { %>
+                            - - 
+                        <% } %>
                     </p>
 
                     <p class="has-text-grey has-text-weight-medium">
                         FECHA Y HORA DE OPERACIÓN
                     </p>
                     <p class="has-text-black has-text-weight-bold is-size-5">
-                        <%= datosPago.fecha %>
+                        <% if (datosPago.fecha) { %>
+                            <%= datosPago.fecha %>
+                         <% } else { %>
+                            - - 
+                        <% } %>
                     </p>
 
                 </div>
