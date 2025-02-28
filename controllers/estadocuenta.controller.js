@@ -15,6 +15,9 @@ const Usuario = require('../models/usuario.model');
 const moment = require('moment-timezone');
 moment.locale('es-mx');
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 exports.get_pago_alumno = (request, response, next) => {
 
     // Del input del usuario sacas solo la matricula con el regular expression
@@ -235,6 +238,31 @@ exports.post_mandar_pago = async (request, response, next) => {
 
 const xml2js = require('xml2js');
 
+async function sendEmail(matricula, tipoPago, monto, reference, fechaPago) {
+    const msg = {
+            to: 'administracion@ivd.edu.mx',
+            from: {
+                name: 'VIA PAGO',
+                email: 'soporte@pagos.ivd.edu.mx',
+            },
+            subject: `Pago en línea ${tipoPago} - ${matricula}`,
+            html: `
+            <p>
+                El alumno con matrícula ${matricula} ha realizado un pago en línea de ${tipoPago} por un monto de $${monto} MXN en ${fechaPago}.
+                <br>
+                <br> 
+                <strong>Referencia:</strong> ${reference}
+            </p>`
+        };
+    
+    try {
+        await sgMail.send(msg);
+        console.log('Correo electrónico enviado correctamente');
+    } catch (error) {
+        console.error('Error al enviar el correo electrónico:', error.toString());
+    }
+}
+
 exports.post_notificacion_pago = async (request, response, next) => {
     try {
         const strResponse = request.body.strResponse;
@@ -247,8 +275,6 @@ exports.post_notificacion_pago = async (request, response, next) => {
         const result = await parser.parseStringPromise(responseText);
 
         const payments = result.CENTEROFPAYMENTS;
-
-        console.log(payments);
 
         const reference = payments.reference[0];
         const responseStatus = payments.response[0];
@@ -285,6 +311,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
 
                 await Pago.update_estado_pago(formattedFechaPago, monto, reference);
+                sendEmail(matricula, tipoPago, monto, reference, formattedFechaPago);
 
                 const [pago_reference] = await Pago.fetchPago_referencia(reference);
                 const [IDColegiatura] = await Deuda.fetchColegiatura(pago_reference[0].IDDeuda);
@@ -382,6 +409,7 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
 
                 await PagoDiplomado.update_estado_pago(formattedFechaPago, monto, reference);
+                sendEmail(matricula, tipoPago, monto, reference, formattedFechaPago);
             } else if (responseStatus == 'denied' || responseStatus == 'error') {
                 await PagoDiplomado.update_pago_rechazado(reference);
             }
@@ -393,7 +421,8 @@ exports.post_notificacion_pago = async (request, response, next) => {
                 const combinedDateTime = `${date} ${time}`;
                 const formattedFechaPago = moment(combinedDateTime, "DD/MM/YY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
 
-                await Liquida.update_pago_tarjeta_web_exito(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida)
+                await Liquida.update_pago_tarjeta_web_exito(formattedFechaPago,"Tarjeta Web", nota, reference, matricula, idLiquida);
+                sendEmail(matricula, tipoPago, monto, reference, formattedFechaPago);
             } else if (responseStatus == 'denied' || responseStatus == 'error') {
                 await Liquida.update_pago_tarjeta_web_fallo("Tarjeta Web", nota, reference, matricula, idLiquida)
             }
@@ -427,7 +456,8 @@ exports.get_confirmacion_pago = async (request, response, next) => {
         operacion,
         nuAut: numAutorizacion,
         cdResponse,
-        nb_adquirente: adquirente
+        nb_adquirente: adquirente,
+        nb_error: error
     } = request.query;
     
     const datosPago = {
@@ -444,7 +474,8 @@ exports.get_confirmacion_pago = async (request, response, next) => {
         operacion,
         numAutorizacion,
         cdResponse,
-        adquirente
+        adquirente, 
+        error
     };
     
     response.render('estadocuenta/recibir_pago', {

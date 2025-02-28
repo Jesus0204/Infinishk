@@ -60,14 +60,16 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         email: 'recordatorios@pagos.ivd.edu.mx',
                     },
                     subject: 'Recordatorio de pago',
-                    html: `<p>¡Hola!</p>
+                    html: `<p>Buen día,</p>
                     <p>
-                        ¡Recuerda que ya avecina el pago de tu Colegiatura! 
-                        Debes realizar tu pago antes del ${moment(deudasRecordatorio[count].fechaLimitePago).format('DD [de] MMMM')}
-                        para no generar recargos en tu estado de cuenta. 
+                        Espero te encuentres muy bien, el motivo de este mensaje es recordarte que la fecha del siguiente pago se aproxima 
+                        y para evitar pagar recargos del 5% se debe liquidar a más tardar el ${moment(deudasRecordatorio[count].fechaLimitePago).format('DD [de] MMMM')}.
                     </p>
                     <p>
-                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>.
+                        Para pagar o consultar tu estado de cuenta, puedes entrar a <a href = "${process.env.ENVIRONMENT_URL}/auth/login"> ViaPago </a>.
+                    </p>
+                    <p> 
+                        Este es un correo automático. Cualquier duda, favor de comunicarse al correo de administracion@ivd.edu.mx.
                     </p>
                     <p>
                         ¡Gracias y bonito día!
@@ -123,7 +125,7 @@ exports.enviarCorreoAtrasado = (request, response, next) => {
                     </p>
                     <p>
                         Para pagar o consultar tu estado de cuenta, 
-                        puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>
+                        puedes entrar a <a href = "${process.env.ENVIRONMENT_URL}/auth/login"> ViaPago </a>
                     </p>
                     <p>
                         ¡Gracias y bonito día!

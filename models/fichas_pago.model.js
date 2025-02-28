@@ -35,8 +35,8 @@ module.exports = class Fichas {
         db.execute(`CALL dar_baja_grupo_100(?, ?, ?, ?, ?,?)`, [uMatricula, uIDGrupo, uPrecioActual, uIDMateria, uBeca, uCredito])
     }
 
-    static update_fichas_beca(uMatricula, uBeca, uCredito){
-        db.execute(`CALL recalcularMontoTotalYAplicarBeca(?, ?, ?)`, [uMatricula, uBeca, uCredito])
+    static update_fichas_beca(uMatricula, uBeca, uCredito, uPrecioActual){
+        db.execute(`CALL recalcularMontoTotalYAplicarBeca(?, ?, ?, ?)`, [uMatricula, uBeca, uCredito, uPrecioActual])
     }
 
     static async calcularNumeroDeudas(uMatricula, uFechaInicio, uFechaFin) {
