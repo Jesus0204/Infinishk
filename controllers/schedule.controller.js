@@ -59,7 +59,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         name: 'VIA PAGO',
                         email: 'recordatorios@pagos.ivd.edu.mx',
                     },
-                    subject: '¡Recuerda Pagar tu Colegiatura!',
+                    subject: 'Recordatorio de pago',
                     html: `<p>¡Hola!</p>
                     <p>
                         ¡Recuerda que ya avecina el pago de tu Colegiatura! 
@@ -67,7 +67,7 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         para no generar recargos en tu estado de cuenta. 
                     </p>
                     <p>
-                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>
+                        Para pagar o consultar tu estado de cuenta, puedes entrar a < a href = "${process.env.ENVIRONMENT_URL}/auth/login" > ViaPago < /a>.
                     </p>
                     <p>
                         ¡Gracias y bonito día!
