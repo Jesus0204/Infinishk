@@ -59,14 +59,14 @@ exports.enviarCorreoRecordatorio = async(request, response, next) => {
                         name: 'VIA PAGO',
                         email: 'recordatorios@pagos.ivd.edu.mx',
                     },
-                    subject: '¡Recuerda Pagar tu Colegiatura!',
+                    subject: 'Recordatorio de pago',
                     html: `<p>Buen día,</p>
                     <p>
                         Espero te encuentres muy bien, el motivo de este mensaje es recordarte que la fecha del siguiente pago se aproxima 
                         y para evitar pagar recargos del 5% se debe liquidar a más tardar el ${moment(deudasRecordatorio[count].fechaLimitePago).format('DD [de] MMMM')}.
                     </p>
                     <p>
-                        Para pagar o consultar tu estado de cuenta, puedes entrar a <a href = "${process.env.ENVIRONMENT_URL}/auth/login"> ViaPago </a>
+                        Para pagar o consultar tu estado de cuenta, puedes entrar a <a href = "${process.env.ENVIRONMENT_URL}/auth/login"> ViaPago </a>.
                     </p>
                     <p> 
                         Este es un correo automático. Cualquier duda, favor de comunicarse al correo de administracion@ivd.edu.mx.
