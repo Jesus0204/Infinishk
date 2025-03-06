@@ -799,6 +799,12 @@ exports.post_registrar_pago_manual_colegiatura = (request, response, next) => {
                                 Deuda.removeRecargosDeuda(deuda.IDDeuda);
                             }
                         }
+                    } else if ((Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) - Number(monto_a_usar)) <= 10) {
+                        if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                            if (deuda.Recargos == 1) {
+                                Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                            }
+                        }
                     } else if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) < Number(monto_a_usar)) {
                         if (moment(fecha_body).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                             // Si tiene recargos, se quitan y se asegura que solo se pague lo de la ficha para que pase para la siguiente
@@ -1097,6 +1103,12 @@ exports.post_registrar_transferencia = async (request, response, next) => {
                         } else if (parseFloat((deuda.montoAPagar - deuda.montoPagado).toFixed(2)) >= monto_a_usar) {
                             // Si se pago el monto total y estuvo a tiempo el pago, se quitan los recargos
                             if (Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) == Number(monto_a_usar)) {
+                                if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
+                                    if (deuda.Recargos == 1) {
+                                        Deuda.removeRecargosDeuda(deuda.IDDeuda);
+                                    }
+                                }
+                            } else if ((Number((deuda.montoSinRecargos - deuda.montoPagado).toFixed(2)) - Number(monto_a_usar)) <= 10) {
                                 if (moment(fecha).isSameOrBefore(moment(deuda.fechaLimitePago), 'day')) {
                                     if (deuda.Recargos == 1) {
                                         Deuda.removeRecargosDeuda(deuda.IDDeuda);
