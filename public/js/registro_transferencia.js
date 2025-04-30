@@ -4,56 +4,81 @@ function updateLabel() {
     var label = document.getElementById('labelArchivo');
     label.innerHTML = '<i class="fas fa-upload"></i>' + archivo.files[0].name;
 }
+
 function validateFile() {
-    var archivo = document.getElementById('archivo');
-    var error = document.getElementById('error');
+    const archivo = document.getElementById('archivo');
+    const error = document.getElementById('error');
+
     if (archivo.files.length === 0) {
-        error.textContent = 'Por favor ingresa un archivo';
+        error.textContent = 'Por favor ingresa un archivo.';
         return false;
     }
-    var file = archivo.files[0];
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        var content = e.target.result;
-        // Aquí deberías agregar la lógica para validar el contenido del CSV
-        // Por ejemplo, verificar que las columnas necesarias estén presentes
-        if (csvContentIsValid(content)) {
-            // Si el contenido es válido, permitir la carga del archivo
-            document.forms[0].submit(); // Esto enviará el formulario
-        } else {
-            error.textContent = 'Por favor ingresa un CSV válido';
-        }
-    };
-    reader.onerror = function () {
-        error.textContent = 'Hubo un error al leer el archivo';
-    };
-    reader.readAsText(file);
-    return false; // Esto detiene la carga hasta que la validación sea exitosa
+
+    const file = archivo.files[0];
+    const extension = file.name.split('.').pop().toLowerCase();
+
+    if (extension === 'csv') {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const content = e.target.result;
+            if (csvContentIsValid(content)) {
+                document.forms[0].submit();
+            } else {
+                error.textContent = 'El archivo CSV no tiene el formato esperado.';
+            }
+        };
+        reader.onerror = function () {
+            error.textContent = 'Hubo un error al leer el archivo CSV.';
+        };
+        reader.readAsText(file);
+    } else if (extension === 'xlsx') {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 6 });
+
+            if (xlsxContentIsValid(json)) {
+                document.forms[0].submit();
+            } else {
+                error.textContent = 'El archivo XLSX no tiene el formato esperado.';
+            }
+        };
+        reader.onerror = function () {
+            error.textContent = 'Hubo un error al leer el archivo XLSX.';
+        };
+        reader.readAsArrayBuffer(file);
+    } else {
+        error.textContent = 'Formato de archivo no válido. Solo se aceptan .csv o .xlsx';
+    }
+
+    return false;
 }
 
 function csvContentIsValid(csvContent) {
-    // Implementa la lógica para validar el contenido del CSV aquí
-    // Esta es solo una estructura básica, necesitarás adaptarla a tus necesidades
-    var lines = csvContent.split('\n');
-    if (lines.length > 1) {
-        var headers = lines[0].split(',').map(header => header.trim()); // Eliminar espacios en blanco alrededor de las cabeceras
-        // Verifica que todas las cabeceras necesarias estén presentes
-        if (
-            headers.includes('Fecha') &&
-            headers.includes('Hora') &&
-            headers.includes('Concepto') &&
-            headers.includes('Importe')
-        ) {
-            // Añade más validaciones según sea necesario
-            return true;
-        }
-    }
-    return false;
+    const lines = csvContent.split('\n');
+    if (lines.length < 2) return false;
+
+    const headers = lines[0].split(',').map(h => h.trim());
+    return requiredHeadersPresent(headers);
+}
+
+function xlsxContentIsValid(json) {
+    if (json.length === 0) return false;
+    const headers = json[0].map(h => h.toString().trim());
+    return requiredHeadersPresent(headers);
+}
+
+function requiredHeadersPresent(headers) {
+    const required = ['Fecha', 'Hora', 'Monto', 'Referencia', 'Metodo', 'Nota'];
+    return required.every(h => headers.includes(h));
 }
 
 const tablaNoCompleta = document.getElementById('tablaNoCompleta');
 // Inicialmente ocultar la tabla de Pagos No Completos
-if (tablaNoCompleta){
+if (tablaNoCompleta) {
     tablaNoCompleta.style.display = 'none';
 }
 
@@ -72,7 +97,7 @@ if (toggleButton) {
 
 const toggleButtonActivo = document.getElementById('toggleButtonActivo');
 
-if (toggleButtonActivo){
+if (toggleButtonActivo) {
     toggleButtonActivo.addEventListener('click', function () {
         // Comprobar si la tabla de Pago Completo está visible
         var isTablaCompletaVisible = document.getElementById('tablaCompleta').style.display !== 'none';
@@ -99,7 +124,7 @@ document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach(
 document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        
+
         // Crear FormData
         const formData = new FormData(form);
 
@@ -122,26 +147,26 @@ document.querySelectorAll('.form-enviar-datos').forEach((form, index) => {
             method: 'POST',
             body: formData,
         })
-        .then(response => response.json())
-        .then(data => {
-            let mensajeAlerta = '';
-            if (!data.success) {
-                mensajeAlerta = data.message || 'Por favor verifica tu tipo de pago';
-                alert(mensajeAlerta);
-            } else {
-                const filaId = form.parentElement.parentElement.id;
-                const fila = document.getElementById(filaId);
-                if (fila) {
-                    fila.remove();
+            .then(response => response.json())
+            .then(data => {
+                let mensajeAlerta = '';
+                if (!data.success) {
+                    mensajeAlerta = data.message || 'Por favor verifica tu tipo de pago';
+                    alert(mensajeAlerta);
                 } else {
-                    console.error(`No se encontró la fila ${filaId}.`);
+                    const filaId = form.parentElement.parentElement.id;
+                    const fila = document.getElementById(filaId);
+                    if (fila) {
+                        fila.remove();
+                    } else {
+                        console.error(`No se encontró la fila ${filaId}.`);
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.error('Error en la petición fetch:', error);
-            alert('Hubo un error al procesar la solicitud. Por favor inténtalo de nuevo más tarde.');
-        });
+            })
+            .catch(error => {
+                console.error('Error en la petición fetch:', error);
+                alert('Hubo un error al procesar la solicitud. Por favor inténtalo de nuevo más tarde.');
+            });
     });
 });
 
@@ -155,7 +180,7 @@ document.querySelectorAll('.form-enviar-datos select[name="tipoPago"]').forEach(
         if (fila) {
             // Actualizar la clase de la fila basada en el valor seleccionado
             fila.className = event.target.value.replace(/\s/g, '-');
-            
+
             // Obtener el botón dentro de la fila
             const boton = fila.querySelector('button[type="submit"]');
             // Asegurarse de que se encontró el botón
