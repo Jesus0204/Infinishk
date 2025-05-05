@@ -47,6 +47,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         const resultados = [];
 
         for (const fila of filas) {
+            console.log(fila);
             let nombre = '', apellidos = '', deudaEstudiante = 0, tipoPago = '', montoAPagar = 0;
             const matricula = fila.Matricula;
 
