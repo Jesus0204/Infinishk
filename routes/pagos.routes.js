@@ -55,6 +55,7 @@ router.post('/reporte_metodo_pago', isAuth, can_ReportesMetodoPago, pagosControl
 router.get('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.get_registro_transferencias);
 router.post('/registroTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_subir_archivo);
 router.post('/resultadoTransferencia', isAuth, can_RegistrarPagoTransferencia, pagosController.post_registrar_transferencia);
+router.get('/pagoTransferencia',isAuth,can_RegistrarPagoTransferencia,pagoTransferenciaController.get_pagos_transferencias);
 router.post('/pagoTransferencia',isAuth,can_RegistrarPagoTransferencia,pagoTransferenciaController.subirYRegistrarTransferencia);
 
 module.exports = router;

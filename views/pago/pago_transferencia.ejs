@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Transferencias</title>
+</head>
+<body>
+    <h1>Subir archivo de transferencias</h1>
+
+    <!-- Formulario para subir archivo CSV -->
+    <form action="/pagoTransferencia" method="POST" enctype="multipart/form-data">
+        <input type="file" name="archivo" accept=".csv" required>
+        <button type="submit">Subir</button>
+    </form>
+
+    <% if (pagosSubidos && pagosSubidos.length > 0) { %>
+        <h2>Resultados del archivo subido</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Monto</th>
+                    <th>Referencia</th>
+                    <th>Método</th>
+                    <th>Nota</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Tipo de Pago</th>
+                    <th>Deuda Estudiante</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pagosSubidos.forEach(pago => { %>
+                    <tr>
+                        <td><%= pago.fechaFormato %></td>
+                        <td><%= pago.Hora %></td>
+                        <td>$<%= pago.Monto.toFixed(2) %></td>
+                        <td><%= pago.ReferenciaAlum %></td>
+                        <td><%= pago.Metodo %></td>
+                        <td><%= pago.Nota %></td>
+                        <td><%= pago.nombre %></td>
+                        <td><%= pago.apellidos %></td>
+                        <td><%= pago.tipoPago %></td>
+                        <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } %>
+</body>
+</html>
