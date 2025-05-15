@@ -85,7 +85,7 @@
                         </thead>
                         <tbody>
                             <% pagosSubidos.forEach(pago => { %>
-                                <tr>
+                                <tr id="pagination-content">
                                     <td><%= pago.fechaFormato %></td>
                                     <td><%= pago.Hora %></td>
                                     <td>$<%= pago.monto.toFixed(2) %></td>
@@ -101,10 +101,18 @@
                         </tbody>
                     </table>
                 </div>
+                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" id="prev-button">Anterior</a>
+                    <a class="pagination-next" id="next-button">Siguiente</a>
+                    <ul class="pagination-list" id="pagination-list">
+                        <div id="pagination-numbers"></div>
+                    </ul>
+                </nav>
             </div>
         <% } %>
     </section>
 </body>
 <script type="text/javascript" src="/js/registro_transferencia.js"></script>
+<script type="text/javascript" src="/js/pagination.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
             
