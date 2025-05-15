@@ -23,6 +23,7 @@ exports.get_pagos_transferencias = (request, response, next) => {
     response.render('pago/pago_transferencia', {
         pagosSubidos: null,
         csrfToken: request.csrfToken(),
+        username: request.session.username || '',
         permisos: request.session.permisos || [],
         rol: request.session.rol || '',
     });
@@ -205,6 +206,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         response.render('pago/pago_transferencia', {
             pagosSubidos: resultados,
             csrfToken: request.csrfToken(),
+            username: request.session.username || '',
             permisos: request.session.permisos || [],
             rol: request.session.rol || '',
         });
