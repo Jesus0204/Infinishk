@@ -4,49 +4,107 @@
     rol: rol
 }) %>
 
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 50%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
 <body>
-    <h1>Subir archivo de transferencias</h1>
-
-    <!-- Formulario para subir archivo CSV -->
-    <form action="/pagoTransferencia" method="POST" enctype="multipart/form-data">
-        <input type="file" name="archivo" accept=".csv" required>
-        <button type="submit">Subir</button>
-    </form>
-
-    <% if (pagosSubidos && pagosSubidos.length > 0) { %>
-        <h2>Resultados del archivo subido</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Monto</th>
-                    <th>Referencia</th>
-                    <th>Método</th>
-                    <th>Nota</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Tipo de Pago</th>
-                    <th>Deuda Estudiante</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% pagosSubidos.forEach(pago => { %>
-                    <tr>
-                        <td><%= pago.fechaFormato %></td>
-                        <td><%= pago.Hora %></td>
-                        <td>$<%= pago.monto.toFixed(2) %></td>
-                        <td><%= pago.ReferenciaAlum %></td>
-                        <td><%= pago.Metodo %></td>
-                        <td><%= pago.Nota %></td>
-                        <td><%= pago.nombre %></td>
-                        <td><%= pago.apellidos %></td>
-                        <td><%= pago.tipoPago %></td>
-                        <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    <% } %>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-7">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    SUBIR ARCHIVO DE TRANSFERENCIAS
+                </label>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Para subir otro archivo CSV, por favor ingresa un archivo CSV del banco para registrar las transferencias recibidas a la
+                        base de datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formulario para subir archivo CSV -->
+        <form action="/pagos/pagoTransferencia" method="POST" enctype="multipart/form-data"
+        onsubmit="return validateFile()">
+        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+        <input name="archivo" id="archivo" type="file" class="input" accept=".csv, .xlsx" style="display: none;"
+        onchange="updateLabel()">
+        <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
+        style="font-size: medium; background: #000000;">
+        <span> ELEGIR ARCHIVO </span>
+        <span class="icon is-large">
+            <i class="fas fa-upload"></i></span></label>
+            <button type="submit" class="button is-large is-responsive"
+            style="font-size: medium; background: #000000;">
+            SUBIR ARCHIVO </button>
+            <div id="error"></div>
+        </form>
+        
+        <% if (pagosSubidos && pagosSubidos.length > 0) { %>
+            <br>
+            <br>
+            <div class="columns">
+                <div class="column is-3"></div>
+                <div class="column is-7">
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        RESULTADOS DEL ARCHIVO SUBIDO
+                    </label>
+                </div>
+            </div>
+            <div class="container">
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr class="has-text-white">
+                                <th style="text-align: left;">Fecha</th>
+                                <th style="text-align: left;">Hora</th>
+                                <th style="text-align: left;">Monto</th>
+                                <th style="text-align: left;">Referencia</th>
+                                <th style="text-align: left;">Método</th>
+                                <th style="text-align: left;">Nota</th>
+                                <th style="text-align: left;">Nombre</th>
+                                <th style="text-align: left;">Apellidos</th>
+                                <th style="text-align: left;">Tipo de Pago</th>
+                                <th style="text-align: left;">Deuda Estudiante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% pagosSubidos.forEach(pago => { %>
+                                <tr>
+                                    <td><%= pago.fechaFormato %></td>
+                                    <td><%= pago.Hora %></td>
+                                    <td>$<%= pago.monto.toFixed(2) %></td>
+                                    <td><%= pago.ReferenciaAlum %></td>
+                                    <td><%= pago.Metodo %></td>
+                                    <td><%= pago.Nota %></td>
+                                    <td><%= pago.nombre %></td>
+                                    <td><%= pago.apellidos %></td>
+                                    <td><%= pago.tipoPago %></td>
+                                    <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </section>
 </body>
-</html>
+<script type="text/javascript" src="/js/registro_transferencia.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+            
