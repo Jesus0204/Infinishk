@@ -111,7 +111,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                     Number(deuda[0][0].montoAPagar.toFixed(2)) :
                     Number(deudaPagada?.[0]?.[0]?.montoAPagar?.toFixed(2) || 0);
 
-                let pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.Monto);
+                let pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.monto);
 
                 const pagoValido = pagoCompleto?.[0]?.[0];
                 if (pagoValido) {
