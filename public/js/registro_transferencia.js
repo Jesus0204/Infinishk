@@ -35,14 +35,15 @@ function csvContentIsValid(csvContent) {
     // Implementa la lógica para validar el contenido del CSV aquí
     // Esta es solo una estructura básica, necesitarás adaptarla a tus necesidades
     var lines = csvContent.split('\n');
-    if (lines.length > 1) {
-        var headers = lines[0].split(',').map(header => header.trim()); // Eliminar espacios en blanco alrededor de las cabeceras
+    if (lines.length > 6) {
+        var headers = lines[5].split(',').map(header => header.trim()); // Eliminar espacios en blanco alrededor de las cabeceras
         // Verifica que todas las cabeceras necesarias estén presentes
         if (
             headers.includes('Fecha') &&
-            headers.includes('Hora') &&
-            headers.includes('Concepto') &&
-            headers.includes('Importe')
+            headers.includes('Monto') &&
+            headers.includes('Referencia') &&
+            headers.includes('Metodo') &&
+            headers.includes('Nota')
         ) {
             // Añade más validaciones según sea necesario
             return true;
@@ -254,4 +255,3 @@ document.addEventListener("DOMContentLoaded", function () {
 function checarContenido(button, inputFecha) {
     button.disabled = inputFecha.value.length === 0;
 }
-
