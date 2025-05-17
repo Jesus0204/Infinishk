@@ -19,6 +19,7 @@
 <body>
     <section class="section">
         <div class="columns">
+            <% if (!pagosSubidos) { %>
             <div class="column is-3"></div>
             <div class="column is-7">
                 <label class="label is-large has-text-danger has-text-weight-semibold">
@@ -37,35 +38,41 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Formulario para subir archivo CSV -->
-        <form action="/pagos/pagoTransferencia" method="POST" enctype="multipart/form-data"
-        onsubmit="return validateFile()">
-        <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-        <input name="archivo" id="archivo" type="file" class="input" accept=".csv, .xlsx" style="display: none;"
-        onchange="updateLabel()">
-        <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
-        style="font-size: medium; background: #000000;">
-        <span> ELEGIR ARCHIVO </span>
-        <span class="icon is-large">
-            <i class="fas fa-upload"></i></span></label>
-            <button type="submit" class="button is-large is-responsive"
-            style="font-size: medium; background: #000000;">
-            SUBIR ARCHIVO </button>
-            <div id="error"></div>
-        </form>
+        <% } %>
         
         <% if (pagosSubidos && pagosSubidos.length > 0) { %>
             <br>
             <br>
             <div class="columns">
-                <div class="column is-3"></div>
-                <div class="column is-7">
+                <div class="column is-5"></div>
+                <div class="column is-5">
                     <label class="label is-large has-text-danger has-text-weight-semibold">
                         RESULTADOS DEL ARCHIVO SUBIDO
                     </label>
                 </div>
             </div>
+
+            <!-- Formulario para subir archivo CSV -->
+             <div class="column is-3"></div>
+            <div class="column is-5">
+                <form action="/pagos/pagoTransferencia" method="POST" enctype="multipart/form-data"
+                    onsubmit="return validateFile()">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input name="archivo" id="archivo" type="file" class="input" accept=".csv, .xlsx" style="display: none;"
+                    onchange="updateLabel()">
+                <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
+                    style="font-size: medium; background: #000000;">
+                <span> ELEGIR ARCHIVO </span>
+                <span class="icon is-large">
+                    <i class="fas fa-upload"></i></span></label>
+                <button type="submit" class="button is-large is-responsive"
+                    style="font-size: medium; background: #000000;">
+                    SUBIR ARCHIVO </button>
+                <div id="error"></div>
+                </form>
+            </div>
+        </div>
+
             <div class="container">
                 <div class="table-container">
                     <table class="table is-fullwidth is-hoverable">
