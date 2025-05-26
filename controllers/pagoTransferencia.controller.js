@@ -53,8 +53,11 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
     const parser = fileStream.pipe(csvParser());
 
     parser.on('data', (data) => {
-        console.log('Fila CSV:', data);
-        const { Fecha, Monto, Referencia, Metodo, Nota } = data;
+        const cleanedData = {};
+        for (const key in data) {
+            cleanedData[key.trim()] = data[key];
+        }
+        const { Fecha, Monto, Referencia, Metodo, Nota } = cleanedData;
         let fechaFormato = "";
         const rawFecha = Fecha.trim();
         const referenciaLimpia = Referencia.replace(/\s+/g, ''); // elimina todos los espacios
@@ -72,6 +75,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         }
 
         const monto = Monto ? parseFloat(Monto.trim().replace(/[$,]/g, '')) : 0;
+        console.log("Monto procesado:", Monto, "->", monto);
 
         filas.push({
             fechaFormato,
@@ -88,7 +92,6 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         const resultados = [];
 
         for (const fila of filas) {
-            console.log(fila);
             let nombre = '', apellidos = '', deudaEstudiante = 0, tipoPago = '', montoAPagar = 0;
             const matricula = fila.Matricula;
 
@@ -117,7 +120,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                 const pagoValido = pagoCompleto?.[0]?.[0];
                 if (pagoValido) {
                     const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD');
-                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.Monto * 100) / 100 &&
+                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100 &&
                         fechaFormateada === fila.fechaFormato &&
                         pagoValido.matricula === matricula) {
                         tipoPago = 'Pago Completo';
@@ -133,7 +136,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                 }
 
                 // Si el monto a pagar es el importe, marcar como Pago de Colegiatura
-                if (fila.Monto === montoAPagar && tipoPago !== 'Pago Completo') {
+                if (fila.monto === montoAPagar && tipoPago !== 'Pago Completo') {
                     tipoPago = 'Pago de Colegiatura';
                     deudaEstudiante = montoAPagar;
                 } else if (!tipoPago) {
@@ -149,7 +152,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                 const pagoValido = pagoDiplomadoCompleto?.[0]?.[0];
                 if (pagoValido) {
                     const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD HH:mm');
-                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.Monto * 100) / 100) {
+                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
                     }
@@ -186,9 +189,9 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                     const idColegiatura = colegiatura?.[0]?.[0]?.IDColegiatura;
 
                     const deudasNoPagadas = await Deuda.fetchNoPagadas(idColegiatura);
-                    await Pago.save_transferencia(deudasNoPagadas[0].IDDeuda, fila.Monto, '', fila.fechaFormato);
+                    await Pago.save_transferencia(deudasNoPagadas[0].IDDeuda, fila.monto, '', fila.fechaFormato);
 
-                    let montoAUsar = fila.Monto;
+                    let montoAUsar = fila.monto;
                     for (const deudaItem of deudasNoPagadas) {
                         if (montoAUsar <= 0) break;
                         const restante = deudaItem.montoAPagar - deudaItem.montoPagado;
