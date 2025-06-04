@@ -13,10 +13,7 @@ const Reporte = require('../models/reporte.model');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const stream = require('stream');
-
-// Configuras a moment con el locale. 
 const moment = require('moment-timezone');
-const PagoExtra = require('../models/pago_extra.model');
 moment.locale('es-mx');
 
 exports.get_pagos_transferencias = (request, response, next) => {
@@ -29,167 +26,203 @@ exports.get_pagos_transferencias = (request, response, next) => {
     });
 };
 
-
 exports.subirYRegistrarTransferencia = async (request, response, next) => {
-    console.log("Ando aqui en la funcion de subir y registrar");
+    console.log("Inicio de subirYRegistrarTransferencia");
+
     if (!request.file) {
+        console.warn("No se subió ningún archivo");
         return response.status(400).send('No se subió ningún archivo.');
     }
 
     const fileBuffer = request.file.buffer;
-    const filas = [];
-
-    // Convertir el buffer a string y eliminar las primeras 5 líneas
     const contenido = fileBuffer.toString('utf8');
-    const lineas = contenido.split('\n').slice(5); // A6 en adelante
+    const lineas = contenido.split('\n').slice(5); // quitar encabezados
     const contenidoRecortado = lineas.join('\n');
 
-    // Crear un stream de lectura a partir del nuevo contenido
     const fileStream = new stream.Readable();
     fileStream.push(contenidoRecortado);
-    fileStream.push(null); // Finalizar el stream
+    fileStream.push(null);
 
-    // Configurar el parser de CSV
     const parser = fileStream.pipe(csvParser());
+    const filas = [];
 
     parser.on('data', (data) => {
         const cleanedData = {};
         for (const key in data) {
             cleanedData[key.trim()] = data[key];
         }
+
         const { Fecha, Monto, Referencia, Metodo, Nota } = cleanedData;
         let fechaFormato = "";
         const rawFecha = Fecha.trim();
-        const referenciaLimpia = Referencia.replace(/\s+/g, ''); // elimina todos los espacios
+        const referenciaLimpia = Referencia.replace(/\s+/g, '');
         const ReferenciaAlum = referenciaLimpia.substring(0, 7);
         const Matricula = referenciaLimpia.substring(0, 6);
         const inicioRef = referenciaLimpia.substring(0, 1);
         const fechaCompleta = moment(rawFecha + '-2025', 'DD-MMM-YYYY');
 
         if (fechaCompleta.isValid()) {
-            fechaFormato = fechaCompleta.format('D/M/YYYY'); // Ejemplo: '17/9/2025'
-            // Utiliza fechaFormato según tus necesidades
+            fechaFormato = fechaCompleta.format('D/M/YYYY');
         } else {
-            console.error('Fecha inválida:', fechaTexto);
-            // Maneja el error según corresponda
+            console.error('Fecha inválida:', rawFecha);
         }
 
         const monto = Monto ? parseFloat(Monto.trim().replace(/[$,]/g, '')) : 0;
-        console.log("Monto procesado:", Monto, "->", monto);
-
-        filas.push({
-            fechaFormato,
-            monto,
-            ReferenciaAlum,
-            Matricula,
-            inicioRef,
-            Metodo,
-            Nota
+        console.log("Procesado fila ->", {
+            fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef, Metodo, Nota
         });
+
+        filas.push({ fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef, Metodo, Nota });
     });
 
     parser.on('end', async () => {
+        console.log("Inicio del procesamiento de filas");
         const resultados = [];
+        let esPrimeraFila = true;
 
         for (const fila of filas) {
             let nombre = '', apellidos = '', deudaEstudiante = 0, tipoPago = '', montoAPagar = 0;
             const matricula = fila.Matricula;
 
-            // Ejecutar las consultas en paralelo usando Promise.all
-            const [nombreCompleto, deuda, deudaPagada] = await Promise.all([
-                (fila.inicioRef === '1' || fila.inicioRef === '8') ? Alumno.fetchNombre(matricula) : null,
-                fila.inicioRef === '1' ? Deuda.fetchDeuda(matricula) : null,
-                fila.inicioRef === '1' ? Deuda.fetchDeudaPagada(matricula) : null
-            ]);
+            try {
+                const [nombreCompleto, deuda, deudaPagada] = await Promise.all([
+                    (fila.inicioRef === '1' || fila.inicioRef === '8') ? Alumno.fetchNombre(matricula) : null,
+                    fila.inicioRef === '1' ? Deuda.fetchDeuda(matricula) : null,
+                    fila.inicioRef === '1' ? Deuda.fetchDeudaPagada(matricula) : null
+                ]);
 
-            if (nombreCompleto?.[0]?.[0]?.Nombre) {
-                nombre = nombreCompleto[0][0].Nombre;
-                apellidos = nombreCompleto[0][0].Apellidos;
-            } else {
-                tipoPago = "Pago no Reconocido";
-            }
-
-            if (fila.inicioRef === '1') {
-                // Lógica de pago para Colegiatura
-                montoAPagar = deuda?.[0]?.[0]?.montoAPagar !== undefined ?
-                    Number(deuda[0][0].montoAPagar.toFixed(2)) :
-                    Number(deudaPagada?.[0]?.[0]?.montoAPagar?.toFixed(2) || 0);
-
-                let pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.monto);
-
-                const pagoValido = pagoCompleto?.[0]?.[0];
-                if (pagoValido) {
-                    const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD');
-                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100 &&
-                        fechaFormateada === fila.fechaFormato &&
-                        pagoValido.matricula === matricula) {
-                        tipoPago = 'Pago Completo';
-                        deudaEstudiante = 0;
-                    }
-                }
-
-                // Verificar si se ha liquidado la deuda
-                const idLiquida = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
-                if (idLiquida?.[0]?.[0]?.IDLiquida) {
-                    tipoPago = 'Pago Completo';
-                    deudaEstudiante = 0;
-                }
-
-                // Si el monto a pagar es el importe, marcar como Pago de Colegiatura
-                if (fila.monto === montoAPagar && tipoPago !== 'Pago Completo') {
-                    tipoPago = 'Pago de Colegiatura';
-                    deudaEstudiante = montoAPagar;
-                } else if (!tipoPago) {
-                    tipoPago = 'Pago a Registrar';
-                    deudaEstudiante = montoAPagar;
-                }
-
-            } else if (fila.inicioRef === '8') {
-                // Lógica de pago para Diplomado
-                const idLiquidaPagada = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
-                const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
-
-                const pagoValido = pagoDiplomadoCompleto?.[0]?.[0];
-                if (pagoValido) {
-                    const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD HH:mm');
-                    if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100) {
-                        tipoPago = 'Pago Completo';
-                        deudaEstudiante = 0;
-                    }
-                }
-
-                if (idLiquidaPagada?.[0]?.[0]?.IDLiquida) {
-                    tipoPago = 'Pago Completo';
-                    deudaEstudiante = 0;
+                if (nombreCompleto?.[0]?.[0]?.Nombre) {
+                    nombre = nombreCompleto[0][0].Nombre;
+                    apellidos = nombreCompleto[0][0].Apellidos;
                 } else {
-                    tipoPago = tipoPago || 'Pago de Diplomado';
+                    if(esPrimeraFila){
+                        console.warn(`Nombre no encontrado para matrícula ${matricula}`);
+                    }
+                    tipoPago = "Pago no Reconocido";
                 }
-            } else {
-                tipoPago = 'Pago a Ignorar';
-            }
 
-            resultados.push({
-                ...fila,
-                tipoPago,
-                deudaEstudiante,
-                nombre,
-                apellidos
-            });
+                if (fila.inicioRef === '1') {
+                    if(esPrimeraFila){
+                        console.log("Lógica de colegiatura");
+                    }
+                    montoAPagar = deuda?.[0]?.[0]?.montoAPagar !== undefined ?
+                        Number(deuda[0][0].montoAPagar.toFixed(2)) :
+                        Number(deudaPagada?.[0]?.[0]?.montoAPagar?.toFixed(2) || 0);
 
-            // Registro automático opcional solo para ciertos tipos de pago
-            if (tipoPago === 'Pago de Colegiatura') {
-                try {
-                    const deuda = await Deuda.fetchDeuda(matricula);
+                    if(esPrimeraFila){
+                        console.log("Monto a pagar: ",montoAPagar);
+                    }
+
+                    const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.monto);
+                    const pagoValido = pagoCompleto?.[0]?.[0];
+
+                    if(esPrimeraFila){
+                        console.log("Pago Valido: ",pagoValido);
+                    }
+
+                    if (pagoValido) {
+                        const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD');
+                        if (
+                            Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100 &&
+                            fechaFormateada === fila.fechaFormato &&
+                            pagoValido.matricula === matricula
+                        ) {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
+                            if(esPrimeraFila){
+                                console.log(`Pago completo detectado para ${matricula}`);
+                            }
+                        }
+                    }
+
+                    const idLiquida = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
+                    if (idLiquida?.[0]?.[0]?.IDLiquida) {
+                        tipoPago = 'Pago Completo';
+                        deudaEstudiante = 0;
+                        if(esPrimeraFila){
+                            console.log(`Liquidación detectada para ${matricula}`);
+                        }
+                    }
+
+                    if (fila.monto >= montoAPagar && tipoPago !== 'Pago Completo') {
+                        tipoPago = 'Pago de Colegiatura';
+                        deudaEstudiante = montoAPagar;
+                        if(esPrimeraFila){
+                            console.log(`Pago exacto de colegiatura para ${matricula}`);
+                        }
+                    } else if (!tipoPago) {
+                        tipoPago = 'Pago a Registrar';
+                        deudaEstudiante = montoAPagar;
+                        if(esPrimeraFila){
+                            console.log(`Pago a registrar para ${matricula}`);
+                        }
+                    }
+
+                } else if (fila.inicioRef === '8') {
+                    if(esPrimeraFila){
+                        console.log("Lógica de diplomado");
+                    }
+                    const idLiquidaPagada = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
+                    const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
+                    const pagoValido = pagoDiplomadoCompleto?.[0]?.[0];
+
+                    if (pagoValido) {
+                        if (Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100) {
+                            tipoPago = 'Pago Completo';
+                            deudaEstudiante = 0;
+                            if(esPrimeraFila){
+                                console.log(`Pago completo diplomado para ${matricula}`);
+                            }
+                        }
+                    }
+
+                    if (idLiquidaPagada?.[0]?.[0]?.IDLiquida) {
+                        tipoPago = 'Pago Completo';
+                        deudaEstudiante = 0;
+                        if(esPrimeraFila){
+                            console.log(`Liquidación diplomado detectada para ${matricula}`);
+                        }
+                    } else {
+                        tipoPago = tipoPago || 'Pago de Diplomado';
+                    }
+                } else {
+                    if(esPrimeraFila){
+                        console.log(`Referencia con prefijo desconocido (${fila.inicioRef}), se ignorará`);
+                    }
+                    tipoPago = 'Pago a Ignorar';
+                }
+
+                resultados.push({ ...fila, tipoPago, deudaEstudiante, nombre, apellidos });
+
+                if (tipoPago === 'Pago de Colegiatura') {
+                    if(esPrimeraFila){
+                        console.log(`Registrando automáticamente pago para ${matricula}`);
+                    }
                     const idDeuda = await Deuda.fetchIDDeuda(matricula);
                     const idDeudaValida = idDeuda?.[0]?.[0]?.IDDeuda;
 
+                    if(esPrimeraFila){
+                        console.log(`IDdeuda`,idDeudaValida);
+                    }
                     if (!idDeudaValida) continue;
 
                     const colegiatura = await Deuda.fetchColegiatura(idDeudaValida);
                     const idColegiatura = colegiatura?.[0]?.[0]?.IDColegiatura;
 
+                    if(esPrimeraFila){
+                        console.log(`IDColegiatura`,idColegiatura);
+                    }
+
                     const deudasNoPagadas = await Deuda.fetchNoPagadas(idColegiatura);
-                    await Pago.save_transferencia(deudasNoPagadas[0].IDDeuda, fila.monto, '', fila.fechaFormato);
+
+                    if(esPrimeraFila){
+                        console.log(`DeudasNoPagadas`,deudasNoPagadas);
+                        console.log(`DeudasNoPagadas`,deudasNoPagadas[0][0].IDDeuda);
+                        console.log('Monto',fila.monto);
+                        console.log('Fecha',fila.fechaFormato);
+                    }
+
+                    await Pago.save_transferencia(deudasNoPagadas[0][0].IDDeuda, fila.monto, '', fila.fechaFormato);
 
                     let montoAUsar = fila.monto;
                     for (const deudaItem of deudasNoPagadas) {
@@ -200,12 +233,19 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                         }
                         montoAUsar -= restante;
                     }
-                } catch (error) {
-                    console.error(`Error al registrar transferencia automática para matrícula ${matricula}:`, error);
                 }
+
+            } catch (error) {
+                if(esPrimeraFila){
+                    console.error(`Error procesando matrícula ${matricula}:`, error);
+                }
+                resultados.push({ ...fila, tipoPago: 'Error al procesar', deudaEstudiante: 0 });
             }
+
+            esPrimeraFila = false; 
         }
 
+        console.log("Renderizando resultados");
         response.render('pago/pago_transferencia', {
             pagosSubidos: resultados,
             csrfToken: request.csrfToken(),
