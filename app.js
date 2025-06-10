@@ -39,7 +39,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
+ 
 const multer = require('multer');
 const upload = multer(); // Utiliza multer sin configuración de almacenamiento
 
