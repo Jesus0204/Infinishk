@@ -1,14 +1,8 @@
 const Deuda = require('../models/deuda.model');
 const Pago = require('../models/pago.model');
 const PagoDiplomado = require('../models/pagadiplomado.model');
-const Pago_Extra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
 const Alumno = require('../models/alumno.model');
-const Cursa = require('../models/cursa.model');
-const Periodo = require('../models/periodo.model');
-const Colegiatura = require('../models/colegiatura.model');
-const Usuario = require('../models/usuario.model');
-const Reporte = require('../models/reporte.model');
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
@@ -27,8 +21,6 @@ exports.get_pagos_transferencias = (request, response, next) => {
 };
 
 exports.subirYRegistrarTransferencia = async (request, response, next) => {
-    console.log("Inicio de subirYRegistrarTransferencia");
-
     if (!request.file) {
         console.warn("No se subió ningún archivo");
         return response.status(400).send('No se subió ningún archivo.');
@@ -68,9 +60,6 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         }
 
         const monto = Monto ? parseFloat(Monto.trim().replace(/[$,]/g, '')) : 0;
-        console.log("Procesado fila ->", {
-            fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef, Metodo, Nota
-        });
 
         filas.push({ fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef, Metodo, Nota });
     });
@@ -78,11 +67,17 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
     parser.on('end', async () => {
         console.log("Inicio del procesamiento de filas");
         const resultados = [];
-        let esPrimeraFila = true;
+        let count = 0;
+        let esPrimeraFila = false; 
 
         for (const fila of filas) {
+            if (count == 0) {
+                esPrimeraFila = true;
+            }
             let nombre = '', apellidos = '', deudaEstudiante = 0, tipoPago = '', montoAPagar = 0;
             const matricula = fila.Matricula;
+
+            const fechaMoment = moment(fila.fechaFormato, 'D/M/YYYY').format('YYYY-MM-DD');
 
             try {
                 const [nombreCompleto, deuda, deudaPagada] = await Promise.all([
@@ -111,9 +106,11 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
 
                     if(esPrimeraFila){
                         console.log("Monto a pagar: ",montoAPagar);
+                        console.log("fechaMoment: ",fechaMoment);
+                        console.log("fila.monto: ",fila.monto);
                     }
 
-                    const pagoCompleto = await Pago.fetch_fecha_pago(fila.fechaFormato, fila.monto);
+                    const pagoCompleto = await Pago.fetch_fecha_pago(fechaMoment, fila.monto, matricula);
                     const pagoValido = pagoCompleto?.[0]?.[0];
 
                     if(esPrimeraFila){
@@ -124,7 +121,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                         const fechaFormateada = moment(new Date(pagoValido.fechaPago)).format('YYYY-MM-DD');
                         if (
                             Math.round(pagoValido.montoPagado * 100) / 100 === Math.round(fila.monto * 100) / 100 &&
-                            fechaFormateada === fila.fechaFormato &&
+                            fechaFormateada === fechaMoment &&
                             pagoValido.matricula === matricula
                         ) {
                             tipoPago = 'Pago Completo';
@@ -135,7 +132,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                         }
                     }
 
-                    const idLiquida = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
+                    const idLiquida = await Liquida.fetchIDPagado(matricula, fechaMoment);
                     if (idLiquida?.[0]?.[0]?.IDLiquida) {
                         tipoPago = 'Pago Completo';
                         deudaEstudiante = 0;
@@ -162,8 +159,8 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                     if(esPrimeraFila){
                         console.log("Lógica de diplomado");
                     }
-                    const idLiquidaPagada = await Liquida.fetchIDPagado(matricula, fila.fechaFormato);
-                    const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fila.fechaFormato);
+                    const idLiquidaPagada = await Liquida.fetchIDPagado(matricula, fechaMoment);
+                    const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fechaMoment);
                     const pagoValido = pagoDiplomadoCompleto?.[0]?.[0];
 
                     if (pagoValido) {
@@ -213,22 +210,22 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                         console.log(`IDColegiatura`,idColegiatura);
                     }
 
-                    const deudasNoPagadas = await Deuda.fetchNoPagadas(idColegiatura);
+                    const [deudasNoPagadas] = await Deuda.fetchNoPagadas(idColegiatura);
 
                     if(esPrimeraFila){
                         console.log(`DeudasNoPagadas`,deudasNoPagadas);
-                        console.log(`DeudasNoPagadas`,deudasNoPagadas[0][0].IDDeuda);
+                        console.log(`DeudasNoPagadas`,deudasNoPagadas[0].IDDeuda);
                         console.log('Monto',fila.monto);
-                        console.log('Fecha',fila.fechaFormato);
+                        console.log('Fecha',fechaMoment);
                     }
 
-                    await Pago.save_transferencia(deudasNoPagadas[0][0].IDDeuda, fila.monto, '', fila.fechaFormato);
+                    await Pago.save_transferencia(deudasNoPagadas[0].IDDeuda, fila.monto, '', fechaMoment);
 
                     let montoAUsar = fila.monto;
                     for (const deudaItem of deudasNoPagadas) {
                         if (montoAUsar <= 0) break;
                         const restante = deudaItem.montoAPagar - deudaItem.montoPagado;
-                        if (moment(fila.fechaFormato).isSameOrBefore(moment(deudaItem.fechaLimitePago), 'day') && deudaItem.Recargos == 1) {
+                        if (moment(fechaMoment).isSameOrBefore(moment(deudaItem.fechaLimitePago), 'day') && deudaItem.Recargos == 1) {
                             await Deuda.removeRecargosDeuda(deudaItem.IDDeuda);
                         }
                         montoAUsar -= restante;
@@ -242,10 +239,10 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                 resultados.push({ ...fila, tipoPago: 'Error al procesar', deudaEstudiante: 0 });
             }
 
-            esPrimeraFila = false; 
+            count++;
+            esPrimeraFila = false;
         }
 
-        console.log("Renderizando resultados");
         response.render('pago/pago_transferencia', {
             pagosSubidos: resultados,
             csrfToken: request.csrfToken(),
