@@ -1,0 +1,125 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 50%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<body>
+    <section class="section">
+        <div class="columns">
+            <% if (!pagosSubidos) { %>
+            <div class="column is-3"></div>
+            <div class="column is-7">
+                <label class="label is-large has-text-danger has-text-weight-semibold">
+                    SUBIR ARCHIVO DE TRANSFERENCIAS
+                </label>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+                <div class="box">
+                    <p class="has-text-weight-medium has-text-black">
+                        Para subir otro archivo CSV, por favor ingresa un archivo CSV del banco para registrar las transferencias recibidas a la
+                        base de datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        
+        <% if (pagosSubidos && pagosSubidos.length > 0) { %>
+            <br>
+            <br>
+            <div class="columns">
+                <div class="column is-5"></div>
+                <div class="column is-5">
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        RESULTADOS DEL ARCHIVO SUBIDO
+                    </label>
+                </div>
+            </div>
+
+            <!-- Formulario para subir archivo CSV -->
+             <div class="column is-3"></div>
+            <div class="column is-5">
+                <form action="/pagos/pagoTransferencia" method="POST" enctype="multipart/form-data"
+                    onsubmit="return validateFile()">
+                <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
+                <input name="archivo" id="archivo" type="file" class="input" accept=".csv, .xlsx" style="display: none;"
+                    onchange="updateLabel()">
+                <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
+                    style="font-size: medium; background: #000000;">
+                <span> ELEGIR ARCHIVO </span>
+                <span class="icon is-large">
+                    <i class="fas fa-upload"></i></span></label>
+                <button type="submit" class="button is-large is-responsive"
+                    style="font-size: medium; background: #000000;">
+                    SUBIR ARCHIVO </button>
+                <div id="error"></div>
+                </form>
+            </div>
+        </div>
+
+            <div class="container">
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                        <thead>
+                            <tr class="has-text-white">
+                                <th style="text-align: left;">Fecha</th>
+                                <th style="text-align: left;">Hora</th>
+                                <th style="text-align: left;">Monto</th>
+                                <th style="text-align: left;">Referencia</th>
+                                <th style="text-align: left;">Método</th>
+                                <th style="text-align: left;">Nota</th>
+                                <th style="text-align: left;">Nombre</th>
+                                <th style="text-align: left;">Apellidos</th>
+                                <th style="text-align: left;">Tipo de Pago</th>
+                                <th style="text-align: left;">Deuda Estudiante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% pagosSubidos.forEach(pago => { %>
+                                <tr id="pagination-content">
+                                    <td><%= pago.fechaFormato %></td>
+                                    <td><%= pago.Hora %></td>
+                                    <td>$<%= pago.monto.toFixed(2) %></td>
+                                    <td><%= pago.ReferenciaAlum %></td>
+                                    <td><%= pago.Metodo %></td>
+                                    <td><%= pago.Nota %></td>
+                                    <td><%= pago.nombre %></td>
+                                    <td><%= pago.apellidos %></td>
+                                    <td><%= pago.tipoPago %></td>
+                                    <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" id="prev-button">Anterior</a>
+                    <a class="pagination-next" id="next-button">Siguiente</a>
+                    <ul class="pagination-list" id="pagination-list">
+                        <div id="pagination-numbers"></div>
+                    </ul>
+                </nav>
+            </div>
+        <% } %>
+    </section>
+</body>
+<script type="text/javascript" src="/js/registro_transferencia.js"></script>
+<script type="text/javascript" src="/js/pagination.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+            

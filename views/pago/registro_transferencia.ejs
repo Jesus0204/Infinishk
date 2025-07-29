@@ -129,12 +129,11 @@
                                 </div>
                             <% } %>
                     </div>
-
                 </div>
-                <form action="/pagos/registroTransferencia" method="POST" enctype="multipart/form-data"
+                <form action="/pagos/pagoTransferencia" method="POST" enctype="multipart/form-data"
                     onsubmit="return validateFile()">
                     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken %>">
-                    <input name="archivo" id="archivo" type="file" class="input" accept=".csv" style="display: none;"
+                    <input name="archivo" id="archivo" type="file" class="input" accept=".csv, .xlsx" style="display: none;"
                         onchange="updateLabel()">
                         <label for="archivo" id="labelArchivo" class="button is-large is-responsive"
                         style="font-size: medium; background: #000000;">
@@ -403,6 +402,7 @@
                                     <script type="text/javascript" src="/js/pagination_activos.js"></script>
                                     <script type="text/javascript" src="/js/registro_transferencia.js"></script>
                                     <script type="text/javascript" src="/js/boton_regresar.js"></script>
+                                    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
                                 </section>
         </body>
 <%- include('../includes/foot.ejs') %>
