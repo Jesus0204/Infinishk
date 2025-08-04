@@ -157,7 +157,7 @@ async function registrarTransferencia({
             }
         }
     
-      } catch (err) {
+      } catch (error) {
         console.error(error);
         return { success: false, message: 'Error inesperado en el servicio de pagos.', deudaEstudiante };
       }    
