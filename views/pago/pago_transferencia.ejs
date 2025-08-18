@@ -14,6 +14,26 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    .table-container {
+    overflow-x: hidden; /* Evita scroll */
+    }
+
+    table.table {
+        font-size: 0.85rem;
+        white-space: normal; /* Permite que el texto se parta en varias líneas */
+        table-layout: fixed; /* Obliga a que todas las columnas se ajusten */
+        width: 100%;
+    }
+
+    table.table td, 
+    table.table th {
+        padding: 0.35rem;
+        word-wrap: break-word; /* Rompe palabras largas */
+        word-break: break-word;
+    }
+
+
 </style>
 
 <body>
@@ -88,24 +108,39 @@
                                 <th style="text-align: left;">Apellidos</th>
                                 <th style="text-align: left;">Tipo de Pago</th>
                                 <th style="text-align: left;">Deuda Estudiante</th>
+                                <th style="text-align: left;">Estatus Pago</th>
+                                <th style="text-align: left;">Error Pago</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% pagosSubidos.forEach(pago => { %>
-                                <tr id="pagination-content">
-                                    <td><%= pago.fechaFormato %></td>
-                                    <td><%= pago.Hora %></td>
-                                    <td>$<%= pago.monto.toFixed(2) %></td>
-                                    <td><%= pago.ReferenciaAlum %></td>
-                                    <td><%= pago.Metodo %></td>
-                                    <td><%= pago.Nota %></td>
-                                    <td><%= pago.nombre %></td>
-                                    <td><%= pago.apellidos %></td>
-                                    <td><%= pago.tipoPago %></td>
-                                    <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
+    <% pagosSubidos.forEach(pago => { %>
+        <tr id="pagination-content"style="<%= pago.noReconocido ? 'background-color: #761D1F; color: white;': pago.yaRegistrado ? 'background-color: rgba(75, 74, 75, 0.7); color: white;' : '' %>">
+            <td><%= pago.fechaFormato %></td>
+            <td><%= pago.Hora %></td>
+            <td>$<%= pago.monto.toFixed(2) %></td>
+            <td><%= pago.ReferenciaAlum %></td>
+            <td><%= pago.Metodo %></td>
+            <td><%= pago.Nota %></td>
+            <td><%= pago.nombre %></td>
+            <td><%= pago.apellidos %></td>
+            <td><%= pago.tipoPago %></td>
+            <td>$<%= pago.deudaEstudiante?.toFixed(2) || 0 %></td>
+            <td>
+                <% if (pago.yaRegistrado) { %>
+                    Registrado
+                <% } else if (pago.noReconocido) { %>
+                    Nuevo-Error
+                <% } else { %>
+                    Nuevo-Registrado
+                <% } %>
+            </td>
+            <td>
+                <%= pago.noReconocido ? pago.errorMessage : 'N/A' %>
+            </td>
+        </tr>
+    <% }); %>
+</tbody>
+
                     </table>
                 </div>
                 <nav class="pagination is-rounded" role="navigation" aria-label="pagination">

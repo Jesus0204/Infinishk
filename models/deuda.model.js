@@ -13,9 +13,12 @@ module.exports = class Deuda {
     }
 
     static fetchNoPagados(fecha_actual) {
-        return db.execute(`SELECT DISTINCT (matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P
-        WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
-        Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1 `, [fecha_actual]);
+        return db.execute(`SELECT DISTINCT (matricula) FROM Deuda AS D, Colegiatura AS C, Periodo As P, 
+            Usuario AS U
+            WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
+            Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1 AND U.IDUsuario = D.Matricula 
+            AND U.usuarioActivo = 1`, 
+            [fecha_actual]);
     }
 
     static fetchDeuda(matricula) {
@@ -98,9 +101,9 @@ module.exports = class Deuda {
 
     static fetchAlumnos_DeudaActual() {
         return db.execute(`SELECT COUNT(DISTINCT (Matricula)) AS "alumnosTotales" 
-        FROM Deuda AS D, Colegiatura AS C, Periodo As P 
+        FROM Deuda AS D, Colegiatura AS C, Periodo As P, Usuario AS U
         WHERE D.IDColegiatura = C.IDColegiatura AND 
-        C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = 1`);
+        C.IDPeriodo = P.IDPeriodo AND P.periodoActivo = 1 AND U.IDUsuario = D.Matricula AND U.usuarioActivo = 1`);
     };
 
     static fetchIDDeuda(matricula) {
@@ -164,9 +167,10 @@ module.exports = class Deuda {
     }
 
     static fetchAlumnos_Atrasados(fecha_actual) {
-        return db.execute(`SELECT COUNT(DISTINCT(Matricula)) AS 'alumnosAtrasados' FROM Deuda AS D, Colegiatura AS C, Periodo As P
-        WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
-        Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1`, [fecha_actual]);
+        return db.execute(`SELECT COUNT(DISTINCT(Matricula)) AS 'alumnosAtrasados' FROM Deuda AS D, Colegiatura AS C,
+            Periodo As P, Usuario AS U WHERE D.IDColegiatura = C.IDColegiatura AND C.IDPeriodo = P.IDPeriodo AND
+            Pagado = 0 AND ? > fechaLimitePago AND P.periodoActivo = 1 AND U.IDUsuario = D.Matricula 
+            AND U.usuarioActivo = 1`, [fecha_actual]);
     };
 
     static fetchIDColegiatura(matricula) {
