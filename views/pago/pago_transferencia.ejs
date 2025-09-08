@@ -99,7 +99,6 @@
                         <thead>
                             <tr class="has-text-white">
                                 <th style="text-align: left;">Fecha</th>
-                                <th style="text-align: left;">Hora</th>
                                 <th style="text-align: left;">Monto</th>
                                 <th style="text-align: left;">Referencia</th>
                                 <th style="text-align: left;">Método</th>
@@ -116,7 +115,6 @@
     <% pagosSubidos.forEach(pago => { %>
         <tr id="pagination-content"style="<%= pago.noReconocido ? 'background-color: #761D1F; color: white;': pago.yaRegistrado ? 'background-color: rgba(75, 74, 75, 0.7); color: white;' : '' %>">
             <td><%= pago.fechaFormato %></td>
-            <td><%= pago.Hora %></td>
             <td>$<%= pago.monto.toFixed(2) %></td>
             <td><%= pago.ReferenciaAlum %></td>
             <td><%= pago.Metodo %></td>

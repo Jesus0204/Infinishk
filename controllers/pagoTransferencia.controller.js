@@ -82,12 +82,6 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
             const pagoCompleto = await Pago.fetch_fecha_pago(fechaISO, fila.monto, matricula);
             const pagoValido = pagoCompleto?.[0]?.[0];
 
-            if (matricula == '100698' || matricula == '100646') {
-                console.log(pagoValido);
-                console.log("fechaISO: " + fechaISO);
-                console.log("monto: " + fila.monto);
-            }
-
             const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fechaISO, matricula);
             const pagoDiplomadoValido = pagoDiplomadoCompleto?.[0]?.[0];
 
