@@ -54,7 +54,9 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         const fechaCompleta = moment(rawFecha + `-${currentYear}`, 'DD-MMM-YYYY');
         const fechaFormato = fechaCompleta.isValid() ? fechaCompleta.format('D/M/YYYY') : '';
 
-        const monto = Monto ? parseFloat(Monto.trim().replace(/[$,]/g, '')) : 0;
+        const monto = Monto
+        ? parseFloat(parseFloat(Monto.trim().replace(/[$,]/g, '')).toFixed(2))
+        : 0;
 
         filas.push({ fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef, Metodo, Nota });
     });
