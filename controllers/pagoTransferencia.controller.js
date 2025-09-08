@@ -81,7 +81,7 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
             const pagoValido = pagoCompleto?.[0]?.[0];
 
             if (matricula == '100698' || '100646') {
-                console.log(pagoCompleto);
+                console.log(pagoCompleto[0]);
                 console.log(pagoValido);
             }
 
