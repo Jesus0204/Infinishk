@@ -148,13 +148,18 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                 });
 
             } else {
+                if (!noReconocido && tipoPago === 'Pago de Colegiatura') {
+                    const deudaPendiente = await Deuda.fetchDeuda(matricula);
+                    deudaEstudiante = deudaPendiente?.[0]?.reduce((total, row) =>
+                        total + parseFloat(row.montoAPagar), 0) || 0;
+                }
                 resultados.push({
                     ...fila,
                     tipoPago,
                     nombre,
                     apellidos,
                     noReconocido,
-                    deudaEstudiante: 0,
+                    deudaEstudiante,
                     resultadoPago: noReconocido ? 'Nuevo-Error' : 'Registrado',
                     errorMessage: noReconocido ? errorMessage : '',
                     yaRegistrado: pagoValido || pagoDiplomadoValido
