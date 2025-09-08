@@ -130,7 +130,7 @@
             <td>$<%= pago.deudaEstudiante?.toLocaleString('mx', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
-                                        }); || 0 %>
+                                        }) || 0 %>
             </td>
             <td>
                 <% if (pago.yaRegistrado) { %>
