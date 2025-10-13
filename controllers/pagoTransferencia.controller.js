@@ -61,7 +61,9 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         const currentYear = moment().format('YYYY');
         const fechaCompleta = moment(rawFecha + `-${currentYear}`, 'DD-MMM-YYYY');
         const fechaFormato = fechaCompleta.isValid() ? fechaCompleta.format('D/M/YYYY') : '';
-        const monto = Monto ? parseFloat(Monto.trim().replace(/[$,]/g, '')) : 0;
+        const monto = Monto
+        ? parseFloat(parseFloat(Monto.trim().replace(/[$,]/g, '')).toFixed(2))
+        : 0;
 
         console.log("📥 Fila CSV:", { Fecha, Monto, Referencia, Metodo, Nota });
         console.log("➡️ Procesada como:", { fechaFormato, monto, ReferenciaAlum, Matricula, inicioRef });
@@ -179,13 +181,18 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
                     yaRegistrado: false
                 });
             } else {
+                if (!noReconocido && tipoPago === 'Pago de Colegiatura') {
+                    const deudaPendiente = await Deuda.fetchDeuda(matricula);
+                    deudaEstudiante = deudaPendiente?.[0]?.reduce((total, row) =>
+                        total + parseFloat(row.montoAPagar), 0) || 0;
+                }
                 resultados.push({
                     ...fila,
                     tipoPago,
                     nombre,
                     apellidos,
                     noReconocido,
-                    deudaEstudiante: 0,
+                    deudaEstudiante,
                     resultadoPago: noReconocido ? 'Nuevo-Error' : 'Registrado',
                     errorMessage: noReconocido ? errorMessage : '',
                     yaRegistrado: pagoValido || pagoDiplomadoValido

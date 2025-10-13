@@ -109,7 +109,9 @@ async function registrarTransferencia({
                         await Alumno.update_credito(matricula, monto_a_usar);
                     }
 
-                    deudaEstudiante = monto_a_usar;
+                    const deudaPendiente = await Deuda.fetchDeuda(matricula);
+                    deudaEstudiante = deudaPendiente?.[0]?.reduce((total, row) =>
+                        total + parseFloat(row.montoAPagar), 0) || 0;
                 })
                 .catch(error => {
                     success = false;
@@ -157,7 +159,7 @@ async function registrarTransferencia({
             }
         }
     
-      } catch (err) {
+      } catch (error) {
         console.error(error);
         return { success: false, message: 'Error inesperado en el servicio de pagos.', deudaEstudiante };
       }    

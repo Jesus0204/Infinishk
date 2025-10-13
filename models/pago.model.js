@@ -12,14 +12,14 @@ module.exports = class Pago {
         this.fechaPago = mi_fechaPago;
     }
 
-    static fetch_fecha_pago(fecha,importe, matricula) {
+    static fetch_fecha_pago(fecha, importe, matricula) {
         return db.execute(
-            `SELECT Pago.fechaPago, Pago.montoPagado, Deuda.matricula 
-             FROM Pago 
+            `SELECT Pago.fechaPago, Pago.montoPagado, Deuda.matricula
+             FROM Pago
              JOIN Deuda ON Pago.IDDeuda = Deuda.IDDeuda
              WHERE Pago.fechaPago = ? AND Pago.estadoPago = 1
-             AND Pago.montoPagado = ? AND Deuda.matricula = ?;`,
-            [fecha,importe, matricula]
+             AND ROUND(Pago.montoPagado, 2) = ROUND(?, 2) AND Deuda.matricula = ?;`,
+            [fecha, importe, matricula]
         );
     }
 
