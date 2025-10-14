@@ -10,7 +10,7 @@ module.exports = class Alumno {
     }
 
     static fetchNombre(matricula) {
-        return db.execute('SELECT Nombre,Apellidos FROM Alumno WHERE Matricula = ?',
+        return db.execute('SELECT Nombre,Apellidos,referenciaBancaria FROM Alumno WHERE Matricula = ?',
             [matricula]);
     }
 
