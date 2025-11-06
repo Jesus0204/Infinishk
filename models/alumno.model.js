@@ -85,4 +85,18 @@ module.exports = class Alumno {
         FROM estudianteProfesional 
         WHERE Matricula = ?`, [matricula])
     }
+
+    static reiniciarConfirma() {
+        const query = `
+            UPDATE Confirma
+            SET horarioConfirmado = 0
+            WHERE IDPeriodo IN (
+                SELECT IDPeriodo
+                FROM Periodo
+                WHERE periodoActivo = 1
+            )
+        `;
+        return db.execute(query);
+    }
+
 }

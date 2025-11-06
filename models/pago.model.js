@@ -71,4 +71,22 @@ module.exports = class Pago {
     static delete_col(id, usuario){
         return db.execute(`CALL eliminar_pago_col(?, ?);`, [id, usuario]);
     }
+
+    static async eliminarPagosPeriodoActivo() {
+        const [rows] = await db.execute(`
+            SELECT d.IDDeuda
+            FROM Deuda d
+            JOIN Colegiatura c ON d.IDColegiatura = c.IDColegiatura
+            JOIN Periodo per ON c.IDPeriodo = per.IDPeriodo
+            WHERE per.periodoActivo = 1
+        `);
+
+        if (rows.length === 0) return;
+        const ids = rows.map(r => r.IDDeuda);
+        const placeholders = ids.map(() => '?').join(',');
+        await db.execute(`DELETE FROM Pago WHERE IDDeuda IN (${placeholders})`, ids);
+    }
+
+
+
 }

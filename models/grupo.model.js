@@ -83,5 +83,24 @@ module.exports = class Alumno {
         );
         return result.affectedRows > 0; // Verifica si alguna fila fue actualizada
     }
+
+    static eliminarGruposActivos() {
+        const query = `
+            DELETE FROM Grupo
+            WHERE Activo = 1
+        `;
+        return db.execute(query);
+    }
+
+    static desactivarGruposActivos() {
+        const query = `
+            UPDATE Grupo
+            SET Activo = 0
+            WHERE Activo = 1
+        `;
+        return db.execute(query);
+    }
+
+
     
 }
