@@ -78,7 +78,10 @@
             </div>
 
             <!-- datos personales -->
-
+            <div id="eliminacionCredito" class="notification is-hidden"
+                style="background-color: #5a6581; color:#ffffff;">
+                ¡Crédito eliminado! Recargando página...
+            </div>
             <div id="modificacion_datos" class="notification is-hidden"
                 style="background-color: #5a6581; color:#ffffff;">
                 ¡Datos modificados! Recargando página...
@@ -109,8 +112,7 @@
                                 MXN
                             </span>
                             <% if (creditoAlumno > 0) { %>
-                            <button type="button"
-                                    id="Boton_eliminar"
+                            <button type="button" id="Boton_eliminar"
                                     class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
                                     style="background-color: #f6d5d8;"
                                     data-target="modal-confirmar-eliminar_credito<%= alumnoConsulta[0].Matricula %>">
@@ -136,7 +138,7 @@
                                         </p>
                                         <br>
                                         <p class="is-size-5" style="text-align: center;">
-                                            Los datos a borrar son los siguientes:
+                                            Los datos a eliminar son los siguientes:
                                         </p>
                                         <br>
                                         <br>
