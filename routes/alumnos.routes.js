@@ -34,4 +34,7 @@ router.post('/datos_alumno/eliminar_pago_extra', isAuth, alumnosController.post_
 router.post('/datos_alumno/eliminar_pago_col', isAuth, alumnosController.post_eliminar_pago_col);
 router.post('/datos_alumno/eliminar_pago_dip', isAuth, alumnosController.post_eliminar_pago_dip);
 
+// Eliminar crédito
+router.post('/datos_alumno/eliminar_credito', isAuth, alumnosController.post_eliminar_credito);
+
 module.exports = router;
