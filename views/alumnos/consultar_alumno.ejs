@@ -99,14 +99,87 @@
                         <p class="has-text-grey has-text-weight-medium">CICLO ESCOLAR</p>
                         <p class="has-text-black has-text-weight-bold is-size-5"><%= periodo.Nombre %></p>
                         <p class="has-text-grey has-text-weight-medium">CRÉDITO ACTUAL</p>
-                        <p class="has-text-black has-text-weight-bold is-size-5">
+                        <p class="has-text-black has-text-weight-bold is-size-5 is-flex is-align-items-center"
+                            style="justify-content:center !important;">
                             <span class="has-text-weight-bold">
                                 $<%= creditoAlumno.toLocaleString('mx', { minimumFractionDigits: 2,
                                     maximumFractionDigits: 2 }) %>
                             </span>
-                            <span class="has-text-weight-light is-size-7">
+                            <span class="has-text-weight-light is-size-7 px-2">
                                 MXN
                             </span>
+                            <% if (creditoAlumno > 0) { %>
+                            <button type="button"
+                                    id="Boton_eliminar"
+                                    class="js-modal-trigger tag is-size-6 btn-eliminar-materia"
+                                    style="background-color: #f6d5d8;"
+                                    data-target="modal-confirmar-eliminar_credito<%= alumnoConsulta[0].Matricula %>">
+                                <span class="icon is-small" style="color: #f83362">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </span>
+                            </button>
+
+                            <div id="modal-confirmar-eliminar_credito<%= alumnoConsulta[0].Matricula %>" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title" style="text-align: center;">
+                                            <label class="label is-large has-text-danger has-text-weight-semibold">
+                                                ELIMINAR CRÉDITO DEL ALUMNO
+                                            </label>
+                                        </p>
+                                        <button class="delete" aria-label="delete"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        <p class="is-size-5" style="text-align: center;">
+                                            <strong>¡Esta acción no se puede deshacer!</strong>
+                                        </p>
+                                        <br>
+                                        <p class="is-size-5" style="text-align: center;">
+                                            Los datos a borrar son los siguientes:
+                                        </p>
+                                        <br>
+                                        <br>
+                                        <div style="text-align: center;">
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Alumno: </strong>
+                                                <%= alumnoConsulta[0].Nombre %> <%= alumnoConsulta[0].Apellidos %>
+                                            </p>
+                                            <p class="is-size-5" style="text-align: center;">
+                                                <strong>Crédito: </strong>
+                                                $<%= creditoAlumno.toLocaleString('mx', { minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2 }) %>
+                                            </p>
+                                        </div>
+                                        </section>
+
+                                        <footer class="modal-card-foot" style="justify-content: center;">
+                                            <div class="field is-grouped">
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive" aria-label="close"
+                                                        style="font-size: large; margin: 8px 2px;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-circle-chevron-left" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>REGRESAR</span>
+                                                    </button>
+                                                </p>
+                                                <p class="control">
+                                                    <button class="button is-medium is-responsive"
+                                                        onclick="eliminarCredito('<%= alumnoConsulta[0].Matricula %>')"
+                                                        style="font-size: large; margin: 8px 2px; background-color: #000000;
+                                                                padding-right: 5px; padding-left: 10px;">
+                                                        <span class="icon is-large">
+                                                            <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                                        </span>
+                                                        <span>ELIMINAR</span>
+                                                    </button>
+                                                </p>
+                                        </footer>
+                                    </div>
+                                </div>
+                            <% } %>
                         </p>
                     </div>
                 </div>
