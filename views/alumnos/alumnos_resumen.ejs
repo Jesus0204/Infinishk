@@ -1,0 +1,109 @@
+<%- include('../includes/head.ejs', {
+    username: username,
+    permisos: permisos,
+    rol: rol
+}) %>
+<style>
+    .status-tag.is-current {
+        background-color: #d1f2d7;
+        color: #1f7a1f;
+    }
+    .status-tag.is-late {
+        background-color: #fde2e2;
+        color: #b22222;
+    }
+    .table thead th {
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.03em;
+    }
+</style>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-7">
+                    <label class="label is-large has-text-danger has-text-weight-semibold">
+                        ALUMNOS ACTIVOS - RESUMEN
+                    </label>
+                </div>
+                <div class="column is-5">
+                    <div class="buttons are-small">
+                        <button id="sort-asc" class="button is-light" aria-label="Ordenar por pagos completados de menor a mayor">
+                            <span class="icon"><i class="fas fa-sort-amount-up-alt"></i></span>
+                            <span>Menor a mayor</span>
+                        </button>
+                        <button id="sort-desc" class="button is-light" aria-label="Ordenar por pagos completados de mayor a menor">
+                            <span class="icon"><i class="fas fa-sort-amount-down"></i></span>
+                            <span>Mayor a menor</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="table-container">
+                    <table id="tabla-alumnos" class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Matrícula</th>
+                                <th class="has-text-centered">Fórmula</th>
+                                <th class="has-text-centered">Pagos completados</th>
+                                <th class="has-text-centered">Total pagado</th>
+                                <th class="has-text-centered">Referencia</th>
+                                <th class="has-text-centered">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% alumnos.forEach((alumno, index) => { %>
+                                <tr data-pagos="<%= alumno.pagosCompletados %>">
+                                    <td><%= startIndex + index + 1 %></td>
+                                    <td><%= alumno.Nombre + ' ' + alumno.Apellidos %></td>
+                                    <td><%= alumno.Matricula %></td>
+                                    <td class="has-text-centered">
+                                        <%= Number(alumno.pagosFormula).toFixed(2) %>
+                                    </td>
+                                    <td class="has-text-centered"><%= alumno.pagosCompletados %></td>
+                                    <td class="has-text-centered">$<%= alumno.totalPagado.toLocaleString('mx', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                    <td class="has-text-centered"><%= alumno.referenciaBancaria %></td>
+                                    <td class="has-text-centered">
+                                        <% if (alumno.alCorriente) { %>
+                                            <span class="tag status-tag is-current">
+                                                <span class="icon is-small"><i class="fas fa-check-circle"></i></span>
+                                                <span>Al corriente</span>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="tag status-tag is-late">
+                                                <span class="icon is-small"><i class="fas fa-exclamation-triangle"></i></span>
+                                                <span>Atrasado</span>
+                                            </span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                <nav class="level" aria-label="Navegación de alumnos activos">
+                    <div class="level-left">
+                        <p class="has-text-grey is-size-7">
+                            Mostrando <%= alumnos.length %> de <%= Math.min(totalAlumnos, pageSize) %> alumnos en esta página
+                            (total: <%= totalAlumnos %>).
+                        </p>
+                    </div>
+                    <div class="level-right">
+                        <nav class="pagination is-small" role="navigation" aria-label="paginación">
+                            <a class="pagination-previous <%= page <= 1 ? 'is-disabled' : '' %>" href="/alumnos_activos/resumen?page=<%= page - 1 %>">Anterior</a>
+                            <a class="pagination-next <%= page >= totalPages ? 'is-disabled' : '' %>" href="/alumnos_activos/resumen?page=<%= page + 1 %>">Siguiente</a>
+                            <ul class="pagination-list">
+                                <li><span class="pagination-link is-current"><%= page %> / <%= totalPages %></span></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript" src="/js/alumnos_resumen.js"></script>
+<%- include('../includes/foot.ejs') %>
