@@ -177,4 +177,20 @@ module.exports = class Deuda {
         return db.execute('SELECT IDColegiatura FROM Deuda WHERE Matricula = ?',
             [matricula]);
     }
+
+    static eliminarDeudasPeriodoActivo() {
+        const query = `
+            DELETE FROM Deuda
+            WHERE IDColegiatura IN (
+                SELECT IDColegiatura
+                FROM Colegiatura
+                WHERE IDPeriodo IN (
+                    SELECT IDPeriodo
+                    FROM Periodo
+                    WHERE periodoActivo = 1
+                )
+            )
+        `;
+        return db.execute(query);
+    }
 }

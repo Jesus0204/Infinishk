@@ -100,4 +100,18 @@ module.exports = class Alumno {
             GROUP BY A.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria
             ORDER BY A.Matricula`);
     }
+
+    static reiniciarConfirma() {
+        const query = `
+            UPDATE Confirma
+            SET horarioConfirmado = 0
+            WHERE IDPeriodo IN (
+                SELECT IDPeriodo
+                FROM Periodo
+                WHERE periodoActivo = 1
+            )
+        `;
+        return db.execute(query);
+    }
+
 }
