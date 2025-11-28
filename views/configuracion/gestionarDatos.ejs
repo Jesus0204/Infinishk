@@ -83,8 +83,52 @@
                         </button>
                     </div>
                 </div>
+                <div class="columns is-centered mt-3">
+                    <div class="column is-half has-text-centered">
+                        <button class="confirmar-button button is-large is-responsive form-button js-modal-trigger"
+                            data-target="modal-confirmar-reinicio">
+                            <span>REINICIAR DATOS</span>
+                            <span class="icon is-large">
+                                <i class="fa-solid fa-circle-chevron-right" style="color: #ffffff;"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div id="modal-confirmar-reinicio" class="modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                        <header class="modal-card-head">
+                            <p class="modal-card-title has-text-centered">
+                                <label class="label is-large has-text-danger has-text-weight-semibold">
+                                    CONFIRMAR REINICIO DE DATOS
+                                </label>
+                            </p>
+                            <button class="delete" aria-label="close"></button>
+                        </header>
+
+                        <section class="modal-card-body has-text-centered">
+                            <p class="is-size-5">
+                                ⚠️ <strong>Esta acción eliminará todos los datos del sistema.</strong>
+                            </p>
+                            <br>
+                            <p class="is-size-5">¿Deseas continuar?</p>
+                        </section>
+
+                        <footer class="modal-card-foot" style="justify-content: center;">
+                            <button id="btn-cancelar-reinicio"
+                                class="button is-medium is-responsive"
+                                style="margin: 5px;">Cancelar</button>
+
+                            <button id="btn-confirmar-reinicio"
+                                class="button is-medium is-responsive"
+                                style="background-color: #6a0303; color: #fff; margin: 5px;">Confirmar</button>
+                        </footer>
+                    </div>
+                </div>
+
             </div>
         </section>
     </body>
 <script type="text/javascript" src="/js/actualizarBase.js"></script>
+<script type="text/javascript" src="/js/modal_popup.js"></script>
 <%- include('../includes/foot.ejs') %>

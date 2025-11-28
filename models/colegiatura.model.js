@@ -47,4 +47,17 @@ module.exports = class Colegiatura {
         return db.execute(`SELECT creditoColegiatura FROM Colegiatura WHERE IDColegiatura = ?`, [IDColegiatura]);
     }
 
+    static eliminarColegiaturasPeriodoActivo() {
+        const query = `
+            DELETE FROM Colegiatura
+            WHERE IDPeriodo IN (
+                SELECT IDPeriodo
+                FROM Periodo
+                WHERE periodoActivo = 1
+            )
+        `;
+        return db.execute(query);
+    }
+
+
 };

@@ -33,4 +33,39 @@ const aceptar_horarios = () => {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modal-confirmar-reinicio');
+    const btnConfirmar = document.getElementById('btn-confirmar-reinicio');
+    const btnCancelar = document.getElementById('btn-cancelar-reinicio');
+
+    if (btnConfirmar && btnCancelar) {
+        btnConfirmar.addEventListener('click', () => {
+            // Cerrar modal
+            modal.classList.remove('is-active');
+
+            // Ejecutar acción
+            fetch('/configuracion/reiniciarDatos', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    alert("✅ Los datos se han reiniciado correctamente.");
+                    window.location.reload();
+                } else {
+                    alert("❌ Ocurrió un error al reiniciar los datos.");
+                }
+            }).catch(err => {
+                console.error(err);
+                alert("❌ Error al conectar con el servidor.");
+            });
+        });
+
+        btnCancelar.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
+    }
+});
+
+
+
 

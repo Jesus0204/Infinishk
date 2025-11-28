@@ -11,7 +11,10 @@ const PagoExtra = require('../models/liquida.model');
 const Usuario = require('../models/usuario.model')
 const estudianteDiplomado = require('../models/estudiante_Diplomado.model');
 const Diplomado = require('../models/diplomado.model');
+const Deuda = require('../models/deuda.model');
+const Pago = require('../models/pago.model');
 const Rol = require('../models/rol.model');
+const Grupo = require('../models/grupo.model');
 
 const {
     aceptar_horario_resagados
@@ -1273,4 +1276,21 @@ exports.fetchMaterias = async (request, response, next) => {
         });
     }
 };
+
+exports.reiniciarDatos = async (request, response, next) => {
+    try {
+        await Pago.eliminarPagosPeriodoActivo();
+        await Deuda.eliminarDeudasPeriodoActivo();
+        await Colegiatura.eliminarColegiaturasPeriodoActivo();
+        await Grupo.desactivarGruposActivos();
+        await Alumno.reiniciarConfirma();
+
+        response.status(200).json({ message: 'Datos reiniciados correctamente.' });
+    } catch (error) {
+        console.error('❌ Error al reiniciar los datos:', error);
+
+        response.status(500).json({ message: 'Error al reiniciar los datos.' });
+    }
+};
+
 
