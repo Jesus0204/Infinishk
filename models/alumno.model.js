@@ -91,7 +91,7 @@ module.exports = class Alumno {
             SUM(CASE WHEN D.Pagado = 1 THEN 1 ELSE 0 END) AS pagosCompletados,
             SUM(D.montoPagado) AS totalPagado,
             SUM(D.montoPagado / D.montoAPagar) AS pagosFormula
-            FROM DEUDA AS D, Alumno AS A, Periodo AS P, Colegiatura AS C, Usuario AS U
+            FROM Deuda AS D, Alumno AS A, Periodo AS P, Colegiatura AS C, Usuario AS U
             WHERE P.periodoActivo = 1 AND
             D.Matricula = A.Matricula AND 
             D.IDColegiatura = C.IDColegiatura AND
