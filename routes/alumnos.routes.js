@@ -11,6 +11,9 @@ const can_AlumnosAtrasados = require('../util/privileges/admin/consultas/can_Alu
 const can_ConsultarAlumno = require('../util/privileges/can_consultar_alumno');
 const can_ModificarDeuda = require('../util/privileges/admin/otros/can_modificar_Deuda');
 
+const rutasAlumnosResumen = require('./alumnos_resumen.routes');
+router.use('/resumen', isAuth, rutasAlumnosResumen);
+
 // Alumnos atrasados
 router.get('/alumnos_atrasados', isAuth, can_AlumnosAtrasados, alumnosController.get_alumnos_atrasados);
 

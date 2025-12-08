@@ -10,7 +10,7 @@ module.exports = class Alumno {
     }
 
     static fetchNombre(matricula) {
-        return db.execute('SELECT Nombre,Apellidos FROM Alumno WHERE Matricula = ?',
+        return db.execute('SELECT Nombre,Apellidos,referenciaBancaria FROM Alumno WHERE Matricula = ?',
             [matricula]);
     }
 
@@ -85,4 +85,33 @@ module.exports = class Alumno {
         FROM estudianteProfesional 
         WHERE Matricula = ?`, [matricula])
     }
+
+    static fetchResumenAlumnos() {
+        return db.execute(`SELECT A.Nombre, A.Apellidos, D.Matricula, A.referenciaBancaria,
+            SUM(CASE WHEN D.Pagado = 1 THEN 1 ELSE 0 END) AS pagosCompletados,
+            SUM(D.montoPagado) AS totalPagado,
+            SUM(D.montoPagado / D.montoAPagar) AS pagosFormula
+            FROM Deuda AS D, Alumno AS A, Periodo AS P, Colegiatura AS C, Usuario AS U
+            WHERE P.periodoActivo = 1 AND
+            D.Matricula = A.Matricula AND 
+            D.IDColegiatura = C.IDColegiatura AND
+            P.IDPeriodo = C.IDPeriodo AND 
+            U.IDUsuario = D.Matricula AND U.usuarioActivo = 1
+            GROUP BY A.Matricula, A.Nombre, A.Apellidos, A.referenciaBancaria
+            ORDER BY A.Matricula`);
+    }
+
+    static reiniciarConfirma() {
+        const query = `
+            UPDATE Confirma
+            SET horarioConfirmado = 0
+            WHERE IDPeriodo IN (
+                SELECT IDPeriodo
+                FROM Periodo
+                WHERE periodoActivo = 1
+            )
+        `;
+        return db.execute(query);
+    }
+
 }

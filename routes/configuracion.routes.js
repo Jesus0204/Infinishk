@@ -66,4 +66,6 @@ router.get('/visualizarPlanes', isAuth, can_ActualizarBase, configuracionControl
 
 router.post('/visualizarMaterias', isAuth, can_ActualizarBase, configuracionController.fetchMaterias);
 
+router.get('/reiniciarDatos', isAuth, can_ActualizarBase, configuracionController.reiniciarDatos);
+
 module.exports = router;
