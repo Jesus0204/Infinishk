@@ -305,6 +305,17 @@ exports.post_eliminar_pago_dip = async (request, response, next) => {
     }
 }
 
+exports.post_eliminar_credito = async (request, response, next) => {
+    const matricula = request.body.matricula;
+
+    try {
+        await Alumno.delete_credito(matricula);
+        response.status(200).json({ success: true });
+    } catch (error) {
+        response.status(500).json({ success: false, message: 'Error borrando crédito' });
+    }
+}
+
 exports.get_fetch_datos = async (request, response, next) => {
     try {
         let matches = request.params.matricula.match(/\d+$/);
