@@ -15,14 +15,30 @@ module.exports = class Alumno {
     }
 
     static fetch(valor_busqueda) {
-        return db.execute(`SELECT Matricula, Nombre, Apellidos FROM Alumno
-         WHERE CONCAT_WS(' ', Nombre, Apellidos) LIKE ? OR Matricula LIKE ? `, ['%' + valor_busqueda + '%', '%' + valor_busqueda + '%']);
+        return db.execute(
+            `SELECT A.Matricula, A.Nombre, A.Apellidos
+            FROM Alumno A
+            INNER JOIN Usuario U ON A.Matricula = U.IDUsuario
+            WHERE (CONCAT_WS(' ', A.Nombre, A.Apellidos) LIKE ?
+                OR A.Matricula LIKE ?)
+            AND U.UsuarioActivo = 1`,
+            ['%' + valor_busqueda + '%', '%' + valor_busqueda + '%']
+        );
     }
 
+
     static fetch_both(matricula, nombre) {
-        return db.execute(`SELECT Matricula, Nombre, Apellidos FROM Alumno
-         WHERE CONCAT_WS(' ', Nombre, Apellidos) LIKE ? AND Matricula LIKE ? `, ['%' + nombre + '%', '%' + matricula + '%']);
+        return db.execute(
+            `SELECT A.Matricula, A.Nombre, A.Apellidos
+            FROM Alumno A
+            INNER JOIN Usuario U ON A.Matricula = U.IDUsuario
+            WHERE CONCAT_WS(' ', A.Nombre, A.Apellidos) LIKE ?
+            AND A.Matricula LIKE ?
+            AND U.UsuarioActivo = 1`,
+            ['%' + nombre + '%', '%' + matricula + '%']
+        );
     }
+
 
     static fetchOne(matricula) {
         return db.execute(`SELECT Matricula, Nombre, Apellidos, referenciaBancaria
