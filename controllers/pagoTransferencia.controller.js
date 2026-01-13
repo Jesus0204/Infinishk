@@ -117,9 +117,9 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
             }
 
             // Verificar si el pago ya existe
-            const pagoCompleto = await Pago.fetch_fecha_pago(fechaISO, fila.monto, matricula);
+            const pagoCompleto = await Pago.fetch_fecha_pago(fechaISO, fila.monto, fila.Nota, matricula);
             const pagoValido = pagoCompleto?.[0]?.[0];
-            const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fechaISO, matricula);
+            const pagoDiplomadoCompleto = await PagoDiplomado.fetch_fecha_pago(fechaISO, matricula, fila.Nota, fila.monto);
             const pagoDiplomadoValido = pagoDiplomadoCompleto?.[0]?.[0];
             console.log("🔎 Pago existente (colegiatura):", !!pagoValido);
             console.log("🔎 Pago existente (diplomado):", !!pagoDiplomadoValido);
