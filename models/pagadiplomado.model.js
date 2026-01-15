@@ -44,9 +44,9 @@ module.exports = class pagoDiplomado {
         return db.execute(`UPDATE pagaDiplomado SET Nota = 'PAGO RECHAZADO' WHERE referenciaPago = ?`, [referenciaPago]);
     }
 
-    static fetch_fecha_pago(fecha, matricula) {
-        return db.execute('SELECT fechaPago,montoPagado FROM pagaDiplomado WHERE fechaPago = ? AND Matricula = ?',
-            [fecha, matricula]);
+    static fetch_fecha_pago(fecha, matricula, nota, pago) {
+        return db.execute('SELECT fechaPago,montoPagado,Nota FROM pagaDiplomado WHERE fechaPago = ? AND Matricula = ? AND Nota = ? AND ROUND(montoPagado, 2) = ROUND(?, 2)',
+            [fecha, matricula,nota,pago]);
     }
 
     static fetchDatosDiplomado(fechaInicio, fechaFin) {
