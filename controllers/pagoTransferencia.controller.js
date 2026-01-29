@@ -52,15 +52,18 @@ exports.subirYRegistrarTransferencia = async (request, response, next) => {
         for (const key in data) cleanedData[key.trim()] = data[key];
 
         const { Fecha, Monto, Referencia, Metodo, Nota } = cleanedData;
-        const rawFecha = Fecha?.trim() || '';
+        const rawFecha = (Fecha || '').trim();
         const referenciaLimpia = (Referencia || '').replace(/\s+/g, '');
         const ReferenciaAlum = referenciaLimpia.substring(0, 7); // referencia completa
         const Matricula = referenciaLimpia.substring(0, 6); // matrícula
         const inicioRef = referenciaLimpia.substring(0, 1);
 
-        const currentYear = moment().format('YYYY');
-        const fechaCompleta = moment(rawFecha + `-${currentYear}`, 'DD-MMM-YYYY');
-        const fechaFormato = fechaCompleta.isValid() ? fechaCompleta.format('D/M/YYYY') : '';
+        // CSV: DD/MM/YYYY
+        const fechaCompleta = moment(rawFecha, 'DD/MM/YYYY', true);
+
+        const fechaFormato = fechaCompleta.isValid()
+            ? fechaCompleta.format('D/M/YYYY')
+            : '';
         const monto = Monto
         ? parseFloat(parseFloat(Monto.trim().replace(/[$,]/g, '')).toFixed(2))
         : 0;
