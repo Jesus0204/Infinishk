@@ -14,7 +14,7 @@ const Pago = require('../models/pago.model');
 const PagaDiplomado = require('../models/pagadiplomado.model');
 const PagoExtra = require('../models/pago_extra.model');
 const Liquida = require('../models/liquida.model');
-const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups,destroyGroup } = require('../util/adminApiClient');
+const { getAllUsers, getAllCourses, getAllPeriods, getUserGroups, destroyGroup } = require('../util/adminApiClient');
 const { request, response } = require('express');
 
 // Configuras a moment con el locale. 
@@ -86,7 +86,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
-        
+
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
@@ -106,7 +106,7 @@ exports.post_dar_baja_grupo = async (request, response, next) => {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
         }
-        
+
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
@@ -125,7 +125,7 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
-        
+
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
@@ -133,7 +133,7 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno;
         const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
         const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
-        
+
         // Obtener número de fichas sin pagar
         const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
 
@@ -145,7 +145,7 @@ exports.post_dar_baja_grupo60 = async (request, response, next) => {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
         }
-        
+
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
@@ -163,7 +163,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         const resultfetchIDExterno = await Grupo.fetchIDExterno(IDGrupo, matricula);
         const resultfetchInicio = await Periodo.fetchInicio();
         const resultfetchFin = await Periodo.fetchFin();
-        
+
         const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
         const IDMateria = resultfetchIDPorGrupo[0][0].IDMateria;
         const Beca = resultfetchBeca[0][0].beca;
@@ -171,7 +171,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
         const IDExterno = resultfetchIDExterno[0][0].IDGrupoExterno;
         const fechaInicio = moment(resultfetchInicio[0][0].fechaInicio).format('YYYY-MM-DD');
         const fechaFin = moment(resultfetchFin[0][0].fechaFin).format('YYYY-MM-DD');
-        
+
         // Obtener número de fichas sin pagar
         const numeroFichasSinPagar = await Fichas.calcularNumeroDeudas(matricula, fechaInicio, fechaFin);
 
@@ -183,7 +183,7 @@ exports.post_dar_baja_grupo100 = async (request, response, next) => {
             response.status(200).json({ success: true, message: 'No hay fichas sin pagar, grupo no eliminado' });
             return;
         }
-        
+
         response.status(200).json({ success: true });
     } catch (error) {
         response.status(500).json({ success: false, message: 'Error actualizando la ficha' });
@@ -199,37 +199,37 @@ exports.post_datos_modify = async (request, response, next) => {
     const resultfetchReforiginal = await Alumno.fetchRef(alumno);
 
     let ref_original = resultfetchReforiginal[0][0].referenciaBancaria
-    
+
     let beca_uso;
-    
+
     let beca_new = beca;
-    
+
     if (beca == "") {
         beca_new = '0';
     }
-    
-    if(ref == ""){
+
+    if (ref == "") {
         ref = ref_original;
     }
-    
+
     let data;
     if (alumno.startsWith("1")) {
         try {
             let beca_original = resultfetchBecaoriginal[0][0].beca;
-            if (beca_new == 0){
+            if (beca_new == 0) {
                 beca_uso = 1
             }
             else {
-                beca_uso = (1 - (beca_new / 100)) 
+                beca_uso = (1 - (beca_new / 100))
             }
-            if (beca_uso != beca_original){
+            if (beca_uso != beca_original) {
                 const resultfetchCreditoActivo = await PrecioCredito.fetchCreditoActivo();
                 const resultfetchCredito = await Alumno.fetchCreditoColegiatura(alumno);
                 const credito = resultfetchCredito[0][0].creditoColegiatura;
                 const creditoactual = resultfetchCreditoActivo[0][0].precioPesos;
-                await Fichas.update_fichas_beca(alumno,beca_uso,credito,creditoactual);
-            } 
-            data = await EstudianteProfesional.update(alumno, ref, beca_new); 
+                await Fichas.update_fichas_beca(alumno, beca_uso, credito, creditoactual);
+            }
+            data = await EstudianteProfesional.update(alumno, ref, beca_new);
 
             response.status(200).json({
                 success: true,
@@ -295,7 +295,7 @@ exports.post_eliminar_pago_col = async (request, response, next) => {
 // Diplomado
 exports.post_eliminar_pago_dip = async (request, response, next) => {
     const id = request.body.IDPagaDiplomado;
-    
+
     try {
         await PagaDiplomado.delete(id);
 
@@ -373,9 +373,9 @@ exports.get_fetch_datos = async (request, response, next) => {
         if (matricula.startsWith('1')) {
             if (deuda.length != 0) {
                 const IDColegiatura = deuda[0].IDColegiatura;
-    
+
                 const [creditoIDColegiatura, fieldData] = await Colegiatura.fetchCreditoColegiatura(IDColegiatura);
-    
+
                 creditoColegiatura = creditoIDColegiatura[0].creditoColegiatura;
             }
             alumnoConsulta = await EstudianteProfesional.fetchDatos(matricula);
@@ -532,7 +532,7 @@ exports.get_fichas = (request, response, next) => {
 exports.post_fichas_modify = async (request, response, next) => {
     const { deudaNum, descuentoNum, fechaFormat, notaNum, id } = request.body;
     const modificador = request.session.username;
-    
+
     try {
         const data = await Fichas.update(deudaNum, descuentoNum, fechaFormat, notaNum, modificador, id);
         response.status(200).json({ success: true, data: data });
@@ -574,10 +574,8 @@ exports.post_actualizar_horarios = async (request, response, next) => {
         if (numeroFichasSinPagar > 0) {
             const schedule = await getUserGroups(periodoActivo, Number(matricula));
 
-            if (schedule.data.length === 0) {
-                return response.status(404).json({
-                    message: `El alumno con matrícula ${matricula} no tiene un horario asignado.`
-                });
+            if (!schedule.data || schedule.data.length === 0) {
+                console.log(`Alumno ${matricula} sin horarios, pero se procesarán otros datos.`);
             }
 
             // Procesar horarios
@@ -618,7 +616,7 @@ exports.post_actualizar_horarios = async (request, response, next) => {
 
                 const precioMateria = credits * precioActual;
 
-                const idGrupo = schedules[0]?.group_id || '';
+                const idGrupo = schedule.id || null;
 
                 const horarios = schedules.map(schedule => {
                     const {
@@ -681,7 +679,7 @@ exports.post_actualizar_horarios = async (request, response, next) => {
                         1
                     );
 
-                    await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual,Beca, Credito);
+                    await Fichas.actualizarMaterias(matricula, curso.idMateria, creditoactual, Beca, Credito);
                     gruposNuevosGuardados = true;
                 } else if (grupoExistente[0].Activo === 1) {
                     continue;
